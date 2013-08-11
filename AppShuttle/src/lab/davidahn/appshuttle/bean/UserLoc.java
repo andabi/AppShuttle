@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.model;
+package lab.davidahn.appshuttle.bean;
 
 import lab.davidahn.appshuttle.exception.InvalidLocationException;
 
@@ -46,10 +46,22 @@ public class UserLoc {
 			msg.append("invalid");
 		return msg.toString();
 	}
-	public boolean equals(UserLoc uLoc) throws InvalidLocationException {
-		if(validity == Validity.INVALID || !uLoc.isValid()) throw new InvalidLocationException();
-		if(getLatitude() == uLoc.getLatitude() && getLongitude() == uLoc.getLongitude()) return true;
-		else return false;
+
+	@Override
+	public boolean equals(Object o) {
+		try {
+			if(getLatitude() == ((UserLoc)o).getLatitude()
+					&& getLongitude() == ((UserLoc)o).getLongitude()) 
+				return true;
+			else return false;
+		} catch (InvalidLocationException e) {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode(){
+		return 0;
 	}
 
 	public enum Validity{

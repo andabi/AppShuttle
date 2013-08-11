@@ -1,17 +1,18 @@
 package lab.davidahn.appshuttle.engine.matcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lab.davidahn.appshuttle.bean.LocFreq;
+import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bean.UserEnv;
+import lab.davidahn.appshuttle.bean.UserLoc;
 import lab.davidahn.appshuttle.exception.InvalidLocationException;
-import lab.davidahn.appshuttle.model.LocFreq;
-import lab.davidahn.appshuttle.model.MatchedCxt;
-import lab.davidahn.appshuttle.model.RfdUserCxt;
-import lab.davidahn.appshuttle.model.UserBhv;
-import lab.davidahn.appshuttle.model.UserEnv;
-import lab.davidahn.appshuttle.model.UserLoc;
 import lab.davidahn.appshuttle.utils.Utils;
 import android.app.AlarmManager;
 import android.content.Context;
@@ -26,7 +27,7 @@ public class LocContextMatcher extends ContextMatcher {
 	}
 	
 	@Override
-	protected List<RfdUserCxt> refineCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+	protected List<RfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
 		
@@ -34,9 +35,9 @@ public class LocContextMatcher extends ContextMatcher {
 //		RfdUserCxt prevRfdUCxt = null;
 		boolean isMoved = false;
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
-			if(rfdUCxt.getPlaceFreqList().isEmpty()) continue;
+			if(rfdUCxt.getPlaces().isEmpty()) continue;
 
-			if(curPlace == null) curPlace = rfdUCxt.getPlaceFreqList().get(0).getULoc();
+			if(curPlace == null) curPlace = rfdUCxt.getPlaces().get(0).getULoc();
 //			if(prevRfdUCxt == null) prevRfdUCxt = rfdUCxt;
 			
 			UserBhv uBhv = rfdUCxt.getBhv();
@@ -44,8 +45,8 @@ public class LocContextMatcher extends ContextMatcher {
 				ongoingBhvMap.put(uBhv, rfdUCxt);
 			}
 			else {
-				if()
-				for(LocFreq placeFreq : rfdUCxt.getPlaceFreqList()){
+//				if()
+				for(LocFreq placeFreq : rfdUCxt.getPlaces()){
 					
 				}
 			}
@@ -68,10 +69,10 @@ public class LocContextMatcher extends ContextMatcher {
 	}
 	
 	private boolean isMoved(RfdUserCxt prevRfdUCxt, RfdUserCxt curRfdUCxt){
-		if(curRfdUCxt.getPlaceFreqList().isEmpty()) return false;
-		if(curRfdUCxt.getPlaceFreqList().size() > 1) return true;
-		else if(!prevRfdUCxt.getPlaceFreqList().get(prevRfdUCxt.getPlaceFreqList().size()-1).
-		equals(curRfdUCxt.getPlaceFreqList().get(0)))
+		if(curRfdUCxt.getPlaces().isEmpty()) return false;
+		if(curRfdUCxt.getPlaces().size() > 1) return true;
+		else if(!prevRfdUCxt.getPlaces().get(prevRfdUCxt.getPlaces().size()-1).
+		equals(curRfdUCxt.getPlaces().get(0)))
 			return true;
 		else
 			return false;
@@ -86,10 +87,10 @@ public class LocContextMatcher extends ContextMatcher {
 
 	@Override
 	protected double calcRelatedness(RfdUserCxt rfdUCxt, UserEnv uEnv) {
-		List<LocFreq> locFreqList = rfdUCxt.getLocFreqList();
-		for(LocFreq locFreq : locFreqList){
+		Map<Date, UserLoc> locs = rfdUCxt.getLocs();
+		for(UserLoc uLoc : locs.values()){
 			try {
-				if(Utils.Proximity(locFreq.getULoc(), uEnv.getLoc(), toleranceInMeter)){
+				if(Utils.Proximity(uLoc, uEnv.getLoc(), toleranceInMeter)){
 					return 1;
 				}
 			} catch (InvalidLocationException e) {

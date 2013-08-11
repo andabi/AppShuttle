@@ -3,8 +3,8 @@ package lab.davidahn.appshuttle.engine.pattern;
 import java.util.Date;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.model.Area;
-import lab.davidahn.appshuttle.model.UserBhv;
+import lab.davidahn.appshuttle.bean.Area;
+import lab.davidahn.appshuttle.bean.UserBhv;
 
 public class Pattern {
 	private Date sTime;

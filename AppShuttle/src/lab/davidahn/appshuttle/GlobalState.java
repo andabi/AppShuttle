@@ -2,10 +2,10 @@ package lab.davidahn.appshuttle;
 
 import java.util.List;
 
-import lab.davidahn.appshuttle.model.MatchedCxt;
-import lab.davidahn.appshuttle.model.UserBhv;
-import lab.davidahn.appshuttle.model.UserEnv;
-import lab.davidahn.appshuttle.model.UserLoc;
+import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bean.UserEnv;
+import lab.davidahn.appshuttle.bean.UserLoc;
 import android.content.SharedPreferences;
 
 public class GlobalState {

@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.model;
+package lab.davidahn.appshuttle.bean;
 
 import android.util.SparseArray;
 

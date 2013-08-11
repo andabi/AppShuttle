@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.model.MatchedCxt;
-import lab.davidahn.appshuttle.model.RfdUserCxt;
-import lab.davidahn.appshuttle.model.UserBhv;
-import lab.davidahn.appshuttle.model.UserEnv;
+import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.utils.Time;
 import android.app.AlarmManager;
 import android.content.Context;
@@ -33,7 +33,7 @@ public class TimeContextMatcher extends ContextMatcher {
 //	}
 	
 	@Override
-	protected List<RfdUserCxt> refineCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+	protected List<RfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
 
@@ -48,8 +48,8 @@ public class TimeContextMatcher extends ContextMatcher {
 							< settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
 						RfdUserCxt mergedRfdUCxt = prevRfdUCxt;
 						mergedRfdUCxt.setEndTime(rfdUCxt.getEndTime());
-						mergedRfdUCxt.addLocFreq(rfdUCxt.getLocFreqList());
-						mergedRfdUCxt.addPlaceFreq(rfdUCxt.getPlaceFreqList());
+						mergedRfdUCxt.setLocs(rfdUCxt.getLocs());
+						mergedRfdUCxt.setPlaces(rfdUCxt.getPlaces());
 						ongoingBhvMap.put(uBhv, mergedRfdUCxt);
 					} else {
 						res.add(ongoingBhvMap.remove(uBhv));

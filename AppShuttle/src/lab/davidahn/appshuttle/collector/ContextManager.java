@@ -7,16 +7,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.DBHelper;
-import lab.davidahn.appshuttle.model.LocFreq;
-import lab.davidahn.appshuttle.model.MatchedCxt;
-import lab.davidahn.appshuttle.model.RfdUserCxt;
-import lab.davidahn.appshuttle.model.UserBhv;
-import lab.davidahn.appshuttle.model.UserCxt;
-import lab.davidahn.appshuttle.model.UserEnv;
-import lab.davidahn.appshuttle.model.UserLoc;
+import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bean.UserCxt;
+import lab.davidahn.appshuttle.bean.UserEnv;
+import lab.davidahn.appshuttle.bean.UserLoc;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -48,17 +48,18 @@ public class ContextManager {
 
 	public void storeCxt(UserCxt uCxt) {
 		Gson gson = new Gson();
-		UserBhv uBhv = uCxt.getUserBhv();
-		ContentValues row = new ContentValues();
-		UserEnv uEnv = uCxt.getUserEnv();
-		row.put("time", uEnv.getTime().getTime());
-		row.put("timezone", uEnv.getTimeZone().getID());
-		row.put("location", gson.toJson(uEnv.getLoc()));
-		row.put("place", gson.toJson(uEnv.getPlace()));
-		row.put("bhv_type", uBhv.getBhvType());
-		row.put("bhv_name", uBhv.getBhvName());
-		db.insert("context", null, row);
-		Log.i("stored cxt", uCxt.toString());
+		for(UserBhv uBhv : uCxt.getUserBhvs()){
+			ContentValues row = new ContentValues();
+			UserEnv uEnv = uCxt.getUserEnv();
+			row.put("time", uEnv.getTime().getTime());
+			row.put("timezone", uEnv.getTimeZone().getID());
+			row.put("location", gson.toJson(uEnv.getLoc()));
+			row.put("place", gson.toJson(uEnv.getPlace()));
+			row.put("bhv_type", uBhv.getBhvType());
+			row.put("bhv_name", uBhv.getBhvName());
+			db.insert("context", null, row);
+			Log.i("stored cxt", uCxt.toString());
+		}
 	}
 	
 	public List<UserCxt> retrieveCxt(Date sTime, Date eTime) {
@@ -66,17 +67,32 @@ public class ContextManager {
 		Cursor cur = db.rawQuery("SELECT * FROM context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 		List<UserCxt> res = new ArrayList<UserCxt>();
+		
+		UserCxt uCxt = null;
 		while (cur.moveToNext()) {
 			Date time = new Date(cur.getLong(1));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(2));
 			UserLoc location = gson.fromJson(cur.getString(3), UserLoc.class);
 			UserLoc place = gson.fromJson(cur.getString(4), UserLoc.class);
+			UserEnv uEnv = new UserEnv(time, timezone, location, place);
+			
 			String bhvType= cur.getString(5);
 			String bhvName= cur.getString(6);
-			UserEnv uEnv = new UserEnv(time, timezone, location, place);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
-			UserCxt uCxt = new UserCxt(uEnv, uBhv);
-			res.add(uCxt);
+			
+			if(uCxt == null) {
+				uCxt = new UserCxt(uEnv);
+				uCxt.addUserBhv(uBhv);
+			}
+			else {
+				if(uEnv.equals(uCxt.getUserEnv()))
+					uCxt.addUserBhv(uBhv);
+				else{
+					res.add(uCxt);
+					uCxt = new UserCxt(uEnv);
+					uCxt.addUserBhv(uBhv);
+				}
+			}
 		}
 		cur.close();
 		return res;
@@ -89,8 +105,8 @@ public class ContextManager {
 		row.put("e_time", rfdUCxt.getEndTime().getTime());
 //		row.put("timezone", gson.toJson(rfdUCxt.getTimeZone()));
 		row.put("timezone", rfdUCxt.getTimeZone().getID());
-		row.put("location_list", gson.toJson(rfdUCxt.getLocFreqList()));
-		row.put("place_list", gson.toJson(rfdUCxt.getPlaceFreqList()));
+		row.put("location_list", gson.toJson(rfdUCxt.getLocs()));
+		row.put("place_list", gson.toJson(rfdUCxt.getPlaces()));
 		row.put("bhv_type", rfdUCxt.getBhv().getBhvType());
 		row.put("bhv_name", rfdUCxt.getBhv().getBhvName());
 		db.insert("refined_context", null, row);
@@ -107,13 +123,15 @@ public class ContextManager {
 			Date startTime = new Date(cur.getLong(1));
 			Date endTime = new Date(cur.getLong(2));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-			Type listType = new TypeToken<ArrayList<LocFreq>>(){}.getType();
-			List<LocFreq> locFreqList = gson.fromJson(cur.getString(4), listType);
-			List<LocFreq> placeFreqList = gson.fromJson(cur.getString(5), listType);
+			Type listType = new TypeToken<Map<Date, UserLoc>>(){}.getType();
+			Map<Date, UserLoc>  locs = gson.fromJson(cur.getString(4), listType);
+			Map<Date, UserLoc>  places = gson.fromJson(cur.getString(5), listType);
 			String bhvType= cur.getString(6);
 			String bhvName= cur.getString(7);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
-			RfdUserCxt rfdUCxt = new RfdUserCxt(startTime, endTime, timezone, locFreqList, placeFreqList, uBhv);
+			RfdUserCxt rfdUCxt = new RfdUserCxt(startTime, endTime, timezone, uBhv);
+			rfdUCxt.setLocs(locs);
+			rfdUCxt.setPlaces(places);
 			rfdUCxt.setContextId(contextId);
 			res.add(rfdUCxt);
 		}
@@ -246,7 +264,7 @@ public class ContextManager {
 				String endTime = new Date(cur.getLong(2)).toString();
 //				String timezone = gson.fromJson(cur.getString(3), TimeZone.class).getID();
 				String timezone = cur.getString(3);
-				Type listType = new TypeToken<ArrayList<LocFreq>>(){}.getType();
+				Type listType = new TypeToken<Map<Date, UserLoc>>(){}.getType();
 				String locFreqList = gson.fromJson(cur.getString(4), listType).toString();
 				String placeFreqList = gson.fromJson(cur.getString(5), listType).toString();
 				String bhvType= cur.getString(6);

@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.DBHelper;
+import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.collector.ContextManager;
-import lab.davidahn.appshuttle.model.MatchedCxt;
-import lab.davidahn.appshuttle.model.RfdUserCxt;
-import lab.davidahn.appshuttle.model.UserBhv;
-import lab.davidahn.appshuttle.model.UserEnv;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -41,7 +41,7 @@ public abstract class ContextMatcher {
 		List<MatchedCxt> res = new ArrayList<MatchedCxt>();
 		
 		List<RfdUserCxt> rfdUCxtList = retrieveCxt(uEnv);
-		rfdUCxtList = refineCxtByCountUnit(rfdUCxtList);
+		rfdUCxtList = mergeCxtByCountUnit(rfdUCxtList);
 		rfdUCxtList = contextManager.getCxtRefiner().filter(cxt, rfdUCxtList);
 		
 		numTotalCxt = rfdUCxtList.size();
@@ -99,7 +99,7 @@ public abstract class ContextMatcher {
 		return res;
 	}
 	
-	protected abstract List<RfdUserCxt> refineCxtByCountUnit(List<RfdUserCxt> rfdUCxtList);
+	protected abstract List<RfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList);
 	protected abstract double calcRelatedness(RfdUserCxt rfdUCxt, UserEnv uEnv);
 	protected abstract double calcLikelihood(MatchedCxt matchedCxt);
 	protected abstract String conditionName();

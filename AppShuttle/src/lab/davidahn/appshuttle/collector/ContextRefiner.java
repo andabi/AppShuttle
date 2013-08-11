@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lab.davidahn.appshuttle.model.RfdUserCxt;
-import lab.davidahn.appshuttle.model.UserBhv;
-import lab.davidahn.appshuttle.model.UserCxt;
-import lab.davidahn.appshuttle.model.UserEnv;
+import lab.davidahn.appshuttle.bean.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bean.UserCxt;
+import lab.davidahn.appshuttle.bean.UserEnv;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,30 +27,35 @@ public class ContextRefiner {
 	private RfdUserCxt convertToRfdUCxt(UserCxt uCxt, UserBhv bhv) {
 		UserEnv uEnv = uCxt.getUserEnv();
 		RfdUserCxt rfdUCxt = new RfdUserCxt(uEnv.getTime(), uEnv.getTime(), uEnv.getTimeZone(), bhv);
-		rfdUCxt.addLoc(uEnv.getLoc());
-		rfdUCxt.addPlace(uEnv.getPlace());
+		rfdUCxt.appendLoc(uEnv.getLoc(), uEnv.getTime());
+		rfdUCxt.appendPlace(uEnv.getPlace(), uEnv.getTime());
 		return rfdUCxt;
 	}
 	
-	public List<RfdUserCxt> refineCxtByBhv(UserCxt uCxt) {
+	public List<RfdUserCxt> refineCxt(UserCxt uCxt) {
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		UserEnv uEnv = uCxt.getUserEnv();
-		UserBhv uBhv = uCxt.getUserBhv();
 		if(ongoingBhvMap.isEmpty()) {
-			ongoingBhvMap.put(uBhv, convertToRfdUCxt(uCxt, uBhv));
-		} else {
-			if(ongoingBhvMap.containsKey(uBhv)){
-				RfdUserCxt rfdUCxt = ongoingBhvMap.get(uBhv);
-				rfdUCxt.setEndTime(uEnv.getTime());
-				rfdUCxt.addLoc(uEnv.getLoc());
-				rfdUCxt.addPlace(uEnv.getPlace());
-			} else {
+			for(UserBhv uBhv : uCxt.getUserBhvs()){
 				ongoingBhvMap.put(uBhv, convertToRfdUCxt(uCxt, uBhv));
+			}
+		} else {
+			for(UserBhv uBhv : uCxt.getUserBhvs()){
+				if(ongoingBhvMap.containsKey(uBhv)){
+					RfdUserCxt rfdUCxt = ongoingBhvMap.get(uBhv);
+					rfdUCxt.setEndTime(uEnv.getTime());
+					//add env
+					rfdUCxt.appendLoc(uEnv.getLoc(), uEnv.getTime());
+					rfdUCxt.appendPlace(uEnv.getPlace(), uEnv.getTime());
+				} else {
+					ongoingBhvMap.put(uBhv, convertToRfdUCxt(uCxt, uBhv));
+				}
 			}
 			Set<UserBhv> ongoingBhvList = new HashSet<UserBhv>(ongoingBhvMap.keySet());
 			for(UserBhv ongoingBhv : ongoingBhvList){
 				RfdUserCxt ongoingRfdUCxt = ongoingBhvMap.get(ongoingBhv);
-				if(uEnv.getTime().getTime() - ongoingRfdUCxt.getEndTime().getTime() > settings.getLong("service.collection.period", 6000) * 1.5){
+				if(uEnv.getTime().getTime() - ongoingRfdUCxt.getEndTime().getTime() 
+						> settings.getLong("service.collection.period", 6000) * 1.5){
 					res.add(ongoingRfdUCxt);
 					ongoingBhvMap.remove(ongoingBhv);
 				}
@@ -58,34 +63,7 @@ public class ContextRefiner {
 		}
 		return res;
 	}
-	
-	public List<RfdUserCxt> refineCxtByBhvAndPlace(UserCxt uCxt) {
-		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
-		UserEnv uEnv = uCxt.getUserEnv();
-		UserBhv uBhv = uCxt.getUserBhv();
-		if(ongoingBhvMap.isEmpty()) {
-			ongoingBhvMap.put(uBhv, convertToRfdUCxt(uCxt, uBhv));
-		} else {
-			if(ongoingBhvMap.containsKey(uBhv)){
-				RfdUserCxt rfdUCxt = ongoingBhvMap.get(uBhv);
-				rfdUCxt.setEndTime(uEnv.getTime());
-				rfdUCxt.addLoc(uEnv.getLoc());
-				rfdUCxt.addPlace(uEnv.getPlace());
-			} else {
-				ongoingBhvMap.put(uBhv, convertToRfdUCxt(uCxt, uBhv));
-			}
-			Set<UserBhv> ongoingBhvList = new HashSet<UserBhv>(ongoingBhvMap.keySet());
-			for(UserBhv ongoingBhv : ongoingBhvList){
-				RfdUserCxt ongoingRfdUCxt = ongoingBhvMap.get(ongoingBhv);
-				if(uEnv.getTime().getTime() - ongoingRfdUCxt.getEndTime().getTime() > settings.getLong("service.collection.period", 6000) * 1.5){
-					res.add(ongoingRfdUCxt);
-					ongoingBhvMap.remove(ongoingBhv);
-				}
-			}
-		}
-		return res;
-	}
-	
+
 	public List<RfdUserCxt> filter(Context cxt, List<RfdUserCxt> rfdUCxtList) {
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		PackageManager packageManager = cxt.getPackageManager();

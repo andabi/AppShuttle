@@ -1,18 +1,17 @@
 package lab.davidahn.appshuttle.collector;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.ApplicationManager;
 import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.bean.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bean.UserCxt;
+import lab.davidahn.appshuttle.bean.UserEnv;
+import lab.davidahn.appshuttle.bean.UserLoc;
 import lab.davidahn.appshuttle.exception.InvalidLocationException;
-import lab.davidahn.appshuttle.model.RfdUserCxt;
-import lab.davidahn.appshuttle.model.UserBhv;
-import lab.davidahn.appshuttle.model.UserCxt;
-import lab.davidahn.appshuttle.model.UserEnv;
-import lab.davidahn.appshuttle.model.UserLoc;
 import lab.davidahn.appshuttle.utils.Utils;
 import android.app.IntentService;
 import android.content.Intent;
@@ -86,20 +85,17 @@ public class CollectingCxtService extends IntentService {
 		senseAndSetLocation(uEnv);
 		setPlace(uEnv);
 		
-		List<UserBhv> uBhvList = new ArrayList<UserBhv>();
-		senseAppBhv(uBhvList);
+		UserCxt uCxt = new UserCxt(uEnv);
+		senseAppBhv(uCxt);
 		
 		ContextRefiner cxtRefiner = contextManager.getCxtRefiner();
-		for(UserBhv uBhv : uBhvList){
-			UserCxt uCxt = new UserCxt(uEnv, uBhv);
-			if(settings.getBoolean("collection.store_cxt.enabled", false)) contextManager.storeCxt(uCxt);
-			List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxtByBhv(uCxt);
-			for(RfdUserCxt rfdUCxt : rfdUCxtList){
-				contextManager.storeRfdCxt(rfdUCxt);
-	//			cxtRefiner.storeRfdCxtByBhv(rfdUCxt);
-	//			List<Pattern> patternList = patternManager.getPatternMiner().minePattern(rfdUCxt, tableName);
-	//			patternManager.getPatternMiner().storePattern(patternList);
-			}
+		if(settings.getBoolean("collection.store_cxt.enabled", false)) contextManager.storeCxt(uCxt);
+		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxt(uCxt);
+		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+			contextManager.storeRfdCxt(rfdUCxt);
+//			cxtRefiner.storeRfdCxtByBhv(rfdUCxt);
+//			List<Pattern> patternList = patternManager.getPatternMiner().minePattern(rfdUCxt, tableName);
+//			patternManager.getPatternMiner().storePattern(patternList);
 		}
 	}
 	
@@ -169,9 +165,9 @@ public class CollectingCxtService extends IntentService {
 		
 	}
 	
-	public void senseAppBhv(List<UserBhv> uBhvList) {
+	public void senseAppBhv(UserCxt uCxt) {
 		for(String bhvName : applicationManager.getCurrentActivity()){
-			uBhvList.add(new UserBhv("app", bhvName));
+			uCxt.addUserBhv(new UserBhv("app", bhvName));
 		}
 //			bhv.setServiceList(applicationManager.getCurrentService());
 	}

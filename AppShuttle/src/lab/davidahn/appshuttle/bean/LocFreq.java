@@ -1,5 +1,6 @@
-package lab.davidahn.appshuttle.model;
+package lab.davidahn.appshuttle.bean;
 
+@Deprecated
 public class LocFreq{
 	private UserLoc uLoc;
 	private int freq;

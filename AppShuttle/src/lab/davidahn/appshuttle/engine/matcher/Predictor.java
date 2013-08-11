@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.bean.MatchedCxt;
 import lab.davidahn.appshuttle.collector.ContextManager;
-import lab.davidahn.appshuttle.model.MatchedCxt;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.model;
+package lab.davidahn.appshuttle.bean;
 
 import java.util.Date;
 import java.util.TimeZone;
@@ -53,5 +53,21 @@ public class UserEnv {
 		msg.append(loc.toString()).append(", ");
 		msg.append(place.toString());
 		return msg.toString();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if((o instanceof UserEnv) 
+				&& time.equals(((UserEnv)o).time)
+				&& timeZone.equals(((UserEnv)o).timeZone)
+				&& loc.equals(((UserEnv)o).loc)
+				&& place.equals(((UserEnv)o).place))
+			return true;
+		else return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return 0;
 	}
 }

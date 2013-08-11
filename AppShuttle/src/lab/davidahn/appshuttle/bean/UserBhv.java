@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.model;
+package lab.davidahn.appshuttle.bean;
 
 public class UserBhv {
 	private String bhvType;
@@ -34,7 +34,9 @@ public class UserBhv {
 	
 	@Override
 	public boolean equals(Object o){
-		if((o instanceof UserBhv) && bhvName.equals(((UserBhv)o).bhvName) && bhvType.equals(((UserBhv)o).bhvType)) return true;
+		if((o instanceof UserBhv) && bhvName.equals(((UserBhv)o).bhvName) 
+				&& bhvType.equals(((UserBhv)o).bhvType)) 
+			return true;
 		else return false;
 	}
 	

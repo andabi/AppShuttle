@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle.engine.pattern;
 import java.util.ArrayList;
 import java.util.List;
 
-import lab.davidahn.appshuttle.model.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.RfdUserCxt;
 import android.database.sqlite.SQLiteDatabase;
 
 public class PatternMiner {

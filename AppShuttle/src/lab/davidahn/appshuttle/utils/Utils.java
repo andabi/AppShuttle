@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle.utils;
 
+import lab.davidahn.appshuttle.bean.UserLoc;
 import lab.davidahn.appshuttle.exception.InvalidLocationException;
-import lab.davidahn.appshuttle.model.UserLoc;
 import android.location.Location;
 
 public class Utils {
