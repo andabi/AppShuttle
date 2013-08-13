@@ -110,7 +110,7 @@ public class ContextManager {
 		row.put("bhv_type", rfdUCxt.getBhv().getBhvType());
 		row.put("bhv_name", rfdUCxt.getBhv().getBhvName());
 		db.insert("refined_context", null, row);
-		Log.i("stored refined cxt", row.toString());
+		Log.i("stored refined cxt", rfdUCxt.toString());
 	}
 
 	public List<RfdUserCxt> retrieveRfdCxt(long sTime, long eTime) {
@@ -129,10 +129,15 @@ public class ContextManager {
 			String bhvType= cur.getString(6);
 			String bhvName= cur.getString(7);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
-			RfdUserCxt rfdUCxt = new RfdUserCxt(startTime, endTime, timezone, uBhv);
-			rfdUCxt.setLocs(locs);
-			rfdUCxt.setPlaces(places);
-			rfdUCxt.setContextId(contextId);
+			RfdUserCxt rfdUCxt = new RfdUserCxt.Builder()
+				.setStartTime(startTime)
+				.setEndTime(endTime)
+				.setTimeZone(timezone)
+				.setBhv(uBhv)
+				.setLocs(locs)
+				.setPlaces(places)
+				.setContextId(contextId)
+				.build();
 			res.add(rfdUCxt);
 		}
 		cur.close();

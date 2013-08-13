@@ -29,42 +29,42 @@ public class LocContextMatcher extends ContextMatcher {
 	@Override
 	protected List<RfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
-		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
-		
-		UserLoc curPlace = null;
-//		RfdUserCxt prevRfdUCxt = null;
-		boolean isMoved = false;
-		for(RfdUserCxt rfdUCxt : rfdUCxtList){
-			if(rfdUCxt.getPlaces().isEmpty()) continue;
-
-			if(curPlace == null) curPlace = rfdUCxt.getPlaces().get(0).getULoc();
-//			if(prevRfdUCxt == null) prevRfdUCxt = rfdUCxt;
-			
-			UserBhv uBhv = rfdUCxt.getBhv();
-			if(ongoingBhvMap.isEmpty() || !ongoingBhvMap.containsKey(uBhv)) {
-				ongoingBhvMap.put(uBhv, rfdUCxt);
-			}
-			else {
-//				if()
-				for(LocFreq placeFreq : rfdUCxt.getPlaces()){
-					
-				}
-			}
-//			prevRfdUCxt = rfdUCxt;
-			
-			if(isMoved){
-				for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
-					res.add(ongoingBhvMap.get(ongoingBhv));
-				}
-				ongoingBhvMap.clear();
-				isMoved = false;
-			}
-		}
-		
-		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
-			RfdUserCxt restRfdUCxt = ongoingBhvMap.get(ongoingBhv);
-			res.add(restRfdUCxt);
-		}
+//		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
+//		
+//		UserLoc curPlace = null;
+////		RfdUserCxt prevRfdUCxt = null;
+//		boolean isMoved = false;
+//		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+//			if(rfdUCxt.getPlaces().isEmpty()) continue;
+//
+//			if(curPlace == null) curPlace = rfdUCxt.getPlaces().get(0).getULoc();
+////			if(prevRfdUCxt == null) prevRfdUCxt = rfdUCxt;
+//			
+//			UserBhv uBhv = rfdUCxt.getBhv();
+//			if(ongoingBhvMap.isEmpty() || !ongoingBhvMap.containsKey(uBhv)) {
+//				ongoingBhvMap.put(uBhv, rfdUCxt);
+//			}
+//			else {
+////				if()
+//				for(LocFreq placeFreq : rfdUCxt.getPlaces()){
+//					
+//				}
+//			}
+////			prevRfdUCxt = rfdUCxt;
+//			
+//			if(isMoved){
+//				for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
+//					res.add(ongoingBhvMap.get(ongoingBhv));
+//				}
+//				ongoingBhvMap.clear();
+//				isMoved = false;
+//			}
+//		}
+//		
+//		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
+//			RfdUserCxt restRfdUCxt = ongoingBhvMap.get(ongoingBhv);
+//			res.add(restRfdUCxt);
+//		}
 		return res;
 	}
 	

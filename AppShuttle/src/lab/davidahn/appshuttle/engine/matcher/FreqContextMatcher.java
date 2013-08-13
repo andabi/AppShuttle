@@ -21,38 +21,37 @@ public class FreqContextMatcher extends ContextMatcher{
 	@Override
 	protected List<RfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
-		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
-
-		for(RfdUserCxt rfdUCxt : rfdUCxtList){
-			UserBhv uBhv = rfdUCxt.getBhv();
-			if(ongoingBhvMap.isEmpty()) {
-				ongoingBhvMap.put(uBhv, rfdUCxt);
-			} else {
-				if(ongoingBhvMap.containsKey(uBhv)){
-					RfdUserCxt prevRfdUCxt = ongoingBhvMap.get(uBhv);
-					if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-							< settings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
-						RfdUserCxt mergedRfdUCxt = prevRfdUCxt;
-						mergedRfdUCxt.setEndTime(rfdUCxt.getEndTime());
-						mergedRfdUCxt.setLocs(rfdUCxt.getLocs());
-						mergedRfdUCxt.setPlaces(rfdUCxt.getPlaces());
-						ongoingBhvMap.put(uBhv, mergedRfdUCxt);
-					} else {
-						res.add(ongoingBhvMap.remove(uBhv));
-						ongoingBhvMap.put(uBhv, rfdUCxt);
-					}
-				} else {
-					ongoingBhvMap.put(uBhv, rfdUCxt);
-				}
-			}
-		}
-		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
-			RfdUserCxt restRfdUCxt = ongoingBhvMap.get(ongoingBhv);
-			res.add(restRfdUCxt);
-		}
+//		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
+//
+//		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+//			UserBhv uBhv = rfdUCxt.getBhv();
+//			if(ongoingBhvMap.isEmpty()) {
+//				ongoingBhvMap.put(uBhv, rfdUCxt);
+//			} else {
+//				if(ongoingBhvMap.containsKey(uBhv)){
+//					RfdUserCxt prevRfdUCxt = ongoingBhvMap.get(uBhv);
+//					if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
+//							< settings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
+//						RfdUserCxt mergedRfdUCxt = prevRfdUCxt;
+//						mergedRfdUCxt.setEndTime(rfdUCxt.getEndTime());
+//						mergedRfdUCxt.setLocs(rfdUCxt.getLocs());
+//						mergedRfdUCxt.setPlaces(rfdUCxt.getPlaces());
+//						ongoingBhvMap.put(uBhv, mergedRfdUCxt);
+//					} else {
+//						res.add(ongoingBhvMap.remove(uBhv));
+//						ongoingBhvMap.put(uBhv, rfdUCxt);
+//					}
+//				} else {
+//					ongoingBhvMap.put(uBhv, rfdUCxt);
+//				}
+//			}
+//		}
+//		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
+//			RfdUserCxt restRfdUCxt = ongoingBhvMap.get(ongoingBhv);
+//			res.add(restRfdUCxt);
+//		}
 		return res;
 	}
-
 	
 	@Override
 	protected double calcRelatedness(RfdUserCxt rfdUCxt, UserEnv uEnv) {

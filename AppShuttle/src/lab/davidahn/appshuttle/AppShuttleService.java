@@ -64,7 +64,9 @@ public class AppShuttleService extends Service{
 		editor.putInt("collection.location.tolerance.distance", 100);
 		editor.putBoolean("collection.store_cxt.enabled", false);
 		
+		editor.putBoolean("service.collection.enabled", true);
 		editor.putLong("service.collection.period", 6000);
+		editor.putBoolean("service.view.enabled", false);
 		editor.putLong("service.view.peroid", 30000);
 		editor.putBoolean("service.report.enabled", false);
 		
@@ -106,14 +108,19 @@ public class AppShuttleService extends Service{
 		registerReceiver(notiViewReceiver, filter);
 
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		Intent collectingCxtIntent = new Intent(this, CollectingCxtService.class);
-		collectingCxtOperation = PendingIntent.getService(this, 0, collectingCxtIntent, 0);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.collection.period", 6000), collectingCxtOperation);
 		
-		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
-		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.view.period", 30000), notiViewOperation);
-
+		if(settings.getBoolean("service.collection.enabled", true)){
+			Intent collectingCxtIntent = new Intent(this, CollectingCxtService.class);
+			collectingCxtOperation = PendingIntent.getService(this, 0, collectingCxtIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.collection.period", 6000), collectingCxtOperation);
+		}
+		
+		if(settings.getBoolean("service.view.enabled", true)){
+			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
+			notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.view.period", 30000), notiViewOperation);
+		}
+		
 		if(settings.getBoolean("service.report.enabled", false)){
 			Intent reportingCxtIntent = new Intent(this, ReportingCxtService.class);
 			reportingCxtOperation = PendingIntent.getService(this, 0, reportingCxtIntent, 0);

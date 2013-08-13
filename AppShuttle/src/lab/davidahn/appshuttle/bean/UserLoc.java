@@ -55,7 +55,10 @@ public class UserLoc {
 				return true;
 			else return false;
 		} catch (InvalidLocationException e) {
-			return false;
+			if(validity == Validity.INVALID && !((UserLoc)o).isValid())
+				return true;
+			else
+				return false;
 		}
 	}
 	
