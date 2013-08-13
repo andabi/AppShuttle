@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle;
+package lab.davidahn.appshuttle.bhv;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,58 +8,33 @@ import java.util.Set;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-import android.os.PowerManager;
 
-public class ApplicationManager {
-	private static ApplicationManager applicationManager;
+public class AppUserBhvSensor {
+	private static AppUserBhvSensor applicationManager;
 	
 	private ActivityManager am;
 	private PackageManager pm;
-	private KeyguardManager km;
-	private PowerManager powerM;
 	
-	private ApplicationManager(Context cxt){
+	private AppUserBhvSensor(Context cxt){
 		am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
 		pm = cxt.getPackageManager();
-	    km = (KeyguardManager) cxt.getSystemService(Context.KEYGUARD_SERVICE);  
-	    powerM = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 
 	}
 	
-	public static ApplicationManager getInstance(Context cxt){
-		if(applicationManager == null) applicationManager = new ApplicationManager(cxt);
+	public static AppUserBhvSensor getInstance(Context cxt){
+		if(applicationManager == null) applicationManager = new AppUserBhvSensor(cxt);
 		return applicationManager;
 	}
 	
 	public List<String> getCurrentActivity(){
 		List<String> res = new ArrayList<String>();
 		try {
-		    if (!powerM.isScreenOn()) { //screen off
-		    	res.add("screen.off");
-	        }
-			else {
-			    if (km.inKeyguardRestrictedInputMode()) { //lock screen on
-			    	res.add("lock.screen.on");
-			    } else {
-					res.addAll(getCurrentApp(1, true));
-//					getScreenLockPackage();
-//					if(res.get(0).startsWith(getScreenLockPackage())) { //custom screen locker
-//						res.remove(0);
-//					}
-					if(res.get(0).startsWith(getHomePackage())) { //home
-						res.remove(0);
-						res.add("home.screen");
-					} else {
-						
-					}
-			    }
-		    }
+			res.addAll(getCurrentApp(1, true));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -121,7 +96,7 @@ public class ApplicationManager {
 		return res;
 	}
 
-	private String getHomePackage(){
+	public String getHomePackage(){
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		ResolveInfo resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);

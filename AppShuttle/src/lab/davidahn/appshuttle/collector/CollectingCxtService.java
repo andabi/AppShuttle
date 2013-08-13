@@ -4,16 +4,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import lab.davidahn.appshuttle.ApplicationManager;
 import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserBhv;
 import lab.davidahn.appshuttle.bean.UserCxt;
 import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.bean.UserLoc;
+import lab.davidahn.appshuttle.bhv.AppUserBhv;
+import lab.davidahn.appshuttle.bhv.AppUserBhvSensor;
+import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.exception.InvalidLocationException;
 import lab.davidahn.appshuttle.utils.Utils;
 import android.app.IntentService;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
@@ -21,17 +25,21 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 
 public class CollectingCxtService extends IntentService {
 	private LocationManager locationManager;
 	private String bestProvider;
-	private ApplicationManager applicationManager;
+	private AppUserBhvSensor appUserBhvSensor;
 	private Calendar calendar;
 	private ContextManager contextManager;
+	private UserBhvManager userBhvManager;
 //	private Properties property;
 	private Location currentLoc;
 //	private PatternManager patternManager;
+	private PowerManager powerManager;
+	private KeyguardManager keyguardManager;
     SharedPreferences settings;
 
 	
@@ -74,8 +82,13 @@ public class CollectingCxtService extends IntentService {
 		//time
 		calendar = Calendar.getInstance();
 		
-		applicationManager = ApplicationManager.getInstance(getApplicationContext());
+		powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE); 
+	    keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);  
+
+		appUserBhvSensor = AppUserBhvSensor.getInstance(getApplicationContext());
 		contextManager = ContextManager.getInstance(getApplicationContext());
+		userBhvManager = UserBhvManager.getInstance(getApplicationContext());
+
 //		patternManager = PatternManager.getInstance(getApplicationContext());
 	}
 	
@@ -86,16 +99,18 @@ public class CollectingCxtService extends IntentService {
 		setPlace(uEnv);
 		
 		UserCxt uCxt = new UserCxt(uEnv);
-		senseAppBhv(uCxt);
+		senseBhv(uCxt);
 		
 		ContextRefiner cxtRefiner = contextManager.getCxtRefiner();
 		if(settings.getBoolean("collection.store_cxt.enabled", false)) contextManager.storeCxt(uCxt);
 		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxt(uCxt);
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			contextManager.storeRfdCxt(rfdUCxt);
+			userBhvManager.registerBhv(rfdUCxt.getBhv());
 //			cxtRefiner.storeRfdCxtByBhv(rfdUCxt);
 //			List<Pattern> patternList = patternManager.getPatternMiner().minePattern(rfdUCxt, tableName);
 //			patternManager.getPatternMiner().storePattern(patternList);
+			
 		}
 	}
 	
@@ -165,22 +180,52 @@ public class CollectingCxtService extends IntentService {
 		
 	}
 	
-	public void senseAppBhv(UserCxt uCxt) {
-		for(String bhvName : applicationManager.getCurrentActivity()){
-			uCxt.addUserBhv(new UserBhv("app", bhvName));
-		}
-//			bhv.setServiceList(applicationManager.getCurrentService());
+	public void senseBhv(UserCxt uCxt){
+		boolean isPresent = senseInvalidBhv(uCxt);
+		if(isPresent) senseActivityBhv(uCxt);
+		senseServiceBhv(uCxt);
+		senseCallBhv(uCxt);
+		senseMsgBhv(uCxt);
+		senseSystemStatusBhv(uCxt);
 	}
 	
-	public void senseCallBhv(UserBhv uBhv) {
+	private boolean senseInvalidBhv(UserCxt uCxt) {
+	    if (!powerManager.isScreenOn()) { //screen off
+			uCxt.addUserBhv(new UserBhv("invalid", "screen.off"));
+			Log.d("collection", "screen off");
+			return false;
+        }
+		else {
+		    if (keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
+				uCxt.addUserBhv(new UserBhv("invalid", "lock.screen.on"));
+				Log.d("collection", "lock screen on");
+				return false;
+		    }
+	    }
+	    return true;
+	}
+
+	public void senseActivityBhv(UserCxt uCxt) {
+		for(String bhvName : appUserBhvSensor.getCurrentActivity()){
+			uCxt.addUserBhv(new AppUserBhv("activity", bhvName));
+		}
+	}
+	
+	public void senseServiceBhv(UserCxt uCxt) {
+//		for(String bhvName : applicationManager.getCurrentService()){
+//			uCxt.addUserBhv(new AppUserBhv("service", bhvName));
+//		}
+	}
+	
+	public void senseCallBhv(UserCxt uCxt) {
 		
 	}
 	
-	public void senseMsgBhv(UserBhv uBhv){
+	public void senseMsgBhv(UserCxt uCxt){
 		
 	}
 
-	public void senseSystemStatusBhv(UserBhv uBhv) {
+	public void senseSystemStatusBhv(UserCxt uCxt) {
 		
 	}
 }

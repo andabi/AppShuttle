@@ -1,6 +1,7 @@
-package lab.davidahn.appshuttle.collector;
+package lab.davidahn.appshuttle.report;
 
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collector.ContextManager;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;

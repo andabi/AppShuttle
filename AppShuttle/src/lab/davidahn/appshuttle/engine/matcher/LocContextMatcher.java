@@ -2,14 +2,11 @@ package lab.davidahn.appshuttle.engine.matcher;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.bean.LocFreq;
 import lab.davidahn.appshuttle.bean.MatchedCxt;
 import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserBhv;
 import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.bean.UserLoc;
 import lab.davidahn.appshuttle.exception.InvalidLocationException;

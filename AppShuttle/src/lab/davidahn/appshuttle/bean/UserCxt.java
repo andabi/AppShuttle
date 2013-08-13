@@ -3,6 +3,8 @@ package lab.davidahn.appshuttle.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.bhv.UserBhv;
+
 public class UserCxt {
 	private UserEnv userEnv;
 	private List<UserBhv> userBhvs = new ArrayList<UserBhv>();

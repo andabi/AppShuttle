@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.bean.Area;
-import lab.davidahn.appshuttle.bean.UserBhv;
+import lab.davidahn.appshuttle.bhv.UserBhv;
 
 public class Pattern {
 	private Date sTime;

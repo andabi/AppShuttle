@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.bean;
 
+import lab.davidahn.appshuttle.bhv.UserBhv;
 import android.util.SparseArray;
 
 public class MatchedCxt implements Comparable<MatchedCxt> {

@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle;
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collector.CollectingCxtService;
-import lab.davidahn.appshuttle.collector.ReportingCxtService;
+import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.viewer.NotiViewService;
 import android.app.AlarmManager;
 import android.app.PendingIntent;

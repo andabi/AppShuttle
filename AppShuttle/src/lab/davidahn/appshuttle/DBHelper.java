@@ -25,15 +25,14 @@ public class DBHelper extends SQLiteOpenHelper {
 				"s_time INTEGER, e_time INTEGER, timezone TEXT, location_list TEXT, place_list TEXT, bhv_type TEXT, bhv_name TEXT);");
 		db.execSQL("CREATE TABLE matched_context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT, condition TEXT, likelihood REAL, related_cxt);");
-//		db.execSQL("CREATE TABLE user_behavior (bhv_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//				"bhv_type TEXT, bhv_name TEXT);");
+		db.execSQL("CREATE TABLE user_bhv (bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (bhv_type, bhv_name) );");
 	}
 	
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS context");
 		db.execSQL("DROP TABLE IF EXISTS refined_context");
 		db.execSQL("DROP TABLE IF EXISTS matched_context");
-//		db.execSQL("DROP TABLE IF EXISTS user_behavior");
+		db.execSQL("DROP TABLE IF EXISTS user_bhv");
 		onCreate(db);
 	}
 }

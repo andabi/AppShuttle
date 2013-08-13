@@ -1,15 +1,11 @@
 package lab.davidahn.appshuttle.engine.matcher;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.bean.MatchedCxt;
 import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserBhv;
 import lab.davidahn.appshuttle.bean.UserEnv;
-import android.app.AlarmManager;
 import android.content.Context;
 
 public class FreqContextMatcher extends ContextMatcher{

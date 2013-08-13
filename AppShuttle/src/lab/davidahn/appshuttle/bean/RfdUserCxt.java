@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
+import lab.davidahn.appshuttle.bhv.UserBhv;
+
 public class RfdUserCxt {
 	private final int contextId;
 	private final Date sTime;

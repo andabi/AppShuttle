@@ -3,10 +3,9 @@ package lab.davidahn.appshuttle;
 import java.util.List;
 
 import lab.davidahn.appshuttle.bean.MatchedCxt;
-import lab.davidahn.appshuttle.bean.UserBhv;
 import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.bean.UserLoc;
-import android.content.SharedPreferences;
+import lab.davidahn.appshuttle.bhv.UserBhv;
 
 public class GlobalState {
 	public static volatile boolean isInUse;

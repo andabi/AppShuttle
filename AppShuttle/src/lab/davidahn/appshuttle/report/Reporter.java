@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.collector;
+package lab.davidahn.appshuttle.report;
 
 import java.io.File;
 import java.util.ArrayList;

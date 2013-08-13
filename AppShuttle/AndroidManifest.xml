@@ -35,7 +35,7 @@
         </activity>
         <service android:name="lab.davidahn.appshuttle.AppShuttleService" />
         <service android:name="lab.davidahn.appshuttle.collector.CollectingCxtService" />
-        <service android:name="lab.davidahn.appshuttle.collector.ReportingCxtService" />
+        <service android:name="lab.davidahn.appshuttle.report.ReportingCxtService" />
         <service android:name="lab.davidahn.appshuttle.viewer.NotiViewService" />
         
     </application>

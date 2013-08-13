@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserBhv;
 import lab.davidahn.appshuttle.bean.UserCxt;
 import lab.davidahn.appshuttle.bean.UserEnv;
+import lab.davidahn.appshuttle.bhv.UserBhv;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,6 +80,7 @@ public class ContextRefiner {
 		}
 		return res;
 	}
+
 	
 //	public List<RfdUserCxt> refineCxt(UserCxt uCxt) {
 //		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
