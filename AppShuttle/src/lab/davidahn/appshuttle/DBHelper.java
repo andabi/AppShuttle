@@ -22,9 +22,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT);");
 		db.execSQL("CREATE TABLE refined_context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-				"s_time INTEGER, e_time INTEGER, timezone TEXT, location_list TEXT, place_list TEXT, bhv_type TEXT, bhv_name TEXT);");
+				"s_time INTEGER, e_time INTEGER, timezone TEXT, locations TEXT, places TEXT, bhv_type TEXT, bhv_name TEXT);");
 		db.execSQL("CREATE TABLE matched_context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT, condition TEXT, likelihood REAL, related_cxt);");
+				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT, condition TEXT, likelihood REAL, related_cxt TEXT);");
 		db.execSQL("CREATE TABLE user_bhv (bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (bhv_type, bhv_name) );");
 	}
 	

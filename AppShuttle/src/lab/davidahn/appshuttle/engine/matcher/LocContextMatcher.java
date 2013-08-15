@@ -1,19 +1,15 @@
 package lab.davidahn.appshuttle.engine.matcher;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.MergedRfdUserCxt;
 import lab.davidahn.appshuttle.bean.RfdUserCxt;
 import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.bean.UserLoc;
-import lab.davidahn.appshuttle.exception.InvalidLocationException;
-import lab.davidahn.appshuttle.utils.Utils;
-import android.app.AlarmManager;
 import android.content.Context;
-import android.util.SparseArray;
 
 public class LocContextMatcher extends ContextMatcher {
 	double toleranceInMeter;
@@ -21,11 +17,39 @@ public class LocContextMatcher extends ContextMatcher {
 	public LocContextMatcher(Context cxt, double minLikelihood, int minNumCxt, double toleranceInMeter) {
 		super(cxt, minLikelihood, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
+		condition = "location";
 	}
 	
 	@Override
-	protected List<RfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
-		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
+	protected List<MergedRfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+		List<MergedRfdUserCxt> res = new ArrayList<MergedRfdUserCxt>();
+		
+		MergedRfdUserCxt.Builder mergedRfdUCxtBuilder = null;
+		UserLoc lastKnownPlace = null;
+		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+			for(UserLoc place : rfdUCxt.getPlaces().values()){
+				if(lastKnownPlace == null) {
+					mergedRfdUCxtBuilder = new MergedRfdUserCxt.Builder(rfdUCxt.getBhv());
+					mergedRfdUCxtBuilder.setLocs(rfdUCxt.getLocs());
+					mergedRfdUCxtBuilder.setPlaces(rfdUCxt.getPlaces());
+				} else {
+					//TODO move check
+					if(place.equals(lastKnownPlace)) { // && !moved){
+						;
+					} else {
+						res.add(mergedRfdUCxtBuilder.build());
+						mergedRfdUCxtBuilder = new MergedRfdUserCxt.Builder(rfdUCxt.getBhv());
+						mergedRfdUCxtBuilder.setLocs(rfdUCxt.getLocs());
+						mergedRfdUCxtBuilder.setPlaces(rfdUCxt.getPlaces());
+					}
+				}
+				lastKnownPlace = place;
+			}
+		}
+		
+		res.add(mergedRfdUCxtBuilder.build());
+		return res;
+		
 //		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
 //		
 //		UserLoc curPlace = null;
@@ -62,59 +86,52 @@ public class LocContextMatcher extends ContextMatcher {
 //			RfdUserCxt restRfdUCxt = ongoingBhvMap.get(ongoingBhv);
 //			res.add(restRfdUCxt);
 //		}
-		return res;
 	}
 	
-	private boolean isMoved(RfdUserCxt prevRfdUCxt, RfdUserCxt curRfdUCxt){
-		if(curRfdUCxt.getPlaces().isEmpty()) return false;
-		if(curRfdUCxt.getPlaces().size() > 1) return true;
-		else if(!prevRfdUCxt.getPlaces().get(prevRfdUCxt.getPlaces().size()-1).
-		equals(curRfdUCxt.getPlaces().get(0)))
-			return true;
-		else
-			return false;
-	}
+//	private boolean Proximity(RfdUserCxt prevRfdUCxt, RfdUserCxt curRfdUCxt){
+//		if(curRfdUCxt.getPlaces().isEmpty()) return false;
+//		if(curRfdUCxt.getPlaces().size() > 1) return true;
+//		else if(!prevRfdUCxt.getPlaces().get(prevRfdUCxt.getPlaces().size()-1).
+//		equals(curRfdUCxt.getPlaces().get(0)))
+//			return true;
+//		else
+//			return false;
+//	}
 
+//	@Override
+//	protected List<RfdUserCxt> retrieveCxtByBhv(UserEnv uEnv){
+//		long time = uEnv.getTime().getTime();
+//		List<RfdUserCxt> res = contextManager.retrieveRfdCxt(time - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY), time);
+//		return res;
+//	}
+//
 	@Override
-	protected List<RfdUserCxt> retrieveCxt(UserEnv uEnv){
-		long time = uEnv.getTime().getTime();
-		List<RfdUserCxt> res = contextManager.retrieveRfdCxt(time - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY), time);
-		return res;
-	}
-
-	@Override
-	protected double calcRelatedness(RfdUserCxt rfdUCxt, UserEnv uEnv) {
-		Map<Date, UserLoc> locs = rfdUCxt.getLocs();
-		for(UserLoc uLoc : locs.values()){
-			try {
-				if(Utils.Proximity(uLoc, uEnv.getLoc(), toleranceInMeter)){
-					return 1;
-				}
-			} catch (InvalidLocationException e) {
-				return 0;
-			}
-		}
+	protected double calcRelatedness(MergedRfdUserCxt rfdUCxt, UserEnv uEnv) {
+//		Map<Date, UserLoc> locs = rfdUCxt.getLocs();
+//		for(UserLoc uLoc : locs.values()){
+//			try {
+//				if(Utils.Proximity(uLoc, uEnv.getLoc(), toleranceInMeter)){
+//					return 1;
+//				}
+//			} catch (InvalidLocationException e) {
+//				return 0;
+//			}
+//		}
 		return 0;
 	}
 	
 	@Override
 	protected double calcLikelihood(MatchedCxt matchedCxt){
 		int numTotalCxt = matchedCxt.getNumTotalCxt();
-		int numRelatedCxt = matchedCxt.getNumRelatedCxt();
-		SparseArray<Double> relatedCxtMap = matchedCxt.getRelatedCxt();
+		Map<MergedRfdUserCxt, Double> relatedCxtMap = matchedCxt.getRelatedCxt();
 		
 		double likelihood = 0;
-		for(int i=0;i<numRelatedCxt;i++){
-			likelihood+=relatedCxtMap.valueAt(i);
+		for(double relatedness : relatedCxtMap.values()){
+			likelihood+=relatedness;
 		}
 		likelihood /= numTotalCxt;
 		likelihood *= 100;
 		return likelihood;
-	}
-	
-	@Override
-	protected String conditionName() {
-		return "location";
 	}
 	
 //	public List<MatchedCxt> matchAndGetResult(UserEnv uEnv){

@@ -26,14 +26,14 @@ public class Predictor {
 		List<MatchedCxt> res = new ArrayList<MatchedCxt>();
 
 		ContextMatcher timeCxtMatcher = new TimeContextMatcher(cxt
-				, settings.getFloat("matcher.time.min_likelihood", 0.1f)
+				, settings.getFloat("matcher.time.min_likelihood", 0.7f)
 				, settings.getInt("matcher.time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
 				, settings.getLong("matcher.time.tolerance", AlarmManager.INTERVAL_HOUR / 6));
 		List<MatchedCxt> timeMatchedCxtList = timeCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);
 		
 		ContextMatcher locCxtMatcher = new LocContextMatcher(cxt
-				, settings.getFloat("matcher.loc.min_likelihood", 0.1f)
+				, settings.getFloat("matcher.loc.min_likelihood", 0.7f)
 				, settings.getInt("matcher.loc.min_num_cxt", 3)
 				, settings.getInt("matcher.loc.min_distance", 2000));
 		List<MatchedCxt> locMatchedCxtList = locCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);

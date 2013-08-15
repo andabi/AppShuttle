@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 
 public class RfdUserCxt {
-	private final int contextId;
+//	private final int contextId;
 	private final Date sTime;
 	private final Date eTime;
 	private final TimeZone timeZone;
@@ -19,7 +19,7 @@ public class RfdUserCxt {
 	private final UserLoc lastPlace;
 
 	private RfdUserCxt(Builder builder){
-		contextId = builder.contextId;
+//		contextId = builder.contextId;
 		sTime = builder.sTime;
 		eTime = builder.eTime;
 		timeZone = builder.timeZone;
@@ -30,9 +30,9 @@ public class RfdUserCxt {
 		lastPlace = builder.lastPlace;
 	}
 	
-	public int getContextId() {
-		return contextId;
-	}
+//	public int getContextId() {
+//		return contextId;
+//	}
 	public UserBhv getBhv() {
 		return bhv;
 	}
@@ -72,7 +72,7 @@ public class RfdUserCxt {
 	}
 	
 	public static class Builder {
-		private int contextId = 0;
+//		private int contextId = 0;
 		private Date sTime = null;
 		private Date eTime = null;
 		private TimeZone timeZone = null;
@@ -112,10 +112,10 @@ public class RfdUserCxt {
 			return this;
 		}
 		
-		public Builder setContextId(int contextId) {
-			this.contextId = contextId;
-			return this;
-		}
+//		public Builder setContextId(int contextId) {
+//			this.contextId = contextId;
+//			return this;
+//		}
 		public Builder setLocs(Map<Date, UserLoc> locs){
 			this.locs = locs;
 			return this;

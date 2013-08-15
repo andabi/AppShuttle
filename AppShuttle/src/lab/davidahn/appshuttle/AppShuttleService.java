@@ -66,7 +66,7 @@ public class AppShuttleService extends Service{
 		
 		editor.putBoolean("service.collection.enabled", true);
 		editor.putLong("service.collection.period", 6000);
-		editor.putBoolean("service.view.enabled", false);
+		editor.putBoolean("service.view.enabled", true);
 		editor.putLong("service.view.peroid", 30000);
 		editor.putBoolean("service.report.enabled", false);
 		
@@ -81,7 +81,7 @@ public class AppShuttleService extends Service{
 		editor.putInt("matcher.freq.min_num_cxt", 3);
 		
 		editor.putLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.time.min_likelihood", 0.1f);
+		editor.putFloat("matcher.time.min_likelihood", 0.7f);
 		editor.putInt("matcher.time.min_num_cxt", 3);
 		editor.putLong("matcher.time.tolerance", settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR) / 2);
 

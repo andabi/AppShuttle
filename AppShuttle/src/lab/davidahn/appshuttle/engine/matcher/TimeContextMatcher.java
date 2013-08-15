@@ -2,13 +2,15 @@ package lab.davidahn.appshuttle.engine.matcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.MergedRfdUserCxt;
 import lab.davidahn.appshuttle.bean.RfdUserCxt;
 import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.utils.Time;
+import android.app.AlarmManager;
 import android.content.Context;
-import android.util.SparseArray;
 
 public class TimeContextMatcher extends ContextMatcher {
 	protected long period;
@@ -18,6 +20,7 @@ public class TimeContextMatcher extends ContextMatcher {
 		super(cxt, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
+		condition = "time";
 	}
 
 //	protected List<RfdUserCxt> retrieveCxt(UserEnv uEnv){
@@ -29,42 +32,38 @@ public class TimeContextMatcher extends ContextMatcher {
 //	}
 	
 	@Override
-	protected List<RfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
-		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
-//		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
-//
-//		for(RfdUserCxt rfdUCxt : rfdUCxtList){
-//			UserBhv uBhv = rfdUCxt.getBhv();
-//			if(ongoingBhvMap.isEmpty()) {
-//				ongoingBhvMap.put(uBhv, rfdUCxt);
-//			} else {
-//				if(ongoingBhvMap.containsKey(uBhv)){
-//					RfdUserCxt prevRfdUCxt = ongoingBhvMap.get(uBhv);
-//					if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-//							< settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
-//						RfdUserCxt mergedRfdUCxt = prevRfdUCxt;
-//						mergedRfdUCxt.setEndTime(rfdUCxt.getEndTime());
-//						mergedRfdUCxt.setLocs(rfdUCxt.getLocs());
-//						mergedRfdUCxt.setPlaces(rfdUCxt.getPlaces());
-//						ongoingBhvMap.put(uBhv, mergedRfdUCxt);
-//					} else {
-//						res.add(ongoingBhvMap.remove(uBhv));
-//						ongoingBhvMap.put(uBhv, rfdUCxt);
-//					}
-//				} else {
-//					ongoingBhvMap.put(uBhv, rfdUCxt);
-//				}
-//			}
-//		}
-//		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
-//			RfdUserCxt restRfdUCxt = ongoingBhvMap.get(ongoingBhv);
-//			res.add(restRfdUCxt);
-//		}
+	protected List<MergedRfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+		List<MergedRfdUserCxt> res = new ArrayList<MergedRfdUserCxt>();
+
+		RfdUserCxt prevRfdUCxt = null;
+		MergedRfdUserCxt.Builder mergedRfdUCxtBuilder = null;
+		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+			if(prevRfdUCxt == null){
+				mergedRfdUCxtBuilder = new MergedRfdUserCxt.Builder(rfdUCxt.getBhv());
+				mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getStartTime());
+				mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
+				mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
+			} else {
+				if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
+						< settings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
+					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
+				} else {
+					res.add(mergedRfdUCxtBuilder.build());
+					mergedRfdUCxtBuilder = new MergedRfdUserCxt.Builder(rfdUCxt.getBhv());
+					mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getStartTime());
+					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
+					mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
+				}
+			}
+			prevRfdUCxt = rfdUCxt;
+		}
+		
+		res.add(mergedRfdUCxtBuilder.build());
 		return res;
 	}
 	
 	@Override
-	protected double calcRelatedness(RfdUserCxt rfdUCxt, UserEnv uEnv) {
+	protected double calcRelatedness(MergedRfdUserCxt rfdUCxt, UserEnv uEnv) {
 		long startTime = rfdUCxt.getStartTime().getTime();
 		long endTime = rfdUCxt.getEndTime().getTime();
 		long time = uEnv.getTime().getTime();
@@ -82,21 +81,15 @@ public class TimeContextMatcher extends ContextMatcher {
 
 	@Override
 	protected double calcLikelihood(MatchedCxt matchedCxt){
-		int numTotalCxt = matchedCxt.getNumTotalCxt();
-		int numRelatedCxt = matchedCxt.getNumRelatedCxt();
-		SparseArray<Double> relatedCxtMap = matchedCxt.getRelatedCxt();
-		
 		double likelihood = 0;
-		for(int i=0;i<numRelatedCxt;i++){
-			likelihood+=relatedCxtMap.valueAt(i);
+		int numTotalCxt = matchedCxt.getNumTotalCxt();
+		
+		Map<MergedRfdUserCxt, Double> relatedCxtMap = matchedCxt.getRelatedCxt();
+		for(double relatedness : relatedCxtMap.values()){
+			likelihood+=relatedness;
 		}
 		likelihood /= numTotalCxt;
 		likelihood *= 100;
 		return likelihood;
-	}
-	
-	@Override
-	protected String conditionName(){
-		return "time";
 	}
 }

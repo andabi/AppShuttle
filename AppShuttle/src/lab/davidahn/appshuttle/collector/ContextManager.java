@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import lab.davidahn.appshuttle.DBHelper;
 import lab.davidahn.appshuttle.bean.MatchedCxt;
@@ -24,6 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class ContextManager {
@@ -47,7 +49,8 @@ public class ContextManager {
 	}
 
 	public void storeCxt(UserCxt uCxt) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
 		for(UserBhv uBhv : uCxt.getUserBhvs()){
 			ContentValues row = new ContentValues();
 			UserEnv uEnv = uCxt.getUserEnv();
@@ -63,21 +66,22 @@ public class ContextManager {
 	}
 	
 	public List<UserCxt> retrieveCxt(Date sTime, Date eTime) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
 		Cursor cur = db.rawQuery("SELECT * FROM context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 		List<UserCxt> res = new ArrayList<UserCxt>();
 		
 		UserCxt uCxt = null;
 		while (cur.moveToNext()) {
-			Date time = new Date(cur.getLong(1));
-			TimeZone timezone = TimeZone.getTimeZone(cur.getString(2));
-			UserLoc location = gson.fromJson(cur.getString(3), UserLoc.class);
-			UserLoc place = gson.fromJson(cur.getString(4), UserLoc.class);
+			Date time = new Date(cur.getLong(0));
+			TimeZone timezone = TimeZone.getTimeZone(cur.getString(1));
+			UserLoc location = gson.fromJson(cur.getString(2), UserLoc.class);
+			UserLoc place = gson.fromJson(cur.getString(3), UserLoc.class);
 			UserEnv uEnv = new UserEnv(time, timezone, location, place);
 			
-			String bhvType= cur.getString(5);
-			String bhvName= cur.getString(6);
+			String bhvType= cur.getString(4);
+			String bhvName= cur.getString(5);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
 			
 			if(uCxt == null) {
@@ -99,14 +103,15 @@ public class ContextManager {
 	}
 
 	public void storeRfdCxt(RfdUserCxt rfdUCxt) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		
 		ContentValues row = new ContentValues();
 		row.put("s_time", rfdUCxt.getStartTime().getTime());
 		row.put("e_time", rfdUCxt.getEndTime().getTime());
 //		row.put("timezone", gson.toJson(rfdUCxt.getTimeZone()));
 		row.put("timezone", rfdUCxt.getTimeZone().getID());
-		row.put("location_list", gson.toJson(rfdUCxt.getLocs()));
-		row.put("place_list", gson.toJson(rfdUCxt.getPlaces()));
+		row.put("locations", gson.toJson(rfdUCxt.getLocs()));
+		row.put("places", gson.toJson(rfdUCxt.getPlaces()));
 		row.put("bhv_type", rfdUCxt.getBhv().getBhvType());
 		row.put("bhv_name", rfdUCxt.getBhv().getBhvName());
 		db.insert("refined_context", null, row);
@@ -114,16 +119,17 @@ public class ContextManager {
 	}
 
 	public List<RfdUserCxt> retrieveRfdCxt(long sTime, long eTime) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		
 		Cursor cur = db.rawQuery("SELECT * FROM refined_context WHERE s_time >= "
 				+ sTime + " AND e_time <= " + eTime+";", null);
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		while (cur.moveToNext()) {
-			int contextId = cur.getInt(0);
+//			int contextId = cur.getInt(0);
 			Date startTime = new Date(cur.getLong(1));
 			Date endTime = new Date(cur.getLong(2));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-			Type listType = new TypeToken<Map<Date, UserLoc>>(){}.getType();
+			Type listType = new TypeToken<TreeMap<Date, UserLoc>>(){}.getType();
 			Map<Date, UserLoc>  locs = gson.fromJson(cur.getString(4), listType);
 			Map<Date, UserLoc>  places = gson.fromJson(cur.getString(5), listType);
 			String bhvType= cur.getString(6);
@@ -136,7 +142,36 @@ public class ContextManager {
 				.setBhv(uBhv)
 				.setLocs(locs)
 				.setPlaces(places)
-				.setContextId(contextId)
+//				.setContextId(contextId)
+				.build();
+			res.add(rfdUCxt);
+		}
+		cur.close();
+		return res;
+	}
+	
+	public List<RfdUserCxt> retrieveRfdCxtByBhv(long sTime, long eTime, UserBhv uBhv) {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
+		
+		Cursor cur = db.rawQuery("SELECT * FROM refined_context WHERE s_time >= "
+				+ sTime + " AND e_time <= " + eTime+" AND bhv_type = '"+uBhv.getBhvType()+"' AND bhv_name = '"+uBhv.getBhvName()+"';", null);
+		while (cur.moveToNext()) {
+//			int contextId = cur.getInt(0);
+			Date startTime = new Date(cur.getLong(1));
+			Date endTime = new Date(cur.getLong(2));
+			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
+			Type listType = new TypeToken<TreeMap<Date, UserLoc>>(){}.getType();
+			Map<Date, UserLoc>  locs = gson.fromJson(cur.getString(4), listType);
+			Map<Date, UserLoc>  places = gson.fromJson(cur.getString(5), listType);
+			RfdUserCxt rfdUCxt = new RfdUserCxt.Builder()
+				.setStartTime(startTime)
+				.setEndTime(endTime)
+				.setTimeZone(timezone)
+				.setBhv(uBhv)
+				.setLocs(locs)
+				.setPlaces(places)
+//				.setContextId(contextId)
 				.build();
 			res.add(rfdUCxt);
 		}
@@ -161,7 +196,8 @@ public class ContextManager {
 //	}
 
 	public void storeMatchedCxt(MatchedCxt mCxt) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		
 		ContentValues row = new ContentValues();
 		UserEnv uEnv = mCxt.getUserEnv();
 		row.put("time", uEnv.getTime().getTime());
@@ -220,7 +256,8 @@ public class ContextManager {
 	
 	
 	public File loadCxtAsCsvFile(Context cxt, String fileName, Date sTime, Date eTime) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
 		Cursor cur = db.rawQuery("SELECT * FROM context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 
@@ -253,7 +290,8 @@ public class ContextManager {
 	}
 	
 	public File loadRfdCxtAsCsvFile(Context cxt, String fileName, Date sTime, Date eTime) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
 		Cursor cur = db.rawQuery("SELECT * FROM refined_context WHERE s_time >= "
 				+ sTime.getTime() + " AND e_time <= " + eTime.getTime()+";", null);
 		try {
@@ -269,7 +307,7 @@ public class ContextManager {
 				String endTime = new Date(cur.getLong(2)).toString();
 //				String timezone = gson.fromJson(cur.getString(3), TimeZone.class).getID();
 				String timezone = cur.getString(3);
-				Type listType = new TypeToken<Map<Date, UserLoc>>(){}.getType();
+				Type listType = new TypeToken<TreeMap<Date, UserLoc>>(){}.getType();
 				String locFreqList = gson.fromJson(cur.getString(4), listType).toString();
 				String placeFreqList = gson.fromJson(cur.getString(5), listType).toString();
 				String bhvType= cur.getString(6);

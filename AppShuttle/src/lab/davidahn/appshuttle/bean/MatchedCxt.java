@@ -1,7 +1,9 @@
 package lab.davidahn.appshuttle.bean;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import lab.davidahn.appshuttle.bhv.UserBhv;
-import android.util.SparseArray;
 
 public class MatchedCxt implements Comparable<MatchedCxt> {
 	private UserEnv userEnv;
@@ -10,7 +12,7 @@ public class MatchedCxt implements Comparable<MatchedCxt> {
 	private double likelihood;
 	private int numTotalCxt;
 	private int numRelatedCxt;
-	private SparseArray<Double> relatedCxt;
+	private Map<MergedRfdUserCxt, Double> relatedCxt;
 	
 	public MatchedCxt(UserEnv userEnv){
 		this.userEnv = userEnv;
@@ -55,17 +57,17 @@ public class MatchedCxt implements Comparable<MatchedCxt> {
 		this.numRelatedCxt = numRelatedCxt;
 	}
 	
-	public SparseArray<Double> getRelatedCxt(){
+	public Map<MergedRfdUserCxt, Double> getRelatedCxt(){
 		return relatedCxt;
 	}
 	
-	public void setRelatedCxt(SparseArray<Double> relatedCxt) {
+	public void setRelatedCxt(Map<MergedRfdUserCxt, Double> relatedCxt) {
 		this.relatedCxt = relatedCxt;
 	}
 
-	public void addRelatedCxt(int CxtId, double relatedness) {
-		if(relatedCxt == null) relatedCxt = new SparseArray<Double>();
-		relatedCxt.put(CxtId, relatedness);
+	public void addRelatedCxt(MergedRfdUserCxt rfdUCxt, double relatedness) {
+		if(relatedCxt == null) relatedCxt = new HashMap<MergedRfdUserCxt, Double>();
+		relatedCxt.put(rfdUCxt, relatedness);
 	}
 
 	public String getCondition() {
