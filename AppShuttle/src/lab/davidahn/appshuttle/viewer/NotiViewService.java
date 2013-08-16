@@ -9,7 +9,7 @@ import java.util.Queue;
 import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.MainActivity;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.engine.matcher.Predictor;
 import android.annotation.SuppressLint;

@@ -1,15 +1,16 @@
-package lab.davidahn.appshuttle.bean;
+package lab.davidahn.appshuttle.bean.cxt;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 
-public class UserCxt {
+public class UserCxtOld {
 	private UserEnv userEnv;
 	private List<UserBhv> userBhvs = new ArrayList<UserBhv>();
 	
-	public UserCxt(UserEnv userEnv){
+	public UserCxtOld(UserEnv userEnv){
 		this.userEnv = userEnv;
 	}
 	public UserEnv getUserEnv() {

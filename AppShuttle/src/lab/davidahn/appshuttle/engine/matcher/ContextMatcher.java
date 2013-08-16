@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.DBHelper;
-import lab.davidahn.appshuttle.bean.MatchedCxt;
-import lab.davidahn.appshuttle.bean.MergedRfdUserCxt;
-import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserEnv;
+import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
+import lab.davidahn.appshuttle.bean.cxt.MergedRfdUserCxt;
+import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collector.ContextManager;

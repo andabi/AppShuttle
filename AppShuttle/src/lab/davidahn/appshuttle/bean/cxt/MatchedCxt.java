@@ -1,8 +1,9 @@
-package lab.davidahn.appshuttle.bean;
+package lab.davidahn.appshuttle.bean.cxt;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 
 public class MatchedCxt implements Comparable<MatchedCxt> {

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.GlobalState;
-import lab.davidahn.appshuttle.bean.MatchedCxt;
+import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
 import lab.davidahn.appshuttle.collector.ContextManager;
 import android.app.AlarmManager;
 import android.content.Context;
@@ -30,13 +30,13 @@ public class Predictor {
 				, settings.getInt("matcher.time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
 				, settings.getLong("matcher.time.tolerance", AlarmManager.INTERVAL_HOUR / 6));
-		List<MatchedCxt> timeMatchedCxtList = timeCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);
+		List<MatchedCxt> timeMatchedCxtList = timeCxtMatcher.matchAndGetResult(GlobalState.currentUEnvs);
 		
 		ContextMatcher locCxtMatcher = new LocContextMatcher(cxt
 				, settings.getFloat("matcher.loc.min_likelihood", 0.7f)
 				, settings.getInt("matcher.loc.min_num_cxt", 3)
 				, settings.getInt("matcher.loc.min_distance", 2000));
-		List<MatchedCxt> locMatchedCxtList = locCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);
+		List<MatchedCxt> locMatchedCxtList = locCxtMatcher.matchAndGetResult(GlobalState.currentUEnvs);
 
 //		List<MatchedCxt> locMatchhedCxtList;
 //		if(GlobalState.recentLocMatchedCxtList == null) 
@@ -53,7 +53,7 @@ public class Predictor {
 		ContextMatcher FreqCxtMatcher = new FreqContextMatcher(cxt
 				, settings.getFloat("matcher.freq.min_likelihood", 0.1f)
 				, settings.getInt("matcher.freq.min_num_cxt", 3));
-		List<MatchedCxt> FreqCatchedCxtList = FreqCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);
+		List<MatchedCxt> FreqCatchedCxtList = FreqCxtMatcher.matchAndGetResult(GlobalState.currentUEnvs);
 
 		res.addAll(timeMatchedCxtList);
 		res.addAll(locMatchedCxtList);

@@ -1,10 +1,11 @@
-package lab.davidahn.appshuttle.bean;
+package lab.davidahn.appshuttle.bean.cxt;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
+import lab.davidahn.appshuttle.bean.UserLoc;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 
 public class RfdUserCxt {

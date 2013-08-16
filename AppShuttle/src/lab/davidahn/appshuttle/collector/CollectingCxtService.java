@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.GlobalState;
-import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserCxt;
-import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.bean.UserLoc;
+import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.cxt.UserCxt;
+import lab.davidahn.appshuttle.bean.env.EnvType;
+import lab.davidahn.appshuttle.bean.env.LocUserEnv;
+import lab.davidahn.appshuttle.bean.env.PlaceUserEnv;
+import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.AppUserBhv;
 import lab.davidahn.appshuttle.bhv.AppUserBhvSensor;
 import lab.davidahn.appshuttle.bhv.UserBhv;
@@ -93,12 +96,12 @@ public class CollectingCxtService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		UserEnv uEnv = new UserEnv();
-		senseAndSetTime(uEnv);
-		senseAndSetLocation(uEnv);
-		setPlace(uEnv);
+		UserCxt uCxt = new UserCxt();
+
+		senseAndSetTime(uCxt);
+		senseAndSetLocation(uCxt);
+		setPlace(uCxt);
 		
-		UserCxt uCxt = new UserCxt(uEnv);
 		senseBhv(uCxt);
 		
 		ContextRefiner cxtRefiner = contextManager.getCxtRefiner();
@@ -137,26 +140,25 @@ public class CollectingCxtService extends IntentService {
 		}
 	};
 	
-	public void senseAndSetLocation(UserEnv uEnv) {
+	public void senseAndSetLocation(UserCxt uCxt) {
 		if (currentLoc == null) {
-			uEnv.setLoc(new UserLoc(0, 0, UserLoc.Validity.INVALID));
+			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(0, 0, UserLoc.Validity.INVALID)));
 			Log.d("location", "sensing failure");
 		}
 		else {
-			uEnv.setLoc(new UserLoc(currentLoc.getLatitude(), currentLoc.getLongitude(), UserLoc.Validity.VALID));
-//				Log.d("location", "latitude: " + latitude + ", longitude: " + longitude);
+			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(currentLoc.getLatitude(), currentLoc.getLongitude(), UserLoc.Validity.VALID)));
 		}
-		GlobalState.currentUEnv = uEnv;
+		GlobalState.currentUEnvs = uCxt.getUserEnvs();
 	}
 	
-	public void setPlace(UserEnv uEnv) {
+	public void setPlace(UserCxt uCxt) {
 		if(GlobalState.place == null){
-			GlobalState.place = GlobalState.currentUEnv.getLoc();
+			GlobalState.place = ((PlaceUserEnv) GlobalState.currentUEnvs.get(EnvType.PLACE)).getPlace();
 			GlobalState.moved = false;
 		}
 		try {
-			if(!Utils.Proximity(GlobalState.place, GlobalState.currentUEnv.getLoc(), settings.getInt("location.min_distance", 2000))){
-				GlobalState.place = GlobalState.currentUEnv.getLoc();
+			if(!Utils.Proximity(GlobalState.place, ((PlaceUserEnv) GlobalState.currentUEnvs.get(EnvType.PLACE)).getPlace(), settings.getInt("location.min_distance", 2000))){
+				GlobalState.place = ((PlaceUserEnv) GlobalState.currentUEnvs.get(EnvType.PLACE)).getPlace();
 				GlobalState.moved = true;
 			} else {
 				GlobalState.moved = false;
@@ -164,12 +166,13 @@ public class CollectingCxtService extends IntentService {
 		} catch (InvalidLocationException e) {
 			;
 		}
-		uEnv.setPlace(GlobalState.place);
+		uCxt.addUserEnv(EnvType.PLACE, new PlaceUserEnv(GlobalState.place));
+
 	}
 	
-	public void senseAndSetTime(UserEnv uEnv) {
-		uEnv.setTime(new Date(System.currentTimeMillis()));
-		uEnv.setTimeZone(calendar.getTimeZone());
+	public void senseAndSetTime(UserCxt uCxt) {
+		uCxt.setTime(new Date(System.currentTimeMillis()));
+		uCxt.setTimeZone(calendar.getTimeZone());
 	}
 	
 	public void senseSenserInfo(UserEnv uEnv){

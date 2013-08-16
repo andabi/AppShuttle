@@ -1,18 +1,20 @@
-package lab.davidahn.appshuttle.bean;
+package lab.davidahn.appshuttle.bean.env;
 
 import java.util.Date;
 import java.util.TimeZone;
 
-public class UserEnv {
+import lab.davidahn.appshuttle.bean.UserLoc;
+
+public class UserEnvOld {
 	private Date time;
 	private TimeZone timeZone;
 	private UserLoc loc;
 	private UserLoc place;
 
-	public UserEnv(){
+	public UserEnvOld(){
 	}
 	
-	public UserEnv(Date time, TimeZone timeZone, UserLoc loc, UserLoc place) {
+	public UserEnvOld(Date time, TimeZone timeZone, UserLoc loc, UserLoc place) {
 		this.time = time;
 		this.timeZone = timeZone;
 		this.loc = loc;
@@ -57,11 +59,11 @@ public class UserEnv {
 	
 	@Override
 	public boolean equals(Object o) {
-		if((o instanceof UserEnv) 
-				&& time.equals(((UserEnv)o).time)
-				&& timeZone.equals(((UserEnv)o).timeZone)
-				&& loc.equals(((UserEnv)o).loc)
-				&& place.equals(((UserEnv)o).place))
+		if((o instanceof UserEnvOld) 
+				&& time.equals(((UserEnvOld)o).time)
+				&& timeZone.equals(((UserEnvOld)o).timeZone)
+				&& loc.equals(((UserEnvOld)o).loc)
+				&& place.equals(((UserEnvOld)o).place))
 			return true;
 		else return false;
 	}

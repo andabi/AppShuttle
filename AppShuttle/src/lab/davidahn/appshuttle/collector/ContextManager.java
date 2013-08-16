@@ -12,11 +12,14 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 
 import lab.davidahn.appshuttle.DBHelper;
-import lab.davidahn.appshuttle.bean.MatchedCxt;
-import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserCxt;
-import lab.davidahn.appshuttle.bean.UserEnv;
 import lab.davidahn.appshuttle.bean.UserLoc;
+import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
+import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.cxt.UserCxt;
+import lab.davidahn.appshuttle.bean.env.EnvType;
+import lab.davidahn.appshuttle.bean.env.LocUserEnv;
+import lab.davidahn.appshuttle.bean.env.PlaceUserEnv;
+import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import android.content.ContentValues;
 import android.content.Context;
@@ -53,11 +56,11 @@ public class ContextManager {
 
 		for(UserBhv uBhv : uCxt.getUserBhvs()){
 			ContentValues row = new ContentValues();
-			UserEnv uEnv = uCxt.getUserEnv();
-			row.put("time", uEnv.getTime().getTime());
-			row.put("timezone", uEnv.getTimeZone().getID());
-			row.put("location", gson.toJson(uEnv.getLoc()));
-			row.put("place", gson.toJson(uEnv.getPlace()));
+//			UserEnv uEnv = uCxt.getUserEnv();
+			row.put("time", uCxt.getTime().getTime());
+			row.put("timezone", uCxt.getTimeZone().getID());
+			row.put("location", gson.toJson(((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc()));
+			row.put("place", gson.toJson(((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace()));
 			row.put("bhv_type", uBhv.getBhvType());
 			row.put("bhv_name", uBhv.getBhvName());
 			db.insert("context", null, row);
@@ -78,22 +81,28 @@ public class ContextManager {
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(1));
 			UserLoc location = gson.fromJson(cur.getString(2), UserLoc.class);
 			UserLoc place = gson.fromJson(cur.getString(3), UserLoc.class);
-			UserEnv uEnv = new UserEnv(time, timezone, location, place);
-			
 			String bhvType= cur.getString(4);
 			String bhvName= cur.getString(5);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
-			
+
 			if(uCxt == null) {
-				uCxt = new UserCxt(uEnv);
+				uCxt = new UserCxt(time, timezone);
+				uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(location));
+				uCxt.addUserEnv(EnvType.PLACE, new LocUserEnv(place));
 				uCxt.addUserBhv(uBhv);
 			}
 			else {
-				if(uEnv.equals(uCxt.getUserEnv()))
+				UserCxt tempCxt = new UserCxt(time, timezone);
+				tempCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(location));
+				tempCxt.addUserEnv(EnvType.PLACE, new LocUserEnv(place));
+				
+				if(tempCxt.getUserEnvs().equals(uCxt.getUserEnvs()))
 					uCxt.addUserBhv(uBhv);
 				else{
 					res.add(uCxt);
-					uCxt = new UserCxt(uEnv);
+					uCxt = new UserCxt(time, timezone);
+					uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(location));
+					uCxt.addUserEnv(EnvType.PLACE, new LocUserEnv(place));
 					uCxt.addUserBhv(uBhv);
 				}
 			}
@@ -203,7 +212,7 @@ public class ContextManager {
 		row.put("time", uEnv.getTime().getTime());
 //		row.put("timezone", gson.toJson(uEnv.getTimeZone()));
 		row.put("timezone", uEnv.getTimeZone().getID());
-		row.put("location", gson.toJson(uEnv.getLoc()));
+		row.put("location", gson.toJson(uEnv.getPlace()));
 		row.put("place", gson.toJson(uEnv.getPlace()));
 		row.put("bhv_type", mCxt.getUserBhv().getBhvType());
 		row.put("bhv_name", mCxt.getUserBhv().getBhvName());

@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lab.davidahn.appshuttle.bean.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.UserCxt;
-import lab.davidahn.appshuttle.bean.UserEnv;
+import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.cxt.UserCxt;
+import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +31,7 @@ public class ContextRefiner {
 			.setEndTime(uEnv.getTime())
 			.setTimeZone(uEnv.getTimeZone())
 			.setBhv(bhv)
-			.appendLoc(uEnv.getLoc(), uEnv.getTime())
+			.appendLoc(uEnv.getPlace(), uEnv.getTime())
 			.appendPlace(uEnv.getPlace(), uEnv.getTime());
 	}
 	
@@ -48,7 +48,7 @@ public class ContextRefiner {
 					RfdUserCxt.Builder rfdUCxtBuilder = ongoingBhvMap.get(uBhv);
 					rfdUCxtBuilder.setEndTime(uEnv.getTime());
 					//add env
-					rfdUCxtBuilder.appendLoc(uEnv.getLoc(), uEnv.getTime());
+					rfdUCxtBuilder.appendLoc(uEnv.getPlace(), uEnv.getTime());
 					rfdUCxtBuilder.appendPlace(uEnv.getPlace(), uEnv.getTime());
 				} else {
 					ongoingBhvMap.put(uBhv, convertToRfdUCxtBuilder(uCxt, uBhv));
