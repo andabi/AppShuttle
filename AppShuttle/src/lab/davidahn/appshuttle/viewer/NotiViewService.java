@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.viewer;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +8,8 @@ import java.util.Queue;
 import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.MainActivity;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
 import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.engine.matcher.PredictedBhv;
 import lab.davidahn.appshuttle.engine.matcher.Predictor;
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -76,13 +75,13 @@ public class NotiViewService extends Service {
 		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
 
 		Predictor predictor = new Predictor(getApplicationContext());
-		List<MatchedCxt> matchedCxtListForView = predictor.predict(settings.getInt("viewer.noti.num_slot", 4));
+		List<PredictedBhv> predictedBhvForView = predictor.predict(settings.getInt("viewer.noti.num_slot", 4));
 		
 		List<UserBhv> matchedBhvList = new ArrayList<UserBhv>();
-		for(MatchedCxt matchedCxt : matchedCxtListForView) {
-			UserBhv uBhv = matchedCxt.getUserBhv();
+		for(PredictedBhv predictedBhv : predictedBhvForView) {
+			UserBhv uBhv = predictedBhv.getUserBhv();
 			String bhvName = uBhv.getBhvName();
-			double likelihood = matchedCxt.getLikelihood();
+//			double likelihood = predictedBhv.getLikelihood();
 			matchedBhvList.add(uBhv);
 			Intent launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
 			if(launchIntent == null){
@@ -90,6 +89,12 @@ public class NotiViewService extends Service {
 			} else {
 				int iconSlotId = iconSlotIdList.poll();
 				int iconSlotScoreId = iconSlotScoreIdList.poll();
+				
+				notiRemoteViews.setTextViewText(iconSlotScoreId, 
+//						new DecimalFormat("##.#").format(likelihood * 100)+"\n"+
+//						predictedBhv.getMatcherTypeString());
+						"    ");
+				
 				try {
 					BitmapDrawable iconDrawable = (BitmapDrawable) packageManager.getApplicationIcon(bhvName);
 					notiRemoteViews.setImageViewBitmap(iconSlotId, iconDrawable.getBitmap());
@@ -99,20 +104,18 @@ public class NotiViewService extends Service {
 					e.printStackTrace();
 				}
 				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, launchIntent, 0));
-				notiRemoteViews.setTextViewText(iconSlotScoreId, new DecimalFormat("##.#").format(likelihood)
-						+"\n"+matchedCxt.getCondition().substring(0, 4));
 			}
 		}
 		
-		for(MatchedCxt matchedCxt : matchedCxtListForView) {
+		for(PredictedBhv predictedBhv : predictedBhvForView) {
 			if(GlobalState.recentMatchedBhvList == null ||
-					!GlobalState.recentMatchedBhvList.contains(matchedCxt.getUserBhv())){
-				predictor.storePrediction(matchedCxt);
+					!GlobalState.recentMatchedBhvList.contains(predictedBhv.getUserBhv())){
+				predictor.storePredictedBhv(predictedBhv);
 			}
 		}
 
 		Notification notiUpdate;
-		if(matchedCxtListForView.isEmpty()) {
+		if(predictedBhvForView.isEmpty()) {
 			notiUpdate = new Notification.Builder(NotiViewService.this)
 			.setSmallIcon(R.drawable.ic_launcher)
 			.setContent(notiRemoteViews)

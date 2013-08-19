@@ -6,7 +6,12 @@ public class UserLoc {
 	private Validity validity;
 	private double longitude;
 	private double latitude;
-	
+
+	public UserLoc(double latitude, double longitude) {
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.validity = Validity.VALID;
+	}
 	public UserLoc(double latitude, double longitude, Validity validity) {
 		this.longitude = longitude;
 		this.latitude = latitude;

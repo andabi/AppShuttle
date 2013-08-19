@@ -2,36 +2,37 @@ package lab.davidahn.appshuttle.engine.matcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
-import lab.davidahn.appshuttle.bean.cxt.MergedRfdUserCxt;
+import lab.davidahn.appshuttle.bean.MatcherType;
+import lab.davidahn.appshuttle.bean.cxt.MatcherCountUnit;
 import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
-import lab.davidahn.appshuttle.bean.env.UserEnv;
+import lab.davidahn.appshuttle.bean.cxt.UserCxt;
 import android.app.AlarmManager;
 import android.content.Context;
 
 public class FreqContextMatcher extends ContextMatcher{
 	public FreqContextMatcher(Context cxt, double minLikelihood, int minNumCxt) {
 		super(cxt, minLikelihood, minNumCxt);
-		condition = "frequency";
+		matcherType = MatcherType.FREQUENCY;
 	}
 	
 	@Override
-	protected List<MergedRfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
-		List<MergedRfdUserCxt> res = new ArrayList<MergedRfdUserCxt>();
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		RfdUserCxt prevRfdUCxt = null;
-		MergedRfdUserCxt.Builder mergedRfdUCxtBuilder = null;
+		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
-				mergedRfdUCxtBuilder = new MergedRfdUserCxt.Builder(rfdUCxt.getBhv());
+				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 			} else {
 				if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
 						< settings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
 					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
-					mergedRfdUCxtBuilder = new MergedRfdUserCxt.Builder(rfdUCxt.getBhv());
+					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 				}
 			}
 			prevRfdUCxt = rfdUCxt;
@@ -40,6 +41,32 @@ public class FreqContextMatcher extends ContextMatcher{
 		res.add(mergedRfdUCxtBuilder.build());
 		return res;
 	}
+	
+	@Override
+	protected double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt) {
+		return 1;
+	}
+
+	@Override
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap){
+		double likelihood = 0;
+//		int numRelatedCxt = matchedCxt.getNumRelatedCxt();
+		likelihood = 1.0 * numRelatedCxt / Integer.MAX_VALUE;
+		return likelihood;
+	}
+
+//	private int getNumTotalCxt(UserCxt uCxt){
+//		int numTotalCxt = 0;
+//		long etime = uCxt.getTime().getTime();
+//		long sTime = etime - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
+//
+//		for(UserBhv uBhv : userBhvManager.retrieveBhv()){
+//			List<RfdUserCxt> rfdUCxtList = contextManager.retrieveRfdCxtByBhv(sTime, etime, uBhv);
+//			numTotalCxt+=rfdUCxtList.size();
+//		}
+//		return numTotalCxt;
+//	}
+}
 	
 //	@Override
 //	protected List<MergedRfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
@@ -75,17 +102,3 @@ public class FreqContextMatcher extends ContextMatcher{
 //		}
 //		return res;
 //	}
-	
-	@Override
-	protected double calcRelatedness(MergedRfdUserCxt rfdUCxt, UserEnv uEnv) {
-		return 1;
-	}
-
-	@Override
-	protected double calcLikelihood(MatchedCxt matchedCxt){
-		double likelihood = 0;
-		int numRelatedCxt = matchedCxt.getNumRelatedCxt();
-		likelihood = numRelatedCxt * 10 / numTotalCxt;
-		return likelihood;
-	}
-}

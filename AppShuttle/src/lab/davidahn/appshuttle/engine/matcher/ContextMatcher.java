@@ -1,14 +1,16 @@
 package lab.davidahn.appshuttle.engine.matcher;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.DBHelper;
-import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
-import lab.davidahn.appshuttle.bean.cxt.MergedRfdUserCxt;
+import lab.davidahn.appshuttle.bean.MatcherType;
+import lab.davidahn.appshuttle.bean.cxt.MatchedResult;
+import lab.davidahn.appshuttle.bean.cxt.MatcherCountUnit;
 import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
+import lab.davidahn.appshuttle.bean.cxt.UserCxt;
+import lab.davidahn.appshuttle.bean.env.EnvType;
 import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.bhv.UserBhvManager;
@@ -19,15 +21,18 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 
 public abstract class ContextMatcher {
+	protected MatcherType matcherType;
 	protected ContextManager contextManager;
 	protected UserBhvManager userBhvManager;
 	protected SQLiteDatabase db;
 	protected Context cxt;
 	protected SharedPreferences settings;
-	protected int numTotalCxt;
 	protected double minLikelihood;
 	protected int minNumCxt;
-	protected String condition;
+
+	protected MatcherType getMatcherType(){
+		return matcherType;
+	}
 
 	public ContextMatcher(Context cxt, double minLikelihood, int minNumCxt) {
 		this.cxt = cxt;
@@ -36,57 +41,56 @@ public abstract class ContextMatcher {
 		db = DBHelper.getInstance(cxt.getApplicationContext()).getReadableDatabase();
 		settings = cxt.getSharedPreferences("AppShuttle",Context.MODE_PRIVATE);
 
-		numTotalCxt = 0;
 		this.minLikelihood = minLikelihood;
 		this.minNumCxt = minNumCxt;
 	}
 
-	public List<MatchedCxt> matchAndGetResult(UserEnv uEnv){
-		List<MatchedCxt> res = new ArrayList<MatchedCxt>();
+	public MatchedResult matchAndGetResult(UserBhv uBhv, UserCxt uCxt){
+		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
-		long etime = uEnv.getTime().getTime();
+		long etime = uCxt.getTime().getTime();
 		long sTime = etime - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 		
-		for(UserBhv uBhv : userBhvManager.retrieveBhv()){
-			List<RfdUserCxt> rfdUCxtList = contextManager.retrieveRfdCxtByBhv(sTime, etime, uBhv);
-			numTotalCxt+=rfdUCxtList.size();
-		}
+		List<RfdUserCxt> rfdUCxtList = contextManager.retrieveRfdCxtByBhv(sTime, etime, uBhv);
+		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(rfdUCxtList);
 		
-		for(UserBhv uBhv : userBhvManager.retrieveBhv()){
-			List<RfdUserCxt> rfdUCxtList = contextManager.retrieveRfdCxtByBhv(sTime, etime, uBhv);
-			List<MergedRfdUserCxt> mergedRfdCxtList = mergeCxtByCountUnit(rfdUCxtList);
-			
-			int numTotalCxt = 0;
-			int numRelatedCxt = 0;
-			Map<MergedRfdUserCxt, Double> relatedCxt = new HashMap<MergedRfdUserCxt, Double>();
-			
-			for(MergedRfdUserCxt mergedRfdCxt : mergedRfdCxtList) {
-				numTotalCxt++;
-				double relatedness = calcRelatedness(mergedRfdCxt, uEnv);			
-				if(relatedness > 0 ) {
-					numRelatedCxt++;
-					relatedCxt.put(mergedRfdCxt, relatedness);
-				}
+		int numTotalCxt = 0;
+		int numRelatedCxt = 0;
+		Map<MatcherCountUnit, Double> relatedCxt = new HashMap<MatcherCountUnit, Double>();
+		
+		for(MatcherCountUnit mergedRfdCxt : mergedRfdCxtList) {
+			numTotalCxt++;
+			double relatedness = calcRelatedness(mergedRfdCxt, uCxt);
+			if(relatedness > 0 ) {
+				numRelatedCxt++;
+				relatedCxt.put(mergedRfdCxt, relatedness);
 			}
-			
-			if(numRelatedCxt < minNumCxt) continue;
-			
-			MatchedCxt matchedCxt = new MatchedCxt(uEnv);
+		}
+
+		double likelihood = calcLikelihood(numTotalCxt, numRelatedCxt, relatedCxt);
+		if(numRelatedCxt < minNumCxt || likelihood < minLikelihood)
+			return null;
+		else {
+			MatchedResult matchedCxt = new MatchedResult(uCxt.getTime(), uCxt.getTimeZone(), uEnvs);
 			matchedCxt.setUserBhv(uBhv);
-			matchedCxt.setCondition(getCondition());
+			matchedCxt.setMatcherType(getMatcherType());
 			matchedCxt.setNumTotalCxt(numTotalCxt);
 			matchedCxt.setNumRelatedCxt(numRelatedCxt);
 			matchedCxt.setRelatedCxt(relatedCxt);
-
-			double likelihood = calcLikelihood(matchedCxt);
-			if(likelihood < minLikelihood) continue;
-
 			matchedCxt.setLikelihood(likelihood);
-			
-			res.add(matchedCxt);
+			return matchedCxt;
 		}
-		return res;
-		
+	}
+	
+	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList);
+	protected abstract double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt);
+	protected abstract double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap);
+	
+//			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)
+//				matchedCxt.setMatched(true);
+//			else
+//				matchedCxt.setMatched(false);
+	
 //		Map<UserBhv, Integer> numTotalCxtByBhv = new HashMap<UserBhv, Integer>();
 //		Map<UserBhv, Integer> numRelatedCxtByBhv = new HashMap<UserBhv, Integer>();
 //		Map<UserBhv, SparseArray<Double>> relatedCxtByBhv = new HashMap<UserBhv, SparseArray<Double>>();
@@ -133,12 +137,4 @@ public abstract class ContextMatcher {
 //			res.add(matchedCxt);
 //		}
 //		return res;
-	}
-	
-	protected String getCondition(){
-		return condition;
-	}
-	protected abstract List<MergedRfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList);
-	protected abstract double calcRelatedness(MergedRfdUserCxt rfdUCxt, UserEnv uEnv);
-	protected abstract double calcLikelihood(MatchedCxt matchedCxt);
 }

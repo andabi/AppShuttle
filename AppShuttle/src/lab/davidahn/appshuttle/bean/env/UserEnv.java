@@ -14,4 +14,8 @@ public class UserEnv {
 	public void setEnvType(EnvType envType) {
 		this.envType = envType;
 	}
+	
+	public String toString(){
+		return envType.toString();
+	}
 }

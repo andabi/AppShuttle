@@ -37,7 +37,7 @@ public class UserBhvManager {
 		row.put("bhv_name", uBhv.getBhvName());
 //		db.insert("user_bhv", null, row);
 		db.insertWithOnConflict("user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
-		Log.i("stored userBhv", uBhv.toString());
+//		Log.i("stored userBhv", uBhv.toString());
 	}
 	
 	public List<UserBhv> retrieveBhv() {
@@ -51,7 +51,7 @@ public class UserBhvManager {
 			res.add(uBhv);
 		}
 		cur.close();
-		Log.i("retrieved userBhv", res.toString());
+//		Log.i("retrieved userBhv", res.toString());
 		return res;
 	}
 

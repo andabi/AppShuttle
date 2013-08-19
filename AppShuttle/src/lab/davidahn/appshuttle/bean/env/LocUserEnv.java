@@ -19,6 +19,7 @@ public class LocUserEnv extends UserEnv {
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
+		msg.append(envType.toString());
 		msg.append(loc.toString());
 		return msg.toString();
 	}

@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.bean.env.EnvType;
-import lab.davidahn.appshuttle.bean.env.TimeUserEnv;
 import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 
@@ -69,7 +68,7 @@ public class UserCxt {
 	}
 	@Override
 	public boolean equals(Object o) {
-		if((o instanceof TimeUserEnv) 
+		if((o instanceof UserCxt) 
 				&& time.equals(((UserCxt)o).time)
 				&& timeZone.equals(((UserCxt)o).timeZone)
 				&& userEnvs.equals(((UserCxt)o).userEnvs)

@@ -62,6 +62,7 @@ public class AppShuttleService extends Service{
 
 		editor.putLong("collection.location.tolerance.time", 6000);
 		editor.putInt("collection.location.tolerance.distance", 100);
+		editor.putInt("collection.place.tolerance.distance", 5000);
 		editor.putBoolean("collection.store_cxt.enabled", false);
 		
 		editor.putBoolean("service.collection.enabled", true);
@@ -77,17 +78,14 @@ public class AppShuttleService extends Service{
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 
 		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
-		editor.putFloat("matcher.freq.min_likelihood", 0);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
-		
 		editor.putLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.time.min_likelihood", 0.7f);
 		editor.putInt("matcher.time.min_num_cxt", 3);
 		editor.putLong("matcher.time.tolerance", settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR) / 2);
-
-		editor.putFloat("matcher.loc.min_likelihood", 0.1f);
-		editor.putInt("matcher.loc.min_num_cxt", 2);
-		editor.putInt("matcher.loc.min_distance", 300);
+		editor.putFloat("matcher.loc.min_likelihood", 0.7f);
+		editor.putInt("matcher.loc.min_num_cxt", 3);
+		editor.putInt("matcher.loc.min_distance", 500);
 
 		editor.putInt("viewer.noti.num_slot", 4);
 

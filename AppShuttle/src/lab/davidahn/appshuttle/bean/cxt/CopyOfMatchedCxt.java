@@ -6,16 +6,16 @@ import java.util.Map;
 import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 
-public class MatchedCxt implements Comparable<MatchedCxt> {
+public class CopyOfMatchedCxt implements Comparable<CopyOfMatchedCxt> {
 	private UserEnv userEnv;
 	private UserBhv userBhv;
 	private String condition;
 	private double likelihood;
 	private int numTotalCxt;
 	private int numRelatedCxt;
-	private Map<MergedRfdUserCxt, Double> relatedCxt;
+	private Map<MatcherCountUnit, Double> relatedCxt;
 	
-	public MatchedCxt(UserEnv userEnv){
+	public CopyOfMatchedCxt(UserEnv userEnv){
 		this.userEnv = userEnv;
 	}
 	
@@ -58,16 +58,16 @@ public class MatchedCxt implements Comparable<MatchedCxt> {
 		this.numRelatedCxt = numRelatedCxt;
 	}
 	
-	public Map<MergedRfdUserCxt, Double> getRelatedCxt(){
+	public Map<MatcherCountUnit, Double> getRelatedCxt(){
 		return relatedCxt;
 	}
 	
-	public void setRelatedCxt(Map<MergedRfdUserCxt, Double> relatedCxt) {
+	public void setRelatedCxt(Map<MatcherCountUnit, Double> relatedCxt) {
 		this.relatedCxt = relatedCxt;
 	}
 
-	public void addRelatedCxt(MergedRfdUserCxt rfdUCxt, double relatedness) {
-		if(relatedCxt == null) relatedCxt = new HashMap<MergedRfdUserCxt, Double>();
+	public void addRelatedCxt(MatcherCountUnit rfdUCxt, double relatedness) {
+		if(relatedCxt == null) relatedCxt = new HashMap<MatcherCountUnit, Double>();
 		relatedCxt.put(rfdUCxt, relatedness);
 	}
 
@@ -79,7 +79,7 @@ public class MatchedCxt implements Comparable<MatchedCxt> {
 		this.condition = condition;
 	}
 
-	public int compareTo(MatchedCxt matchedCxt){
+	public int compareTo(CopyOfMatchedCxt matchedCxt){
 		if(likelihood > matchedCxt.likelihood) return -1;
 		else if(likelihood == matchedCxt.likelihood) return 0;
 		else return 1;

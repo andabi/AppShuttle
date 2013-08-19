@@ -10,7 +10,7 @@ import lab.davidahn.appshuttle.bean.UserLoc.Validity;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.exception.InvalidLocationException;
 
-public class MergedRfdUserCxt {
+public class CopyOfMergedRfdUserCxt {
 	private final Date sTime;
 	private final Date eTime;
 	private final TimeZone timeZone;
@@ -20,7 +20,7 @@ public class MergedRfdUserCxt {
 	private final Map<Date, UserLoc> places;
 	private final UserLoc lastPlace;
 
-	private MergedRfdUserCxt(Builder builder) {
+	private CopyOfMergedRfdUserCxt(Builder builder) {
 		 sTime = builder.sTime;
 		 eTime = builder.eTime;
 		 timeZone = builder.timeZone;
@@ -85,8 +85,8 @@ public class MergedRfdUserCxt {
 			this.bhv = bhv;
 		}
 		
-		public MergedRfdUserCxt build(){
-			return new MergedRfdUserCxt(this);
+		public CopyOfMergedRfdUserCxt build(){
+			return new CopyOfMergedRfdUserCxt(this);
 		}
 
 		public Date getStartTime() {

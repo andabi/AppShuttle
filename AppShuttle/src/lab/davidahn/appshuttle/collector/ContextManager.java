@@ -13,14 +13,16 @@ import java.util.TreeMap;
 
 import lab.davidahn.appshuttle.DBHelper;
 import lab.davidahn.appshuttle.bean.UserLoc;
-import lab.davidahn.appshuttle.bean.cxt.MatchedCxt;
+import lab.davidahn.appshuttle.bean.cxt.MatchedResult;
 import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
 import lab.davidahn.appshuttle.bean.cxt.UserCxt;
+import lab.davidahn.appshuttle.bean.env.ChangedUserEnv;
 import lab.davidahn.appshuttle.bean.env.EnvType;
 import lab.davidahn.appshuttle.bean.env.LocUserEnv;
 import lab.davidahn.appshuttle.bean.env.PlaceUserEnv;
 import lab.davidahn.appshuttle.bean.env.UserEnv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.engine.matcher.PredictedBhv;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -204,24 +206,39 @@ public class ContextManager {
 //		return tableName;
 //	}
 
-	public void storeMatchedCxt(MatchedCxt mCxt) {
+	public void storeMatchedCxt(MatchedResult mCxt) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
-		UserEnv uEnv = mCxt.getUserEnv();
-		row.put("time", uEnv.getTime().getTime());
-//		row.put("timezone", gson.toJson(uEnv.getTimeZone()));
-		row.put("timezone", uEnv.getTimeZone().getID());
-		row.put("location", gson.toJson(uEnv.getPlace()));
-		row.put("place", gson.toJson(uEnv.getPlace()));
-		row.put("bhv_type", mCxt.getUserBhv().getBhvType());
-		row.put("bhv_name", mCxt.getUserBhv().getBhvName());
-		row.put("condition", mCxt.getCondition());
+//		Map<EnvType, UserEnv> uEnv = mCxt.getUserEnv();
+		row.put("time", mCxt.getTime().getTime());
+		row.put("timezone", mCxt.getTimeZone().getID());
+		row.put("location", gson.toJson(((LocUserEnv)mCxt.getUserEnv(EnvType.LOCATION)).getLoc()));
+		row.put("place", gson.toJson(((PlaceUserEnv)mCxt.getUserEnv(EnvType.PLACE)).getPlace()));
+		row.put("bhv_type", mCxt.getUserBhvs().getBhvType());
+		row.put("bhv_name", mCxt.getUserBhvs().getBhvName());
+		row.put("condition", mCxt.getMatcherType().toString());
 		row.put("likelihood", mCxt.getLikelihood());
 		row.put("related_cxt", gson.toJson(mCxt.getRelatedCxt()));
 		db.insert("matched_context", null, row);
 
 		Log.i("stored matched cxt", mCxt.toString());
+	}
+	
+	public void storePredictedBhv(PredictedBhv predictedBhv) {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		
+		ContentValues row = new ContentValues();
+		row.put("time", predictedBhv.getTime().getTime());
+		row.put("timezone", predictedBhv.getTimeZone().getID());
+		row.put("location", gson.toJson(((LocUserEnv)predictedBhv.getUserEnv(EnvType.LOCATION)).getLoc()));
+		row.put("place", gson.toJson(((PlaceUserEnv)predictedBhv.getUserEnv(EnvType.PLACE)).getPlace()));
+		row.put("bhv_type", predictedBhv.getUserBhv().getBhvType());
+		row.put("bhv_name", predictedBhv.getUserBhv().getBhvName());
+		row.put("score", predictedBhv.getScore());
+		db.insert("predicted_bhv", null, row);
+
+		Log.i("stored predicted bhv", predictedBhv.toString());
 	}
 	
 //	public List<RfdUserCxt> loadMatchedCxt(Context cxt, String fileName, Date sTime, Date eTime) {
@@ -333,7 +350,36 @@ public class ContextManager {
 				+ ".csv");
 	}
 
-//	public Cursor rawQeury(String sql){
-//		return db.rawQuery(sql, null);
-//	}
+	public void storeChangedUserEnv(ChangedUserEnv changedUserEnv) {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
+		ContentValues row = new ContentValues();
+		row.put("time", changedUserEnv.getTime().getTime());
+		row.put("timezone", changedUserEnv.getTimeZone().getID());
+		row.put("env_type", changedUserEnv.getEnvType().toString());
+		row.put("from_value", gson.toJson(changedUserEnv.getFromUserEnv()));
+		row.put("to_value", gson.toJson(changedUserEnv.getToUserEnv()));
+		db.insert("changed_env", null, row);
+		Log.i("stored changed env", changedUserEnv.toString());
+	}
+	
+	public List<ChangedUserEnv> retrieveChangedUserEnv(Date sTime, Date eTime, EnvType envType) {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		
+		Cursor cur = db.rawQuery("SELECT * FROM changed_env WHERE time >= "
+				+ sTime.getTime() + " AND time <= " + eTime.getTime() +" AND env_type = '" + envType.toString() + "';", null);
+		List<ChangedUserEnv> res = new ArrayList<ChangedUserEnv>();
+		while (cur.moveToNext()) {
+			Date time = new Date(cur.getLong(0));
+			TimeZone timezone = TimeZone.getTimeZone(cur.getString(1));
+			UserEnv from = gson.fromJson(cur.getString(3), UserEnv.class);
+			UserEnv to = gson.fromJson(cur.getString(4), UserEnv.class);
+
+			ChangedUserEnv changedUserEnv = new ChangedUserEnv(time, timezone, envType, from, to);
+			Log.i("retrieved changed env", changedUserEnv.toString());
+			res.add(changedUserEnv);
+		}
+		cur.close();
+		return res;
+	}
 }

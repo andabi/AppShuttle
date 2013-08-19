@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 	
 	private DBHelper(Context cxt) {
-		super(cxt, cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 21);
+		super(cxt, cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 22);
 	}
 	
 	public void onCreate(SQLiteDatabase db) {
@@ -26,13 +26,18 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE matched_context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT, condition TEXT, likelihood REAL, related_cxt TEXT);");
 		db.execSQL("CREATE TABLE user_bhv (bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (bhv_type, bhv_name) );");
+		db.execSQL("CREATE TABLE changed_env (time INTEGER, timezone TEXT, env_type TEXT, from_value TEXT, to_value TEXT, PRIMARY KEY (time, timezone, env_type) );");
+		db.execSQL("CREATE TABLE predicted_bhv (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT, score REAL);");
+
 	}
-	
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS context");
 		db.execSQL("DROP TABLE IF EXISTS refined_context");
 		db.execSQL("DROP TABLE IF EXISTS matched_context");
 		db.execSQL("DROP TABLE IF EXISTS user_bhv");
+		db.execSQL("DROP TABLE IF EXISTS changed_env");
+		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
 		onCreate(db);
 	}
 }

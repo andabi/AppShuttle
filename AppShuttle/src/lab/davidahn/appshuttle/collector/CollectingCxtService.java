@@ -8,6 +8,7 @@ import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.bean.UserLoc;
 import lab.davidahn.appshuttle.bean.cxt.RfdUserCxt;
 import lab.davidahn.appshuttle.bean.cxt.UserCxt;
+import lab.davidahn.appshuttle.bean.env.ChangedUserEnv;
 import lab.davidahn.appshuttle.bean.env.EnvType;
 import lab.davidahn.appshuttle.bean.env.LocUserEnv;
 import lab.davidahn.appshuttle.bean.env.PlaceUserEnv;
@@ -79,7 +80,7 @@ public class CollectingCxtService extends IntentService {
 				}
 			}
 			locationManager.requestLocationUpdates(bestProvider, settings.getLong("collection.location.tolerance.time", 6000)
-					, settings.getInt("collection.location.tolerance.distance", 10), locationListener);
+					, settings.getInt("collection.location.tolerance.distance", 100), locationListener);
 		}
 		
 		//time
@@ -97,15 +98,30 @@ public class CollectingCxtService extends IntentService {
 	
 	public void onHandleIntent(Intent intent){
 		UserCxt uCxt = new UserCxt();
-
+		//sense env
 		senseAndSetTime(uCxt);
 		senseAndSetLocation(uCxt);
 		setPlace(uCxt);
-		
+
+		//sense bhv
 		senseBhv(uCxt);
+
+		//update globalState
+		if(GlobalState.currentUCxt == null) {
+			;
+		} else
+			GlobalState.prevUCxt = GlobalState.currentUCxt;
+		GlobalState.currentUCxt = uCxt;
+		
+		if(settings.getBoolean("collection.store_cxt.enabled", false)) contextManager.storeCxt(uCxt);
+
+		if(GlobalState.moved) contextManager.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
+				, uCxt.getTimeZone()
+				, EnvType.PLACE
+				, GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)
+				, uCxt.getUserEnv(EnvType.PLACE)));
 		
 		ContextRefiner cxtRefiner = contextManager.getCxtRefiner();
-		if(settings.getBoolean("collection.store_cxt.enabled", false)) contextManager.storeCxt(uCxt);
 		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxt(uCxt);
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			contextManager.storeRfdCxt(rfdUCxt);
@@ -148,18 +164,18 @@ public class CollectingCxtService extends IntentService {
 		else {
 			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(currentLoc.getLatitude(), currentLoc.getLongitude(), UserLoc.Validity.VALID)));
 		}
-		GlobalState.currentUEnvs = uCxt.getUserEnvs();
 	}
 	
 	public void setPlace(UserCxt uCxt) {
 		if(GlobalState.place == null){
-			GlobalState.place = ((PlaceUserEnv) GlobalState.currentUEnvs.get(EnvType.PLACE)).getPlace();
+			GlobalState.place = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
 			GlobalState.moved = false;
 		}
 		try {
-			if(!Utils.Proximity(GlobalState.place, ((PlaceUserEnv) GlobalState.currentUEnvs.get(EnvType.PLACE)).getPlace(), settings.getInt("location.min_distance", 2000))){
-				GlobalState.place = ((PlaceUserEnv) GlobalState.currentUEnvs.get(EnvType.PLACE)).getPlace();
+			if(!Utils.Proximity(GlobalState.place, ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), settings.getInt("collection.place.tolerance.distance", 2000))){
+				GlobalState.place = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
 				GlobalState.moved = true;
+				Log.i("changed env", "moved");
 			} else {
 				GlobalState.moved = false;
 			}
