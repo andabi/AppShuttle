@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle;
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectingCxtService;
-import lab.davidahn.appshuttle.compact.CompactingCxtService;
+import lab.davidahn.appshuttle.context.compact.CompactingCxtService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.NotiViewService;
 import android.app.AlarmManager;
@@ -82,11 +82,11 @@ public class AppShuttleService extends Service{
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
-		editor.putLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.time.min_likelihood", 0.7f);
+		editor.putLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
+		editor.putFloat("matcher.time.min_likelihood", 0.5f);
 		editor.putInt("matcher.time.min_num_cxt", 3);
-		editor.putLong("matcher.time.tolerance", settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR) / 2);
-		editor.putFloat("matcher.loc.min_likelihood", 0.7f);
+		editor.putLong("matcher.time.tolerance", settings.getLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
+		editor.putFloat("matcher.loc.min_likelihood", 0.5f);
 		editor.putInt("matcher.loc.min_num_cxt", 3);
 		editor.putInt("matcher.loc.min_distance", 500);
 

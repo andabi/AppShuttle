@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.compact;
+package lab.davidahn.appshuttle.context.compact;
 
 import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.context.ContextManager;
