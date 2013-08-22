@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.utils.Mail;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;

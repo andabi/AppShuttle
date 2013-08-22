@@ -34,9 +34,9 @@
             </intent-filter>
         </activity>
         <service android:name="lab.davidahn.appshuttle.AppShuttleService" />
-        <service android:name="lab.davidahn.appshuttle.collector.CollectingCxtService" />
+        <service android:name="lab.davidahn.appshuttle.collect.CollectingCxtService" />
         <service android:name="lab.davidahn.appshuttle.report.ReportingCxtService" />
-        <service android:name="lab.davidahn.appshuttle.viewer.NotiViewService" />
+        <service android:name="lab.davidahn.appshuttle.view.NotiViewService" />
         
     </application>
 

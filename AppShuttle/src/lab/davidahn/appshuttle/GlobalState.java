@@ -2,10 +2,10 @@ package lab.davidahn.appshuttle;
 
 import java.util.List;
 
-import lab.davidahn.appshuttle.bean.UserLoc;
-import lab.davidahn.appshuttle.bean.cxt.MatchedResult;
-import lab.davidahn.appshuttle.bean.cxt.UserCxt;
-import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.env.UserLoc;
+import lab.davidahn.appshuttle.mine.matcher.MatchedResult;
 
 public class GlobalState {
 	public static volatile boolean isInUse;
