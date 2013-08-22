@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle;
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collector.CollectingCxtService;
+import lab.davidahn.appshuttle.collector.CompactingCxtService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.viewer.NotiViewService;
 import android.app.AlarmManager;
@@ -16,12 +17,12 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 
 public class AppShuttleService extends Service{
-//	private boolean isRunning;
 //	private Properties property;
 	private AlarmManager alarmManager;
 	private PendingIntent collectingCxtOperation;
 	private PendingIntent reportingCxtOperation;
 	private PendingIntent notiViewOperation;
+	private PendingIntent compactingCxtOperation;
 	private SharedPreferences settings;
 	
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver(){
@@ -51,7 +52,6 @@ public class AppShuttleService extends Service{
 	public void onCreate() {
 		super.onCreate();
 
-//		isRunning = false;
 		GlobalState.isInUse = true;
 		
 		//preference settings
@@ -70,13 +70,16 @@ public class AppShuttleService extends Service{
 		editor.putBoolean("service.view.enabled", true);
 		editor.putLong("service.view.peroid", 30000);
 		editor.putBoolean("service.report.enabled", false);
+		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
+		editor.putBoolean("service.compaction.enabled", true);
+		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
+		editor.putLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
 		
 		editor.putString("email.sender.addr", "davidahn412@gmail.com");
 		editor.putString("email.sender.pwd", "rnrmfepdl");
 		editor.putString("email.receiver.addr", "andabi412@gmail.com");
 		
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
-
 		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
 		editor.putLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR);
@@ -122,16 +125,18 @@ public class AppShuttleService extends Service{
 		if(settings.getBoolean("service.report.enabled", false)){
 			Intent reportingCxtIntent = new Intent(this, ReportingCxtService.class);
 			reportingCxtOperation = PendingIntent.getService(this, 0, reportingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(21), AlarmManager.INTERVAL_DAY, reportingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(21), settings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
+		}
+		
+		if(settings.getBoolean("service.compaction.enabled", true)){
+			Intent compactingCxtIntent = new Intent(this, CompactingCxtService.class);
+			compactingCxtOperation = PendingIntent.getService(this, 0, compactingCxtIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(21), settings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
 		}
 	}
 	
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
-		
-//		if(!isRunning) {
-//			isRunning = true;
-//		}
 		return START_STICKY;
 	}
 	
@@ -150,18 +155,23 @@ public class AppShuttleService extends Service{
 
 	public void onDestroy() {
 		super.onDestroy();
+		
 		GlobalState.isInUse = false;
+		
 		alarmManager.cancel(collectingCxtOperation);
 		alarmManager.cancel(reportingCxtOperation);
 		alarmManager.cancel(notiViewOperation);
+		alarmManager.cancel(compactingCxtOperation);
+		
 		unregisterReceiver(screenOnReceiver);
 		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(notiViewReceiver);
+		
 		stopService(new Intent(AppShuttleService.this, CollectingCxtService.class));
 		stopService(new Intent(AppShuttleService.this, NotiViewService.class));
 		stopService(new Intent(AppShuttleService.this, ReportingCxtService.class));
+		stopService(new Intent(AppShuttleService.this, CompactingCxtService.class));
 //		notificationManager.cancelAll();
-//		isRunning = false;
 	}
 }
 

@@ -161,6 +161,15 @@ public class ContextManager {
 		return res;
 	}
 	
+	public void removeRfdCxt(Date sTime, Date eTime){
+		db.execSQL("DELETE * FROM refined_context WHERE s_time >= "
+				+ sTime.getTime() + " AND e_time <= " + eTime.getTime() +";");
+	}
+	
+	public void removeRfdCxtBefore(long time){
+		db.execSQL("DELETE * FROM refined_context WHERE s_time < " + time +";");
+	}
+	
 	public List<RfdUserCxt> retrieveRfdCxtByBhv(long sTime, long eTime, UserBhv uBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
