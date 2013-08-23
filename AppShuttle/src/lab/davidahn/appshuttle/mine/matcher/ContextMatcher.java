@@ -79,9 +79,17 @@ public abstract class ContextMatcher {
 		}
 	}
 	
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap){
+		double likelihood = 0;
+		for(double relatedness : relatedCxtMap.values()){
+			likelihood+=relatedness;
+		}
+		likelihood /= numTotalCxt;
+		return likelihood;
+	}	
+
 	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList);
 	protected abstract double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt);
-	protected abstract double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap);
 	
 //			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)
 //				matchedCxt.setMatched(true);

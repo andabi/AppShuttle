@@ -36,23 +36,19 @@ public class PlaceContextMatcher extends ContextMatcher {
 				if(lastKnownTimeAndPlace == null) {
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 					mergedRfdUCxtBuilder.setPlace(timeAndPlace.getValue());
-//					mergedRfdUCxtBuilder.setStartTime(timeAndPlace.getKey());
 				} else {
 					if(timeAndPlace.getValue().equals(lastKnownTimeAndPlace.getValue())
 							&& !moved(lastKnownTimeAndPlace, timeAndPlace)){
 						;
 					} else {
-//						mergedRfdUCxtBuilder.setEndTime(lastKnownTimeAndPlace.getKey());
 						res.add(mergedRfdUCxtBuilder.build());
 						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-//						mergedRfdUCxtBuilder.setPlace(timeAndPlace.getValue());
-//						mergedRfdUCxtBuilder.setStartTime(timeAndPlace.getKey());
+						mergedRfdUCxtBuilder.setPlace(timeAndPlace.getValue());
 					}
 				}
 				lastKnownTimeAndPlace = timeAndPlace;
 			}
 		}
-//		mergedRfdUCxtBuilder.setEndTime(lastKnownTimeAndPlace.getKey());
 		if(mergedRfdUCxtBuilder != null)
 			res.add(mergedRfdUCxtBuilder.build());
 		return res;

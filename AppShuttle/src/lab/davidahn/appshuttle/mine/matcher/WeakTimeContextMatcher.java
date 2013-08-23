@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.context.RfdUserCxt;
 import lab.davidahn.appshuttle.context.UserCxt;
@@ -76,18 +75,5 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 		} else {
 			return 0;
 		}
-	}
-
-	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap){
-		double likelihood = 0;
-//		int numTotalCxt = matchedCxt.getNumTotalCxt();
-		
-//		Map<MatcherCountUnit, Double> relatedCxtMap = matchedCxt.getRelatedCxt();
-		for(double relatedness : relatedCxtMap.values()){
-			likelihood+=relatedness;
-		}
-		likelihood /= numTotalCxt;
-		return likelihood;
 	}
 }

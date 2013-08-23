@@ -42,9 +42,13 @@ public class Predictor {
 				, AlarmManager.INTERVAL_DAY
 				, settings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)));
 		cxtMatcherList.add(new PlaceContextMatcher(cxt
-				, settings.getFloat("matcher.loc.min_likelihood", 0.7f)
+				, settings.getFloat("matcher.place.min_likelihood", 0.7f)
+				, settings.getInt("matcher.place.min_num_cxt", 3)
+				, settings.getInt("matcher.place.min_distance", 2000)));
+		cxtMatcherList.add(new LocContextMatcher(cxt
+				, settings.getFloat("matcher.loc.min_likelihood", 0.5f)
 				, settings.getInt("matcher.loc.min_num_cxt", 3)
-				, settings.getInt("matcher.loc.min_distance", 2000)));
+				, settings.getInt("matcher.loc.min_distance", 500)));
 		cxtMatcherList.add(new FreqContextMatcher(cxt
 				, Double.MIN_VALUE
 				, settings.getInt("matcher.freq.min_num_cxt", 3)));
