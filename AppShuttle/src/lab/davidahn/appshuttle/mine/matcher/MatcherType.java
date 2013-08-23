@@ -2,8 +2,10 @@ package lab.davidahn.appshuttle.mine.matcher;
 
 public enum MatcherType {
 	FREQUENCY(0),
-	TIME(1),
-	LOCATION(1);
+	WEAK_TIME(1),
+	PLACE(1),
+	STRICT_TIME(2),
+	LOCATION(2);
 	
 	private int priority;
 	

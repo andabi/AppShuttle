@@ -31,12 +31,17 @@ public class Predictor {
 		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
 
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
-		cxtMatcherList.add(new TimeContextMatcher(cxt
-				, settings.getFloat("matcher.time.min_likelihood", 0.7f)
-				, settings.getInt("matcher.time.min_num_cxt", 3)
+		cxtMatcherList.add(new WeakTimeContextMatcher(cxt
+				, settings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
+				, settings.getInt("matcher.weak_time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
-				, settings.getLong("matcher.time.tolerance", AlarmManager.INTERVAL_HOUR / 6)));
-		cxtMatcherList.add(new LocContextMatcher(cxt
+				, settings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)));
+		cxtMatcherList.add(new StrictTimeContextMatcher(cxt
+				, settings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
+				, settings.getInt("matcher.strict_time.min_num_cxt", 3)
+				, AlarmManager.INTERVAL_DAY
+				, settings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)));
+		cxtMatcherList.add(new PlaceContextMatcher(cxt
 				, settings.getFloat("matcher.loc.min_likelihood", 0.7f)
 				, settings.getInt("matcher.loc.min_num_cxt", 3)
 				, settings.getInt("matcher.loc.min_distance", 2000)));

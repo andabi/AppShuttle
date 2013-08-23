@@ -82,10 +82,14 @@ public class AppShuttleService extends Service{
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
-		editor.putLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.time.min_likelihood", 0.5f);
-		editor.putInt("matcher.time.min_num_cxt", 3);
-		editor.putLong("matcher.time.tolerance", settings.getLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
+		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
+		editor.putLong("matcher.weak_time.tolerance", settings.getLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
+		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
+		editor.putInt("matcher.weak_time.min_num_cxt", 3);
+		editor.putLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
+		editor.putLong("matcher.strict_time.tolerance", settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
+		editor.putFloat("matcher.strict_time.min_likelihood", 0.3f);
+		editor.putInt("matcher.strict_time.min_num_cxt", 3);
 		editor.putFloat("matcher.loc.min_likelihood", 0.5f);
 		editor.putInt("matcher.loc.min_num_cxt", 3);
 		editor.putInt("matcher.loc.min_distance", 500);

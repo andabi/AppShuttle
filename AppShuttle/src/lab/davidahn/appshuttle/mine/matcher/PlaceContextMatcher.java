@@ -16,13 +16,13 @@ import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
 import android.util.Log;
 
-public class LocContextMatcher extends ContextMatcher {
+public class PlaceContextMatcher extends ContextMatcher {
 	double toleranceInMeter;
 
-	public LocContextMatcher(Context cxt, double minLikelihood, int minNumCxt, double toleranceInMeter) {
+	public PlaceContextMatcher(Context cxt, double minLikelihood, int minNumCxt, double toleranceInMeter) {
 		super(cxt, minLikelihood, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
-		matcherType = MatcherType.LOCATION;
+		matcherType = MatcherType.PLACE;
 	}
 	
 	@Override

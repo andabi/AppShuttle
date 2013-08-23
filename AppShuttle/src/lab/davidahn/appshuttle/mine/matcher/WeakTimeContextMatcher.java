@@ -10,15 +10,15 @@ import lab.davidahn.appshuttle.context.env.Time;
 import android.app.AlarmManager;
 import android.content.Context;
 
-public class TimeContextMatcher extends ContextMatcher {
+public class WeakTimeContextMatcher extends ContextMatcher {
 	protected long period;
 	protected long tolerance;
 	
-	public TimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance) {
+	public WeakTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance) {
 		super(cxt, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
-		matcherType = MatcherType.TIME;
+		matcherType = MatcherType.WEAK_TIME;
 	}
 
 //	protected List<RfdUserCxt> retrieveCxt(UserEnv uEnv){
@@ -43,7 +43,7 @@ public class TimeContextMatcher extends ContextMatcher {
 				mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
+						< settings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
 					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
