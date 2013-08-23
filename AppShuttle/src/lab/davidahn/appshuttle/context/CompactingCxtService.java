@@ -1,7 +1,8 @@
-package lab.davidahn.appshuttle.context.compact;
+package lab.davidahn.appshuttle.context;
+
+import java.util.Date;
 
 import lab.davidahn.appshuttle.GlobalState;
-import lab.davidahn.appshuttle.context.ContextManager;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.content.Intent;
@@ -29,10 +30,11 @@ public class CompactingCxtService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		long time = GlobalState.currentUCxt.getTime().getTime() - settings.getLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
+		long time = System.currentTimeMillis() - settings.getLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
 		contextManager.removeRfdCxtBefore(time);
-		
-		//TODO remove matched cxt, predictedBhv ...
+		contextManager.removeChangedUserEnv(time);
+		contextManager.removeMatchedCxt(time);
+		contextManager.removePredictedBhv(time);
 	}
 	
 	public void onDestroy() {

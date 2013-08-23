@@ -36,7 +36,8 @@ public class FreqContextMatcher extends ContextMatcher{
 			prevRfdUCxt = rfdUCxt;
 		}
 		
-		res.add(mergedRfdUCxtBuilder.build());
+		if(mergedRfdUCxtBuilder != null)
+			res.add(mergedRfdUCxtBuilder.build());
 		return res;
 	}
 	

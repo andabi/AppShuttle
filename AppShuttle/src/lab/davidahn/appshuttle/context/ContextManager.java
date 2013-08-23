@@ -159,13 +159,13 @@ public class ContextManager {
 		return res;
 	}
 	
-	public void removeRfdCxt(Date sTime, Date eTime){
-		db.execSQL("DELETE * FROM refined_context WHERE s_time >= "
-				+ sTime.getTime() + " AND e_time <= " + eTime.getTime() +";");
-	}
+//	public void removeRfdCxt(Date sTime, Date eTime){
+//		db.execSQL("DELETE * FROM refined_context WHERE s_time >= "
+//				+ sTime.getTime() + " AND e_time <= " + eTime.getTime() +";");
+//	}
 	
 	public void removeRfdCxtBefore(long time){
-		db.execSQL("DELETE * FROM refined_context WHERE s_time < " + time +";");
+		db.execSQL("DELETE FROM refined_context WHERE s_time < " + time +";");
 	}
 	
 	public List<RfdUserCxt> retrieveRfdCxtByBhv(long sTime, long eTime, UserBhv uBhv) {
@@ -232,6 +232,10 @@ public class ContextManager {
 		Log.i("stored matched cxt", mCxt.toString());
 	}
 	
+	public void removeMatchedCxt(long time){
+		db.execSQL("DELETE FROM matched_context WHERE time < " + time +";");
+	}
+	
 	public void storePredictedBhv(PredictedBhv predictedBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
@@ -246,6 +250,10 @@ public class ContextManager {
 		db.insert("predicted_bhv", null, row);
 
 		Log.i("stored predicted bhv", predictedBhv.toString());
+	}
+	
+	public void removePredictedBhv(long time){
+		db.execSQL("DELETE FROM predicted_bhv WHERE time < " + time +";");
 	}
 	
 //	public List<RfdUserCxt> loadMatchedCxt(Context cxt, String fileName, Date sTime, Date eTime) {
@@ -388,5 +396,9 @@ public class ContextManager {
 		}
 		cur.close();
 		return res;
+	}
+	
+	public void removeChangedUserEnv(long time){
+		db.execSQL("DELETE FROM changed_env WHERE time < " + time +";");
 	}
 }

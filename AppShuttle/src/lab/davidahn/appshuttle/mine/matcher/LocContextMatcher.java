@@ -53,7 +53,8 @@ public class LocContextMatcher extends ContextMatcher {
 			}
 		}
 //		mergedRfdUCxtBuilder.setEndTime(lastKnownTimeAndPlace.getKey());
-		res.add(mergedRfdUCxtBuilder.build());
+		if(mergedRfdUCxtBuilder != null)
+			res.add(mergedRfdUCxtBuilder.build());
 		return res;
 	}
 

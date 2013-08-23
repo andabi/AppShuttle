@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle;
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectingCxtService;
-import lab.davidahn.appshuttle.context.compact.CompactingCxtService;
+import lab.davidahn.appshuttle.context.CompactingCxtService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.NotiViewService;
 import android.app.AlarmManager;
@@ -131,7 +131,7 @@ public class AppShuttleService extends Service{
 		if(settings.getBoolean("service.compaction.enabled", true)){
 			Intent compactingCxtIntent = new Intent(this, CompactingCxtService.class);
 			compactingCxtOperation = PendingIntent.getService(this, 0, compactingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(21), settings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
 		}
 	}
 	
