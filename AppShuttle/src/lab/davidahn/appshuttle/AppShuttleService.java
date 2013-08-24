@@ -90,6 +90,7 @@ public class AppShuttleService extends Service{
 		
 		
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15 / 2);
 		
 		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
 		editor.putInt("matcher.freq.min_num_cxt", 3);

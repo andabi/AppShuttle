@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,14 @@ public abstract class ContextMatcher {
 		long sTime = etime - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 		
 		List<RfdUserCxt> rfdUCxtList = contextManager.retrieveRfdCxtByBhv(sTime, etime, uBhv);
-		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(rfdUCxtList);
+		List<RfdUserCxt> pureRfdUCxtList = new ArrayList<RfdUserCxt>();
+		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getStartTime().getTime() 
+					< settings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15 / 6 / 2))   //noise
+				continue;
+			pureRfdUCxtList.add(rfdUCxt);
+		}
+		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList);
 		
 		int numTotalCxt = 0;
 		int numRelatedCxt = 0;
