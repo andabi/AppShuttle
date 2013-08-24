@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.DBHelper;
-import lab.davidahn.appshuttle.context.ContextManager;
 import lab.davidahn.appshuttle.context.RfdUserCxt;
+import lab.davidahn.appshuttle.context.RfdUserCxtDao;
 import lab.davidahn.appshuttle.context.UserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import android.app.AlarmManager;
@@ -20,8 +19,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 public abstract class ContextMatcher {
 	protected MatcherType matcherType;
-	protected ContextManager contextManager;
-	protected UserBhvManager userBhvManager;
 	protected SQLiteDatabase db;
 	protected Context cxt;
 	protected SharedPreferences settings;
@@ -34,8 +31,6 @@ public abstract class ContextMatcher {
 
 	public ContextMatcher(Context cxt, double minLikelihood, int minNumCxt) {
 		this.cxt = cxt;
-		contextManager = ContextManager.getInstance(cxt);
-		userBhvManager = UserBhvManager.getInstance(cxt);
 		db = DBHelper.getInstance(cxt.getApplicationContext()).getReadableDatabase();
 		settings = cxt.getSharedPreferences("AppShuttle",Context.MODE_PRIVATE);
 
@@ -44,12 +39,14 @@ public abstract class ContextMatcher {
 	}
 
 	public MatchedResult matchAndGetResult(UserBhv uBhv, UserCxt uCxt){
+		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(cxt);
+
 		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
 		long etime = uCxt.getTime().getTime();
 		long sTime = etime - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 		
-		List<RfdUserCxt> rfdUCxtList = contextManager.retrieveRfdCxtByBhv(sTime, etime, uBhv);
+		List<RfdUserCxt> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(sTime, etime, uBhv);
 		List<RfdUserCxt> pureRfdUCxtList = new ArrayList<RfdUserCxt>();
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getStartTime().getTime() 

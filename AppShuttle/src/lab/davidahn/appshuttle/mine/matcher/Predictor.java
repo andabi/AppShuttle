@@ -6,27 +6,24 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import lab.davidahn.appshuttle.GlobalState;
-import lab.davidahn.appshuttle.context.ContextManager;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.context.bhv.UserBhvDao;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class Predictor {
-	private ContextManager contextManager;
-	private UserBhvManager userBhvManager;
 	private Context cxt;
 	private SharedPreferences settings;
 	
 	public Predictor(Context cxt){
 		this.cxt = cxt;
-		contextManager = ContextManager.getInstance(cxt);
-		userBhvManager = UserBhvManager.getInstance(cxt);
 		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
 	}
 	
 	public List<PredictedBhv> predict(int topN){
+		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
+		
 		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
 		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
 
@@ -45,15 +42,15 @@ public class Predictor {
 				, settings.getFloat("matcher.place.min_likelihood", 0.7f)
 				, settings.getInt("matcher.place.min_num_cxt", 3)
 				, settings.getInt("matcher.place.min_distance", 2000)));
-		cxtMatcherList.add(new LocContextMatcher(cxt
-				, settings.getFloat("matcher.loc.min_likelihood", 0.5f)
-				, settings.getInt("matcher.loc.min_num_cxt", 3)
-				, settings.getInt("matcher.loc.min_distance", 500)));
+//		cxtMatcherList.add(new LocContextMatcher(cxt
+//				, settings.getFloat("matcher.loc.min_likelihood", 0.5f)
+//				, settings.getInt("matcher.loc.min_num_cxt", 3)
+//				, settings.getInt("matcher.loc.min_distance", 50)));
 		cxtMatcherList.add(new FreqContextMatcher(cxt
 				, Double.MIN_VALUE
 				, settings.getInt("matcher.freq.min_num_cxt", 3)));
 
-		for(UserBhv uBhv : userBhvManager.retrieveBhv()){
+		for(UserBhv uBhv : userBhvDao.retrieveUserBhv()){
 			EnumMap<MatcherType, MatchedResult> matchedResults = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 
 			for(ContextMatcher cxtMatcher : cxtMatcherList){
@@ -83,16 +80,14 @@ public class Predictor {
 		double score = 0;
 		for(MatcherType matcherType : matchedResults.keySet()){
 //			if(matchedResults.get(matcherType).isMatched())
-			score += Math.pow(10, matcherType.getPriority()) * matchedResults.get(matcherType).getLikelihood();
+			score += Math.pow(10, matcherType.getPriority()) + matchedResults.get(matcherType).getLikelihood();
 		}
 		return score;
 	}
 
 	public void storePredictedBhv(PredictedBhv predictedBhv){
-		contextManager.storePredictedBhv(predictedBhv);
-		for(MatchedResult matchedRes : predictedBhv.getMatchedResults().values()) {
-			contextManager.storeMatchedCxt(matchedRes);
-		}
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(cxt);
+		predictedBhvDao.storePredictedBhv(predictedBhv);
 	}
 }
 //ContextMatcher timeCxtMatcher = new TimeContextMatcher(cxt

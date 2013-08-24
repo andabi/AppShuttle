@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import lab.davidahn.appshuttle.Utils;
 import lab.davidahn.appshuttle.context.RfdUserCxt;
 import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.env.ChangedUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidLocationException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
@@ -17,9 +17,9 @@ import android.content.Context;
 import android.util.Log;
 
 public class PlaceContextMatcher extends ContextMatcher {
-	double toleranceInMeter;
+	int toleranceInMeter;
 
-	public PlaceContextMatcher(Context cxt, double minLikelihood, int minNumCxt, double toleranceInMeter) {
+	public PlaceContextMatcher(Context cxt, double minLikelihood, int minNumCxt, int toleranceInMeter) {
 		super(cxt, minLikelihood, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
 		matcherType = MatcherType.PLACE;
@@ -57,7 +57,8 @@ public class PlaceContextMatcher extends ContextMatcher {
 	@Override
 	protected double calcRelatedness(MatcherCountUnit unit, UserCxt uCxt) {
 		try{
-			if(Utils.Proximity(((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), unit.getPlace(), toleranceInMeter))
+			UserLoc uLoc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+			if(uLoc.proximity(unit.getPlace(), toleranceInMeter))
 				return 1;
 			else
 				return 0;
@@ -94,10 +95,12 @@ public class PlaceContextMatcher extends ContextMatcher {
 	}
 	
 	private boolean moved(Entry<Date, UserLoc> start, Entry<Date, UserLoc> end){
+		ChangedUserEnvDao changedUserEnvDao = ChangedUserEnvDao.getInstance(cxt);
+		
 		Date sTime = start.getKey();
 		Date eTime = end.getKey();
-		if(contextManager.retrieveChangedUserEnv(sTime, eTime, EnvType.PLACE).size() > 0){
-			Log.d("LocContextMatcher", "moved");
+		if(changedUserEnvDao.retrieveChangedUserEnv(sTime, eTime, EnvType.PLACE).size() > 0){
+			Log.d("PlaceContextMatcher", "moved");
 			return true;
 		} else
 			return false;

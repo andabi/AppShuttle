@@ -1,17 +1,14 @@
 package lab.davidahn.appshuttle.context;
 
-import java.util.Date;
-
-import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.context.env.ChangedUserEnvDao;
+import lab.davidahn.appshuttle.mine.matcher.MatchedResultDao;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhvDao;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 public class CompactingCxtService extends IntentService {
-//	private Calendar calendar;
-	private ContextManager contextManager;
-//	private UserBhvManager userBhvManager;
     SharedPreferences settings;
 	
 	public CompactingCxtService() {
@@ -25,16 +22,21 @@ public class CompactingCxtService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
-		contextManager = ContextManager.getInstance(getApplicationContext());
-//		userBhvManager = UserBhvManager.getInstance(getApplicationContext());
 	}
 	
 	public void onHandleIntent(Intent intent){
+//		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
+		ChangedUserEnvDao changedUserEnvDao = ChangedUserEnvDao.getInstance(getApplicationContext());
+		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
+		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
+
 		long time = System.currentTimeMillis() - settings.getLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
-		contextManager.removeRfdCxtBefore(time);
-		contextManager.removeChangedUserEnv(time);
-		contextManager.removeMatchedCxt(time);
-		contextManager.removePredictedBhv(time);
+		
+		rfdUserCxtDao.deleteRfdCxtBefore(time);
+		changedUserEnvDao.deleteChangedUserEnv(time);
+		matchedResultDao.deleteMatchedResult(time);
+		predictedBhvDao.deletePredictedBhv(time);
 	}
 	
 	public void onDestroy() {

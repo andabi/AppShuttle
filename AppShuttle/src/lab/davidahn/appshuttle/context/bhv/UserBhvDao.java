@@ -8,44 +8,38 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-public class UserBhvManager {
-	private static UserBhvManager userBhvManager;
+public class UserBhvDao {
+	private static UserBhvDao userBhvDao;
 	private SQLiteDatabase db;
-	private Context cxt;
+//	private Context cxt;
 	
-	private UserBhvManager(Context cxt) {
+	private UserBhvDao(Context cxt) {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
-		this.cxt = cxt;
+//		this.cxt = cxt;
 	}
 
-	public static UserBhvManager getInstance(Context cxt) {
-		if (userBhvManager == null)
-			userBhvManager = new UserBhvManager(cxt);
-		return userBhvManager;
+	public static UserBhvDao getInstance(Context cxt) {
+		if (userBhvDao == null)
+			userBhvDao = new UserBhvDao(cxt);
+		return userBhvDao;
 	}
 
-	public void registerBhv(UserBhv uBhv){
-		if(isValid(uBhv) && uBhv.isValid(cxt))
-			storeBhv(uBhv);
-	}
-	
-	public void storeBhv(UserBhv uBhv) {
+	public void storeUserBhv(UserBhv uBhv) {
 		ContentValues row = new ContentValues();
-		row.put("bhv_type", uBhv.getBhvType());
+		row.put("bhv_type", uBhv.getBhvType().toString());
 		row.put("bhv_name", uBhv.getBhvName());
 //		db.insert("user_bhv", null, row);
 		db.insertWithOnConflict("user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		Log.i("stored userBhv", uBhv.toString());
 	}
 	
-	public List<UserBhv> retrieveBhv() {
+	public List<UserBhv> retrieveUserBhv() {
 		Cursor cur = db.rawQuery("SELECT * FROM user_bhv;", null);
 		List<UserBhv> res = new ArrayList<UserBhv>();
 		
 		while (cur.moveToNext()) {
-			String bhvType= cur.getString(0);
+			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
 			res.add(uBhv);
@@ -55,10 +49,10 @@ public class UserBhvManager {
 		return res;
 	}
 
-	public boolean isValid(UserBhv uBhv) {
-		if(uBhv.getBhvType().equals("invalid")) 
-			return false;
-		else 
-			return true;
-	}
+//	public boolean isValid(UserBhv uBhv) {
+//		if(uBhv.getBhvType().equals("invalid")) 
+//			return false;
+//		else 
+//			return true;
+//	}
 }

@@ -9,15 +9,15 @@ import lab.davidahn.appshuttle.context.env.Time;
 import android.app.AlarmManager;
 import android.content.Context;
 
-public class WeakTimeContextMatcher extends ContextMatcher {
+public class StrictTimeContextMatcher extends ContextMatcher {
 	protected long period;
 	protected long tolerance;
 	
-	public WeakTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance) {
+	public StrictTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance) {
 		super(cxt, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
-		matcherType = MatcherType.WEAK_TIME;
+		matcherType = MatcherType.STRICT_TIME;
 	}
 
 //	protected List<RfdUserCxt> retrieveCxt(UserEnv uEnv){
@@ -42,7 +42,7 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 				mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< settings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
+						< settings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)){
 					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
@@ -72,7 +72,6 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 
 		if(Time.isBetween(startTimePeriodic - tolerance, timePeriodic, endTimePeriodic + tolerance)){
 			return 1;
-//			return (endTime - startTime) / Long.MAX_VALUE;
 		} else {
 			return 0;
 		}

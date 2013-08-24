@@ -28,21 +28,21 @@ public class AppShuttleService extends Service{
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			GlobalState.isInUse = true;
+			GlobalState.inPresent = true;
 		}
 	};
 	
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			GlobalState.isInUse = false;
+			GlobalState.inPresent = false;
 		}
 	};
 
 	BroadcastReceiver notiViewReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if(GlobalState.isInUse == true) {
+			if(GlobalState.inPresent == true) {
 				context.startService(new Intent(context, NotiViewService.class));
 			}
 		}
@@ -52,7 +52,7 @@ public class AppShuttleService extends Service{
 	public void onCreate() {
 		super.onCreate();
 
-		GlobalState.isInUse = true;
+		GlobalState.inPresent = true;
 		
 		//preference settings
 		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
@@ -92,11 +92,14 @@ public class AppShuttleService extends Service{
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15 / 2);
 		
-		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
+		editor.putLong("matcher.freq.acceptance_delay", 0);
+//		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
 		
 		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
 		editor.putLong("matcher.weak_time.tolerance", settings.getLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
+//		editor.putLong("matcher.weak_time.acceptance_delay", 0);
+//		editor.putLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
 		editor.putInt("matcher.weak_time.min_num_cxt", 3);
 		
@@ -111,7 +114,7 @@ public class AppShuttleService extends Service{
 		
 		editor.putFloat("matcher.loc.min_likelihood", 0.5f);
 		editor.putInt("matcher.loc.min_num_cxt", 3);
-		editor.putInt("matcher.loc.min_distance", 500);
+		editor.putInt("matcher.loc.min_distance", 50);
 
 		
 		editor.putInt("viewer.noti.num_slot", 4);
@@ -180,7 +183,7 @@ public class AppShuttleService extends Service{
 	public void onDestroy() {
 		super.onDestroy();
 		
-		GlobalState.isInUse = false;
+		GlobalState.inPresent = false;
 		
 		alarmManager.cancel(collectingCxtOperation);
 		alarmManager.cancel(reportingCxtOperation);

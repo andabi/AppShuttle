@@ -1,21 +1,20 @@
 package lab.davidahn.appshuttle.context.bhv;
 
-import android.content.Context;
 
 public class UserBhv {
-	protected String bhvType;
+	protected BhvType bhvType;
 	protected String bhvName;
 	
-	public UserBhv(String bhvType, String bhvName) {
+	public UserBhv(BhvType bhvType, String bhvName) {
 		this.bhvType = bhvType;
 		this.bhvName = bhvName;
 	}
 
-	public String getBhvType() {
+	public BhvType getBhvType() {
 		return bhvType;
 	}
 	
-	public void setBhvType(String bhvType) {
+	public void setBhvType(BhvType bhvType) {
 		this.bhvType = bhvType;
 	}
 	
@@ -27,13 +26,13 @@ public class UserBhv {
 		this.bhvName = bhvName;
 	}
 	
-	public boolean isValid(Context cxt){
-		return true;
-	}
+//	public boolean isValid(Context cxt){
+//		return true;
+//	}
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("behavior type: ").append(bhvType).append(", ");
+		msg.append("behavior type: ").append(bhvType.toString()).append(", ");
 		msg.append("behavior name: ").append(bhvName);
 		return msg.toString();
 	}
@@ -41,7 +40,7 @@ public class UserBhv {
 	@Override
 	public boolean equals(Object o){
 		if((o instanceof UserBhv) && bhvName.equals(((UserBhv)o).bhvName) 
-				&& bhvType.equals(((UserBhv)o).bhvType)) 
+				&& bhvType == ((UserBhv)o).bhvType)
 			return true;
 		else return false;
 	}

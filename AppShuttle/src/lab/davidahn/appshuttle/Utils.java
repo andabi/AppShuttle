@@ -1,19 +1,27 @@
 package lab.davidahn.appshuttle;
 
-import lab.davidahn.appshuttle.context.env.InvalidLocationException;
-import lab.davidahn.appshuttle.context.env.UserLoc;
-import android.location.Location;
+import java.util.*;
 
-public class Utils {
-	public static boolean Proximity(UserLoc uLoc1, UserLoc uLoc2, double toleranceInMeter) throws InvalidLocationException {
-		Location loc1 = new Location("loc1");
-		loc1.setLongitude(uLoc1.getLongitude());
-		loc1.setLatitude(uLoc1.getLatitude());
-		Location loc2 = new Location("loc2");
-		loc2.setLongitude(uLoc2.getLongitude());
-		loc2.setLatitude(uLoc2.getLatitude());
-		
-		if(loc1.distanceTo(loc2) <= toleranceInMeter) return true;
-		else return false;
-	}
+public class Utils
+{
+    public static <K, V extends Comparable<? super V>> Map<K, V> 
+        sortByValue( Map<K, V> map )
+    {
+        List<Map.Entry<K, V>> list =
+            new LinkedList<Map.Entry<K, V>>( map.entrySet() );
+        Collections.sort( list, new Comparator<Map.Entry<K, V>>()
+        {
+            public int compare( Map.Entry<K, V> o1, Map.Entry<K, V> o2 )
+            {
+                return (o2.getValue()).compareTo( o1.getValue() );
+            }
+        } );
+
+        Map<K, V> result = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list)
+        {
+            result.put( entry.getKey(), entry.getValue() );
+        }
+        return result;
+    }
 }

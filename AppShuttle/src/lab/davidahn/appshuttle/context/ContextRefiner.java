@@ -18,13 +18,20 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 public class ContextRefiner {
+	private static ContextRefiner contextRefiner;
 	Map<UserBhv, RfdUserCxt.Builder> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt.Builder>();
 	private SharedPreferences settings;
 	
-	public ContextRefiner(Context cxt){
+	private ContextRefiner(Context cxt){
 		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
 	}
 
+	public static ContextRefiner getInstance(Context cxt) {
+		if(contextRefiner == null)
+			contextRefiner = new ContextRefiner(cxt);
+		return contextRefiner;
+	}
+	
 	private RfdUserCxt.Builder convertToRfdUCxtBuilder(UserCxt uCxt, UserBhv bhv) {
 //		Map<EnvType, UserEnv> uEnv = uCxt.getUserEnvs();
 		return new RfdUserCxt.Builder()

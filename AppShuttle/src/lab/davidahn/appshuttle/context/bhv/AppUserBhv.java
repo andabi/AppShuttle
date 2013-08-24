@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 
 public class AppUserBhv extends UserBhv {
 	
-	public AppUserBhv(String bhvType, String bhvName) {
+	public AppUserBhv(BhvType bhvType, String bhvName) {
 		super(bhvType, bhvName);
 	}
 	

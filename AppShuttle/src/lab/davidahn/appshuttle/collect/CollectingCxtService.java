@@ -5,15 +5,17 @@ import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.GlobalState;
-import lab.davidahn.appshuttle.Utils;
-import lab.davidahn.appshuttle.context.ContextManager;
 import lab.davidahn.appshuttle.context.ContextRefiner;
 import lab.davidahn.appshuttle.context.RfdUserCxt;
+import lab.davidahn.appshuttle.context.RfdUserCxtDao;
 import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.UserCxtDao;
 import lab.davidahn.appshuttle.context.bhv.AppUserBhv;
+import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.context.bhv.UserBhvDao;
 import lab.davidahn.appshuttle.context.env.ChangedUserEnv;
+import lab.davidahn.appshuttle.context.env.ChangedUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidLocationException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
@@ -38,8 +40,6 @@ public class CollectingCxtService extends IntentService {
 	private String bestProvider;
 	private AppUserBhvSensor appUserBhvSensor;
 	private Calendar calendar;
-	private ContextManager contextManager;
-	private UserBhvManager userBhvManager;
 //	private Properties property;
 	private Location currentLoc;
 //	private PatternManager patternManager;
@@ -91,13 +91,15 @@ public class CollectingCxtService extends IntentService {
 	    keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);  
 
 		appUserBhvSensor = AppUserBhvSensor.getInstance(getApplicationContext());
-		contextManager = ContextManager.getInstance(getApplicationContext());
-		userBhvManager = UserBhvManager.getInstance(getApplicationContext());
 
 //		patternManager = PatternManager.getInstance(getApplicationContext());
 	}
 	
 	public void onHandleIntent(Intent intent){
+		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
+		ChangedUserEnvDao changedUserEnvDao = ChangedUserEnvDao.getInstance(getApplicationContext());
+		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
+		
 		UserCxt uCxt = new UserCxt();
 		//sense env
 		senseAndSetTime(uCxt);
@@ -110,27 +112,37 @@ public class CollectingCxtService extends IntentService {
 		//update globalState
 		if(GlobalState.currentUCxt == null) {
 			;
-		} else
+		} else {
 			GlobalState.prevUCxt = GlobalState.currentUCxt;
+		}
+		
 		GlobalState.currentUCxt = uCxt;
 		
-		if(settings.getBoolean("collection.store_cxt.enabled", false)) contextManager.storeCxt(uCxt);
+		if(settings.getBoolean("collection.store_cxt.enabled", false)) userCxtDao.storeCxt(uCxt);
 
-		if(GlobalState.moved) contextManager.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
+		if(GlobalState.placeMoved && GlobalState.prevUCxt != null) 
+			changedUserEnvDao.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
 				, uCxt.getTimeZone()
 				, EnvType.PLACE
 				, GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)
 				, uCxt.getUserEnv(EnvType.PLACE)));
 		
-		ContextRefiner cxtRefiner = contextManager.getCxtRefiner();
+		if(GlobalState.locMoved && GlobalState.prevUCxt != null) 
+			changedUserEnvDao.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
+				, uCxt.getTimeZone()
+				, EnvType.LOCATION
+				, GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)
+				, uCxt.getUserEnv(EnvType.LOCATION)));
+
+		
+		ContextRefiner cxtRefiner = ContextRefiner.getInstance(getApplicationContext());
 		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxt(uCxt);
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
-			contextManager.storeRfdCxt(rfdUCxt);
-			userBhvManager.registerBhv(rfdUCxt.getBhv());
+			rfdUserCxtDao.storeRfdCxt(rfdUCxt);
+			registerBhv(rfdUCxt.getBhv());
 //			cxtRefiner.storeRfdCxtByBhv(rfdUCxt);
 //			List<Pattern> patternList = patternManager.getPatternMiner().minePattern(rfdUCxt, tableName);
 //			patternManager.getPatternMiner().storePattern(patternList);
-			
 		}
 	}
 	
@@ -164,27 +176,49 @@ public class CollectingCxtService extends IntentService {
 		}
 		else {
 			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(currentLoc.getLatitude(), currentLoc.getLongitude(), UserLoc.Validity.VALID)));
+
+			//moved check
+			UserLoc prevULoc = null;
+			UserLoc currULoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+			if(GlobalState.prevUCxt == null || ((LocUserEnv)GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)).getLoc() == null){
+				GlobalState.locMoved = false;
+			} else {
+				prevULoc = ((LocUserEnv)GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+				try {
+					if(!currULoc.proximity(prevULoc, settings.getInt("collection.location.tolerance.distance", 100))) {
+						GlobalState.locMoved = true;
+						Log.i("changed env", "loc moved");
+					} else {
+						GlobalState.locMoved = false;
+					}
+				} catch (InvalidLocationException e) {
+					;
+				}
+			}
 		}
 	}
 	
 	public void setPlace(UserCxt uCxt) {
-		if(GlobalState.place == null){
-			GlobalState.place = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-			GlobalState.moved = false;
-		}
-		try {
-			if(!Utils.Proximity(GlobalState.place, ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), settings.getInt("collection.place.tolerance.distance", 2000))){
-				GlobalState.place = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-				GlobalState.moved = true;
-				Log.i("changed env", "moved");
-			} else {
-				GlobalState.moved = false;
-			}
-		} catch (InvalidLocationException e) {
-			;
-		}
-		uCxt.addUserEnv(EnvType.PLACE, new PlaceUserEnv(GlobalState.place));
+		UserLoc currUPlace = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+		uCxt.addUserEnv(EnvType.PLACE, new PlaceUserEnv(currUPlace));
 
+		//moved check
+		UserLoc prevUPlace = null;
+		if(GlobalState.prevUCxt == null || ((PlaceUserEnv)GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)).getPlace() == null){
+			GlobalState.placeMoved = false;
+		} else {
+			prevUPlace = ((PlaceUserEnv) GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)).getPlace();
+			try {
+				if(!currUPlace.proximity(prevUPlace, settings.getInt("collection.place.tolerance.distance", 2000))) {
+					GlobalState.placeMoved = true;
+					Log.i("changed env", "place moved");
+				} else {
+					GlobalState.placeMoved = false;
+				}
+			} catch (InvalidLocationException e) {
+				;
+			}
+		}
 	}
 	
 	public void senseAndSetTime(UserCxt uCxt) {
@@ -201,34 +235,29 @@ public class CollectingCxtService extends IntentService {
 	}
 	
 	public void senseBhv(UserCxt uCxt){
-		boolean isPresent = senseInvalidBhv(uCxt);
-		if(isPresent) senseActivityBhv(uCxt);
-		senseServiceBhv(uCxt);
+		senseAppBhv(uCxt);
 		senseCallBhv(uCxt);
 		senseMsgBhv(uCxt);
 		senseSystemStatusBhv(uCxt);
 	}
 	
-	private boolean senseInvalidBhv(UserCxt uCxt) {
-	    if (!powerManager.isScreenOn()) { //screen off
-			uCxt.addUserBhv(new UserBhv("invalid", "screen.off"));
-			Log.d("collection", "screen off");
-			return false;
-        }
-		else {
-		    if (keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
-				uCxt.addUserBhv(new UserBhv("invalid", "lock.screen.on"));
-				Log.d("collection", "lock screen on");
-				return false;
-		    }
-	    }
-	    return true;
+	public void senseAppBhv(UserCxt uCxt) {
+		senseActivityBhv(uCxt);
+		senseServiceBhv(uCxt);
 	}
 
 	public void senseActivityBhv(UserCxt uCxt) {
-		for(String bhvName : appUserBhvSensor.getCurrentActivity()){
-			uCxt.addUserBhv(new AppUserBhv("activity", bhvName));
-		}
+	    if (!powerManager.isScreenOn()) { //screen off
+			uCxt.addUserBhv(new UserBhv(BhvType.NONE, "screen.off"));
+			Log.d("collection", "screen off");
+        } else if (keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
+				uCxt.addUserBhv(new UserBhv(BhvType.NONE, "lock.screen.on"));
+				Log.d("collection", "lock screen on");
+	    } else {
+			for(String bhvName : appUserBhvSensor.getCurrentActivity()){
+				uCxt.addUserBhv(new AppUserBhv(BhvType.APP, bhvName));
+			}
+	    }
 	}
 	
 	public void senseServiceBhv(UserCxt uCxt) {
@@ -247,5 +276,18 @@ public class CollectingCxtService extends IntentService {
 
 	public void senseSystemStatusBhv(UserCxt uCxt) {
 		
+	}
+	
+	public void registerBhv(UserBhv uBhv){
+		UserBhvDao userBhvDao = UserBhvDao.getInstance(getApplicationContext());
+
+		if(uBhv.getBhvType() == BhvType.NONE) {
+			;
+		} else if(uBhv.getBhvType() == BhvType.APP) {
+			if(((AppUserBhv)uBhv).isValid(getApplicationContext()))
+					userBhvDao.storeUserBhv(uBhv);
+		} else {
+			;
+		}
 	}
 }
