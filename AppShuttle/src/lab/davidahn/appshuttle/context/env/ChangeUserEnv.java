@@ -3,14 +3,14 @@ package lab.davidahn.appshuttle.context.env;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class ChangedUserEnv {
+public class ChangeUserEnv {
 	private Date time;
 	private TimeZone timezone;
 	private EnvType envType;
 	private UserEnv fromUserEnv;
 	private UserEnv toUserEnv;
 	
-	public ChangedUserEnv(Date time, TimeZone timezone, EnvType envType, UserEnv fromUserEnv,
+	public ChangeUserEnv(Date time, TimeZone timezone, EnvType envType, UserEnv fromUserEnv,
 			UserEnv toUserEnv) {
 		super();
 		this.time = time;

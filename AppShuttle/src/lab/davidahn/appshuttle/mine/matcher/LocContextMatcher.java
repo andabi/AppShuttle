@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import lab.davidahn.appshuttle.context.RfdUserCxt;
 import lab.davidahn.appshuttle.context.UserCxt;
-import lab.davidahn.appshuttle.context.env.ChangedUserEnvDao;
+import lab.davidahn.appshuttle.context.env.ChangeUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidLocationException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
@@ -102,7 +102,7 @@ public class LocContextMatcher extends ContextMatcher {
 	}
 	
 	private boolean moved(Entry<Date, UserLoc> start, Entry<Date, UserLoc> end){
-		ChangedUserEnvDao changedUserEnvDao = ChangedUserEnvDao.getInstance(cxt);
+		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(cxt);
 		
 		Date sTime = start.getKey();
 		Date eTime = end.getKey();

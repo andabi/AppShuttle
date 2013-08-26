@@ -14,8 +14,9 @@ import lab.davidahn.appshuttle.context.bhv.AppUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvDao;
-import lab.davidahn.appshuttle.context.env.ChangedUserEnv;
-import lab.davidahn.appshuttle.context.env.ChangedUserEnvDao;
+import lab.davidahn.appshuttle.context.env.ChangeUserEnv;
+import lab.davidahn.appshuttle.context.env.ChangeUserEnvDao;
+import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidLocationException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
@@ -96,47 +97,27 @@ public class CollectingCxtService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
-		ChangedUserEnvDao changedUserEnvDao = ChangedUserEnvDao.getInstance(getApplicationContext());
-		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
-		
+		//sense
 		UserCxt uCxt = new UserCxt();
-		//sense env
 		senseAndSetTime(uCxt);
 		senseAndSetLocation(uCxt);
-		setPlace(uCxt);
-
-		//sense bhv
+		senseAndSetPlace(uCxt);
 		senseBhv(uCxt);
 
-		//update globalState
-		if(GlobalState.currentUCxt == null) {
-			;
-		} else {
-			GlobalState.prevUCxt = GlobalState.currentUCxt;
-		}
-		
-		GlobalState.currentUCxt = uCxt;
-		
-		if(settings.getBoolean("collection.store_cxt.enabled", false)) userCxtDao.storeCxt(uCxt);
+		//update global state
+		updateGlobalState(uCxt);
 
-		if(GlobalState.placeMoved && GlobalState.prevUCxt != null) 
-			changedUserEnvDao.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
-				, uCxt.getTimeZone()
-				, EnvType.PLACE
-				, GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)
-				, uCxt.getUserEnv(EnvType.PLACE)));
-		
-		if(GlobalState.locMoved && GlobalState.prevUCxt != null) 
-			changedUserEnvDao.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
-				, uCxt.getTimeZone()
-				, EnvType.LOCATION
-				, GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)
-				, uCxt.getUserEnv(EnvType.LOCATION)));
+		//store cxt data
+		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
 
+		if(settings.getBoolean("collection.store_cxt.enabled", false)) 
+			userCxtDao.storeCxt(uCxt);
+		storeChangeUserEnv(uCxt);
+		storeDurationUserEnv(uCxt);
 		
 		ContextRefiner cxtRefiner = ContextRefiner.getInstance(getApplicationContext());
 		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxt(uCxt);
+		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			rfdUserCxtDao.storeRfdCxt(rfdUCxt);
 			registerBhv(rfdUCxt.getBhv());
@@ -146,6 +127,40 @@ public class CollectingCxtService extends IntentService {
 		}
 	}
 	
+	private void storeDurationUserEnv(UserCxt uCxt) {
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
+		//TODO
+	}
+
+	private void storeChangeUserEnv(UserCxt uCxt) {
+		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(getApplicationContext());
+
+		if(GlobalState.placeMoved && GlobalState.prevUCxt != null) 
+			changedUserEnvDao.storeChangedUserEnv(new ChangeUserEnv(uCxt.getTime()
+				, uCxt.getTimeZone()
+				, EnvType.PLACE
+				, GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)
+				, uCxt.getUserEnv(EnvType.PLACE)));
+		
+		if(GlobalState.locMoved && GlobalState.prevUCxt != null) 
+			changedUserEnvDao.storeChangedUserEnv(new ChangeUserEnv(uCxt.getTime()
+				, uCxt.getTimeZone()
+				, EnvType.LOCATION
+				, GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)
+				, uCxt.getUserEnv(EnvType.LOCATION)));
+	}
+
+	private void updateGlobalState(UserCxt uCxt) {
+		//update globalState
+		if(GlobalState.currentUCxt == null) {
+			;
+		} else {
+			GlobalState.prevUCxt = GlobalState.currentUCxt;
+		}
+		
+		GlobalState.currentUCxt = uCxt;
+	}
+
 	public void onDestroy() {
 		super.onDestroy();
 		locationManager.removeUpdates(locationListener);
@@ -200,7 +215,7 @@ public class CollectingCxtService extends IntentService {
 	}
 	
 	//TODO check about invalid loc
-	public void setPlace(UserCxt uCxt) {
+	public void senseAndSetPlace(UserCxt uCxt) {
 		UserLoc currULoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
 		UserLoc currUPlace = null;
 		if(GlobalState.prevUCxt == null){

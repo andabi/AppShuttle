@@ -15,21 +15,21 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class ChangedUserEnvDao {
-	private static ChangedUserEnvDao changedUserEnvDao;
+public class ChangeUserEnvDao {
+	private static ChangeUserEnvDao changedUserEnvDao;
 	private SQLiteDatabase db;
 
-	private ChangedUserEnvDao(Context cxt) {
+	private ChangeUserEnvDao(Context cxt) {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static ChangedUserEnvDao getInstance(Context cxt) {
+	public static ChangeUserEnvDao getInstance(Context cxt) {
 		if (changedUserEnvDao == null)
-			changedUserEnvDao = new ChangedUserEnvDao(cxt);
+			changedUserEnvDao = new ChangeUserEnvDao(cxt);
 		return changedUserEnvDao;
 	}
 
-	public void storeChangedUserEnv(ChangedUserEnv changedUserEnv) {
+	public void storeChangedUserEnv(ChangeUserEnv changedUserEnv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		ContentValues row = new ContentValues();
@@ -42,19 +42,19 @@ public class ChangedUserEnvDao {
 		Log.i("stored changed env", changedUserEnv.toString());
 	}
 	
-	public List<ChangedUserEnv> retrieveChangedUserEnv(Date sTime, Date eTime, EnvType envType) {
+	public List<ChangeUserEnv> retrieveChangedUserEnv(Date sTime, Date eTime, EnvType envType) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		Cursor cur = db.rawQuery("SELECT * FROM changed_env WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime() +" AND env_type = '" + envType.toString() + "';", null);
-		List<ChangedUserEnv> res = new ArrayList<ChangedUserEnv>();
+		List<ChangeUserEnv> res = new ArrayList<ChangeUserEnv>();
 		while (cur.moveToNext()) {
 			Date time = new Date(cur.getLong(0));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(1));
 			UserEnv from = gson.fromJson(cur.getString(3), UserEnv.class);
 			UserEnv to = gson.fromJson(cur.getString(4), UserEnv.class);
 
-			ChangedUserEnv changedUserEnv = new ChangedUserEnv(time, timezone, envType, from, to);
+			ChangeUserEnv changedUserEnv = new ChangeUserEnv(time, timezone, envType, from, to);
 			Log.i("retrieved changed env", changedUserEnv.toString());
 			res.add(changedUserEnv);
 		}

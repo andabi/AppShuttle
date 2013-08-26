@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.context;
 
-import lab.davidahn.appshuttle.context.env.ChangedUserEnvDao;
+import lab.davidahn.appshuttle.context.env.ChangeUserEnvDao;
 import lab.davidahn.appshuttle.mine.matcher.MatchedResultDao;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvDao;
 import android.app.AlarmManager;
@@ -26,7 +26,7 @@ public class CompactingCxtService extends IntentService {
 	
 	public void onHandleIntent(Intent intent){
 //		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
-		ChangedUserEnvDao changedUserEnvDao = ChangedUserEnvDao.getInstance(getApplicationContext());
+		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(getApplicationContext());
 		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
 		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
 		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
