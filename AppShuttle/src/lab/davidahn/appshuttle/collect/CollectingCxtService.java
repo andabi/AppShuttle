@@ -169,6 +169,7 @@ public class CollectingCxtService extends IntentService {
 		}
 	};
 	
+	//TODO check about invalid loc
 	public void senseAndSetLocation(UserCxt uCxt) {
 		if (currentLoc == null) {
 			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(0, 0, UserLoc.Validity.INVALID)));
@@ -198,27 +199,34 @@ public class CollectingCxtService extends IntentService {
 		}
 	}
 	
+	//TODO check about invalid loc
 	public void setPlace(UserCxt uCxt) {
-		UserLoc currUPlace = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-		uCxt.addUserEnv(EnvType.PLACE, new PlaceUserEnv(currUPlace));
-
-		//moved check
-		UserLoc prevUPlace = null;
-		if(GlobalState.prevUCxt == null || ((PlaceUserEnv)GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)).getPlace() == null){
+		UserLoc currULoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+		UserLoc currUPlace = null;
+		if(GlobalState.prevUCxt == null){
 			GlobalState.placeMoved = false;
+			currUPlace = currULoc;
 		} else {
-			prevUPlace = ((PlaceUserEnv) GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)).getPlace();
-			try {
-				if(!currUPlace.proximity(prevUPlace, settings.getInt("collection.place.tolerance.distance", 2000))) {
-					GlobalState.placeMoved = true;
-					Log.i("changed env", "place moved");
-				} else {
-					GlobalState.placeMoved = false;
+			UserLoc prevUPlace = ((PlaceUserEnv) GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)).getPlace();
+			if(prevUPlace == null){
+				GlobalState.placeMoved = false;
+				currUPlace = currULoc;
+			} else {
+				try {
+					if(!currULoc.proximity(prevUPlace, settings.getInt("collection.place.tolerance.distance", 5000))) {
+						currUPlace = currULoc;
+						GlobalState.placeMoved = true;
+						Log.i("changed env", "place moved");
+					} else {
+						currUPlace = prevUPlace;
+						GlobalState.placeMoved = false;
+					}
+				} catch (InvalidLocationException e) {
+					;
 				}
-			} catch (InvalidLocationException e) {
-				;
 			}
 		}
+		uCxt.addUserEnv(EnvType.PLACE, new PlaceUserEnv(currUPlace));
 	}
 	
 	public void senseAndSetTime(UserCxt uCxt) {
