@@ -45,28 +45,30 @@ public class DurationUserEnvDao {
 	
 	public DurationUserEnv retrieveDurationUserEnvContains(Date time, EnvType envType) {
 	Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-	
 	Cursor cur = db.rawQuery("SELECT * FROM duration_user_env WHERE time <= "
 			+ time.getTime() + " AND end_time >= " + time.getTime() +" AND env_type = '" + envType.toString() + "';", null);
-	Date startTime = new Date(cur.getLong(0));
-	Date endTime = new Date(cur.getLong(2));
-	TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-	UserEnv userEnv = gson.fromJson(cur.getString(5), UserEnv.class);
+	DurationUserEnv res = null;
+	while (cur.moveToNext()) {
+		Date startTime = new Date(cur.getLong(0));
+		Date endTime = new Date(cur.getLong(2));
+		TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
+		UserEnv userEnv = gson.fromJson(cur.getString(5), UserEnv.class);
 
-	DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
-	.setTime(startTime)
-	.setEndTime(endTime)
-	.setTimeZone(timezone)
-	.setUserEnv(userEnv)
-	.build();
+		DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
+		.setTime(startTime)
+		.setEndTime(endTime)
+		.setTimeZone(timezone)
+		.setUserEnv(userEnv)
+		.build();
+		Log.i("retrieved duration_user_env", durationUserEnv.toString());
+		res = durationUserEnv;
+	}
 	cur.close();
-	Log.i("retrieved duration_user_env", durationUserEnv.toString());
-	return durationUserEnv;
-}
+	return res;
+	}
 	
 	public List<DurationUserEnv> retrieveDurationUserEnvIncluded(Date fromTime, Date toTime, EnvType envType) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-		
 		Cursor cur = db.rawQuery("SELECT * FROM duration_user_env WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +" AND env_type = '" + envType.toString() + "';", null);
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
@@ -93,15 +95,16 @@ public class DurationUserEnvDao {
 	public List<DurationUserEnv> retrieveDurationUserEnv(Date fromTime, Date toTime, EnvType envType){
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		DurationUserEnv headPiece = retrieveDurationUserEnvContains(fromTime, envType);
-		res.add(headPiece);
-		List<DurationUserEnv> middlePieces = retrieveDurationUserEnvIncluded(fromTime, toTime, envType);
-		res.addAll(middlePieces);
-		DurationUserEnv tailPiece = retrieveDurationUserEnvContains(toTime, envType);
-		if(!headPiece.equals(tailPiece))
-			res.add(tailPiece);
-		assert(res.size() > 0);
-		res.get(0).setTime(fromTime);
-		res.get(res.size()-1).setEndTime(toTime);
+		if(headPiece != null) {
+			res.add(headPiece);
+			List<DurationUserEnv> middlePieces = retrieveDurationUserEnvIncluded(fromTime, toTime, envType);
+			res.addAll(middlePieces);
+			DurationUserEnv tailPiece = retrieveDurationUserEnvContains(toTime, envType);
+			if(!headPiece.equals(tailPiece))
+				res.add(tailPiece);
+			res.get(0).setTime(fromTime);
+			res.get(res.size()-1).setEndTime(toTime);
+		}
 		return res;
 	}
 	
