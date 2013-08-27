@@ -101,12 +101,13 @@ public class RfdUserCxtDao {
 		db.execSQL("DELETE FROM duration_context WHERE time < " + time +";");
 	}
 	
-	public List<RfdUserCxt> retrieveRfdCxtByBhv(long fromTime, long toTime, UserBhv uBhv) {
+	public List<RfdUserCxt> retrieveRfdCxtByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		
 		Cursor cur = db.rawQuery("SELECT * FROM duration_context WHERE time >= "
-				+ fromTime + " AND end_time <= " + toTime+" AND bhv_type = '"+uBhv.getBhvType()+"' AND bhv_name = '"+uBhv.getBhvName()+"';", null);
+				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() 
+				+ " AND bhv_type = '"+uBhv.getBhvType()+"' AND bhv_name = '"+uBhv.getBhvName()+"';", null);
 		while (cur.moveToNext()) {
 			Date time = new Date(cur.getLong(0));
 			long duration = cur.getLong(1);

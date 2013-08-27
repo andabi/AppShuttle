@@ -7,16 +7,16 @@ public class DurationUserEnv {
 	private Date time;
 	private long duration;
 	private Date endTime;
-	private TimeZone timezone;
+	private TimeZone timeZone;
 	private EnvType envType;
-	private UserEnv userEnv;
+	private UserEnv usrEnv;
 
-	public DurationUserEnv(Date time, Date endTime, TimeZone timezone, EnvType envType, UserEnv userEnv) {
-		this.time = time;
-		this.endTime = endTime;
-		this.timezone = timezone;
-		this.envType = envType;
-		this.userEnv = userEnv;
+	public DurationUserEnv(Builder builder) {
+		this.time = builder.time;
+		this.endTime = builder.endTime;
+		this.timeZone = builder.timeZone;
+		this.usrEnv = builder.usrEnv;
+		envType = usrEnv.getEnvType();
 		duration = endTime.getTime() - time.getTime();
 	}
 	
@@ -39,10 +39,10 @@ public class DurationUserEnv {
 		this.endTime = endTime;
 	}
 	public TimeZone getTimeZone() {
-		return timezone;
+		return timeZone;
 	}
 	public void setTimeZone(TimeZone timezone) {
-		this.timezone = timezone;
+		this.timeZone = timezone;
 	}
 	public EnvType getEnvType() {
 		return envType;
@@ -51,19 +51,67 @@ public class DurationUserEnv {
 		this.envType = envType;
 	}
 	public UserEnv getUserEnv() {
-		return userEnv;
+		return usrEnv;
 	}
 	public void setUserEnv(UserEnv userEnv) {
-		this.userEnv = userEnv;
+		this.usrEnv = userEnv;
 	}
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("time: ").append(time).append(", ");
 		msg.append("duration: ").append(duration).append(", ");
 		msg.append("endTime: ").append(endTime).append(", ");
-		msg.append("timezone: ").append(timezone.getID()).append(", ");
+		msg.append("timezone: ").append(timeZone.getID()).append(", ");
 		msg.append("envType: ").append(envType.toString()).append(", ");
-		msg.append("userEnv: ").append(userEnv.toString());
+		msg.append("userEnv: ").append(usrEnv.toString());
 		return msg.toString();
+	}
+	@Override
+	public boolean equals(Object o) {
+		if((o instanceof DurationUserEnv) 
+				&& time.equals(((DurationUserEnv)o).time)
+				&& timeZone.equals(((DurationUserEnv)o).timeZone)
+				&& envType.equals(((DurationUserEnv)o).envType))
+			return true;
+		else return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return 0;
+	}
+	
+	public static class Builder{
+		private Date time = null;
+		private Date endTime = null;
+		private TimeZone timeZone = null;
+		private UserEnv usrEnv = null;
+		
+		public Builder(){}
+		
+		public DurationUserEnv build(){
+			return new DurationUserEnv(this);
+		}
+		
+		public Builder setTime(Date time){
+			this.time = time;
+			return this;
+		}
+		public Builder setEndTime(Date endTime){
+			this.endTime = endTime;
+			return this;
+		}
+		public Builder setTimeZone(TimeZone timeZone){
+			this.timeZone = timeZone;
+			return this;
+		}
+		public Builder setUserEnv(UserEnv usrEnv){
+			this.usrEnv = usrEnv;
+			return this;
+		}
+
+		public UserEnv getUserEnv() {
+			return usrEnv;
+		}
 	}
 }

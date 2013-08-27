@@ -1,10 +1,12 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.context.RfdUserCxt;
 import lab.davidahn.appshuttle.context.RfdUserCxtDao;
 import lab.davidahn.appshuttle.context.UserCxt;
@@ -39,10 +41,10 @@ public abstract class ContextMatcher {
 
 		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
-		long etime = uCxt.getTime().getTime();
-		long sTime = etime - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
+		Date toTime = GlobalState.currentUCxt.getTime();
+		Date fromTime = new Date(toTime.getTime() - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY));
 		
-		List<RfdUserCxt> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(sTime, etime, uBhv);
+		List<RfdUserCxt> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(fromTime, toTime, uBhv);
 		List<RfdUserCxt> pureRfdUCxtList = new ArrayList<RfdUserCxt>();
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTime().getTime() 

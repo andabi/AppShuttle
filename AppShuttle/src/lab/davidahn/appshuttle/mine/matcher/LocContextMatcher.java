@@ -1,20 +1,18 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import lab.davidahn.appshuttle.context.RfdUserCxt;
 import lab.davidahn.appshuttle.context.UserCxt;
-import lab.davidahn.appshuttle.context.env.ChangeUserEnvDao;
+import lab.davidahn.appshuttle.context.env.DurationUserEnv;
+import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidLocationException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
-import android.util.Log;
 
 public class LocContextMatcher extends ContextMatcher {
 	int toleranceInMeter;
@@ -28,30 +26,59 @@ public class LocContextMatcher extends ContextMatcher {
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
+
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		Entry<Date, UserLoc> lastKnownTimeAndLoc = null;
+		DurationUserEnv lastDurationUserEnv = null;
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
-			for(Entry<Date, UserLoc> timeAndLoc : rfdUCxt.getLocs().entrySet()){
-				if(lastKnownTimeAndLoc == null) {
+			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime(), rfdUCxt.getEndTime(), EnvType.LOCATION)){
+				UserLoc userLoc = ((LocUserEnv)durationUserEnv.getUserEnv()).getLoc();
+				if(lastDurationUserEnv == null) {
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setLoc(timeAndLoc.getValue());
+					mergedRfdUCxtBuilder.setLoc(userLoc);
 				} else {
-					if(timeAndLoc.getValue().equals(lastKnownTimeAndLoc.getValue())
-							&& !moved(lastKnownTimeAndLoc, timeAndLoc)){
-						;
-					} else {
+					if(!durationUserEnv.equals(lastDurationUserEnv)){
 						res.add(mergedRfdUCxtBuilder.build());
 						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-						mergedRfdUCxtBuilder.setLoc(timeAndLoc.getValue());
+						mergedRfdUCxtBuilder.setLoc(userLoc);
 					}
 				}
-				lastKnownTimeAndLoc = timeAndLoc;
+				lastDurationUserEnv = durationUserEnv;
 			}
 		}
 		if(mergedRfdUCxtBuilder != null)
 			res.add(mergedRfdUCxtBuilder.build());
 		return res;
+	}
+	
+//		@Override
+//		protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+//			List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+//			
+//			MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
+//			Entry<Date, UserLoc> lastKnownTimeAndLoc = null;
+//			for(RfdUserCxt rfdUCxt : rfdUCxtList){
+//				for(Entry<Date, UserLoc> timeAndLoc : rfdUCxt.getLocs().entrySet()){
+//					if(lastKnownTimeAndLoc == null) {
+//						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+//						mergedRfdUCxtBuilder.setLoc(timeAndLoc.getValue());
+//					} else {
+//						if(timeAndLoc.getValue().equals(lastKnownTimeAndLoc.getValue())
+//								&& !moved(lastKnownTimeAndLoc, timeAndLoc)){
+//							;
+//						} else {
+//							res.add(mergedRfdUCxtBuilder.build());
+//							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+//							mergedRfdUCxtBuilder.setLoc(timeAndLoc.getValue());
+//						}
+//					}
+//					lastKnownTimeAndLoc = timeAndLoc;
+//				}
+//			}
+//			if(mergedRfdUCxtBuilder != null)
+//				res.add(mergedRfdUCxtBuilder.build());
+//			return res;
+			
 //		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 //		
 //		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
@@ -76,7 +103,6 @@ public class LocContextMatcher extends ContextMatcher {
 //		if(mergedRfdUCxtBuilder != null)
 //			res.add(mergedRfdUCxtBuilder.build());
 //		return res;
-	}
 
 	@Override
 	protected double calcRelatedness(MatcherCountUnit unit, UserCxt uCxt) {
@@ -101,15 +127,25 @@ public class LocContextMatcher extends ContextMatcher {
 		return likelihood;
 	}
 	
-	private boolean moved(Entry<Date, UserLoc> start, Entry<Date, UserLoc> end){
-		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(cxt);
-		
-		Date sTime = start.getKey();
-		Date eTime = end.getKey();
-		if(changedUserEnvDao.retrieveChangedUserEnv(sTime, eTime, EnvType.LOCATION).size() > 0){
-			Log.d("LocContextMatcher", "moved");
-			return true;
-		} else
-			return false;
-	}
+//	private boolean moved(Date fromTime, Date toTime){
+//		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(cxt);
+//		if(changedUserEnvDao.retrieveChangedUserEnv(fromTime, toTime, EnvType.LOCATION).size() > 0){
+//			Log.d("LocContextMatcher", "moved");
+//			return true;
+//		} else
+//			return false;
+//	}
+	
+//	public List<DurationUserEnv> getDurationUserEnv(Date fromTime, Date toTime, EnvType envType){
+//		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
+//		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
+//		DurationUserEnv headPiece = durationUserEnvDao.retrieveDurationUserEnv(fromTime, envType);
+//		res.add(headPiece);
+//		List<DurationUserEnv> middlePieces = durationUserEnvDao.retrieveDurationUserEnvBetween(fromTime, toTime, envType);
+//		res.addAll(middlePieces);
+//		DurationUserEnv tailPiece = durationUserEnvDao.retrieveDurationUserEnv(toTime, envType);
+//		if(!headPiece.equals(tailPiece))
+//			res.add(tailPiece);
+//		return res;
+//	}
 }

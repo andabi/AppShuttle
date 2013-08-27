@@ -16,6 +16,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvDao;
 import lab.davidahn.appshuttle.context.env.ChangeUserEnv;
 import lab.davidahn.appshuttle.context.env.ChangeUserEnvDao;
+import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidLocationException;
@@ -113,25 +114,21 @@ public class CollectingCxtService extends IntentService {
 		if(settings.getBoolean("collection.store_cxt.enabled", false)) 
 			userCxtDao.storeCxt(uCxt);
 		storeChangeUserEnv(uCxt);
-		storeDurationUserEnv(uCxt);
-		
+
 		ContextRefiner cxtRefiner = ContextRefiner.getInstance(getApplicationContext());
-		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxt(uCxt);
+		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineDurationUserBhv(uCxt);
 		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			rfdUserCxtDao.storeRfdCxt(rfdUCxt);
 			registerBhv(rfdUCxt.getBhv());
-//			cxtRefiner.storeRfdCxtByBhv(rfdUCxt);
-//			List<Pattern> patternList = patternManager.getPatternMiner().minePattern(rfdUCxt, tableName);
-//			patternManager.getPatternMiner().storePattern(patternList);
+		}
+		List<DurationUserEnv> durationUserEnvList = cxtRefiner.refineDurationUserEnv(uCxt);
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
+		for(DurationUserEnv durationUserEnv : durationUserEnvList){
+			durationUserEnvDao.storeDurationUserEnv(durationUserEnv);
 		}
 	}
 	
-	private void storeDurationUserEnv(UserCxt uCxt) {
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
-		//TODO
-	}
-
 	private void storeChangeUserEnv(UserCxt uCxt) {
 		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(getApplicationContext());
 
