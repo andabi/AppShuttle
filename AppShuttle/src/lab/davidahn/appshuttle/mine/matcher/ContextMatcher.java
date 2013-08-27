@@ -48,7 +48,7 @@ public abstract class ContextMatcher {
 		List<RfdUserCxt> pureRfdUCxtList = new ArrayList<RfdUserCxt>();
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTime().getTime() 
-					< settings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15 / 6 / 2))   //noise
+					< settings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60))   //noise
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);
 		}

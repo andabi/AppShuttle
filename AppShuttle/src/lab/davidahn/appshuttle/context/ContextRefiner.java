@@ -95,7 +95,6 @@ public class ContextRefiner {
 	//TODO test
 	public List<DurationUserEnv> refineDurationUserEnv(UserCxt uCxt) {
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
-//		UserEnv uEnv = uCxt.getUserEnvs();
 		if(ongoingEnvMap.isEmpty()) {
 			for(EnvType envType : EnvType.values()){
 				ongoingEnvMap.put(envType, makeAndSetDurationUserBhvBuilderFrom(uCxt, envType));
@@ -104,11 +103,10 @@ public class ContextRefiner {
 			for(EnvType envType : EnvType.values()){
 				if(ongoingEnvMap.containsKey(envType)){
 					DurationUserEnv.Builder ongoingDurationUserEnvBuilder = ongoingEnvMap.get(envType);
+					ongoingDurationUserEnvBuilder.setEndTime(uCxt.getTime());
 					if(!uCxt.getUserEnv(envType).equals(ongoingDurationUserEnvBuilder.getUserEnv())){
 						res.add(ongoingDurationUserEnvBuilder.build());
 						ongoingEnvMap.put(envType, makeAndSetDurationUserBhvBuilderFrom(uCxt, envType));
-					} else {
-						ongoingDurationUserEnvBuilder.setEndTime(uCxt.getTime());
 					}
 				} else {
 					ongoingEnvMap.put(envType, makeAndSetDurationUserBhvBuilderFrom(uCxt, envType));
