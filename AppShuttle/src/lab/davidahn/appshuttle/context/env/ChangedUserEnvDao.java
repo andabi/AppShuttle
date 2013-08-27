@@ -62,6 +62,28 @@ public class ChangedUserEnvDao {
 		return res;
 	}
 	
+	public List<UserEnv> getUserEnvListDuring(Date sTime, Date eTime, EnvType envType) {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		
+		Cursor cur = db.rawQuery("SELECT * FROM changed_env WHERE time >= "
+				+ sTime.getTime() + " AND time <= " + eTime.getTime() +" AND env_type = '" + envType.toString() + "';", null);
+		List<UserEnv> res = new ArrayList<UserEnv>();
+		while (cur.moveToNext()) {
+			UserEnv from = gson.fromJson(cur.getString(3), UserEnv.class);
+			UserEnv to = gson.fromJson(cur.getString(4), UserEnv.class);
+			assert(!from.equals(to));
+			if(res.isEmpty()){
+				res.add(from);
+				res.add(to);
+			} else {
+				assert(!to.equals(res.get(res.size()-1)));
+				res.add(to);
+			}
+		}
+		cur.close();
+		return res;
+	}
+	
 	public void deleteChangedUserEnv(long time){
 		db.execSQL("DELETE FROM changed_env WHERE time < " + time +";");
 	}

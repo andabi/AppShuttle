@@ -19,10 +19,9 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 	
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT);");
-		db.execSQL("CREATE TABLE refined_context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-				"s_time INTEGER, e_time INTEGER, timezone TEXT, locations TEXT, places TEXT, bhv_type TEXT, bhv_name TEXT);");
+		db.execSQL("CREATE TABLE point_context (time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (time, timezone, bhv_type, bhv_name) );");
+		db.execSQL("CREATE TABLE duration_context (time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, initial_user_envs TEXT, bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (time, timezone, bhv_type, bhv_name) );");
+		//		db.execSQL("CREATE TABLE duration_context (time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, first_user_envs TEXT, changed_user_envs TEXT, last_user_envs TEXT, bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (time, timezone, bhv_type, bhv_name) );");
 		db.execSQL("CREATE TABLE matched_context (context_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				"time INTEGER, timezone TEXT, location TEXT, place TEXT, bhv_type TEXT, bhv_name TEXT, condition TEXT, likelihood REAL, related_cxt TEXT);");
 		db.execSQL("CREATE TABLE user_bhv (bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (bhv_type, bhv_name) );");

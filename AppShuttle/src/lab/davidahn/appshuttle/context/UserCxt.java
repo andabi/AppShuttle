@@ -51,6 +51,9 @@ public class UserCxt {
 	public Map<EnvType, UserEnv> getUserEnvs() {
 		return userEnvs;
 	}
+	public void setUserEnvs(Map<EnvType, UserEnv> userEnvs) {
+		this.userEnvs = userEnvs;
+	}
 	
 	public List<UserBhv> getUserBhvs() {
 		return userBhvs;

@@ -7,8 +7,8 @@ public class ChangedUserEnv {
 	private Date time;
 	private TimeZone timezone;
 	private EnvType envType;
-	private UserEnv fromUserEnv;
-	private UserEnv toUserEnv;
+	private UserEnv from;
+	private UserEnv to;
 	
 	public ChangedUserEnv(Date time, TimeZone timezone, EnvType envType, UserEnv fromUserEnv,
 			UserEnv toUserEnv) {
@@ -16,8 +16,8 @@ public class ChangedUserEnv {
 		this.time = time;
 		this.timezone = timezone;
 		this.envType = envType;
-		this.fromUserEnv = fromUserEnv;
-		this.toUserEnv = toUserEnv;
+		this.from = fromUserEnv;
+		this.to = toUserEnv;
 	}
 	public Date getTime() {
 		return time;
@@ -39,24 +39,24 @@ public class ChangedUserEnv {
 		this.envType = envType;
 	}
 	public UserEnv getFromUserEnv() {
-		return fromUserEnv;
+		return from;
 	}
 	public void setFromUserEnv(UserEnv fromUserEnv) {
-		this.fromUserEnv = fromUserEnv;
+		this.from = fromUserEnv;
 	}
 	public UserEnv getToUserEnv() {
-		return toUserEnv;
+		return to;
 	}
 	public void setToUserEnv(UserEnv toUserEnv) {
-		this.toUserEnv = toUserEnv;
+		this.to = toUserEnv;
 	}
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("time: ").append(time).append(", ");
 		msg.append("timeZone: ").append(timezone.getID()).append(", ");
 		msg.append("envType: ").append(envType.toString()).append(", ");
-		msg.append("fromUserEnv: ").append(fromUserEnv.toString()).append(", ");
-		msg.append("toUserEnv: ").append(toUserEnv.toString());
+		msg.append("from: ").append(from.toString()).append(", ");
+		msg.append("to: ").append(to.toString());
 		return msg.toString();
 	}
 }

@@ -37,17 +37,17 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-				mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getStartTime());
+				mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getTime());
 				mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 				mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
 			} else {
-				if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
+				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
 						< settings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)){
 					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getStartTime());
+					mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getTime());
 					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 					mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
 				}

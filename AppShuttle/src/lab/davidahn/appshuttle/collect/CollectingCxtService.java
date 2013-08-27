@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.collect;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -120,20 +121,27 @@ public class CollectingCxtService extends IntentService {
 		
 		if(settings.getBoolean("collection.store_cxt.enabled", false)) userCxtDao.storeCxt(uCxt);
 
-		if(GlobalState.placeMoved && GlobalState.prevUCxt != null) 
-			changedUserEnvDao.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
-				, uCxt.getTimeZone()
-				, EnvType.PLACE
-				, GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)
-				, uCxt.getUserEnv(EnvType.PLACE)));
+		//get changed envs
+		List<ChangedUserEnv> changedUserEnvList = new ArrayList<ChangedUserEnv>();
+		if(GlobalState.placeMoved && GlobalState.prevUCxt != null)  {
+			changedUserEnvList.add(new ChangedUserEnv(uCxt.getTime()
+					, uCxt.getTimeZone()
+					, EnvType.PLACE
+					, GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)
+					, uCxt.getUserEnv(EnvType.PLACE)));
+		}
+		if(GlobalState.locMoved && GlobalState.prevUCxt != null) {
+			changedUserEnvList.add(new ChangedUserEnv(uCxt.getTime()
+					, uCxt.getTimeZone()
+					, EnvType.LOCATION
+					, GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)
+					, uCxt.getUserEnv(EnvType.LOCATION)));
+		}
 		
-		if(GlobalState.locMoved && GlobalState.prevUCxt != null) 
-			changedUserEnvDao.storeChangedUserEnv(new ChangedUserEnv(uCxt.getTime()
-				, uCxt.getTimeZone()
-				, EnvType.LOCATION
-				, GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)
-				, uCxt.getUserEnv(EnvType.LOCATION)));
-
+		//store changed user envs
+		for(ChangedUserEnv changedUserEnv : changedUserEnvList){
+			changedUserEnvDao.storeChangedUserEnv(changedUserEnv);
+		}
 		
 		ContextRefiner cxtRefiner = ContextRefiner.getInstance(getApplicationContext());
 		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineCxt(uCxt);

@@ -25,7 +25,7 @@ public class FreqContextMatcher extends ContextMatcher{
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 			} else {
-				if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
+				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
 						< settings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
 					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 				} else {
