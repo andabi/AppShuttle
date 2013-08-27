@@ -3,17 +3,19 @@ package lab.davidahn.appshuttle.context;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.DBHelper;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.LocUserEnv;
-import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
+import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,6 +25,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 public class UserCxtDao {
 	private static UserCxtDao userCxtDao;
@@ -43,22 +46,22 @@ public class UserCxtDao {
 
 		for(UserBhv uBhv : uCxt.getUserBhvs()){
 			ContentValues row = new ContentValues();
-//			UserEnv uEnv = uCxt.getUserEnv();
+			Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 			row.put("time", uCxt.getTime().getTime());
 			row.put("timezone", uCxt.getTimeZone().getID());
-			row.put("location", gson.toJson(((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc()));
-			row.put("place", gson.toJson(((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace()));
+			row.put("user_envs", gson.toJson(uEnvs));
 			row.put("bhv_type", uBhv.getBhvType().toString());
 			row.put("bhv_name", uBhv.getBhvName());
-			db.insert("context", null, row);
+			db.insert("point_context", null, row);
 			Log.i("stored cxt", uCxt.toString());
 		}
 	}
 	
+	//TODO need test
 	public List<UserCxt> retrieveCxt(Date sTime, Date eTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = db.rawQuery("SELECT * FROM context WHERE time >= "
+		Cursor cur = db.rawQuery("SELECT * FROM point_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 		List<UserCxt> res = new ArrayList<UserCxt>();
 		
@@ -66,30 +69,27 @@ public class UserCxtDao {
 		while (cur.moveToNext()) {
 			Date time = new Date(cur.getLong(0));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(1));
-			UserLoc location = gson.fromJson(cur.getString(2), UserLoc.class);
-			UserLoc place = gson.fromJson(cur.getString(3), UserLoc.class);
-			BhvType bhvType= BhvType.valueOf(cur.getString(4));
-			String bhvName= cur.getString(5);
+			Type userEnvsType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
+			Map<EnvType, UserEnv> uEnvs = gson.fromJson(cur.getString(2), userEnvsType);
+			BhvType bhvType= BhvType.valueOf(cur.getString(3));
+			String bhvName= cur.getString(4);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
 
 			if(uCxt == null) {
 				uCxt = new UserCxt(time, timezone);
-				uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(location));
-				uCxt.addUserEnv(EnvType.PLACE, new LocUserEnv(place));
+				uCxt.setUserEnvs(uEnvs);
 				uCxt.addUserBhv(uBhv);
 			}
 			else {
 				UserCxt tempCxt = new UserCxt(time, timezone);
-				tempCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(location));
-				tempCxt.addUserEnv(EnvType.PLACE, new LocUserEnv(place));
+				tempCxt.setUserEnvs(uEnvs);
 				
 				if(tempCxt.getUserEnvs().equals(uCxt.getUserEnvs()))
 					uCxt.addUserBhv(uBhv);
 				else{
 					res.add(uCxt);
 					uCxt = new UserCxt(time, timezone);
-					uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(location));
-					uCxt.addUserEnv(EnvType.PLACE, new LocUserEnv(place));
+					uCxt.setUserEnvs(uEnvs);
 					uCxt.addUserBhv(uBhv);
 				}
 			}
@@ -98,10 +98,11 @@ public class UserCxtDao {
 		return res;
 	}
 	
+	//TODO fix
 	public File loadCxtAsCsvFile(Context cxt, String fileName, Date sTime, Date eTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = db.rawQuery("SELECT * FROM context WHERE time >= "
+		Cursor cur = db.rawQuery("SELECT * FROM point_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 
 		try {

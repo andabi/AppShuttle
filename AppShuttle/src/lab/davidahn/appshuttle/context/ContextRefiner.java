@@ -11,7 +11,6 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
-import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,12 +34,15 @@ public class ContextRefiner {
 	private RfdUserCxt.Builder convertToRfdUCxtBuilder(UserCxt uCxt, UserBhv bhv) {
 //		Map<EnvType, UserEnv> uEnv = uCxt.getUserEnvs();
 		return new RfdUserCxt.Builder()
-			.setStartTime(uCxt.getTime())
+			.setTime(uCxt.getTime())
 			.setEndTime(uCxt.getTime())
 			.setTimeZone(uCxt.getTimeZone())
 			.setBhv(bhv)
-			.appendLoc(((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), uCxt.getTime())
-			.appendPlace(((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace(), uCxt.getTime());
+			.addInitialUserEnv(((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)))
+			.addInitialUserEnv(((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)));
+
+//			.appendLoc(((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), uCxt.getTime())
+//			.appendPlace(((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace(), uCxt.getTime());
 	}
 	
 	public List<RfdUserCxt> refineCxt(UserCxt uCxt) {
@@ -56,10 +58,13 @@ public class ContextRefiner {
 					RfdUserCxt.Builder rfdUCxtBuilder = ongoingBhvMap.get(uBhv);
 					rfdUCxtBuilder.setEndTime(uCxt.getTime());
 					//add env
-					UserLoc loc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-					UserLoc place = ((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace();
-					rfdUCxtBuilder.appendLoc(loc, uCxt.getTime());
-					rfdUCxtBuilder.appendPlace(place, uCxt.getTime());
+//					UserLoc loc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+//					UserLoc place = ((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace();
+//					rfdUCxtBuilder.appendEnv(EnvType.LOCATION, ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)), uCxt.getTime());
+//					rfdUCxtBuilder.appendEnv(EnvType.PLACE, ((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)), uCxt.getTime());
+
+//					rfdUCxtBuilder.appendLoc(loc, uCxt.getTime());
+//					rfdUCxtBuilder.appendPlace(place, uCxt.getTime());
 				} else {
 					ongoingBhvMap.put(uBhv, convertToRfdUCxtBuilder(uCxt, uBhv));
 				}

@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.context.RfdUserCxt;
-import android.database.sqlite.SQLiteDatabase;
 
 public class PatternMiner {
-	private SQLiteDatabase db;
 	
-	public PatternMiner(SQLiteDatabase db) {
-		this.db = db;
+	public PatternMiner() {
 	}
 
 	public List<Pattern> minePattern(RfdUserCxt rfdUCxt, String tableName){

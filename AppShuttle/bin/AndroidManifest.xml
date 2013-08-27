@@ -35,9 +35,9 @@
         </activity>
         <service android:name="lab.davidahn.appshuttle.AppShuttleService" />
         <service android:name="lab.davidahn.appshuttle.collect.CollectingCxtService" />
+        <service android:name="lab.davidahn.appshuttle.context.CompactingCxtService" />
         <service android:name="lab.davidahn.appshuttle.report.ReportingCxtService" />
         <service android:name="lab.davidahn.appshuttle.view.NotiViewService" />
-        
     </application>
 
 </manifest>
