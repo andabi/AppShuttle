@@ -3,9 +3,12 @@ package lab.davidahn.appshuttle.mine.matcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.RfdUserCxt;
 import lab.davidahn.appshuttle.context.UserCxt;
-import lab.davidahn.appshuttle.context.env.Time;
+
+import org.apache.commons.math3.distribution.NormalDistribution;
+
 import android.app.AlarmManager;
 import android.content.Context;
 
@@ -14,20 +17,13 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 	protected long tolerance;
 	
 	public WeakTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance) {
+		//TODO if tolerance is longer than 24h
 		super(cxt, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
 		matcherType = MatcherType.WEAK_TIME;
 	}
 
-//	protected List<RfdUserCxt> retrieveCxt(UserEnv uEnv){
-//		//TODO if tolerance is longer than 24h
-//		long time = uEnv.getTime().getTime();
-//		long validEndTime = time - period;
-//		List<RfdUserCxt> res = contextManager.retrieveRfdCxt(validEndTime - 3*AlarmManager.INTERVAL_DAY, validEndTime);
-//		return res;
-//	}
-	
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
@@ -66,13 +62,19 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 		long endTime = rfdUCxt.getEndTime().getTime();
 		long time = uCxt.getTime().getTime();
 		
+		long timePeriodic = time % period;
 		long startTimePeriodic = startTime % period;
 		long endTimePeriodic = endTime % period;
-		long timePeriodic = time % period;
+		
+		long mean = startTimePeriodic;
+		long std = tolerance;
+		NormalDistribution nd = new NormalDistribution(startTimePeriodic, std);
 
-		if(Time.isBetween(startTimePeriodic - tolerance, timePeriodic, endTimePeriodic + tolerance)){
-			return 1;
-//			return (endTime - startTime) / Long.MAX_VALUE;
+		long startTimePeriodicAndTolerated = (startTimePeriodic  - tolerance) % period;
+		long endTimePeriodicAndTolerated= (endTimePeriodic + tolerance) % period;
+		
+		if(Time.isBetween(startTimePeriodicAndTolerated, timePeriodic, endTimePeriodicAndTolerated)){
+			return nd.probability(timePeriodic) / nd.probability(mean);
 		} else {
 			return 0;
 		}

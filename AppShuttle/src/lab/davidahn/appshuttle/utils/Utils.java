@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle;
+package lab.davidahn.appshuttle.utils;
 
 import java.util.*;
 
