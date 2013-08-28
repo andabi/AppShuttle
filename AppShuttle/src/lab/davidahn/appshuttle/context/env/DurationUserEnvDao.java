@@ -39,13 +39,13 @@ public class DurationUserEnvDao {
 		row.put("timezone", durationUserEnv.getTimeZone().getID());
 		row.put("env_type", durationUserEnv.getEnvType().toString());
 		row.put("user_env", gson.toJson(durationUserEnv.getUserEnv()));
-		db.insert("duration_user_env", null, row);
-		Log.i("stored duration_user_env", durationUserEnv.toString());
+		db.insert("history_user_env", null, row);
+		Log.i("stored history_user_env", durationUserEnv.toString());
 	}
 	
 	public DurationUserEnv retrieveDurationUserEnvContains(Date time, EnvType envType) {
 	Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-	Cursor cur = db.rawQuery("SELECT * FROM duration_user_env WHERE time <= "
+	Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time <= "
 			+ time.getTime() + " AND end_time >= " + time.getTime() +" AND env_type = '" + envType.toString() + "';", null);
 	DurationUserEnv res = null;
 	while (cur.moveToNext()) {
@@ -61,7 +61,7 @@ public class DurationUserEnvDao {
 		.setTimeZone(timezone)
 		.setUserEnv(userEnv)
 		.build();
-		Log.i("retrieved duration_user_env", durationUserEnv.toString());
+		Log.i("retrieved history_user_env", durationUserEnv.toString());
 		res = durationUserEnv;
 	}
 	cur.close();
@@ -70,7 +70,7 @@ public class DurationUserEnvDao {
 	
 	public List<DurationUserEnv> retrieveDurationUserEnvIncluded(Date fromTime, Date toTime, EnvType envType) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-		Cursor cur = db.rawQuery("SELECT * FROM duration_user_env WHERE time >= "
+		Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +" AND env_type = '" + envType.toString() + "';", null);
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		while (cur.moveToNext()) {
@@ -86,7 +86,7 @@ public class DurationUserEnvDao {
 			.setTimeZone(timezone)
 			.setUserEnv(userEnv)
 			.build();
-			Log.i("retrieved duration_user_env", durationUserEnv.toString());
+			Log.i("retrieved history_user_env", durationUserEnv.toString());
 			res.add(durationUserEnv);
 		}
 		cur.close();
@@ -111,6 +111,6 @@ public class DurationUserEnvDao {
 	}
 	
 	public void deleteDurationUserEnv(long time){
-		db.execSQL("DELETE FROM duration_user_env WHERE time < " + time +";");
+		db.execSQL("DELETE FROM history_user_env WHERE time < " + time +";");
 	}
 }

@@ -54,14 +54,14 @@ public class RfdUserCxtDao {
 //		row.put("places", gson.toJson(rfdUCxt.getPlaces()));
 		row.put("bhv_type", rfdUCxt.getBhv().getBhvType().toString());
 		row.put("bhv_name", rfdUCxt.getBhv().getBhvName());
-		db.insert("duration_context", null, row);
+		db.insert("history_user_bhv", null, row);
 		Log.i("stored duration context", rfdUCxt.toString());
 	}
 
 	public List<RfdUserCxt> retrieveRfdCxt(long fromTime, long toTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
-		Cursor cur = db.rawQuery("SELECT * FROM duration_context WHERE time >= "
+		Cursor cur = db.rawQuery("SELECT * FROM history_user_bhv WHERE time >= "
 				+ fromTime + " AND end_time <= " + toTime+";", null);
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		while (cur.moveToNext()) {
@@ -93,19 +93,19 @@ public class RfdUserCxtDao {
 	}
 	
 	public void deleteRfdCxt(Date fromTime, Date toTime){
-		db.execSQL("DELETE * FROM duration_context WHERE time >= "
+		db.execSQL("DELETE * FROM history_user_bhv WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +";");
 	}
 	
 	public void deleteRfdCxtBefore(long time){
-		db.execSQL("DELETE FROM duration_context WHERE time < " + time +";");
+		db.execSQL("DELETE FROM history_user_bhv WHERE time < " + time +";");
 	}
 	
 	public List<RfdUserCxt> retrieveRfdCxtByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
 		
-		Cursor cur = db.rawQuery("SELECT * FROM duration_context WHERE time >= "
+		Cursor cur = db.rawQuery("SELECT * FROM history_user_bhv WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() 
 				+ " AND bhv_type = '"+uBhv.getBhvType()+"' AND bhv_name = '"+uBhv.getBhvName()+"';", null);
 		while (cur.moveToNext()) {

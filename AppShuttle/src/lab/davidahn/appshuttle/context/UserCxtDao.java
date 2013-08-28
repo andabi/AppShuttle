@@ -52,7 +52,7 @@ public class UserCxtDao {
 			row.put("user_envs", gson.toJson(uEnvs));
 			row.put("bhv_type", uBhv.getBhvType().toString());
 			row.put("bhv_name", uBhv.getBhvName());
-			db.insert("point_context", null, row);
+			db.insert("snapshot_context", null, row);
 			Log.i("stored cxt", uCxt.toString());
 		}
 	}
@@ -61,7 +61,7 @@ public class UserCxtDao {
 	public List<UserCxt> retrieveCxt(Date sTime, Date eTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = db.rawQuery("SELECT * FROM point_context WHERE time >= "
+		Cursor cur = db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 		List<UserCxt> res = new ArrayList<UserCxt>();
 		
@@ -102,7 +102,7 @@ public class UserCxtDao {
 	public File loadCxtAsCsvFile(Context cxt, String fileName, Date sTime, Date eTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = db.rawQuery("SELECT * FROM point_context WHERE time >= "
+		Cursor cur = db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 
 		try {

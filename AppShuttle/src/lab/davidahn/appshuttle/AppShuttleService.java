@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle;
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectingCxtService;
-import lab.davidahn.appshuttle.context.CompactingCxtService;
+import lab.davidahn.appshuttle.collect.CompactingCxtService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.NotiViewService;
 import android.app.AlarmManager;
@@ -52,75 +52,7 @@ public class AppShuttleService extends Service{
 	public void onCreate() {
 		super.onCreate();
 
-		GlobalState.inPresent = true;
-		
-		//preference settings
-		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
-		SharedPreferences.Editor editor = settings.edit();
-		
-		editor.putString("database.name", new StringBuilder(getResources().getString(R.string.app_name)).append(".db").toString());
-
-		
-		editor.putLong("collection.location.tolerance.time", 6000);
-		editor.putInt("collection.location.tolerance.distance", 100);
-		
-		editor.putInt("collection.place.tolerance.distance", 5000);
-		
-		editor.putBoolean("collection.store_cxt.enabled", false);
-		
-		
-		editor.putBoolean("service.collection.enabled", true);
-		editor.putLong("service.collection.period", 6000);
-
-		editor.putBoolean("service.view.enabled", true);
-		editor.putLong("service.view.peroid", 30000);
-
-		editor.putBoolean("service.report.enabled", false);
-		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
-
-		editor.putBoolean("service.compaction.enabled", true);
-		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
-		editor.putLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
-		
-		
-		editor.putString("email.sender.addr", "davidahn412@gmail.com");
-		editor.putString("email.sender.pwd", "rnrmfepdl");
-		
-		editor.putString("email.receiver.addr", "andabi412@gmail.com");
-		
-		
-		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
-		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
-		
-		editor.putLong("matcher.freq.acceptance_delay", 0);
-//		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6);
-		editor.putInt("matcher.freq.min_num_cxt", 3);
-		
-		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
-		editor.putLong("matcher.weak_time.tolerance", settings.getLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
-//		editor.putLong("matcher.weak_time.acceptance_delay", 0);
-//		editor.putLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
-		editor.putInt("matcher.weak_time.min_num_cxt", 3);
-		
-		editor.putLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
-		editor.putLong("matcher.strict_time.tolerance", settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
-		editor.putFloat("matcher.strict_time.min_likelihood", 0.3f);
-		editor.putInt("matcher.strict_time.min_num_cxt", 3);
-		
-		editor.putFloat("matcher.place.min_likelihood", 0.7f);
-		editor.putInt("matcher.place.min_num_cxt", 3);
-		editor.putInt("matcher.place.min_distance", 2000);
-		
-		editor.putFloat("matcher.loc.min_likelihood", 0.5f);
-		editor.putInt("matcher.loc.min_num_cxt", 3);
-		editor.putInt("matcher.loc.min_distance", 50);
-
-		
-		editor.putInt("viewer.noti.num_slot", 4);
-
-		editor.commit();
-		
+		preferenceSettings();
 //		GlobalState.settings = settings;
 		
 		IntentFilter filter = new IntentFilter();
@@ -162,6 +94,76 @@ public class AppShuttleService extends Service{
 		}
 	}
 	
+	private void preferenceSettings() {
+		GlobalState.inPresent = true;
+		
+		//preference settings
+		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+		
+		editor.putString("database.name", new StringBuilder(getResources().getString(R.string.app_name)).append(".db").toString());
+
+		
+		editor.putLong("collection.location.tolerance.time", 6000);
+		editor.putInt("collection.location.tolerance.distance", 100);
+		
+		editor.putInt("collection.place.tolerance.distance", 5000);
+		
+		editor.putBoolean("collection.store_cxt.enabled", false);
+		
+		
+		editor.putBoolean("service.collection.enabled", true);
+		editor.putLong("service.collection.period", 6000);
+
+		editor.putBoolean("service.view.enabled", true);
+		editor.putLong("service.view.peroid", 30000);
+
+		editor.putBoolean("service.report.enabled", false);
+		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
+
+		editor.putBoolean("service.compaction.enabled", true);
+		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
+		editor.putLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
+		
+		
+		editor.putString("email.sender.addr", "davidahn412@gmail.com");
+		editor.putString("email.sender.pwd", "rnrmfepdl");
+		
+		editor.putString("email.receiver.addr", "andabi412@gmail.com");
+		
+		
+		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+		
+		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+		editor.putInt("matcher.freq.min_num_cxt", 3);
+		
+		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
+		editor.putLong("matcher.weak_time.tolerance", settings.getLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
+//		editor.putLong("matcher.weak_time.acceptance_delay", 0);
+//		editor.putLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HOUR);
+		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
+		editor.putInt("matcher.weak_time.min_num_cxt", 3);
+		
+		editor.putLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
+		editor.putLong("matcher.strict_time.tolerance", settings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
+		editor.putFloat("matcher.strict_time.min_likelihood", 0.3f);
+		editor.putInt("matcher.strict_time.min_num_cxt", 3);
+		
+		editor.putFloat("matcher.place.min_likelihood", 0.7f);
+		editor.putInt("matcher.place.min_num_cxt", 3);
+		editor.putInt("matcher.place.min_distance", 2000);
+		
+		editor.putFloat("matcher.loc.min_likelihood", 0.5f);
+		editor.putInt("matcher.loc.min_num_cxt", 3);
+		editor.putInt("matcher.loc.min_distance", 50);
+
+		
+		editor.putInt("viewer.noti.num_slot", 4);
+
+		editor.commit();
+	}
+
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
 		return START_STICKY;

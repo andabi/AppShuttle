@@ -29,25 +29,14 @@ public class LocContextMatcher extends ContextMatcher {
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		DurationUserEnv lastDurationUserEnv = null;
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime(), rfdUCxt.getEndTime(), EnvType.LOCATION)){
 				UserLoc userLoc = ((LocUserEnv)durationUserEnv.getUserEnv()).getLoc();
-				if(lastDurationUserEnv == null) {
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setLoc(userLoc);
-				} else {
-					if(!durationUserEnv.equals(lastDurationUserEnv)){
-						res.add(mergedRfdUCxtBuilder.build());
-						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-						mergedRfdUCxtBuilder.setLoc(userLoc);
-					}
-				}
-				lastDurationUserEnv = durationUserEnv;
+				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+				mergedRfdUCxtBuilder.setLoc(userLoc);
+				res.add(mergedRfdUCxtBuilder.build());
 			}
 		}
-		if(mergedRfdUCxtBuilder != null)
-			res.add(mergedRfdUCxtBuilder.build());
 		return res;
 	}
 	

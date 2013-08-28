@@ -1,9 +1,6 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import lab.davidahn.appshuttle.DBHelper;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.LocUserEnv;
-import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,14 +31,13 @@ public class PredictedBhvDao {
 		ContentValues row = new ContentValues();
 		row.put("time", predictedBhv.getTime().getTime());
 		row.put("timezone", predictedBhv.getTimeZone().getID());
-		row.put("location", gson.toJson(((LocUserEnv)predictedBhv.getUserEnv(EnvType.LOCATION)).getLoc()));
-		row.put("place", gson.toJson(((PlaceUserEnv)predictedBhv.getUserEnv(EnvType.PLACE)).getPlace()));
+		row.put("user_envs", gson.toJson(predictedBhv.getUserEnvMap()));
 		row.put("bhv_type", predictedBhv.getUserBhv().getBhvType().toString());
 		row.put("bhv_name", predictedBhv.getUserBhv().getBhvName());
 		row.put("score", predictedBhv.getScore());
 		db.insert("predicted_bhv", null, row);
 
-		for(MatchedResult matchedRes : predictedBhv.getMatchedResults().values()) {
+		for(MatchedResult matchedRes : predictedBhv.getMatchedResultMap().values()) {
 			matchedResultDao.storeMatchedResult(matchedRes);
 		}
 		

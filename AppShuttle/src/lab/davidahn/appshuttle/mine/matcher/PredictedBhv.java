@@ -10,13 +10,12 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public class PredictedBhv implements Comparable<PredictedBhv> {
-	private Date time;
-	private TimeZone timeZone;
-	private Map<EnvType, UserEnv> userEnvs;
-	private UserBhv uBhv;
-	private EnumMap<MatcherType, MatchedResult> matchedResults;
-	private double score;
-//	private Map<MatcherType, Double> likelihoods;
+	private final Date time;
+	private final TimeZone timeZone;
+	private final Map<EnvType, UserEnv> userEnvs;
+	private final UserBhv uBhv;
+	private final EnumMap<MatcherType, MatchedResult> matchedResults;
+	private final double score;
 	
 	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
 		this.time = time;
@@ -35,7 +34,7 @@ public class PredictedBhv implements Comparable<PredictedBhv> {
 		return timeZone;
 	}
 
-	public Map<EnvType, UserEnv> getUserEnvs() {
+	public Map<EnvType, UserEnv> getUserEnvMap() {
 		return userEnvs;
 	}
 
@@ -47,17 +46,17 @@ public class PredictedBhv implements Comparable<PredictedBhv> {
 		return uBhv;
 	}
 
-	public Map<MatcherType, MatchedResult> getMatchedResults() {
+	public Map<MatcherType, MatchedResult> getMatchedResultMap() {
 		return matchedResults;
+	}
+	
+	public MatchedResult getMatchedResult(MatcherType matcherType) {
+		return matchedResults.get(matcherType);
 	}
 
 	public double getScore() {
 		return score;
 	}
-	
-//	public void addMatchedResult(MatchedResult matchedCxt){
-//		matchedResults.add(matchedCxt);
-//	}
 	
 	public int compareTo(PredictedBhv predictedBhv){
 		if(score < predictedBhv.score) return 1;
@@ -67,18 +66,9 @@ public class PredictedBhv implements Comparable<PredictedBhv> {
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("matched cxts: ").append(matchedResults.toString()).append(", ");
+		msg.append("matched results: ").append(matchedResults.toString()).append(", ");
 		msg.append("predicted bhv: ").append(uBhv.toString()).append(", ");
 		msg.append("score: ").append(score);
 		return msg.toString();
-	}
-
-	public String getMatcherTypeString() {
-		StringBuffer res = new StringBuffer();
-		for(MatcherType matcherType : matchedResults.keySet()){
-//			if(matchedResults.get(matcherType).isMatched())
-			res.append(matcherType.toString().charAt(0));
-		}
-		return res.toString();
 	}
 }

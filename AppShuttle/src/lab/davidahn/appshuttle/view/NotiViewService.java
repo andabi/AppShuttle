@@ -91,8 +91,6 @@ public class NotiViewService extends Service {
 				int iconSlotScoreId = iconSlotScoreIdList.poll();
 				
 				notiRemoteViews.setTextViewText(iconSlotScoreId, 
-//						new DecimalFormat("##.#").format(likelihood * 100)+"\n"+
-//						predictedBhv.getMatcherTypeString());
 						"    ");
 				
 				try {

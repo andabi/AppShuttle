@@ -1,6 +1,7 @@
-package lab.davidahn.appshuttle.context;
+package lab.davidahn.appshuttle.collect;
 
-import lab.davidahn.appshuttle.context.env.ChangeUserEnvDao;
+import lab.davidahn.appshuttle.context.RfdUserCxtDao;
+import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.mine.matcher.MatchedResultDao;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvDao;
 import android.app.AlarmManager;
@@ -25,16 +26,14 @@ public class CompactingCxtService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-//		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
-		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(getApplicationContext());
 		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
 		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
 		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
 
 		long time = System.currentTimeMillis() - settings.getLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
-		
 		rfdUserCxtDao.deleteRfdCxtBefore(time);
-		changedUserEnvDao.deleteChangedUserEnv(time);
+		durationUserEnvDao.deleteDurationUserEnv(time);
 		matchedResultDao.deleteMatchedResult(time);
 		predictedBhvDao.deletePredictedBhv(time);
 	}

@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle.context.env;
 import java.util.Date;
 import java.util.TimeZone;
 
+@Deprecated
 public class ChangeUserEnv {
 	private Date time;
 	private TimeZone timezone;

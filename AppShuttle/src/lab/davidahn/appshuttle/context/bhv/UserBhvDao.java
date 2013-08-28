@@ -30,12 +30,12 @@ public class UserBhvDao {
 		row.put("bhv_type", uBhv.getBhvType().toString());
 		row.put("bhv_name", uBhv.getBhvName());
 //		db.insert("user_bhv", null, row);
-		db.insertWithOnConflict("user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
+		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		Log.i("stored userBhv", uBhv.toString());
 	}
 	
 	public List<UserBhv> retrieveUserBhv() {
-		Cursor cur = db.rawQuery("SELECT * FROM user_bhv;", null);
+		Cursor cur = db.rawQuery("SELECT * FROM list_user_bhv;", null);
 		List<UserBhv> res = new ArrayList<UserBhv>();
 		
 		while (cur.moveToNext()) {

@@ -19,7 +19,6 @@ public class MatchedResult implements Comparable<MatchedResult> {
 	private int numTotalCxt;
 	private int numRelatedCxt;
 	private Map<MatcherCountUnit, Double> relatedCxt;
-//	private boolean matched;
 	
 	public MatchedResult(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnv){
 		this.time = time;
@@ -106,14 +105,6 @@ public class MatchedResult implements Comparable<MatchedResult> {
 	public void setMatcherType(MatcherType matcherType) {
 		this.matcherType = matcherType;
 	}
-
-//	public boolean isMatched() {
-//		return matched;
-//	}
-//
-//	public void setMatched(boolean matched) {
-//		this.matched = matched;
-//	}
 
 	public int compareTo(MatchedResult matchedCxt){
 		if(likelihood < matchedCxt.likelihood) return 1;

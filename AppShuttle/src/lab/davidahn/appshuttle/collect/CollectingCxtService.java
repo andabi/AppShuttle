@@ -98,22 +98,16 @@ public class CollectingCxtService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		//sense
-		UserCxt uCxt = new UserCxt();
-		senseAndSetTime(uCxt);
-		senseAndSetLocation(uCxt);
-		senseAndSetPlace(uCxt);
-		senseBhv(uCxt);
+		//sense user cxt
+		UserCxt uCxt = senseUserCxt();
 
 		//update global state
 		updateGlobalState(uCxt);
 
 		//store cxt data
-		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
-
-		if(settings.getBoolean("collection.store_cxt.enabled", false)) 
-			userCxtDao.storeCxt(uCxt);
-		storeChangeUserEnv(uCxt);
+//		UserCxtDao userCxtDao = UserCxtDao.getInstance(getApplicationContext());
+//		if(settings.getBoolean("collection.store_cxt.enabled", false)) 
+//			userCxtDao.storeCxt(uCxt);
 
 		ContextRefiner cxtRefiner = ContextRefiner.getInstance(getApplicationContext());
 		List<RfdUserCxt> rfdUCxtList = cxtRefiner.refineDurationUserBhv(uCxt);
@@ -129,6 +123,16 @@ public class CollectingCxtService extends IntentService {
 		}
 	}
 	
+	private UserCxt senseUserCxt() {
+		UserCxt uCxt = new UserCxt();
+		senseAndSetTime(uCxt);
+		senseAndSetLocation(uCxt);
+		senseAndSetPlace(uCxt);
+		senseBhv(uCxt);
+		return uCxt;
+	}
+
+	@Deprecated
 	private void storeChangeUserEnv(UserCxt uCxt) {
 		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(getApplicationContext());
 
@@ -148,13 +152,9 @@ public class CollectingCxtService extends IntentService {
 	}
 
 	private void updateGlobalState(UserCxt uCxt) {
-		//update globalState
-		if(GlobalState.currentUCxt == null) {
-			;
-		} else {
+		if(GlobalState.currentUCxt != null) {
 			GlobalState.prevUCxt = GlobalState.currentUCxt;
 		}
-		
 		GlobalState.currentUCxt = uCxt;
 	}
 
