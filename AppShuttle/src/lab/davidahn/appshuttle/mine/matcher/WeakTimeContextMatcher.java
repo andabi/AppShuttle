@@ -58,23 +58,17 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 	
 	@Override
 	protected double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt) {
-		long startTime = rfdUCxt.getStartTime().getTime();
-		long endTime = rfdUCxt.getEndTime().getTime();
-		long time = uCxt.getTime().getTime();
+		long currTime = uCxt.getTime().getTime();
+		long currTimePeriodic = currTime % period;
+		long targetTime = rfdUCxt.getStartTime().getTime();
+		long targetTimePeriodic = targetTime % period;
 		
-		long timePeriodic = time % period;
-		long startTimePeriodic = startTime % period;
-		long endTimePeriodic = endTime % period;
-		
-		long mean = startTimePeriodic;
-		long std = tolerance;
-		NormalDistribution nd = new NormalDistribution(startTimePeriodic, std);
+		long mean = currTimePeriodic;
+		long std = tolerance / 2;
+		NormalDistribution nd = new NormalDistribution(mean, std);
 
-		long startTimePeriodicAndTolerated = (startTimePeriodic  - tolerance) % period;
-		long endTimePeriodicAndTolerated= (endTimePeriodic + tolerance) % period;
-		
-		if(Time.isBetween(startTimePeriodicAndTolerated, timePeriodic, endTimePeriodicAndTolerated)){
-			return nd.probability(timePeriodic) / nd.probability(mean);
+		if(Time.isBetween((currTimePeriodic - tolerance) % period, targetTimePeriodic, (currTimePeriodic + tolerance) % period)){
+			return nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
 			return 0;
 		}

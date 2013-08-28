@@ -45,8 +45,8 @@ public class DurationUserEnvDao {
 	
 	public DurationUserEnv retrieveDurationUserEnvContains(Date time, EnvType envType) {
 	Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-	Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time <= "
-			+ time.getTime() + " AND end_time >= " + time.getTime() +" AND env_type = '" + envType.toString() + "';", null);
+	Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time < "
+			+ time.getTime() + " AND end_time > " + time.getTime() +" AND env_type = '" + envType.toString() + "';", null);
 	DurationUserEnv res = null;
 	while (cur.moveToNext()) {
 		Date startTime = new Date(cur.getLong(0));
@@ -97,13 +97,20 @@ public class DurationUserEnvDao {
 	public List<DurationUserEnv> retrieveDurationUserEnv(Date fromTime, Date toTime, EnvType envType){
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		DurationUserEnv headPiece = retrieveDurationUserEnvContains(fromTime, envType);
-		if(headPiece != null) {
+		if(headPiece != null)
 			res.add(headPiece);
-			List<DurationUserEnv> middlePieces = retrieveDurationUserEnvIncluded(fromTime, toTime, envType);
-			res.addAll(middlePieces);
-			DurationUserEnv tailPiece = retrieveDurationUserEnvContains(toTime, envType);
-			if(!headPiece.equals(tailPiece))
-				res.add(tailPiece);
+		List<DurationUserEnv> middlePieces = retrieveDurationUserEnvIncluded(fromTime, toTime, envType);
+		res.addAll(middlePieces);
+//			if(!middlePieces.isEmpty()) {
+//				if(!res.get(res.size()-1).equals(middlePieces.get(0)))
+//					res.add(middlePieces.get(0));
+//				res.addAll(middlePieces.subList(1, middlePieces.size()));
+//			}
+		DurationUserEnv tailPiece = retrieveDurationUserEnvContains(toTime, envType);
+//		if(!res.get(res.size()-1).equals(tailPiece)) // && res.get(res.size()-1).getEndTime().getTime() < toTime.getTime())
+		if(tailPiece != null && !res.get(res.size()-1).equals(tailPiece))
+			res.add(tailPiece);
+		if(!res.isEmpty()) {
 			res.get(0).setTime(fromTime);
 			res.get(res.size()-1).setEndTime(toTime);
 		}
