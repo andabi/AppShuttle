@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.commons.Time;
@@ -33,19 +34,19 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-				mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getTime());
-				mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
-				mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
+				mergedRfdUCxtBuilder.setProperty("startTime", rfdUCxt.getTime());
+				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
+				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
 						< settings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
-					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
+					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getTime());
-					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
-					mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
+					mergedRfdUCxtBuilder.setProperty("startTime", rfdUCxt.getTime());
+					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
+					mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 				}
 			}
 			prevRfdUCxt = rfdUCxt;
@@ -60,7 +61,7 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 	protected double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt) {
 		long currTime = uCxt.getTime().getTime();
 		long currTimePeriodic = currTime % period;
-		long targetTime = rfdUCxt.getStartTime().getTime();
+		long targetTime = ((Date) rfdUCxt.getProperty("startTime")).getTime();
 		long targetTimePeriodic = targetTime % period;
 		
 		long mean = currTimePeriodic;

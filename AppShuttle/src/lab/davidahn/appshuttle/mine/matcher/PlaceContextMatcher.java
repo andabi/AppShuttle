@@ -37,12 +37,12 @@ public class PlaceContextMatcher extends ContextMatcher {
 				UserLoc userPlace = ((PlaceUserEnv)durationUserEnv.getUserEnv()).getPlace();
 				if(lastDurationUserEnv == null) {
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setPlace(userPlace);
+					mergedRfdUCxtBuilder.setProperty("place", userPlace);
 				} else {
 					if(!durationUserEnv.equals(lastDurationUserEnv)){
 						res.add(mergedRfdUCxtBuilder.build());
 						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-						mergedRfdUCxtBuilder.setPlace(userPlace);
+						mergedRfdUCxtBuilder.setProperty("place", userPlace);
 					}
 				}
 				lastDurationUserEnv = durationUserEnv;
@@ -85,8 +85,8 @@ public class PlaceContextMatcher extends ContextMatcher {
 	@Override
 	protected double calcRelatedness(MatcherCountUnit unit, UserCxt uCxt) {
 		try{
-			UserLoc uLoc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-			if(uLoc.proximity(unit.getPlace(), toleranceInMeter))
+			UserLoc uLoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+			if(uLoc.proximity((UserLoc) unit.getProperty("place"), toleranceInMeter))
 				return 1;
 			else
 				return 0;
@@ -110,7 +110,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 //		}
 	
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap){
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
 //		int numTotalCxt = matchedCxt.getNumTotalCxt();
 //		Map<MatcherCountUnit, Double> relatedCxtMap = matchedCxt.getRelatedCxt();
 		

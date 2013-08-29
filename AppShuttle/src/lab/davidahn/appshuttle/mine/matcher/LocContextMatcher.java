@@ -14,6 +14,11 @@ import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
 
+/**
+ * K-NN based algorithm
+ * @author andabi
+ *
+ */
 public class LocContextMatcher extends ContextMatcher {
 	int toleranceInMeter;
 
@@ -26,16 +31,12 @@ public class LocContextMatcher extends ContextMatcher {
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime(), rfdUCxt.getEndTime(), EnvType.LOCATION)){
-				UserLoc userLoc = ((LocUserEnv)durationUserEnv.getUserEnv()).getLoc();
-				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-				mergedRfdUCxtBuilder.setLoc(userLoc);
-				res.add(mergedRfdUCxtBuilder.build());
-			}
+			mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+			mergedRfdUCxtBuilder.addRfdUserCxtList(rfdUCxt);
+			res.add(mergedRfdUCxtBuilder.build());
 		}
 		return res;
 	}
@@ -95,24 +96,33 @@ public class LocContextMatcher extends ContextMatcher {
 
 	@Override
 	protected double calcRelatedness(MatcherCountUnit unit, UserCxt uCxt) {
-		try{
-			UserLoc uLoc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-			if(uLoc.proximity(unit.getLoc(), toleranceInMeter))
-				return 1;
-			else
-				return 0;
-		} catch (InvalidLocationException e) {
-			return 0;
-		}
+		return 1;
 	}
 	
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap){
-		double likelihood = 0;
-		for(double relatedness : relatedCxtMap.values()){
-			likelihood+=relatedness;
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
+		long totalSpentTime = 0, validSpentTime = 0;
+		
+		for(MatcherCountUnit unit : relatedCxtMap.keySet()){
+			RfdUserCxt rfdUCxt = unit.getRfdUserCxtList().get(0);
+			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime(), rfdUCxt.getEndTime(), EnvType.LOCATION)){
+				UserLoc userLoc = ((LocUserEnv)durationUserEnv.getUserEnv()).getLoc();
+				long duration = durationUserEnv.getDuration();
+				totalSpentTime += duration;
+				try{
+					if(userLoc.proximity(((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), toleranceInMeter)){
+						validSpentTime += duration;
+					}
+				} catch (InvalidLocationException e) {
+					;
+				}
+
+			}
 		}
-		likelihood /= numTotalCxt;
+		
+		double likelihood = 0;
+		likelihood = 1.0 * totalSpentTime / validSpentTime;
 		return likelihood;
 	}
 	

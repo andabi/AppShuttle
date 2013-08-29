@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.commons.Time;
@@ -37,19 +38,19 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 		for(RfdUserCxt rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-				mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getTime());
-				mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
-				mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
+				mergedRfdUCxtBuilder.setProperty("startTime", rfdUCxt.getTime());
+				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
+				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
 						< settings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)){
-					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
+					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setStartTime(rfdUCxt.getTime());
-					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
-					mergedRfdUCxtBuilder.setTimeZone(rfdUCxt.getTimeZone());
+					mergedRfdUCxtBuilder.setProperty("startTime", rfdUCxt.getTime());
+					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
+					mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 				}
 			}
 			prevRfdUCxt = rfdUCxt;
@@ -62,15 +63,15 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 	
 	@Override
 	protected double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt) {
-		long startTime = rfdUCxt.getStartTime().getTime();
-		long endTime = rfdUCxt.getEndTime().getTime();
+		long startTime = ((Date) rfdUCxt.getProperty("startTime")).getTime();
+		long endTime = ((Date) rfdUCxt.getProperty("endTime")).getTime();
 		long time = uCxt.getTime().getTime();
 		
 		long startTimePeriodic = startTime % period;
 		long endTimePeriodic = endTime % period;
 		long timePeriodic = time % period;
 
-		if(Time.isBetween(startTimePeriodic - tolerance, timePeriodic, endTimePeriodic + tolerance)){
+		if(Time.isBetween((startTimePeriodic - tolerance) % period, timePeriodic, (endTimePeriodic + tolerance) % period)){
 			return 1;
 		} else {
 			return 0;

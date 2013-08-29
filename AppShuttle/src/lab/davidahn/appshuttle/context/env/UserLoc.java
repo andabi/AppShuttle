@@ -45,7 +45,7 @@ public class UserLoc {
 	}
 	
 	public boolean proximity(UserLoc uLoc, int toleranceInMeter) throws InvalidLocationException {
-		if(validity == Validity.INVALID) 
+		if(validity == Validity.INVALID || !uLoc.isValid()) 
 			throw new InvalidLocationException();
 		Location loc1 = new Location("loc1");
 		Location loc2 = new Location("loc2");

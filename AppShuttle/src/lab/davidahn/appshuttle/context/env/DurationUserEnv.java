@@ -17,7 +17,7 @@ public class DurationUserEnv {
 		this.timeZone = builder.timeZone;
 		this.usrEnv = builder.usrEnv;
 		envType = usrEnv.getEnvType();
-		duration = endTime.getTime() - time.getTime();
+		updateDuration();
 	}
 	
 	public Date getTime() {
@@ -25,6 +25,7 @@ public class DurationUserEnv {
 	}
 	public void setTime(Date time) {
 		this.time = time;
+		updateDuration();
 	}
 	public long getDuration() {
 		return duration;
@@ -37,6 +38,7 @@ public class DurationUserEnv {
 	}
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+		updateDuration();
 	}
 	public TimeZone getTimeZone() {
 		return timeZone;
@@ -56,6 +58,11 @@ public class DurationUserEnv {
 	public void setUserEnv(UserEnv userEnv) {
 		this.usrEnv = userEnv;
 	}
+
+	private void updateDuration() {
+		duration = endTime.getTime() - time.getTime();
+	}
+
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("time: ").append(time).append(", ");

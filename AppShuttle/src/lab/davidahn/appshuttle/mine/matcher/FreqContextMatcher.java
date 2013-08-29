@@ -27,7 +27,6 @@ public class FreqContextMatcher extends ContextMatcher{
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
 						< settings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
-					mergedRfdUCxtBuilder.setEndTime(rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
@@ -47,7 +46,7 @@ public class FreqContextMatcher extends ContextMatcher{
 	}
 
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap){
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
 		double likelihood = 0;
 //		int numRelatedCxt = matchedCxt.getNumRelatedCxt();
 		likelihood = 1.0 * numRelatedCxt / Integer.MAX_VALUE;

@@ -156,7 +156,7 @@ public class AppShuttleService extends Service{
 		
 		editor.putFloat("matcher.loc.min_likelihood", 0.5f);
 		editor.putInt("matcher.loc.min_num_cxt", 3);
-		editor.putInt("matcher.loc.min_distance", 50);
+		editor.putInt("matcher.loc.min_distance", 100);
 
 		
 		editor.putInt("viewer.noti.num_slot", 4);

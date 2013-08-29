@@ -66,9 +66,11 @@ public abstract class ContextMatcher {
 				relatedCxt.put(mergedRfdCxt, relatedness);
 			}
 		}
-
-		double likelihood = calcLikelihood(numTotalCxt, numRelatedCxt, relatedCxt);
-		if(numRelatedCxt < minNumCxt || likelihood < minLikelihood)
+		if(numRelatedCxt < minNumCxt)
+			return null;
+		
+		double likelihood = calcLikelihood(numTotalCxt, numRelatedCxt, relatedCxt, uCxt);
+		if(likelihood < minLikelihood)
 			return null;
 		else {
 			MatchedResult matchedCxt = new MatchedResult(uCxt.getTime(), uCxt.getTimeZone(), uEnvs);
@@ -82,7 +84,7 @@ public abstract class ContextMatcher {
 		}
 	}
 	
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap){
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
 		double likelihood = 0;
 		for(double relatedness : relatedCxtMap.values()){
 			likelihood+=relatedness;
