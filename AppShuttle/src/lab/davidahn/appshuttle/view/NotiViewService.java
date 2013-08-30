@@ -1,13 +1,15 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.MainActivity;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
@@ -21,6 +23,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
@@ -75,39 +78,53 @@ public class NotiViewService extends Service {
 		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
 
 		Predictor predictor = new Predictor(getApplicationContext());
-		List<PredictedBhv> predictedBhvForView = predictor.predict(settings.getInt("viewer.noti.num_slot", 4));
+		List<PredictedBhv> predictedBhvForView = predictor.predict(Integer.MAX_VALUE);
 		
-		List<UserBhv> matchedBhvList = new ArrayList<UserBhv>();
+		Set<UserBhv> matchedBhvSet = new HashSet<UserBhv>();
 		for(PredictedBhv predictedBhv : predictedBhvForView) {
 			UserBhv uBhv = predictedBhv.getUserBhv();
+			BhvType bhvType = uBhv.getBhvType();
 			String bhvName = uBhv.getBhvName();
-//			double likelihood = predictedBhv.getLikelihood();
-			matchedBhvList.add(uBhv);
-			Intent launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
-			if(launchIntent == null){
-				;
-			} else {
+			if(bhvType == BhvType.APP){
+				Intent launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
+				if(launchIntent == null){
+					continue;
+				} else {
+					int iconSlotId = iconSlotIdList.poll();
+					int iconSlotScoreId = iconSlotScoreIdList.poll();
+					
+					notiRemoteViews.setTextViewText(iconSlotScoreId, 
+							"    ");
+					
+					try {
+						BitmapDrawable iconDrawable = (BitmapDrawable) packageManager.getApplicationIcon(bhvName);
+						notiRemoteViews.setImageViewBitmap(iconSlotId, iconDrawable.getBitmap());
+					} catch (NameNotFoundException e) {
+						e.printStackTrace();
+					} catch (NullPointerException e) {
+						e.printStackTrace();
+					}
+					notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, launchIntent, 0));
+				}
+			} else if (bhvType == BhvType.CALL){
 				int iconSlotId = iconSlotIdList.poll();
 				int iconSlotScoreId = iconSlotScoreIdList.poll();
 				
 				notiRemoteViews.setTextViewText(iconSlotScoreId, 
-						"    ");
-				
-				try {
-					BitmapDrawable iconDrawable = (BitmapDrawable) packageManager.getApplicationIcon(bhvName);
-					notiRemoteViews.setImageViewBitmap(iconSlotId, iconDrawable.getBitmap());
-				} catch (NameNotFoundException e) {
-					e.printStackTrace();
-				} catch (NullPointerException e) {
-					e.printStackTrace();
-				}
-				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, launchIntent, 0));
+						"call to\n"+bhvName);
+				Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(bhvName));
+				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, callIntent, 0));
+			} else {
+				continue;
 			}
+			matchedBhvSet.add(uBhv);
+			if(iconSlotIdList.isEmpty()) 
+				break;
 		}
 		
 		for(PredictedBhv predictedBhv : predictedBhvForView) {
-			if(GlobalState.recentMatchedBhvList == null ||
-					!GlobalState.recentMatchedBhvList.contains(predictedBhv.getUserBhv())){
+			if(GlobalState.recentMatchedBhvSet == null ||
+					!GlobalState.recentMatchedBhvSet.contains(predictedBhv.getUserBhv())){
 				predictor.storePredictedBhv(predictedBhv);
 			}
 		}
@@ -122,7 +139,7 @@ public class NotiViewService extends Service {
 //			notificationManager.cancel(NOTI_UPDATE);
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		} else { 
-			if(matchedBhvList.equals(GlobalState.recentMatchedBhvList)){
+			if(matchedBhvSet.equals(GlobalState.recentMatchedBhvSet)){
 				notiUpdate = new Notification.Builder(NotiViewService.this)
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setContent(notiRemoteViews)
@@ -138,7 +155,7 @@ public class NotiViewService extends Service {
 			}
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		}
-		GlobalState.recentMatchedBhvList = matchedBhvList;	
+		GlobalState.recentMatchedBhvSet = matchedBhvSet;	
 
 		return START_NOT_STICKY;
 	}

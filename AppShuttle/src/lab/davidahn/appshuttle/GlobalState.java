@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle;
 
-import java.util.List;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.context.UserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
@@ -11,5 +11,5 @@ public class GlobalState {
 	public static volatile UserCxt prevUCxt;
 	public static volatile boolean locMoved;
 	public static volatile boolean placeMoved;
-	public static volatile List<UserBhv> recentMatchedBhvList;
+	public static volatile Set<UserBhv> recentMatchedBhvSet;
 }
