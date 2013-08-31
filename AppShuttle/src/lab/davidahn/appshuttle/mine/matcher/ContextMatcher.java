@@ -6,9 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.GlobalState;
-import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
+import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;

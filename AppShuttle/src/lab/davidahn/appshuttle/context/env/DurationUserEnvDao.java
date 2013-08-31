@@ -108,8 +108,14 @@ public class DurationUserEnvDao {
 //			}
 		DurationUserEnv tailPiece = retrieveDurationUserEnvContains(toTime, envType);
 //		if(!res.get(res.size()-1).equals(tailPiece)) // && res.get(res.size()-1).getEndTime().getTime() < toTime.getTime())
-		if(tailPiece != null && !res.get(res.size()-1).equals(tailPiece))
-			res.add(tailPiece);
+		if(tailPiece != null){
+			if(!res.isEmpty()) {
+				if(!res.get(res.size()-1).equals(tailPiece))
+					res.add(tailPiece);
+			} else {
+				res.add(tailPiece);
+			}
+		}
 		if(!res.isEmpty()) {
 			res.get(0).setTime(fromTime);
 			res.get(res.size()-1).setEndTime(toTime);

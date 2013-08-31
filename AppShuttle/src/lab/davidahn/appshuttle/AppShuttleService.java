@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle;
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectionService;
-import lab.davidahn.appshuttle.collect.CompactingCxtService;
+import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.NotiViewService;
 import android.app.AlarmManager;
@@ -84,13 +84,13 @@ public class AppShuttleService extends Service{
 		if(settings.getBoolean("service.report.enabled", false)){
 			Intent reportingCxtIntent = new Intent(this, ReportingCxtService.class);
 			reportingCxtOperation = PendingIntent.getService(this, 0, reportingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(21), settings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), settings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
 		}
 		
 		if(settings.getBoolean("service.compaction.enabled", true)){
-			Intent compactingCxtIntent = new Intent(this, CompactingCxtService.class);
+			Intent compactingCxtIntent = new Intent(this, CompactionService.class);
 			compactingCxtOperation = PendingIntent.getService(this, 0, compactingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), settings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
 		}
 	}
 	
@@ -104,19 +104,21 @@ public class AppShuttleService extends Service{
 		editor.putString("database.name", new StringBuilder(getResources().getString(R.string.app_name)).append(".db").toString());
 
 		
-		editor.putLong("collection.location.tolerance.time", 6000);
+		editor.putLong("collection.location.tolerance.time", 10000);
 		editor.putInt("collection.location.tolerance.distance", 100);
 		
 		editor.putInt("collection.place.tolerance.distance", 5000);
+		
+		editor.putLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY);
 		
 		editor.putBoolean("collection.store_cxt.enabled", false);
 		
 		
 		editor.putBoolean("service.collection.enabled", true);
-		editor.putLong("service.collection.period", 6000);
+		editor.putLong("service.collection.period", 10000);
 
 		editor.putBoolean("service.view.enabled", true);
-		editor.putLong("service.view.peroid", 30000);
+		editor.putLong("service.view.peroid", 60000);
 
 		editor.putBoolean("service.report.enabled", false);
 		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
@@ -133,9 +135,9 @@ public class AppShuttleService extends Service{
 		
 		
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
-		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 30);
 		
-		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 		editor.putInt("matcher.freq.min_num_cxt", 5);
 		
 		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
@@ -199,7 +201,7 @@ public class AppShuttleService extends Service{
 		stopService(new Intent(AppShuttleService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleService.this, NotiViewService.class));
 		stopService(new Intent(AppShuttleService.this, ReportingCxtService.class));
-		stopService(new Intent(AppShuttleService.this, CompactingCxtService.class));
+		stopService(new Intent(AppShuttleService.this, CompactionService.class));
 //		notificationManager.cancelAll();
 	}
 }
