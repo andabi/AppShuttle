@@ -122,7 +122,8 @@ public class LocContextMatcher extends ContextMatcher {
 		}
 		
 		double likelihood = 0;
-		likelihood = 1.0 * validSpentTime / totalSpentTime;
+		if(totalSpentTime > 0)
+			likelihood = 1.0 * validSpentTime / totalSpentTime;
 		return likelihood;
 	}
 	

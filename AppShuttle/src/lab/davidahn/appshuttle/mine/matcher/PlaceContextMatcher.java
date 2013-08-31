@@ -118,7 +118,10 @@ public class PlaceContextMatcher extends ContextMatcher {
 		for(double relatedness : relatedCxtMap.values()){
 			likelihood+=relatedness;
 		}
-		likelihood /= numTotalCxt;
+		if(numTotalCxt > 0)
+			likelihood /= numTotalCxt;
+		else
+			likelihood = 0;
 		return likelihood;
 	}
 	

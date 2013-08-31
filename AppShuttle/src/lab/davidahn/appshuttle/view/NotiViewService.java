@@ -72,10 +72,10 @@ public class NotiViewService extends Service {
 		iconSlotIdList.offer(R.id.icon_slot3);
 
 		Queue<Integer> iconSlotScoreIdList = new LinkedList<Integer>();
-		iconSlotScoreIdList.offer(R.id.icon_slot0_score);
-		iconSlotScoreIdList.offer(R.id.icon_slot1_score);
-		iconSlotScoreIdList.offer(R.id.icon_slot2_score);
-		iconSlotScoreIdList.offer(R.id.icon_slot3_score);
+		iconSlotScoreIdList.offer(R.id.icon_slot0_text);
+		iconSlotScoreIdList.offer(R.id.icon_slot1_text);
+		iconSlotScoreIdList.offer(R.id.icon_slot2_text);
+		iconSlotScoreIdList.offer(R.id.icon_slot3_text);
 
 		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
 
@@ -95,9 +95,6 @@ public class NotiViewService extends Service {
 					int iconSlotId = iconSlotIdList.poll();
 					int iconSlotScoreId = iconSlotScoreIdList.poll();
 					
-					notiRemoteViews.setTextViewText(iconSlotScoreId, 
-							"    ");
-					
 					try {
 						BitmapDrawable iconDrawable = (BitmapDrawable) packageManager.getApplicationIcon(bhvName);
 						notiRemoteViews.setImageViewBitmap(iconSlotId, iconDrawable.getBitmap());
@@ -107,19 +104,19 @@ public class NotiViewService extends Service {
 						e.printStackTrace();
 					}
 					notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, launchIntent, 0));
+					notiRemoteViews.setTextViewText(iconSlotScoreId, "");
 				}
 			} else if (bhvType == BhvType.CALL){
 				int iconSlotId = iconSlotIdList.poll();
 				int iconSlotScoreId = iconSlotScoreIdList.poll();
 				
-				notiRemoteViews.setTextViewText(iconSlotScoreId, 
-						bhvName);
-				
-				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
 				notiRemoteViews.setImageViewBitmap(iconSlotId, callContactIcon);
 
-				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(bhvName));
+				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
 				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, callIntent, 0));
+				notiRemoteViews.setTextViewText(iconSlotScoreId, 
+						(String) uBhv.getMeta("cachedName"));
 			} else {
 				continue;
 			}

@@ -9,14 +9,14 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-public class CompactingCxtService extends IntentService {
+public class CompactionService extends IntentService {
     SharedPreferences settings;
 	
-	public CompactingCxtService() {
-		this("CompactingCxtService");
+	public CompactionService() {
+		this("CompactionService");
 	}
 	
-	public CompactingCxtService(String name) {
+	public CompactionService(String name) {
 		super(name);
 	}
 
@@ -26,13 +26,13 @@ public class CompactingCxtService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		DuratinoUserBhvDao rfdUserCxtDao = DuratinoUserBhvDao.getInstance(getApplicationContext());
+		DuratinoUserBhvDao durationUserBhvDao = DuratinoUserBhvDao.getInstance(getApplicationContext());
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
 		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
 		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
 
 		long time = System.currentTimeMillis() - settings.getLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
-		rfdUserCxtDao.deleteRfdCxtBefore(time);
+		durationUserBhvDao.deleteRfdCxtBefore(time);
 		durationUserEnvDao.deleteDurationUserEnv(time);
 		matchedResultDao.deleteMatchedResult(time);
 		predictedBhvDao.deletePredictedBhv(time);

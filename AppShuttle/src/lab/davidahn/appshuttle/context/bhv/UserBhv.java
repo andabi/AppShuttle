@@ -1,13 +1,18 @@
 package lab.davidahn.appshuttle.context.bhv;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class UserBhv {
 	protected BhvType bhvType;
 	protected String bhvName;
+	protected Map<String, Object> metas;
 	
 	public UserBhv(BhvType bhvType, String bhvName) {
 		this.bhvType = bhvType;
 		this.bhvName = bhvName;
+		this.metas = new HashMap<String, Object>();
 	}
 
 	public BhvType getBhvType() {
@@ -26,14 +31,27 @@ public class UserBhv {
 		this.bhvName = bhvName;
 	}
 	
-//	public boolean isValid(Context cxt){
-//		return true;
-//	}
+	public Map<String, Object> getMetas() {
+		return metas;
+	}
+	
+	public void setMetas(Map<String, Object> metas) {
+		this.metas = metas;
+	}
 
+	public Object getMeta(String key) {
+		return metas.get(key);
+	}
+	
+	public void setMeta(String key, Object val){
+		metas.put(key, val);
+	}
+	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("behavior type: ").append(bhvType.toString()).append(", ");
-		msg.append("behavior name: ").append(bhvName);
+		msg.append("behavior name: ").append(bhvName).append(", ");
+		msg.append("metas: ").append(metas.toString());
 		return msg.toString();
 	}
 	
