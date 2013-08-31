@@ -27,21 +27,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class UserCxtDao {
-	private static UserCxtDao userCxtDao;
+public class SnapshotUserCxtDao {
+	private static SnapshotUserCxtDao userCxtDao;
 	private SQLiteDatabase db;
 
-	private UserCxtDao(Context cxt) {
+	private SnapshotUserCxtDao(Context cxt) {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static UserCxtDao getInstance(Context cxt) {
+	public static SnapshotUserCxtDao getInstance(Context cxt) {
 		if (userCxtDao == null)
-			userCxtDao = new UserCxtDao(cxt);
+			userCxtDao = new SnapshotUserCxtDao(cxt);
 		return userCxtDao;
 	}
 
-	public void storeCxt(UserCxt uCxt) {
+	public void storeCxt(SnapshotUserCxt uCxt) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		for(UserBhv uBhv : uCxt.getUserBhvs()){
@@ -58,14 +58,14 @@ public class UserCxtDao {
 	}
 	
 	//TODO need test
-	public List<UserCxt> retrieveCxt(Date sTime, Date eTime) {
+	public List<SnapshotUserCxt> retrieveCxt(Date sTime, Date eTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		Cursor cur = db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
-		List<UserCxt> res = new ArrayList<UserCxt>();
+		List<SnapshotUserCxt> res = new ArrayList<SnapshotUserCxt>();
 		
-		UserCxt uCxt = null;
+		SnapshotUserCxt uCxt = null;
 		while (cur.moveToNext()) {
 			Date time = new Date(cur.getLong(0));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(1));
@@ -76,19 +76,19 @@ public class UserCxtDao {
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
 
 			if(uCxt == null) {
-				uCxt = new UserCxt(time, timezone);
+				uCxt = new SnapshotUserCxt(time, timezone);
 				uCxt.setUserEnvs(uEnvs);
 				uCxt.addUserBhv(uBhv);
 			}
 			else {
-				UserCxt tempCxt = new UserCxt(time, timezone);
+				SnapshotUserCxt tempCxt = new SnapshotUserCxt(time, timezone);
 				tempCxt.setUserEnvs(uEnvs);
 				
 				if(tempCxt.getUserEnvs().equals(uCxt.getUserEnvs()))
 					uCxt.addUserBhv(uBhv);
 				else{
 					res.add(uCxt);
-					uCxt = new UserCxt(time, timezone);
+					uCxt = new SnapshotUserCxt(time, timezone);
 					uCxt.setUserEnvs(uEnvs);
 					uCxt.addUserBhv(uBhv);
 				}

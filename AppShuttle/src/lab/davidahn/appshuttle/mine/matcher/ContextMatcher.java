@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.GlobalState;
-import lab.davidahn.appshuttle.context.RfdUserCxt;
-import lab.davidahn.appshuttle.context.RfdUserCxtDao;
-import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.DurationUserBhv;
+import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
+import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
@@ -36,17 +36,17 @@ public abstract class ContextMatcher {
 		this.minNumCxt = minNumCxt;
 	}
 
-	public MatchedResult matchAndGetResult(UserBhv uBhv, UserCxt uCxt){
-		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(cxt);
+	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt uCxt){
+		DuratinoUserBhvDao rfdUserCxtDao = DuratinoUserBhvDao.getInstance(cxt);
 
 		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
-		Date toTime = GlobalState.currentUCxt.getTime();
+		Date toTime = uCxt.getTime();
 		Date fromTime = new Date(toTime.getTime() - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY));
 		
-		List<RfdUserCxt> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(fromTime, toTime, uBhv);
-		List<RfdUserCxt> pureRfdUCxtList = new ArrayList<RfdUserCxt>();
-		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(fromTime, toTime, uBhv);
+		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
+		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTime().getTime() 
 					< settings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60))   //noise
 				continue;
@@ -84,7 +84,7 @@ public abstract class ContextMatcher {
 		}
 	}
 	
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
 		for(double relatedness : relatedCxtMap.values()){
 			likelihood+=relatedness;
@@ -93,8 +93,8 @@ public abstract class ContextMatcher {
 		return likelihood;
 	}	
 
-	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList);
-	protected abstract double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt);
+	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList);
+	protected abstract double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
 	
 //			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)
 //				matchedCxt.setMatched(true);

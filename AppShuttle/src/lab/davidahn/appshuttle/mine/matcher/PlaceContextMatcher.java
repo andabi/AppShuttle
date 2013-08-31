@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.RfdUserCxt;
-import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.DurationUserBhv;
+import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
@@ -25,13 +25,13 @@ public class PlaceContextMatcher extends ContextMatcher {
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		DurationUserEnv lastDurationUserEnv = null;
-		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime()
 					, rfdUCxt.getEndTime(), EnvType.PLACE)){
 				UserLoc userPlace = ((PlaceUserEnv)durationUserEnv.getUserEnv()).getPlace();
@@ -83,7 +83,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 //	}
 
 	@Override
-	protected double calcRelatedness(MatcherCountUnit unit, UserCxt uCxt) {
+	protected double calcRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		try{
 			UserLoc uLoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
 			if(uLoc.proximity((UserLoc) unit.getProperty("place"), toleranceInMeter))
@@ -110,7 +110,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 //		}
 	
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 //		int numTotalCxt = matchedCxt.getNumTotalCxt();
 //		Map<MatcherCountUnit, Double> relatedCxtMap = matchedCxt.getRelatedCxt();
 		

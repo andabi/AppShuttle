@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.commons.Time;
-import lab.davidahn.appshuttle.context.RfdUserCxt;
-import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.DurationUserBhv;
+import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import android.app.AlarmManager;
 import android.content.Context;
 
@@ -30,12 +30,12 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 //	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
-		RfdUserCxt prevRfdUCxt = null;
+		DurationUserBhv prevRfdUCxt = null;
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 				mergedRfdUCxtBuilder.setProperty("startTime", rfdUCxt.getTime());
@@ -62,7 +62,7 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 	}
 	
 	@Override
-	protected double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt) {
+	protected double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
 		long startTime = ((Date) rfdUCxt.getProperty("startTime")).getTime();
 		long endTime = ((Date) rfdUCxt.getProperty("endTime")).getTime();
 		long time = uCxt.getTime().getTime();

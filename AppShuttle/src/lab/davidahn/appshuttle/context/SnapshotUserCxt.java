@@ -11,18 +11,18 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public class UserCxt {
+public class SnapshotUserCxt {
 	private Date time;
 	private TimeZone timeZone;
 	private Map<EnvType, UserEnv> userEnvs;
 	private List<UserBhv> userBhvs;
 
-	public UserCxt() {
+	public SnapshotUserCxt() {
 		userEnvs = new HashMap<EnvType, UserEnv>();
 		userBhvs = new ArrayList<UserBhv>();
 	}
 	
-	public UserCxt(Date time, TimeZone timeZone) {
+	public SnapshotUserCxt(Date time, TimeZone timeZone) {
 		this.time = time;
 		this.timeZone = timeZone;
 		userEnvs = new HashMap<EnvType, UserEnv>();
@@ -61,6 +61,9 @@ public class UserCxt {
 	public void addUserBhv(UserBhv userBhv) {
 		userBhvs.add(userBhv);
 	}
+	public void addUserBhvAll(List<UserBhv> userBhvList) {
+		userBhvs.addAll(userBhvList);
+	}
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("time: ").append(time).append(", ");
@@ -71,11 +74,11 @@ public class UserCxt {
 	}
 	@Override
 	public boolean equals(Object o) {
-		if((o instanceof UserCxt) 
-				&& time.equals(((UserCxt)o).time)
-				&& timeZone.equals(((UserCxt)o).timeZone)
-				&& userEnvs.equals(((UserCxt)o).userEnvs)
-				&& userBhvs.equals(((UserCxt)o).userBhvs))
+		if((o instanceof SnapshotUserCxt) 
+				&& time.equals(((SnapshotUserCxt)o).time)
+				&& timeZone.equals(((SnapshotUserCxt)o).timeZone)
+				&& userEnvs.equals(((SnapshotUserCxt)o).userEnvs)
+				&& userBhvs.equals(((SnapshotUserCxt)o).userBhvs))
 			return true;
 		else return false;
 	}

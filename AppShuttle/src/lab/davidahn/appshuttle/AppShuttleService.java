@@ -2,7 +2,7 @@ package lab.davidahn.appshuttle;
 
 import java.util.Calendar;
 
-import lab.davidahn.appshuttle.collect.CollectingCxtService;
+import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactingCxtService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.NotiViewService;
@@ -70,7 +70,7 @@ public class AppShuttleService extends Service{
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		
 		if(settings.getBoolean("service.collection.enabled", true)){
-			Intent collectingCxtIntent = new Intent(this, CollectingCxtService.class);
+			Intent collectingCxtIntent = new Intent(this, CollectionService.class);
 			collectingCxtOperation = PendingIntent.getService(this, 0, collectingCxtIntent, 0);
 			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.collection.period", 6000), collectingCxtOperation);
 		}
@@ -164,11 +164,6 @@ public class AppShuttleService extends Service{
 		editor.commit();
 	}
 
-	public int onStartCommand(Intent intent, int flags, int startId){
-		super.onStartCommand(intent, flags, startId);
-		return START_STICKY;
-	}
-	
 	public long getReportingTimeHour(int hourOfDay){
 		Calendar calendar = Calendar.getInstance();		
 		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -176,6 +171,11 @@ public class AppShuttleService extends Service{
 		calendar.set(Calendar.SECOND, 0);
 		if(calendar.getTimeInMillis() < System.currentTimeMillis()) calendar.add(Calendar.DAY_OF_MONTH, 1);
 		return calendar.getTimeInMillis();
+	}
+	
+	public int onStartCommand(Intent intent, int flags, int startId){
+		super.onStartCommand(intent, flags, startId);
+		return START_STICKY;
 	}
 	
 	public IBinder onBind(Intent intent){
@@ -196,7 +196,7 @@ public class AppShuttleService extends Service{
 		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(notiViewReceiver);
 		
-		stopService(new Intent(AppShuttleService.this, CollectingCxtService.class));
+		stopService(new Intent(AppShuttleService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleService.this, NotiViewService.class));
 		stopService(new Intent(AppShuttleService.this, ReportingCxtService.class));
 		stopService(new Intent(AppShuttleService.this, CompactingCxtService.class));

@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.context.bhv;
 
-import lab.davidahn.appshuttle.collect.AppUserBhvSensor;
+import lab.davidahn.appshuttle.collect.AppBhvCollector;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,7 +18,7 @@ public class AppUserBhv extends UserBhv {
 		if(launchIntent == null || bhvName.equals(cxt.getApplicationInfo().packageName)) //self
 			return false;
 		
-		AppUserBhvSensor appUserBhvSensor = AppUserBhvSensor.getInstance(cxt);
+		AppBhvCollector appUserBhvSensor = AppBhvCollector.getInstance(cxt);
 		if(bhvName.startsWith(appUserBhvSensor.getHomePackage())) { //home
 			return false;
 		}

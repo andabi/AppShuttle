@@ -22,6 +22,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.IBinder;
@@ -111,8 +113,12 @@ public class NotiViewService extends Service {
 				int iconSlotScoreId = iconSlotScoreIdList.poll();
 				
 				notiRemoteViews.setTextViewText(iconSlotScoreId, 
-						"call to\n"+bhvName);
-				Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(bhvName));
+						bhvName);
+				
+				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+				notiRemoteViews.setImageViewBitmap(iconSlotId, callContactIcon);
+
+				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(bhvName));
 				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, callIntent, 0));
 			} else {
 				continue;

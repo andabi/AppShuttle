@@ -27,21 +27,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class RfdUserCxtDao {
-	private static RfdUserCxtDao rfdUserCxtDao;
+public class DuratinoUserBhvDao {
+	private static DuratinoUserBhvDao rfdUserCxtDao;
 	private SQLiteDatabase db;
 
-	private RfdUserCxtDao(Context cxt) {
+	private DuratinoUserBhvDao(Context cxt) {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static RfdUserCxtDao getInstance(Context cxt) {
+	public static DuratinoUserBhvDao getInstance(Context cxt) {
 		if (rfdUserCxtDao == null)
-			rfdUserCxtDao = new RfdUserCxtDao(cxt);
+			rfdUserCxtDao = new DuratinoUserBhvDao(cxt);
 		return rfdUserCxtDao;
 	}
 
-	public void storeRfdCxt(RfdUserCxt rfdUCxt) {
+	public void storeRfdCxt(DurationUserBhv rfdUCxt) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
@@ -54,16 +54,16 @@ public class RfdUserCxtDao {
 //		row.put("places", gson.toJson(rfdUCxt.getPlaces()));
 		row.put("bhv_type", rfdUCxt.getBhv().getBhvType().toString());
 		row.put("bhv_name", rfdUCxt.getBhv().getBhvName());
-		db.insert("history_user_bhv", null, row);
-		Log.i("stored duration context", rfdUCxt.toString());
+		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
+		Log.i("stored duration bhv", rfdUCxt.toString());
 	}
 
-	public List<RfdUserCxt> retrieveRfdCxt(long fromTime, long toTime) {
+	public List<DurationUserBhv> retrieveRfdCxt(long fromTime, long toTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		Cursor cur = db.rawQuery("SELECT * FROM history_user_bhv WHERE time >= "
 				+ fromTime + " AND end_time <= " + toTime+";", null);
-		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while (cur.moveToNext()) {
 			Date time = new Date(cur.getLong(0));
 			long duration = cur.getLong(1);
@@ -76,7 +76,7 @@ public class RfdUserCxtDao {
 			BhvType bhvType= BhvType.valueOf(cur.getString(5));
 			String bhvName= cur.getString(6);
 			UserBhv uBhv = new UserBhv(bhvType, bhvName);
-			RfdUserCxt rfdUCxt = new RfdUserCxt.Builder()
+			DurationUserBhv rfdUCxt = new DurationUserBhv.Builder()
 				.setTime(time)
 				.setDuration(duration)
 				.setEndTime(endTime)
@@ -101,9 +101,9 @@ public class RfdUserCxtDao {
 		db.execSQL("DELETE FROM history_user_bhv WHERE time < " + time +";");
 	}
 	
-	public List<RfdUserCxt> retrieveRfdCxtByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
+	public List<DurationUserBhv> retrieveRfdCxtByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-		List<RfdUserCxt> res = new ArrayList<RfdUserCxt>();
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		
 		Cursor cur = db.rawQuery("SELECT * FROM history_user_bhv WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() 
@@ -118,7 +118,7 @@ public class RfdUserCxtDao {
 //			Type listType = new TypeToken<TreeMap<Date, UserLoc>>(){}.getType();
 //			Map<Date, UserLoc>  locs = gson.fromJson(cur.getString(4), listType);
 //			Map<Date, UserLoc>  places = gson.fromJson(cur.getString(5), listType);
-			RfdUserCxt rfdUCxt = new RfdUserCxt.Builder()
+			DurationUserBhv rfdUCxt = new DurationUserBhv.Builder()
 				.setTime(time)
 				.setDuration(duration)
 				.setEndTime(endTime)

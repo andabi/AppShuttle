@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.RfdUserCxt;
-import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.DurationUserBhv;
+import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
@@ -29,11 +29,11 @@ public class LocContextMatcher extends ContextMatcher {
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 			mergedRfdUCxtBuilder.addRfdUserCxtList(rfdUCxt);
 			res.add(mergedRfdUCxtBuilder.build());
@@ -95,17 +95,17 @@ public class LocContextMatcher extends ContextMatcher {
 //		return res;
 
 	@Override
-	protected double calcRelatedness(MatcherCountUnit unit, UserCxt uCxt) {
+	protected double calcRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		return 1;
 	}
 	
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
 		long totalSpentTime = 0, validSpentTime = 0;
 		
 		for(MatcherCountUnit unit : relatedCxtMap.keySet()){
-			RfdUserCxt rfdUCxt = unit.getRfdUserCxtList().get(0);
+			DurationUserBhv rfdUCxt = unit.getRfdUserCxtList().get(0);
 			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime(), rfdUCxt.getEndTime(), EnvType.LOCATION)){
 				UserLoc userLoc = ((LocUserEnv)durationUserEnv.getUserEnv()).getLoc();
 				long duration = durationUserEnv.getDuration();

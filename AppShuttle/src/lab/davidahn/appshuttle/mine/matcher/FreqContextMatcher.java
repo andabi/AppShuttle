@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.RfdUserCxt;
-import lab.davidahn.appshuttle.context.UserCxt;
+import lab.davidahn.appshuttle.context.DurationUserBhv;
+import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import android.app.AlarmManager;
 import android.content.Context;
 
@@ -16,12 +16,12 @@ public class FreqContextMatcher extends ContextMatcher{
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
-		RfdUserCxt prevRfdUCxt = null;
+		DurationUserBhv prevRfdUCxt = null;
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		for(RfdUserCxt rfdUCxt : rfdUCxtList){
+		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 			} else {
@@ -41,12 +41,12 @@ public class FreqContextMatcher extends ContextMatcher{
 	}
 	
 	@Override
-	protected double calcRelatedness(MatcherCountUnit rfdUCxt, UserCxt uCxt) {
+	protected double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
 		return 1;
 	}
 
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, UserCxt uCxt){
+	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
 //		int numRelatedCxt = matchedCxt.getNumRelatedCxt();
 		likelihood = 1.0 * numRelatedCxt / Integer.MAX_VALUE;

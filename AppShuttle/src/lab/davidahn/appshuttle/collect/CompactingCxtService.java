@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.collect;
 
-import lab.davidahn.appshuttle.context.RfdUserCxtDao;
+import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.mine.matcher.MatchedResultDao;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvDao;
@@ -26,7 +26,7 @@ public class CompactingCxtService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		RfdUserCxtDao rfdUserCxtDao = RfdUserCxtDao.getInstance(getApplicationContext());
+		DuratinoUserBhvDao rfdUserCxtDao = DuratinoUserBhvDao.getInstance(getApplicationContext());
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
 		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
 		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());

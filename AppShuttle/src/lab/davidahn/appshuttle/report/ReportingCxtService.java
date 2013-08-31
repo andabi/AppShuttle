@@ -1,14 +1,14 @@
 package lab.davidahn.appshuttle.report;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.UserCxtDao;
+import lab.davidahn.appshuttle.context.SnapshotUserCxtDao;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 
 public class ReportingCxtService extends IntentService {
-	private UserCxtDao contextManager;
+	private SnapshotUserCxtDao contextManager;
 	private Handler handler;
 	private SharedPreferences settings;
 
@@ -21,7 +21,7 @@ public class ReportingCxtService extends IntentService {
 	
 	public void onCreate(){
 		super.onCreate();
-		contextManager = UserCxtDao.getInstance(getApplicationContext());
+		contextManager = SnapshotUserCxtDao.getInstance(getApplicationContext());
 		handler = new Handler();
 		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
 	}

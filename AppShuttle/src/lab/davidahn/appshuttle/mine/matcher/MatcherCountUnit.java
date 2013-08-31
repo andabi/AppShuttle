@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.RfdUserCxt;
+import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 
 public class MatcherCountUnit {
 	private final UserBhv uBhv;
-	private final List<RfdUserCxt> rfdUserCxtList;
+	private final List<DurationUserBhv> rfdUserCxtList;
 	private final Map<String, Object> properties;
 
 	private MatcherCountUnit(Builder builder) {
@@ -23,7 +23,7 @@ public class MatcherCountUnit {
 		return uBhv;
 	}
 
-	public List<RfdUserCxt> getRfdUserCxtList() {
+	public List<DurationUserBhv> getRfdUserCxtList() {
 		return rfdUserCxtList;
 	}
 
@@ -44,7 +44,7 @@ public class MatcherCountUnit {
 	
 	public static class Builder {
 		private UserBhv uBhv = null;
-		private List<RfdUserCxt> rfdUserCxtList = new ArrayList<RfdUserCxt>();
+		private List<DurationUserBhv> rfdUserCxtList = new ArrayList<DurationUserBhv>();
 		private Map<String, Object> properties = new HashMap<String, Object>();
 
 		public Builder(UserBhv uBhv){
@@ -59,7 +59,7 @@ public class MatcherCountUnit {
 			properties.put(key, val);
 		}
 		
-		public void addRfdUserCxtList(RfdUserCxt rfdUserCxt){
+		public void addRfdUserCxtList(DurationUserBhv rfdUserCxt){
 			rfdUserCxtList.add(rfdUserCxt);
 		}	
 	}

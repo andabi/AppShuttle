@@ -22,9 +22,10 @@ public class Predictor {
 	}
 	
 	public List<PredictedBhv> predict(int topN){
-		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
-		
 		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
+		if(GlobalState.currUserCxt == null) 
+			return res;
+		
 		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
 
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
@@ -50,20 +51,21 @@ public class Predictor {
 				, Double.MIN_VALUE
 				, settings.getInt("matcher.freq.min_num_cxt", 3)));
 
+		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
 		for(UserBhv uBhv : userBhvDao.retrieveUserBhv()){
 			EnumMap<MatcherType, MatchedResult> matchedResults = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 
 			for(ContextMatcher cxtMatcher : cxtMatcherList){
-				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, GlobalState.currentUCxt);
+				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, GlobalState.currUserCxt);
 				if(matchedResult != null)
 					matchedResults.put(cxtMatcher.getMatcherType(), matchedResult);
 			}
 
 			if(matchedResults.size() > 0){
 				double score = calcScore(matchedResults);
-				PredictedBhv predictedBhv = new PredictedBhv(GlobalState.currentUCxt.getTime(), 
-						GlobalState.currentUCxt.getTimeZone(), 
-						GlobalState.currentUCxt.getUserEnvs(), 
+				PredictedBhv predictedBhv = new PredictedBhv(GlobalState.currUserCxt.getTime(), 
+						GlobalState.currUserCxt.getTimeZone(), 
+						GlobalState.currUserCxt.getUserEnvs(), 
 						uBhv, matchedResults, score);
 				predicted.add(predictedBhv);
 			}

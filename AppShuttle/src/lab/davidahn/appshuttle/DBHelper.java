@@ -29,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				"time INTEGER, timezone TEXT, bhv_type TEXT, bhv_name TEXT, matcher_type TEXT, likelihood REAL);");
 		db.execSQL("CREATE TABLE IF NOT EXISTS predicted_bhv (" +
 				"time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, score REAL);");
-//		db.execSQL("CREATE TABLE IF NOT EXISTS snapshot_context (time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (time, timezone, bhv_type, bhv_name) );");
+		db.execSQL("CREATE TABLE IF NOT EXISTS snapshot_context (time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, PRIMARY KEY (time, timezone, bhv_type, bhv_name) );");
 //		db.execSQL("CREATE TABLE IF NOT EXISTS changed_env (time INTEGER, timezone TEXT, env_type TEXT, from_value TEXT, to_value TEXT, PRIMARY KEY (time, timezone, env_type) );");
 
 	}
@@ -39,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS list_user_bhv");
 		db.execSQL("DROP TABLE IF EXISTS matched_result");
 		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
-//		db.execSQL("DROP TABLE IF EXISTS snapshot_context");
+		db.execSQL("DROP TABLE IF EXISTS snapshot_context");
 //		db.execSQL("DROP TABLE IF EXISTS changed_env");
 		onCreate(db);
 	}

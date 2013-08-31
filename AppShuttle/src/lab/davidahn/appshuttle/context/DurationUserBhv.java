@@ -9,7 +9,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public class RfdUserCxt {
+public class DurationUserBhv {
 	private final Date time;
 	private final long duration;
 	private final Date endTime;
@@ -24,7 +24,7 @@ public class RfdUserCxt {
 //	private final Map<Date, UserLoc> places;
 //	private final UserLoc lastPlace;
 
-	private RfdUserCxt(Builder builder){
+	private DurationUserBhv(Builder builder){
 		time = builder.time;
 		duration = builder.duration;
 		endTime = builder.endTime;
@@ -105,10 +105,10 @@ public class RfdUserCxt {
 
 		public Builder(){}
 		
-		public RfdUserCxt build(){
+		public DurationUserBhv build(){
 			if(time != null && endTime != null)
 				duration = endTime.getTime() - time.getTime();
-			return new RfdUserCxt(this);
+			return new DurationUserBhv(this);
 		}
 		
 		public Date getEndTime() {
