@@ -34,12 +34,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	}
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//		db.execSQL("DROP TABLE IF EXISTS history_user_env");
-//		db.execSQL("DROP TABLE IF EXISTS history_user_bhv");
-//		db.execSQL("DROP TABLE IF EXISTS list_user_bhv");
-//		db.execSQL("DROP TABLE IF EXISTS matched_result");
-//		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
-//		db.execSQL("DROP TABLE IF EXISTS snapshot_context");
+		db.execSQL("DROP TABLE IF EXISTS history_user_env");
+		db.execSQL("DROP TABLE IF EXISTS history_user_bhv");
+		db.execSQL("DROP TABLE IF EXISTS list_user_bhv");
+		db.execSQL("DROP TABLE IF EXISTS matched_result");
+		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
+		db.execSQL("DROP TABLE IF EXISTS snapshot_context");
 //		db.execSQL("DROP TABLE IF EXISTS changed_env");
 		onCreate(db);
 	}

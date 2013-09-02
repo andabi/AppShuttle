@@ -54,40 +54,41 @@ public class CallBhvCollector implements BhvCollector {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		
 		if(lastCallDate == null){
-//			lastCallDate = currTime;
-			lastCallDate = new Date(settings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
-		} else {
-			Cursor cursor = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.DATE + " > " + lastCallDate.getTime(), null, 
-					CallLog.Calls.DATE + " ASC");
+			Date period = new Date(settings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
+			lastCallDate = new Date(currTime.getTime() - period.getTime());
+		}
+		Cursor cursor = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.DATE + " > " + lastCallDate.getTime(), null, 
+				CallLog.Calls.DATE + " ASC");
+		while(cursor.moveToNext()) {
 			int nameIdx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
 			int dateIdx = cursor.getColumnIndex(CallLog.Calls.DATE);
 			int numIdx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
 			int durationIdx = cursor.getColumnIndex(CallLog.Calls.DURATION);
 			int typeIdx = cursor.getColumnIndex(CallLog.Calls.TYPE);
-			while(cursor.moveToNext()) {
-				String number = cursor.getString(numIdx);
-				String name = cursor.getString(nameIdx);
-				if(name == null)
-					name = number;
-				Date date = new Date(cursor.getLong(dateIdx));
-				Calendar calender = Calendar.getInstance();
-				calender.setTime(date);
-				TimeZone timeZone = calender.getTimeZone();
-				long duration = cursor.getInt(durationIdx) * 1000;
-				int type = cursor.getInt(typeIdx);
-				
-				if(type == CallLog.Calls.INCOMING_TYPE || type == CallLog.Calls.OUTGOING_TYPE) {
-					DurationUserBhv durationUserBhv =  new DurationUserBhv.Builder()
-					.setTime(date)
-					.setEndTime(new Date(date.getTime() + duration))
-					.setTimeZone(timeZone)
-					.setBhv(new CallUserBhv(BhvType.CALL, number, name))
-					.build();
-					res.add(durationUserBhv);
-				}
-				lastCallDate = date;
+
+			String number = cursor.getString(numIdx);
+			String name = cursor.getString(nameIdx);
+			if(name == null)
+				name = number;
+			Date date = new Date(cursor.getLong(dateIdx));
+			Calendar calender = Calendar.getInstance();
+			calender.setTime(date);
+			TimeZone timeZone = calender.getTimeZone();
+			long duration = cursor.getInt(durationIdx) * 1000;
+			int type = cursor.getInt(typeIdx);
+			
+			if(type == CallLog.Calls.INCOMING_TYPE || type == CallLog.Calls.OUTGOING_TYPE) {
+				DurationUserBhv durationUserBhv =  new DurationUserBhv.Builder()
+				.setTime(date)
+				.setEndTime(new Date(date.getTime() + duration))
+				.setTimeZone(timeZone)
+				.setBhv(new CallUserBhv(BhvType.CALL, number, name))
+				.build();
+				res.add(durationUserBhv);
 			}
+			lastCallDate = date;
 		}
+		cursor.close();
 		return res;
 	}
 }
