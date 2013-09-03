@@ -8,8 +8,9 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
-import lab.davidahn.appshuttle.context.env.UserPlace;
+import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
+import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -38,33 +39,45 @@ public class PlaceEnvSensor implements EnvSensor {
 		return placeEnvSensor;
 	}
 	
-	//TODO check about invalid loc
 	public PlaceUserEnv sense(){
 		prevUPlace = currUPlace;
 		currUPlace = new PlaceUserEnv(new UserPlace(0, 0, null, Validity.INVALID));
-		try {
-			double currLongitude = locEnvCollector.getCurrULoc().getLoc().getLongitude();
-			double currLatitude = locEnvCollector.getCurrULoc().getLoc().getLatitude();
+		UserLoc currLoc = locEnvCollector.getCurrULoc().getLoc();
+		if(prevUPlace != null && 
+				prevUPlace.getPlace().isValid() && 
+				currLoc.isValid() && 
+				!locEnvCollector.isChanged()){
+			currUPlace = prevUPlace;
+		} else {
 			try {
-				List<Address> geocoded = geocoder.getFromLocation(currLatitude, currLongitude, 1);
-				if(geocoded != null && !geocoded.isEmpty()) {
-					Address addr = geocoded.get(0);
-					String placeName = addr.getAddressLine(0);
-					if(placeName != null) {
-						double placeLongitude = currLongitude;
-						double placeLatitude = currLatitude;
-						if(addr.hasLongitude())
-							placeLongitude = addr.getLongitude();
-						if(addr.hasLatitude())
-							placeLatitude = addr.getLatitude();
-						currUPlace = new PlaceUserEnv(new UserPlace(placeLongitude, placeLatitude, placeName));
+				double currLongitude = currLoc.getLongitude();
+				double currLatitude = currLoc.getLatitude();
+				try {
+					List<Address> geocoded = geocoder.getFromLocation(currLatitude, currLongitude, 1);
+					if(geocoded != null && !geocoded.isEmpty()) {
+						Address addr = geocoded.get(0);
+						StringBuilder sb = new StringBuilder();
+						sb.append(addr.getCountryName()).append(" ")
+							.append(addr.getAdminArea()).append(" ")
+							.append(addr.getLocality());
+//						addr.getAddressLine(0);
+						String placeName = sb.toString();
+						if(placeName != null) {
+							double placeLongitude = currLongitude;
+							double placeLatitude = currLatitude;
+							if(addr.hasLongitude())
+								placeLongitude = addr.getLongitude();
+							if(addr.hasLatitude())
+								placeLatitude = addr.getLatitude();
+							currUPlace = new PlaceUserEnv(new UserPlace(placeLongitude, placeLatitude, placeName));
+						}
 					}
+				} catch (IOException e) {
+					;
 				}
-			} catch (IOException e) {
+			} catch (InvalidUserEnvException e) {
 				;
 			}
-		} catch (InvalidUserEnvException e) {
-			;
 		}
 		return currUPlace;
 	}

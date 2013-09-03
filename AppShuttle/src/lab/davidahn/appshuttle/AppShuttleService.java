@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 
 public class AppShuttleService extends Service{
-//	private Properties property;
 	private AlarmManager alarmManager;
 	private PendingIntent collectingCxtOperation;
 	private PendingIntent reportingCxtOperation;

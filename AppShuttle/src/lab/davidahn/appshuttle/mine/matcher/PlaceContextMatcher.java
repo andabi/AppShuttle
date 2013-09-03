@@ -10,9 +10,9 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
-import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
+import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.content.Context;
 
 public class PlaceContextMatcher extends ContextMatcher {
@@ -85,8 +85,9 @@ public class PlaceContextMatcher extends ContextMatcher {
 	@Override
 	protected double calcRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		try{
-			UserLoc uLoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-			if(uLoc.proximity((UserLoc) unit.getProperty("place"), toleranceInMeter))
+			UserPlace uPlace = ((PlaceUserEnv) uCxt.getUserEnv(EnvType.PLACE)).getPlace();
+//			UserLoc uLoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+			if(uPlace.isSame((UserPlace) unit.getProperty("place")))
 				return 1;
 			else
 				return 0;
