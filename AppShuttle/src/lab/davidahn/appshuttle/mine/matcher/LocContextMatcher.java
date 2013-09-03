@@ -9,7 +9,7 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.InvalidLocationException;
+import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
@@ -114,7 +114,7 @@ public class LocContextMatcher extends ContextMatcher {
 					if(userLoc.proximity(((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), toleranceInMeter)){
 						validSpentTime += duration;
 					}
-				} catch (InvalidLocationException e) {
+				} catch (InvalidUserEnvException e) {
 					;
 				}
 

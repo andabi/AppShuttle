@@ -9,7 +9,7 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.InvalidLocationException;
+import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
@@ -90,7 +90,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 				return 1;
 			else
 				return 0;
-		} catch (InvalidLocationException e) {
+		} catch (InvalidUserEnvException e) {
 			return 0;
 		}
 	}

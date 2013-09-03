@@ -4,28 +4,28 @@ import android.location.Location;
 
 
 public class UserLoc {
-	private double longitude;
-	private double latitude;
-	private Validity validity;
+	protected double longitude;
+	protected double latitude;
+	protected Validity validity;
 
-	public UserLoc(double latitude, double longitude) {
+	public UserLoc(double longitude, double latitude) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.validity = Validity.VALID;
 	}
-	public UserLoc(double latitude, double longitude, Validity validity) {
+	public UserLoc(double longitude, double latitude, Validity validity) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.validity = validity;
 	}
-	public double getLongitude() throws InvalidLocationException {
+	public double getLongitude() throws InvalidUserEnvException {
 		if(validity == Validity.INVALID)
-			throw new InvalidLocationException();
+			throw new InvalidUserEnvException();
 		return longitude;
 	}
-	public double getLatitude() throws InvalidLocationException {
+	public double getLatitude() throws InvalidUserEnvException {
 		if(validity == Validity.INVALID)
-			throw new InvalidLocationException();
+			throw new InvalidUserEnvException();
 		return latitude;
 	}
 	public void setLongitude(double longitude) {
@@ -44,9 +44,9 @@ public class UserLoc {
 		this.validity = validity;
 	}
 	
-	public boolean proximity(UserLoc uLoc, int toleranceInMeter) throws InvalidLocationException {
+	public boolean proximity(UserLoc uLoc, int toleranceInMeter) throws InvalidUserEnvException {
 		if(validity == Validity.INVALID || !uLoc.isValid()) 
-			throw new InvalidLocationException();
+			throw new InvalidUserEnvException();
 		Location loc1 = new Location("loc1");
 		Location loc2 = new Location("loc2");
 		loc1.setLongitude(longitude);
@@ -74,7 +74,7 @@ public class UserLoc {
 					&& getLongitude() == ((UserLoc)o).getLongitude()) 
 				return true;
 			else return false;
-		} catch (InvalidLocationException e) {
+		} catch (InvalidUserEnvException e) {
 			if(validity == Validity.INVALID && !((UserLoc)o).isValid())
 				return true;
 			else

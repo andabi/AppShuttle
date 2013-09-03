@@ -77,7 +77,7 @@ public class LocEnvSensor implements EnvSensor {
 		}
 		else {
 //			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(currentLoc.getLatitude(), currentLoc.getLongitude(), UserLoc.Validity.VALID)));
-			currULoc =  new LocUserEnv(new UserLoc(lastKnownLoc.getLatitude(), lastKnownLoc.getLongitude(), UserLoc.Validity.VALID));
+			currULoc =  new LocUserEnv(new UserLoc(lastKnownLoc.getLongitude(), lastKnownLoc.getLatitude(), UserLoc.Validity.VALID));
 		}
 		return currULoc;
 	}

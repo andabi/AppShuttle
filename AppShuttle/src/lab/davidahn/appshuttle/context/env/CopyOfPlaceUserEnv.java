@@ -1,18 +1,18 @@
 package lab.davidahn.appshuttle.context.env;
 
 
-public class PlaceUserEnv extends UserEnv {
-	private UserPlace place;
+public class CopyOfPlaceUserEnv extends UserEnv {
+	private UserLoc place;
 
-	public PlaceUserEnv(UserPlace place) {
+	public CopyOfPlaceUserEnv(UserLoc place) {
 		super(EnvType.PLACE);
 		this.place = place;
 	}
 	
-	public UserPlace getPlace() {
+	public UserLoc getPlace() {
 		return place;
 	}
-	public void setPlace(UserPlace place) {
+	public void setPlace(UserLoc place) {
 		this.place = place;
 	}
 
@@ -24,8 +24,8 @@ public class PlaceUserEnv extends UserEnv {
 	
 	@Override
 	public boolean equals(Object o) {
-		if((o instanceof PlaceUserEnv) 
-				&& place.equals(((PlaceUserEnv)o).place))
+		if((o instanceof CopyOfPlaceUserEnv) 
+				&& place.equals(((CopyOfPlaceUserEnv)o).place))
 			return true;
 		else return false;
 	}

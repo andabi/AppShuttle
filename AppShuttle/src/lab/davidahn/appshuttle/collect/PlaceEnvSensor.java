@@ -1,16 +1,24 @@
 package lab.davidahn.appshuttle.collect;
 
+import java.io.IOException;
+import java.util.List;
+
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.InvalidLocationException;
+import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
+import lab.davidahn.appshuttle.context.env.UserPlace;
+import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
 
 public class PlaceEnvSensor implements EnvSensor {
 	private static PlaceEnvSensor placeEnvSensor;
+	private Geocoder geocoder;
 	private PlaceUserEnv prevUPlace;
 	private PlaceUserEnv currUPlace;
 	private LocEnvSensor locEnvCollector;
@@ -19,6 +27,7 @@ public class PlaceEnvSensor implements EnvSensor {
 	
 	private PlaceEnvSensor(Context cxt){
 		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
+		geocoder = new Geocoder(cxt);
 		locEnvCollector = LocEnvSensor.getInstance(cxt);
 		prevUPlace = null;
 		currUPlace = null;
@@ -32,53 +41,43 @@ public class PlaceEnvSensor implements EnvSensor {
 	//TODO check about invalid loc
 	public PlaceUserEnv sense(){
 		prevUPlace = currUPlace;
-		currUPlace = new PlaceUserEnv(locEnvCollector.getCurrULoc().getLoc());
+		currUPlace = new PlaceUserEnv(new UserPlace(0, 0, null, Validity.INVALID));
+		try {
+			double currLongitude = locEnvCollector.getCurrULoc().getLoc().getLongitude();
+			double currLatitude = locEnvCollector.getCurrULoc().getLoc().getLatitude();
+			try {
+				List<Address> geocoded = geocoder.getFromLocation(currLatitude, currLongitude, 1);
+				if(geocoded != null && !geocoded.isEmpty()) {
+					Address addr = geocoded.get(0);
+					String placeName = addr.getAddressLine(0);
+					if(placeName != null) {
+						double placeLongitude = currLongitude;
+						double placeLatitude = currLatitude;
+						if(addr.hasLongitude())
+							placeLongitude = addr.getLongitude();
+						if(addr.hasLatitude())
+							placeLatitude = addr.getLatitude();
+						currUPlace = new PlaceUserEnv(new UserPlace(placeLongitude, placeLatitude, placeName));
+					}
+				}
+			} catch (IOException e) {
+				;
+			}
+		} catch (InvalidUserEnvException e) {
+			;
+		}
 		return currUPlace;
-//		if(GlobalState.prevUCxt == null){
-//			GlobalState.placeMoved = false;
-//			currUPlace = currULoc;
-//		} else {
-//			UserLoc prevUPlace = ((PlaceUserEnv) GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)).getPlace();
-//			if(prevUPlace == null){
-//				GlobalState.placeMoved = false;
-//				currUPlace = currULoc;
-//			} else {
-//				try {
-//					if(!currULoc.proximity(prevUPlace, settings.getInt("collection.place.tolerance.distance", 5000))) {
-//						currUPlace = currULoc;
-//						GlobalState.placeMoved = true;
-//						Log.i("changed env", "place moved");
-//					} else {
-//						currUPlace = prevUPlace;
-//						GlobalState.placeMoved = false;
-//					}
-//				} catch (InvalidLocationException e) {
-//					;
-//				}
-//			}
-//		}
-//		uCxt.addUserEnv(EnvType.PLACE, new PlaceUserEnv(currUPlace));
 	}
 	
 	public boolean isChanged(){
 		boolean changed = false;
 		if(prevUPlace != null){
-//			UserLoc prevUPlace = ((PlaceUserEnv) GlobalState.prevUCxt.getUserEnv(EnvType.PLACE)).getPlace();
-//			if(prevUPlace == null){
-//				GlobalState.placeMoved = false;
-//				currUPlace = currULoc;
-//			} else {
 			try {
-				if(!currUPlace.getPlace().proximity(prevUPlace.getPlace(), settings.getInt("collection.place.tolerance.distance", 5000))) {
-//					currUPlace = currULoc;
+				if(!currUPlace.getPlace().isSame(prevUPlace.getPlace())) {
 					changed = true;
-//					GlobalState.placeMoved = true;
 					Log.i("changed env", "place moved");
-//				} else {
-//					currUPlace = prevUPlace;
-//					GlobalState.placeMoved = false;
 				}
-			} catch (InvalidLocationException e) {
+			} catch (InvalidUserEnvException e) {
 				;
 			}
 		}
