@@ -6,7 +6,7 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 
 public class GlobalState {
-	public static volatile boolean inPresent;
+//	public static volatile boolean inPresent;
 	public static volatile SnapshotUserCxt currUserCxt;
 	public static volatile Set<UserBhv> recentMatchedBhvSet;
 }
