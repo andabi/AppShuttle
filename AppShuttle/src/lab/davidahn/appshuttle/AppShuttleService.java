@@ -77,7 +77,7 @@ public class AppShuttleService extends Service{
 			collectingCxtOperation = PendingIntent.getService(this, 0, collectingCxtIntent, 0);
 			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.collection.period", 6000), collectingCxtOperation);
 		}
-		
+
 		if(settings.getBoolean("service.compaction.enabled", true)){
 			Intent compactingCxtIntent = new Intent(this, CompactionService.class);
 			compactingCxtOperation = PendingIntent.getService(this, 0, compactingCxtIntent, 0);

@@ -93,7 +93,7 @@ public class DuratinoUserBhvDao {
 	}
 	
 	public void deleteRfdCxt(Date fromTime, Date toTime){
-		db.execSQL("DELETE * FROM history_user_bhv WHERE time >= "
+		db.execSQL("DELETE FROM history_user_bhv WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +";");
 	}
 	

@@ -3,6 +3,8 @@ package lab.davidahn.appshuttle.context.bhv;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.Context;
+
 
 public class UserBhv {
 	protected BhvType bhvType;
@@ -46,7 +48,7 @@ public class UserBhv {
 	public void setMeta(String key, Object val){
 		metas.put(key, val);
 	}
-	
+
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("behavior type: ").append(bhvType.toString()).append(", ");
@@ -66,5 +68,9 @@ public class UserBhv {
 	@Override
 	public int hashCode(){
 		return (bhvType.hashCode() + bhvName.hashCode()) / 2;
+	}
+	
+	public boolean isValid(Context cxt) {
+		return true;
 	}
 }

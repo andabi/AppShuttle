@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 public class AppUserBhv extends UserBhv {
-	
 	public AppUserBhv(BhvType bhvType, String bhvName) {
 		super(bhvType, bhvName);
 	}
 	
+	@Override
 	public boolean isValid(Context cxt){
 		PackageManager packageManager = cxt.getPackageManager();
 		Intent launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
