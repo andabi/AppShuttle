@@ -30,22 +30,26 @@ public class PlaceContextMatcher extends ContextMatcher {
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		DurationUserEnv lastDurationUserEnv = null;
+		UserPlace lastKnownUserPlace = null;
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime()
 					, rfdUCxt.getEndTime(), EnvType.PLACE)){
-				UserLoc userPlace = ((PlaceUserEnv)durationUserEnv.getUserEnv()).getPlace();
-				if(lastDurationUserEnv == null) {
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setProperty("place", userPlace);
-				} else {
-					if(!durationUserEnv.equals(lastDurationUserEnv)){
-						res.add(mergedRfdUCxtBuilder.build());
+				try {
+					UserPlace userPlace = ((PlaceUserEnv)durationUserEnv.getUserEnv()).getPlace();
+					if(lastKnownUserPlace == null) {
 						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 						mergedRfdUCxtBuilder.setProperty("place", userPlace);
+					} else {
+							if(!userPlace.isSame(lastKnownUserPlace)){
+								res.add(mergedRfdUCxtBuilder.build());
+								mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+								mergedRfdUCxtBuilder.setProperty("place", userPlace);
+							}
 					}
+					lastKnownUserPlace = userPlace;
+				} catch (InvalidUserEnvException e) {
+					;
 				}
-				lastDurationUserEnv = durationUserEnv;
 			}
 		}
 		if(mergedRfdUCxtBuilder != null)

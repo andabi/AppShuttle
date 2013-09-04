@@ -5,6 +5,7 @@ import java.util.List;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.EnvType;
+import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
@@ -88,15 +89,15 @@ public class LocEnvSensor implements EnvSensor {
 		//moved check
 		if(prevULoc != null){
 //			prevULoc = ((LocUserEnv)GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-//			try {
+			try {
 //				if(!currULoc.getLoc().proximity(prevULoc.getLoc(), settings.getInt("collection.location.tolerance.distance", 100))) {
-				if(!currULoc.equals(prevULoc)) {
+				if(!currULoc.getLoc().isSame(prevULoc.getLoc())) {
 					Log.i("changed env", "loc moved");
 					changed = true;
 				}
-//			} catch (InvalidLocationException e) {
-//				;
-//			}
+			} catch (InvalidUserEnvException e) {
+				;
+			}
 		}
 		return changed;
 	}

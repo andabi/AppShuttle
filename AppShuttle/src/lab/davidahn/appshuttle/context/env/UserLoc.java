@@ -44,6 +44,15 @@ public class UserLoc {
 		this.validity = validity;
 	}
 	
+	public boolean isSame(UserLoc uLoc) throws InvalidUserEnvException {
+		if(validity == Validity.INVALID || !uLoc.isValid()) 
+			throw new InvalidUserEnvException();
+		if(equals(uLoc))
+			return true;
+		else 
+			return false;
+	}
+	
 	public boolean proximity(UserLoc uLoc, int toleranceInMeter) throws InvalidUserEnvException {
 		if(validity == Validity.INVALID || !uLoc.isValid()) 
 			throw new InvalidUserEnvException();
@@ -69,17 +78,11 @@ public class UserLoc {
 
 	@Override
 	public boolean equals(Object o) {
-		try {
-			if(getLatitude() == ((UserLoc)o).getLatitude()
-					&& getLongitude() == ((UserLoc)o).getLongitude()) 
-				return true;
-			else return false;
-		} catch (InvalidUserEnvException e) {
-			if(validity == Validity.INVALID && !((UserLoc)o).isValid())
-				return true;
-			else
-				return false;
-		}
+		if(latitude == ((UserLoc)o).latitude
+				&& longitude == ((UserLoc)o).longitude
+				&& validity == ((UserLoc)o).validity)
+			return true;
+		else return false;
 	}
 	
 	@Override

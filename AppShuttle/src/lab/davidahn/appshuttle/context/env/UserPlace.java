@@ -20,6 +20,7 @@ public class UserPlace extends UserLoc {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {
 		if(validity == Validity.INVALID || !uPlace.isValid()) 
 			throw new InvalidUserEnvException();
@@ -40,15 +41,12 @@ public class UserPlace extends UserLoc {
 
 	@Override
 	public boolean equals(Object o) {
-		try {
-			if(getName().equals(((UserPlace)o).getName()))
+		if(!super.equals(o))
+			return false;
+		else {
+			if(name.equals(((UserPlace)o).name))
 				return true;
 			else return false;
-		} catch (InvalidUserEnvException e) {
-			if(validity == Validity.INVALID && !((UserPlace)o).isValid())
-				return true;
-			else
-				return false;
 		}
 	}
 	

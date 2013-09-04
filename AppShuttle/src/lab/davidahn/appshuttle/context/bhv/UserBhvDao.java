@@ -20,11 +20,9 @@ import com.google.gson.reflect.TypeToken;
 public class UserBhvDao {
 	private static UserBhvDao userBhvDao;
 	private SQLiteDatabase db;
-//	private Context cxt;
 	
 	private UserBhvDao(Context cxt) {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
-//		this.cxt = cxt;
 	}
 
 	public static UserBhvDao getInstance(Context cxt) {
