@@ -64,11 +64,9 @@ public class UserBhvDao {
 //		Log.i("retrieved userBhv", res.toString());
 		return res;
 	}
-
-//	public boolean isValid(UserBhv uBhv) {
-//		if(uBhv.getBhvType().equals("invalid")) 
-//			return false;
-//		else 
-//			return true;
-//	}
+	
+	public void deleteUserBhv(UserBhv uBhv) {
+		db.execSQL("DELETE FROM list_user_bhv WHERE bhv_type = '"
+				+ uBhv.getBhvType() + "' AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
 }
