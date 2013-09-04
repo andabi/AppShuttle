@@ -1,10 +1,10 @@
 package lab.davidahn.appshuttle.context.bhv;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
@@ -43,11 +43,11 @@ public class UserBhvDao {
 		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<UserBhv> retrieveUserBhv() {
+	public Set<UserBhv> retrieveUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		Cursor cur = db.rawQuery("SELECT * FROM list_user_bhv;", null);
-		List<UserBhv> res = new ArrayList<UserBhv>();
+		Set<UserBhv> res = new HashSet<UserBhv>();
 		
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));

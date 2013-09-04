@@ -11,7 +11,6 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
-import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.content.Context;
 

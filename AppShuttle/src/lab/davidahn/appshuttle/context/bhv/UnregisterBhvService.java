@@ -4,14 +4,14 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-public class UpdateBhvService extends IntentService {
+public class UnregisterBhvService extends IntentService {
 	SharedPreferences settings;
 
-	public UpdateBhvService() {
-		this("UpdateBhvService");
+	public UnregisterBhvService() {
+		this("UnregisterBhvService");
 	}
 
-	public UpdateBhvService(String name) {
+	public UnregisterBhvService(String name) {
 		super(name);
 	}
 
@@ -21,11 +21,12 @@ public class UpdateBhvService extends IntentService {
 	}
 
 	public void onHandleIntent(Intent intent) {
-		UserBhvDao userBhvDao = UserBhvDao.getInstance(getApplicationContext());
 		BhvType bhvType = (BhvType) intent.getExtras().get("bhv_type");
 		String bhvName = intent.getExtras().getString("bhv_name");
 		UserBhv uBhv = new UserBhv(bhvType, bhvName);
-		userBhvDao.deleteUserBhv(uBhv);
+		
+		UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
+		userBhvManager.unregisterBhv(uBhv);
 	}
 
 	public void onDestroy() {

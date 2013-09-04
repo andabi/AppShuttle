@@ -38,7 +38,7 @@
         <service android:name="lab.davidahn.appshuttle.AppShuttleService" />
         <service android:name="lab.davidahn.appshuttle.collect.CollectionService" />
         <service android:name="lab.davidahn.appshuttle.context.CompactionService" />
-        <service android:name="lab.davidahn.appshuttle.context.bhv.UpdateBhvService" />
+        <service android:name="lab.davidahn.appshuttle.context.bhv.UnregisterBhvService" />
         <service android:name="lab.davidahn.appshuttle.report.ReportingCxtService" />
         <service android:name="lab.davidahn.appshuttle.view.NotiViewService" />
 

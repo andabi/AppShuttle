@@ -15,7 +15,7 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxtDao;
 import lab.davidahn.appshuttle.context.bhv.AppUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhvDao;
+import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
@@ -77,8 +77,11 @@ public class CollectionService extends IntentService {
 					collector.refineDurationUserBhv(uCxt.getTime(), uCxt.getTimeZone(), userBhvList);
 			storeDurationUserBhv(durationUserBhvList);
 
+			UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
 			for(DurationUserBhv durationUserBhv : durationUserBhvList){
-				registerBhv(durationUserBhv.getBhv());
+				UserBhv uBhv = durationUserBhv.getBhv();
+				if(uBhv.isValid(getApplicationContext()))
+					userBhvManager.registerBhv(uBhv);
 			}
 		}
 		
@@ -107,20 +110,5 @@ public class CollectionService extends IntentService {
 
 	public void onDestroy() {
 		super.onDestroy();
-	}
-	
-	public void registerBhv(UserBhv uBhv){
-		UserBhvDao userBhvDao = UserBhvDao.getInstance(getApplicationContext());
-
-		if(uBhv.getBhvType() == BhvType.NONE) {
-			;
-		} else {
-			if(uBhv.getBhvType() == BhvType.APP) {
-				if(((AppUserBhv)uBhv).isValid(getApplicationContext()))
-						userBhvDao.storeUserBhv(uBhv);
-			} else {
-				userBhvDao.storeUserBhv(uBhv);
-			}
-		}
 	}
 }

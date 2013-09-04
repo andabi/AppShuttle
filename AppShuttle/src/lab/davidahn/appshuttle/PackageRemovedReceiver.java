@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle;
 
 import lab.davidahn.appshuttle.context.bhv.BhvType;
-import lab.davidahn.appshuttle.context.bhv.UpdateBhvService;
+import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,7 @@ public class PackageRemovedReceiver extends BroadcastReceiver {
 			Uri uri = intent.getData();
 			String name = uri != null ? uri.getSchemeSpecificPart() : null;
 			if(name != null) {
-				Intent updateBhvIntent = new Intent(context, UpdateBhvService.class);
+				Intent updateBhvIntent = new Intent(context, UnregisterBhvService.class);
 				updateBhvIntent.putExtra("bhv_type", BhvType.APP);
 				updateBhvIntent.putExtra("bhv_name", name);
 				context.startService(updateBhvIntent);

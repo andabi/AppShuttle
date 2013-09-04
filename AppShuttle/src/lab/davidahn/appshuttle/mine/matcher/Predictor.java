@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 
 import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhvDao;
+import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -51,8 +51,8 @@ public class Predictor {
 				, Double.MIN_VALUE
 				, settings.getInt("matcher.freq.min_num_cxt", 3)));
 
-		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
-		for(UserBhv uBhv : userBhvDao.retrieveUserBhv()){
+		UserBhvManager userBhvManager = UserBhvManager.getInstance(cxt);
+		for(UserBhv uBhv : userBhvManager.getBhvList()){
 			EnumMap<MatcherType, MatchedResult> matchedResults = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 
 			for(ContextMatcher cxtMatcher : cxtMatcherList){

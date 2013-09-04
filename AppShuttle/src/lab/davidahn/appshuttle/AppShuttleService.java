@@ -77,7 +77,7 @@ public class AppShuttleService extends Service{
 		if(settings.getBoolean("service.view.enabled", true)){
 			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
 			notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.view.period", 30000), notiViewOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.view.period", 300000), notiViewOperation);
 		}
 		
 		if(settings.getBoolean("service.report.enabled", false)){
@@ -117,7 +117,7 @@ public class AppShuttleService extends Service{
 		editor.putLong("service.collection.period", 10000);
 
 		editor.putBoolean("service.view.enabled", true);
-		editor.putLong("service.view.peroid", 60000);
+		editor.putLong("service.view.peroid", 300000);
 
 		editor.putBoolean("service.report.enabled", false);
 		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
