@@ -46,8 +46,9 @@ public class AppBhvCollector implements BhvCollector {
 		ongoingBhvMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 	}
 	
-	public static AppBhvCollector getInstance(Context cxt){
-		if(appBhvCollector == null) appBhvCollector = new AppBhvCollector(cxt);
+	public synchronized static AppBhvCollector getInstance(Context cxt){
+		if(appBhvCollector == null) 
+			appBhvCollector = new AppBhvCollector(cxt);
 		return appBhvCollector;
 	}
 	

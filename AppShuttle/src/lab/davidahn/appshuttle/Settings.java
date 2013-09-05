@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 
 public class Settings {
-	public static SharedPreferences preferenceSettings;
+	public static volatile SharedPreferences preferenceSettings;
 
 	public static void preferenceSettings(Context cxt) {
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);

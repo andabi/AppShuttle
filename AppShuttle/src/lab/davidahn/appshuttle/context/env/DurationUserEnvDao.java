@@ -23,7 +23,7 @@ public class DurationUserEnvDao {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static DurationUserEnvDao getInstance(Context cxt) {
+	public synchronized static DurationUserEnvDao getInstance(Context cxt) {
 		if (durationUserEnvDao == null)
 			durationUserEnvDao = new DurationUserEnvDao(cxt);
 		return durationUserEnvDao;

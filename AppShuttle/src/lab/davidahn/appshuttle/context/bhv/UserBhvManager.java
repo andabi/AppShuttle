@@ -1,12 +1,12 @@
 package lab.davidahn.appshuttle.context.bhv;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
 
 public class UserBhvManager {
-	private Set<UserBhv> bhvList = new HashSet<UserBhv>();
+	private volatile List<UserBhv> bhvList = new CopyOnWriteArrayList<UserBhv>();
 	private Context cxt;
 
 	private static UserBhvManager userBhvManager;
@@ -15,7 +15,7 @@ public class UserBhvManager {
 		this.cxt = cxt;
 	}
 
-	public static UserBhvManager getInstance(Context cxt) {
+	public synchronized static UserBhvManager getInstance(Context cxt) {
 		if (userBhvManager == null) {
 			userBhvManager = new UserBhvManager(cxt);
 			userBhvManager.syncBhvListFromPermanentStorage();
@@ -23,7 +23,7 @@ public class UserBhvManager {
 		return userBhvManager;
 	}
 	
-	public Set<UserBhv> getBhvList(){
+	public List<UserBhv> getBhvList(){
 		return bhvList;
 	}
 	
@@ -40,7 +40,6 @@ public class UserBhvManager {
 	public void unregisterBhv(UserBhv uBhv){	
 		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
 		userBhvDao.deleteUserBhv(uBhv);
-		
 		bhvList.remove(uBhv);
 	}
 

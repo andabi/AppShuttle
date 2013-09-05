@@ -27,7 +27,7 @@ public class CallBhvCollector implements BhvCollector {
 		contentResolver = cxt.getContentResolver();
 	}
 	
-	public static CallBhvCollector getInstance(Context cxt){
+	public synchronized static CallBhvCollector getInstance(Context cxt){
 		if(callBhvCollector == null) callBhvCollector = new CallBhvCollector(cxt);
 		return callBhvCollector;
 	}

@@ -35,7 +35,7 @@ public class SnapshotUserCxtDao {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static SnapshotUserCxtDao getInstance(Context cxt) {
+	public synchronized static SnapshotUserCxtDao getInstance(Context cxt) {
 		if (userCxtDao == null)
 			userCxtDao = new SnapshotUserCxtDao(cxt);
 		return userCxtDao;

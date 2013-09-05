@@ -56,7 +56,7 @@ public class LocEnvSensor implements EnvSensor {
 		currULoc = null;
 	}
 	
-	public static LocEnvSensor getInstance(Context cxt){
+	public synchronized static LocEnvSensor getInstance(Context cxt){
 		if(locEnvSensor == null) locEnvSensor = new LocEnvSensor(cxt);
 		return locEnvSensor;
 	}

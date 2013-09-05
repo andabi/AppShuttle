@@ -19,7 +19,7 @@ public class PredictedBhvDao {
 		matchedResultDao = MatchedResultDao.getInstance(cxt);
 	}
 
-	public static PredictedBhvDao getInstance(Context cxt) {
+	public synchronized static PredictedBhvDao getInstance(Context cxt) {
 		if (predictedBhvDao == null)
 			predictedBhvDao = new PredictedBhvDao(cxt);
 		return predictedBhvDao;

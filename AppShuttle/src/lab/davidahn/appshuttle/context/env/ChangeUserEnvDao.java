@@ -24,7 +24,7 @@ public class ChangeUserEnvDao {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static ChangeUserEnvDao getInstance(Context cxt) {
+	public synchronized static ChangeUserEnvDao getInstance(Context cxt) {
 		if (changedUserEnvDao == null)
 			changedUserEnvDao = new ChangeUserEnvDao(cxt);
 		return changedUserEnvDao;

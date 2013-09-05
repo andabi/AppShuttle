@@ -31,7 +31,7 @@ public class PlaceEnvSensor implements EnvSensor {
 		currUPlace = null;
 	}
 	
-	public static PlaceEnvSensor getInstance(Context cxt){
+	public synchronized static PlaceEnvSensor getInstance(Context cxt){
 		if(placeEnvSensor == null) placeEnvSensor = new PlaceEnvSensor(cxt);
 		return placeEnvSensor;
 	}

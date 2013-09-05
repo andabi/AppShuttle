@@ -14,7 +14,7 @@ public class MatchedResultDao {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static MatchedResultDao getInstance(Context cxt) {
+	public synchronized static MatchedResultDao getInstance(Context cxt) {
 		if (matchedResultDao == null)
 			matchedResultDao = new MatchedResultDao(cxt);
 		return matchedResultDao;

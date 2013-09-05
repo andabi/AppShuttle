@@ -35,7 +35,7 @@ public class DuratinoUserBhvDao {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public static DuratinoUserBhvDao getInstance(Context cxt) {
+	public synchronized static DuratinoUserBhvDao getInstance(Context cxt) {
 		if (rfdUserCxtDao == null)
 			rfdUserCxtDao = new DuratinoUserBhvDao(cxt);
 		return rfdUserCxtDao;
