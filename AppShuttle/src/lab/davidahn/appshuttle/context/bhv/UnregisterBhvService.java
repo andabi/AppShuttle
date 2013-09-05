@@ -2,11 +2,8 @@ package lab.davidahn.appshuttle.context.bhv;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 public class UnregisterBhvService extends IntentService {
-	SharedPreferences settings;
-
 	public UnregisterBhvService() {
 		this("UnregisterBhvService");
 	}
@@ -17,7 +14,6 @@ public class UnregisterBhvService extends IntentService {
 
 	public void onCreate() {
 		super.onCreate();
-		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
 	}
 
 	public void onHandleIntent(Intent intent) {

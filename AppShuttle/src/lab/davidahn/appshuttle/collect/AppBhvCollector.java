@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.collect;
 
+import static lab.davidahn.appshuttle.Settings.preferenceSettings;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +21,6 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -34,7 +35,6 @@ public class AppBhvCollector implements BhvCollector {
 	private PackageManager packageManager;
 	private PowerManager powerManager;
 	private KeyguardManager keyguardManager;
-	private SharedPreferences settings;
 
 	private Map<UserBhv, DurationUserBhv.Builder> ongoingBhvMap;
 
@@ -43,7 +43,6 @@ public class AppBhvCollector implements BhvCollector {
 		packageManager = cxt.getPackageManager();
 		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 
 	    keyguardManager = (KeyguardManager) cxt.getSystemService(Context.KEYGUARD_SERVICE);
-		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
 		ongoingBhvMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 	}
 	
@@ -95,7 +94,7 @@ public class AppBhvCollector implements BhvCollector {
 			for(UserBhv ongoingBhv : ongoingBhvSet){
 				DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvMap.get(ongoingBhv);
 				if(currTime.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
-						> settings.getLong("service.collection.period", 6000) * 1.5){
+						> preferenceSettings.getLong("service.collection.period", 6000) * 1.5){
 					res.add(ongoingRfdUCxtBuilder.build());
 					ongoingBhvMap.remove(ongoingBhv);
 				}

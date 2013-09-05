@@ -7,6 +7,7 @@ import java.util.List;
 import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
+import static lab.davidahn.appshuttle.Settings.*;
 import android.app.AlarmManager;
 import android.content.Context;
 
@@ -43,7 +44,7 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< settings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)){
+						< preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)){
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());

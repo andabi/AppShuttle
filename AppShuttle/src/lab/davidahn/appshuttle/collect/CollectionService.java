@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.collect;
 
+import static lab.davidahn.appshuttle.Settings.preferenceSettings;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,8 +14,6 @@ import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.SnapshotUserCxtDao;
-import lab.davidahn.appshuttle.context.bhv.AppUserBhv;
-import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
@@ -22,11 +22,9 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 public class CollectionService extends IntentService {
 	private Calendar calendar;
-    SharedPreferences settings;
     Map<EnvType, EnvSensor> sensors;
     List<BhvCollector> collectors;
 	
@@ -40,7 +38,6 @@ public class CollectionService extends IntentService {
 
 	public void onCreate() {
 		super.onCreate();
-		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
 		calendar = Calendar.getInstance();
 
 		sensors = new HashMap<EnvType, EnvSensor>();
@@ -90,7 +87,7 @@ public class CollectionService extends IntentService {
 	}
 	
 	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
-		if(settings.getBoolean("collection.store_cxt.enabled", false)) {
+		if(preferenceSettings.getBoolean("collection.store_cxt.enabled", false)) {
 			SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance(getApplicationContext());
 			snapshotUserCxtDao.storeCxt(uCxt);
 		}

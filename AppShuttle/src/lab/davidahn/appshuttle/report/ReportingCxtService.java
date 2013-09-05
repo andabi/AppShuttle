@@ -1,16 +1,13 @@
 package lab.davidahn.appshuttle.report;
 
+import static lab.davidahn.appshuttle.Settings.preferenceSettings;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.SnapshotUserCxtDao;
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 
 public class ReportingCxtService extends IntentService {
-	private SnapshotUserCxtDao contextManager;
 	private Handler handler;
-	private SharedPreferences settings;
 
 	public ReportingCxtService(){
 		this("ReportingCxtService");
@@ -21,9 +18,7 @@ public class ReportingCxtService extends IntentService {
 	
 	public void onCreate(){
 		super.onCreate();
-		contextManager = SnapshotUserCxtDao.getInstance(getApplicationContext());
 		handler = new Handler();
-		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
 	}
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -32,7 +27,7 @@ public class ReportingCxtService extends IntentService {
 		Reporter reporter = new Reporter(getApplicationContext(), handler);
 //		reporter.addAttach(contextManager.loadCxtAsCsvFile(getApplicationContext(), "context", sTime, eTime));
 //		reporter.addAttach(contextManager.loadRfdCxtAsCsvFile(getApplicationContext(), "refined_context", sTime, eTime));
-		reporter.addAttach(getDatabasePath(settings.getString("database.name", new StringBuilder(getResources().getString(R.string.app_name)).append(".db").toString())));
+		reporter.addAttach(getDatabasePath(preferenceSettings.getString("database.name", new StringBuilder(getResources().getString(R.string.app_name)).append(".db").toString())));
 		reporter.report();
 	}
 }

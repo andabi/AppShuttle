@@ -7,6 +7,7 @@ import java.util.List;
 import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
+import static lab.davidahn.appshuttle.Settings.*;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
@@ -39,7 +40,7 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< settings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
+						< preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());

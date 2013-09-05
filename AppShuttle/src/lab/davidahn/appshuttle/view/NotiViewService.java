@@ -19,7 +19,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -30,35 +29,23 @@ import android.os.IBinder;
 import android.widget.RemoteViews;
 
 public class NotiViewService extends Service {
-//	public NotiViewService() {
-//		this("NotiViewService");
-//	}
-//
-//	public NotiViewService(String name) {
-//		super(name);
-//	}
-
 	private static final int NOTI_UPDATE = 1;
 	private NotificationManager notificationManager;
-//	private PatternManager patternManager;
 	private PackageManager packageManager;
-//	private ContextManager contextManager;
 //	private LayoutInflater layoutInflater;
-	private SharedPreferences settings;
 
 	public void onCreate(){
 		super.onCreate();
 		notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-//		patternManager = PatternManager.getInstance(getApplicationContext());
 		packageManager = getPackageManager();
-//		contextManager = ContextManager.getInstance(getApplicationContext());
 //		layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		settings = getSharedPreferences("AppShuttle", MODE_PRIVATE);
 	}
 	
 	@SuppressLint("NewApi")
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
+		
+//		SharedPreferences settings = Settings.preferenceSettings;
 		
 //		View notiLayout = layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
 //		ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);

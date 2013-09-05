@@ -8,17 +8,15 @@ import java.util.PriorityQueue;
 import lab.davidahn.appshuttle.GlobalState;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
+import static lab.davidahn.appshuttle.Settings.*;
 import android.app.AlarmManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 public class Predictor {
 	private Context cxt;
-	private SharedPreferences settings;
 	
 	public Predictor(Context cxt){
 		this.cxt = cxt;
-		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
 	}
 	
 	public List<PredictedBhv> predict(int topN){
@@ -30,26 +28,26 @@ public class Predictor {
 
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
 		cxtMatcherList.add(new WeakTimeContextMatcher(cxt
-				, settings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
-				, settings.getInt("matcher.weak_time.min_num_cxt", 3)
+				, preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
+				, preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
-				, settings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)));
+				, preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)));
 		cxtMatcherList.add(new StrictTimeContextMatcher(cxt
-				, settings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
-				, settings.getInt("matcher.strict_time.min_num_cxt", 3)
+				, preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
+				, preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
-				, settings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)));
+				, preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)));
 		cxtMatcherList.add(new PlaceContextMatcher(cxt
-				, settings.getFloat("matcher.place.min_likelihood", 0.7f)
-				, settings.getInt("matcher.place.min_num_cxt", 3)
-				, settings.getInt("matcher.place.min_distance", 2000)));
+				, preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
+				, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
+				, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)));
 		cxtMatcherList.add(new LocContextMatcher(cxt
-				, settings.getFloat("matcher.loc.min_likelihood", 0.5f)
-				, settings.getInt("matcher.loc.min_num_cxt", 5)
-				, settings.getInt("matcher.loc.min_distance", 50)));
+				, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
+				, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
+				, preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)));
 		cxtMatcherList.add(new FreqContextMatcher(cxt
 				, Double.MIN_VALUE
-				, settings.getInt("matcher.freq.min_num_cxt", 3)));
+				, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)));
 
 		UserBhvManager userBhvManager = UserBhvManager.getInstance(cxt);
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
@@ -100,7 +98,7 @@ public class Predictor {
 //ContextMatcher locCxtMatcher = new LocContextMatcher(cxt
 //, settings.getFloat("matcher.loc.min_likelihood", 0.7f)
 //, settings.getInt("matcher.loc.min_num_cxt", 3)
-//, settings.getInt("matcher.loc.min_distance", 2000));
+//, settings.getInt("matcher.loc.distance_tolerance", 2000));
 //ContextMatcher FreqCxtMatcher = new FreqContextMatcher(cxt
 //, Double.MIN_VALUE
 //, settings.getInt("matcher.freq.min_num_cxt", 3));
@@ -110,7 +108,7 @@ public class Predictor {
 //if(GlobalState.recentLocMatchedCxtList == null) 
 //	GlobalState.recentLocMatchedCxtList = new ArrayList<MatchedCxt>();
 //if(GlobalState.moved == true){
-//	ContextMatcher locCxtMatcher = new LocContextMatcher(cxt, 0, settings.getInt("location.min_distance", 2000));
+//	ContextMatcher locCxtMatcher = new LocContextMatcher(cxt, 0, settings.getInt("location.distance_tolerance", 2000));
 //	locMatchedCxtList = locCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);
 //	GlobalState.recentLocMatchedCxtList = locMatchedCxtList;
 //	Log.i("location", "moved");

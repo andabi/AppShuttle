@@ -8,8 +8,8 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
+import static lab.davidahn.appshuttle.Settings.*;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,13 +24,9 @@ public class LocEnvSensor implements EnvSensor {
 	private Location lastKnownLoc;
 	private LocUserEnv prevULoc;
 	private LocUserEnv currULoc;
-    private SharedPreferences settings;
     private DurationUserEnv.Builder durationUserEnvBuilder;
 	
 	private LocEnvSensor(Context cxt){
-		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
-
-		//location
 		locationManager = (LocationManager) cxt.getSystemService(Context.LOCATION_SERVICE);
 		Criteria crit = new Criteria();
 		crit.setAccuracy(Criteria.ACCURACY_FINE);
@@ -51,8 +47,8 @@ public class LocEnvSensor implements EnvSensor {
 				}
 			}
 			locationManager.requestLocationUpdates(bestProvider, 
-					settings.getLong("collection.location.tolerance.time", 6000), 
-					settings.getInt("collection.location.tolerance.distance", 100), 
+					preferenceSettings.getLong("collection.location.tolerance.time", 6000), 
+					preferenceSettings.getInt("collection.location.tolerance.distance", 100), 
 					locationListener);
 		}
 		
@@ -135,8 +131,8 @@ public class LocEnvSensor implements EnvSensor {
 
 		public void onProviderEnabled(String provider) {
 			locationManager.requestLocationUpdates(bestProvider, 
-					settings.getLong("collection.location.tolerance.time", 6000), 
-					settings.getInt("collection.location.tolerance.distance", 100), 
+					preferenceSettings.getLong("collection.location.tolerance.time", 6000), 
+					preferenceSettings.getInt("collection.location.tolerance.distance", 100), 
 					locationListener);
 			lastKnownLoc = locationManager.getLastKnownLocation(provider);
 		}

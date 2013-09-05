@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
+import static lab.davidahn.appshuttle.Settings.preferenceSettings;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,12 +16,10 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import android.app.AlarmManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 public abstract class ContextMatcher {
 	protected MatcherType matcherType;
 	protected Context cxt;
-	protected SharedPreferences settings;
 	protected double minLikelihood;
 	protected int minNumCxt;
 
@@ -29,8 +29,6 @@ public abstract class ContextMatcher {
 
 	public ContextMatcher(Context cxt, double minLikelihood, int minNumCxt) {
 		this.cxt = cxt;
-		settings = cxt.getSharedPreferences("AppShuttle",Context.MODE_PRIVATE);
-
 		this.minLikelihood = minLikelihood;
 		this.minNumCxt = minNumCxt;
 	}
@@ -41,13 +39,13 @@ public abstract class ContextMatcher {
 		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
 		Date toTime = uCxt.getTime();
-		Date fromTime = new Date(toTime.getTime() - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY));
+		Date fromTime = new Date(toTime.getTime() - preferenceSettings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY));
 		
 		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTime().getTime() 
-					< settings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60))   //noise
+					< preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60))   //noise
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);
 		}

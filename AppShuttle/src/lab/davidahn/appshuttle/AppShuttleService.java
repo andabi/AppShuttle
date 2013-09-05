@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle;
 
+import static lab.davidahn.appshuttle.Settings.preferenceSettings;
+
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectionService;
@@ -13,51 +15,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 
-public class AppShuttleService extends Service{
+public class AppShuttleService extends Service {
 	private AlarmManager alarmManager;
 	private PendingIntent collectingCxtOperation;
 	private PendingIntent reportingCxtOperation;
 	private PendingIntent notiViewOperation;
 	private PendingIntent compactingCxtOperation;
-	private BroadcastReceiver screenOnReceiver = new ScreenOnReceiver();
-	
-//	{
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			if(settings.getBoolean("service.view.enabled", true)){
-//				Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.VIEW");
-//				notiViewOperation = PendingIntent.getBroadcast(context, 0, notiViewIntent, 0);
-//				alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.view.period", 30000), notiViewOperation);
-//			}
-//			
-//		}
-//	};
-	
-	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			alarmManager.cancel(notiViewOperation);
-			stopService(new Intent(AppShuttleService.this, NotiViewService.class));
-		}
-	};
-
-	BroadcastReceiver notiViewReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			context.startService(new Intent(context, NotiViewService.class));
-		}
-	};
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
 		Settings.preferenceSettings(getApplicationContext());
-		SharedPreferences settings = Settings.preferenceSettings;
-		
+	
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
 		registerReceiver(screenOnReceiver, filter);
@@ -67,32 +39,32 @@ public class AppShuttleService extends Service{
 		registerReceiver(screenOffReceiver, filter);
 		
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.VIEW");
+		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
 		registerReceiver(notiViewReceiver, filter);
 
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		
-		if(settings.getBoolean("service.collection.enabled", true)){
+		if(preferenceSettings.getBoolean("service.collection.enabled", true)){
 			Intent collectingCxtIntent = new Intent(this, CollectionService.class);
 			collectingCxtOperation = PendingIntent.getService(this, 0, collectingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.collection.period", 6000), collectingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.collection.period", 6000), collectingCxtOperation);
 		}
 
-		if(settings.getBoolean("service.compaction.enabled", true)){
+		if(preferenceSettings.getBoolean("service.compaction.enabled", true)){
 			Intent compactingCxtIntent = new Intent(this, CompactionService.class);
 			compactingCxtOperation = PendingIntent.getService(this, 0, compactingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), settings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), preferenceSettings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
 		}
-		if(settings.getBoolean("service.report.enabled", false)){
+		if(preferenceSettings.getBoolean("service.report.enabled", false)){
 			Intent reportingCxtIntent = new Intent(this, ReportingCxtService.class);
 			reportingCxtOperation = PendingIntent.getService(this, 0, reportingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), settings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
 		}
 
-		if(settings.getBoolean("service.view.enabled", true)){
-			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.VIEW");
+		if(preferenceSettings.getBoolean("service.view.enabled", true)){
+			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
 			notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), settings.getLong("service.view.period", 30000), notiViewOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.view.period", 30000), notiViewOperation);
 		}
 	}
 	
@@ -131,5 +103,31 @@ public class AppShuttleService extends Service{
 		stopService(new Intent(AppShuttleService.this, ReportingCxtService.class));
 		stopService(new Intent(AppShuttleService.this, NotiViewService.class));
 	}
+	
+	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+			if(Settings.preferenceSettings.getBoolean("service.view.enabled", true)){
+				Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
+				PendingIntent notiViewOperation = PendingIntent.getBroadcast(context, 0, notiViewIntent, 0);
+				alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Settings.preferenceSettings.getLong("service.view.period", 30000), notiViewOperation);
+			}
+		}
+	};
+	
+	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			alarmManager.cancel(notiViewOperation);
+		}
+	};
+
+	BroadcastReceiver notiViewReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			context.startService(new Intent(context, NotiViewService.class));
+		}
+	};
 }
 

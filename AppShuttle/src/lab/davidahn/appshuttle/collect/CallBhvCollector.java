@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.collect;
 
+import static lab.davidahn.appshuttle.Settings.preferenceSettings;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,25 +15,16 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.provider.CallLog;
 
 public class CallBhvCollector implements BhvCollector {
 	private static CallBhvCollector callBhvCollector;
-//	private TelephonyManager telephonyManager;
 	private ContentResolver contentResolver;
-	private SharedPreferences settings;
 	private Date lastCallDate;
 
-//	private Map<UserBhv, DurationUserBhv.Builder> ongoingBhvMap;
-	
 	private CallBhvCollector(Context cxt){
-//	    telephonyManager = (TelephonyManager) cxt.getSystemService(Context.TELEPHONY_SERVICE);
 		contentResolver = cxt.getContentResolver();
-		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
-
-//		ongoingBhvMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 	}
 	
 	public static CallBhvCollector getInstance(Context cxt){
@@ -41,12 +34,6 @@ public class CallBhvCollector implements BhvCollector {
 	
 	public List<UserBhv> collect(){
 		List<UserBhv> res = new ArrayList<UserBhv>();
-		
-		//TODO
-//		if(telephonyManager.getCallState() == TelephonyManager.CALL_STATE_OFFHOOK) {
-//			String bhvName = telephonyManager.getLine1Number();
-//			res.add(new UserBhv(BhvType.CALL, bhvName));
-//		}
 		return res;
 	}
 	
@@ -54,7 +41,7 @@ public class CallBhvCollector implements BhvCollector {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		
 		if(lastCallDate == null){
-			Date period = new Date(settings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
+			Date period = new Date(preferenceSettings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
 			lastCallDate = new Date(currTime.getTime() - period.getTime());
 		}
 		Cursor cursor = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.DATE + " > " + lastCallDate.getTime(), null, 

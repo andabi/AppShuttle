@@ -12,7 +12,6 @@ import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
@@ -23,11 +22,9 @@ public class PlaceEnvSensor implements EnvSensor {
 	private PlaceUserEnv prevUPlace;
 	private PlaceUserEnv currUPlace;
 	private LocEnvSensor locEnvCollector;
-    private SharedPreferences settings;
     private DurationUserEnv.Builder durationUserEnvBuilder;
 	
 	private PlaceEnvSensor(Context cxt){
-		settings = cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE);
 		geocoder = new Geocoder(cxt);
 		locEnvCollector = LocEnvSensor.getInstance(cxt);
 		prevUPlace = null;
