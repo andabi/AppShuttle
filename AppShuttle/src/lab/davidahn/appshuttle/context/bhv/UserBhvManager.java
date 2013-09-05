@@ -32,16 +32,7 @@ public class UserBhvManager {
 			return ;
 
 		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
-		if(uBhv.getBhvType() == BhvType.NONE) {
-			;
-		} else {
-			if(uBhv.getBhvType() == BhvType.APP) {
-				if(((AppUserBhv)uBhv).isValid(cxt))
-						userBhvDao.storeUserBhv(uBhv);
-			} else {
-				userBhvDao.storeUserBhv(uBhv);
-			}
-		}
+		userBhvDao.storeUserBhv(uBhv);
 
 		bhvList.add(uBhv);
 	}

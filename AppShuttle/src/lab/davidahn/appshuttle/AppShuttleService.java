@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
+import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.NotiViewService;
 import android.app.AlarmManager;
@@ -100,6 +101,7 @@ public class AppShuttleService extends Service {
 		
 		stopService(new Intent(AppShuttleService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleService.this, CompactionService.class));
+		stopService(new Intent(AppShuttleService.this, UnregisterBhvService.class));
 		stopService(new Intent(AppShuttleService.this, ReportingCxtService.class));
 		stopService(new Intent(AppShuttleService.this, NotiViewService.class));
 	}

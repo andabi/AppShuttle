@@ -80,7 +80,10 @@ public class AppBhvCollector implements BhvCollector {
 
 		if(ongoingBhvMap.isEmpty()) {
 			for(UserBhv uBhv : userBhvList){
-				ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(currTime, timezone, uBhv));
+				ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
+				, new Date(currTime.getTime() + adjustment)
+				, timezone
+				, uBhv));
 			}
 		} else {
 			for(UserBhv uBhv : userBhvList){
@@ -88,7 +91,10 @@ public class AppBhvCollector implements BhvCollector {
 					DurationUserBhv.Builder rfdUCxtBuilder = ongoingBhvMap.get(uBhv);
 					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment));
 				} else {
-					ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(currTime, timezone, uBhv));
+					ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
+					, new Date(currTime.getTime() + adjustment)
+					, timezone
+					, uBhv));
 				}
 			}
 			Set<UserBhv> ongoingBhvSet = new HashSet<UserBhv>(ongoingBhvMap.keySet());
@@ -104,11 +110,10 @@ public class AppBhvCollector implements BhvCollector {
 		return res;
 	}
 	
-	private DurationUserBhv.Builder makeDurationUserBhvBuilder(Date currTime, TimeZone currTimeZone, UserBhv bhv) {
-		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
+	private DurationUserBhv.Builder makeDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, UserBhv bhv) {
 		return new DurationUserBhv.Builder()
-		.setTime(new Date(currTime.getTime() - adjustment))
-		.setEndTime(new Date(currTime.getTime() + adjustment))
+		.setTime(time)
+		.setEndTime(endTime)
 		.setTimeZone(currTimeZone)
 		.setBhv(bhv);
 	}

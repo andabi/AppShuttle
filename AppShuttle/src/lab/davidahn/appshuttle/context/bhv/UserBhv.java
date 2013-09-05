@@ -71,6 +71,9 @@ public class UserBhv {
 	}
 	
 	public boolean isValid(Context cxt) {
-		return true;
+		if(bhvType == BhvType.NONE)
+			return false;
+		else
+			return true;
 	}
 }
