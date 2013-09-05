@@ -76,7 +76,8 @@ public class AppBhvCollector implements BhvCollector {
 	
 	public List<DurationUserBhv> refineDurationUserBhv(Date currTime, TimeZone timezone, List<UserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-	//	UserEnv uEnv = uCxt.getUserEnvs();
+		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
+
 		if(ongoingBhvMap.isEmpty()) {
 			for(UserBhv uBhv : userBhvList){
 				ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(currTime, timezone, uBhv));
@@ -85,7 +86,7 @@ public class AppBhvCollector implements BhvCollector {
 			for(UserBhv uBhv : userBhvList){
 				if(ongoingBhvMap.containsKey(uBhv)){
 					DurationUserBhv.Builder rfdUCxtBuilder = ongoingBhvMap.get(uBhv);
-					rfdUCxtBuilder.setEndTime(currTime);
+					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment));
 				} else {
 					ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(currTime, timezone, uBhv));
 				}
@@ -104,9 +105,10 @@ public class AppBhvCollector implements BhvCollector {
 	}
 	
 	private DurationUserBhv.Builder makeDurationUserBhvBuilder(Date currTime, TimeZone currTimeZone, UserBhv bhv) {
+		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
 		return new DurationUserBhv.Builder()
-		.setTime(currTime)
-		.setEndTime(currTime)
+		.setTime(new Date(currTime.getTime() - adjustment))
+		.setEndTime(new Date(currTime.getTime() + adjustment))
 		.setTimeZone(currTimeZone)
 		.setBhv(bhv);
 	}
