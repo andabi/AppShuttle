@@ -5,8 +5,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.AlarmManager;
@@ -24,7 +25,8 @@ public class Predictor {
 	
 	public List<PredictedBhv> predict(int topN){
 		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
-		if(GlobalState.currUserCxt == null) 
+		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)cxt.getApplicationContext()).getCurrUserCxt();
+		if(((AppShuttleApplication) cxt.getApplicationContext()).getCurrUserCxt() == null) 
 			return res;
 		
 		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
@@ -64,16 +66,16 @@ public class Predictor {
 			EnumMap<MatcherType, MatchedResult> matchedResults = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 
 			for(ContextMatcher cxtMatcher : cxtMatcherList){
-				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, GlobalState.currUserCxt);
+				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt);
 				if(matchedResult != null)
 					matchedResults.put(cxtMatcher.getMatcherType(), matchedResult);
 			}
 
 			if(matchedResults.size() > 0){
 				double score = calcScore(matchedResults);
-				PredictedBhv predictedBhv = new PredictedBhv(GlobalState.currUserCxt.getTime(), 
-						GlobalState.currUserCxt.getTimeZone(), 
-						GlobalState.currUserCxt.getUserEnvs(), 
+				PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTime(), 
+						currUserCxt.getTimeZone(), 
+						currUserCxt.getUserEnvs(), 
 						uBhv, matchedResults, score);
 				predicted.add(predictedBhv);
 			}

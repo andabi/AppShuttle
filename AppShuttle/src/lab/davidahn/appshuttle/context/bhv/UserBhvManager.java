@@ -6,13 +6,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import android.content.Context;
 
 public class UserBhvManager {
-	private volatile List<UserBhv> bhvList = new CopyOnWriteArrayList<UserBhv>();
+	private volatile List<UserBhv> bhvList;
 	private Context cxt;
 
 	private static UserBhvManager userBhvManager;
 	
 	private UserBhvManager(Context cxt) {
 		this.cxt = cxt;
+		bhvList = new CopyOnWriteArrayList<UserBhv>();
 	}
 
 	public synchronized static UserBhvManager getInstance(Context cxt) {
@@ -45,6 +46,6 @@ public class UserBhvManager {
 
 	private void syncBhvListFromPermanentStorage() {
 		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
-		bhvList = userBhvDao.retrieveUserBhv();
+		bhvList = new CopyOnWriteArrayList<UserBhv>(userBhvDao.retrieveUserBhv());
 	}
 }

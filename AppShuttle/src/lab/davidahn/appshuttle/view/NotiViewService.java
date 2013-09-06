@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.MainActivity;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
@@ -112,9 +112,10 @@ public class NotiViewService extends Service {
 				break;
 		}
 		
+		Set<UserBhv> recentMatchedBhvSet = ((AppShuttleApplication)getApplicationContext()).getRecentMatchedBhvSet();
 		for(PredictedBhv predictedBhv : predictedBhvForView) {
-			if(GlobalState.recentMatchedBhvSet == null ||
-					!GlobalState.recentMatchedBhvSet.contains(predictedBhv.getUserBhv())){
+			if(recentMatchedBhvSet == null ||
+					!recentMatchedBhvSet.contains(predictedBhv.getUserBhv())){
 				predictor.storePredictedBhv(predictedBhv);
 			}
 		}
@@ -129,7 +130,7 @@ public class NotiViewService extends Service {
 //			notificationManager.cancel(NOTI_UPDATE);
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		} else { 
-			if(matchedBhvSet.equals(GlobalState.recentMatchedBhvSet)){
+			if(matchedBhvSet.equals(recentMatchedBhvSet)){
 				notiUpdate = new Notification.Builder(NotiViewService.this)
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiRemoteViews)
@@ -145,7 +146,7 @@ public class NotiViewService extends Service {
 			}
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		}
-		GlobalState.recentMatchedBhvSet = matchedBhvSet;	
+		((AppShuttleApplication)getApplicationContext()).setRecentMatchedBhvSet(matchedBhvSet);
 
 		return START_NOT_STICKY;
 	}

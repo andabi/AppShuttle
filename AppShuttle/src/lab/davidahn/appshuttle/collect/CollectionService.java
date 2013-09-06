@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
@@ -85,8 +85,7 @@ public class CollectionService extends IntentService {
 					userBhvManager.registerBhv(uBhv);
 			}
 		}
-		
-		GlobalState.currUserCxt = uCxt;
+		((AppShuttleApplication)getApplicationContext()).setCurrUserCxt(uCxt);
 		storeSnapshotCxt(uCxt);
 	}
 	
