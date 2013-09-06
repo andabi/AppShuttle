@@ -9,7 +9,6 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
-import static lab.davidahn.appshuttle.Settings.*;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Criteria;

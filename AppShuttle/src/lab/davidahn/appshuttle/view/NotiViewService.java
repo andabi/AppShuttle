@@ -122,7 +122,7 @@ public class NotiViewService extends Service {
 		Notification notiUpdate;
 		if(predictedBhvForView.isEmpty()) {
 			notiUpdate = new Notification.Builder(NotiViewService.this)
-			.setSmallIcon(R.drawable.ic_launcher)
+			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiRemoteViews)
 			.setOngoing(true)
 			.build();
@@ -131,13 +131,13 @@ public class NotiViewService extends Service {
 		} else { 
 			if(matchedBhvSet.equals(GlobalState.recentMatchedBhvSet)){
 				notiUpdate = new Notification.Builder(NotiViewService.this)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiRemoteViews)
 				.setOngoing(true)
 				.build();
 			} else {
 				notiUpdate = new Notification.Builder(NotiViewService.this)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiRemoteViews)
 				.setOngoing(true)
 				.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
