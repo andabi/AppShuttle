@@ -1,15 +1,19 @@
 package lab.davidahn.appshuttle.collect;
 
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.mine.matcher.MatchedResultDao;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvDao;
-import static lab.davidahn.appshuttle.Settings.*;
 import android.app.AlarmManager;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 public class CompactionService extends IntentService {
+	private SharedPreferences preferenceSettings;
+	
 	public CompactionService() {
 		this("CompactionService");
 	}
@@ -20,6 +24,8 @@ public class CompactionService extends IntentService {
 
 	public void onCreate() {
 		super.onCreate();
+		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+
 	}
 	
 	public void onHandleIntent(Intent intent){

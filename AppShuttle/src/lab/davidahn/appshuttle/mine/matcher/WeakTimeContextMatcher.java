@@ -7,22 +7,22 @@ import java.util.List;
 import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import static lab.davidahn.appshuttle.Settings.*;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-import android.app.AlarmManager;
 import android.content.Context;
 
 public class WeakTimeContextMatcher extends ContextMatcher {
 	protected long period;
 	protected long tolerance;
-	
-	public WeakTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance) {
+	protected long acceptanceDelay;
+
+	public WeakTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
 		//TODO if tolerance is longer than 24h
 		super(cxt, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
+		this.acceptanceDelay = acceptanceDelay;
 		matcherType = MatcherType.WEAK_TIME;
 	}
 
@@ -40,7 +40,7 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)){
+						< acceptanceDelay){
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());

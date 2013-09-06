@@ -6,17 +6,20 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import static lab.davidahn.appshuttle.Settings.*;
 import android.app.AlarmManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 public class Predictor {
 	private Context cxt;
+	private SharedPreferences preferenceSettings;
 	
 	public Predictor(Context cxt){
-		this.cxt = cxt;
+		this.cxt = cxt;		
+		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 	}
 	
 	public List<PredictedBhv> predict(int topN){
@@ -31,19 +34,26 @@ public class Predictor {
 				, preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
 				, preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
-				, preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)));
+				, preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)
+				, preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
+				));
 		cxtMatcherList.add(new StrictTimeContextMatcher(cxt
 				, preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
 				, preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
-				, preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)));
+				, preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)
+				, preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)
+				));
 		cxtMatcherList.add(new PlaceContextMatcher(cxt
 				, preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
 				, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
-				, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)));
+				, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
+				));
 		cxtMatcherList.add(new FreqContextMatcher(cxt
 				, Double.MIN_VALUE
-				, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)));
+				, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
+				, preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
+				));
 //		cxtMatcherList.add(new LocContextMatcher(cxt
 //				, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
 //				, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)

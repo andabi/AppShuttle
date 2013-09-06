@@ -6,10 +6,8 @@ import android.content.SharedPreferences;
 
 
 public class Settings {
-	public static volatile SharedPreferences preferenceSettings;
-
 	public static void preferenceSettings(Context cxt) {
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		SharedPreferences preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferenceSettings.edit();
 		
 		editor.putString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString());
@@ -45,8 +43,8 @@ public class Settings {
 		editor.putLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 30);
 		
-		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
+		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 		
 		editor.putFloat("matcher.weak_time.min_likelihood", 0.3f);
 		editor.putInt("matcher.weak_time.min_num_cxt", 3);

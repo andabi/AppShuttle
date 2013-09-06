@@ -1,12 +1,14 @@
 package lab.davidahn.appshuttle.report;
 
-import static lab.davidahn.appshuttle.Settings.preferenceSettings;
 import lab.davidahn.appshuttle.R;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 
 public class ReportingCxtService extends IntentService {
+	private SharedPreferences preferenceSettings;
 	private Handler handler;
 
 	public ReportingCxtService(){
@@ -19,6 +21,7 @@ public class ReportingCxtService extends IntentService {
 	public void onCreate(){
 		super.onCreate();
 		handler = new Handler();
+		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 	}
 	@Override
 	protected void onHandleIntent(Intent intent) {

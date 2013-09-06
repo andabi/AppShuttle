@@ -6,14 +6,15 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import static lab.davidahn.appshuttle.Settings.*;
-import android.app.AlarmManager;
 import android.content.Context;
 
 public class FreqContextMatcher extends ContextMatcher{
-	public FreqContextMatcher(Context cxt, double minLikelihood, int minNumCxt) {
+	long acceptanceDelay;
+	
+	public FreqContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long acceptanceDelay) {
 		super(cxt, minLikelihood, minNumCxt);
 		matcherType = MatcherType.FREQUENCY;
+		this.acceptanceDelay = acceptanceDelay;
 	}
 	
 	@Override
@@ -27,7 +28,7 @@ public class FreqContextMatcher extends ContextMatcher{
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
+						< acceptanceDelay){
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());

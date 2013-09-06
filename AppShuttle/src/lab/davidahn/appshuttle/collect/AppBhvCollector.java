@@ -1,7 +1,5 @@
 package lab.davidahn.appshuttle.collect;
 
-import static lab.davidahn.appshuttle.Settings.preferenceSettings;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.AppUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
@@ -21,6 +20,7 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -35,10 +35,13 @@ public class AppBhvCollector implements BhvCollector {
 	private PackageManager packageManager;
 	private PowerManager powerManager;
 	private KeyguardManager keyguardManager;
+	private SharedPreferences preferenceSettings;
 
 	private Map<UserBhv, DurationUserBhv.Builder> ongoingBhvMap;
 
 	private AppBhvCollector(Context cxt){
+		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+
 		activityManager = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
 		packageManager = cxt.getPackageManager();
 		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 

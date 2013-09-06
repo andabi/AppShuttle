@@ -7,18 +7,18 @@ import java.util.List;
 import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import static lab.davidahn.appshuttle.Settings.*;
-import android.app.AlarmManager;
 import android.content.Context;
 
 public class StrictTimeContextMatcher extends ContextMatcher {
 	protected long period;
 	protected long tolerance;
+	protected long acceptanceDelay;
 	
-	public StrictTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance) {
+	public StrictTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
 		super(cxt, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
+		this.acceptanceDelay = acceptanceDelay;
 		matcherType = MatcherType.STRICT_TIME;
 	}
 
@@ -44,7 +44,7 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)){
+						< acceptanceDelay){
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());

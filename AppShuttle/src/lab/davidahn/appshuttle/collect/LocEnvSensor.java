@@ -2,6 +2,7 @@ package lab.davidahn.appshuttle.collect;
 
 import java.util.List;
 
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.EnvType;
@@ -10,6 +11,7 @@ import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import static lab.davidahn.appshuttle.Settings.*;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,8 +27,11 @@ public class LocEnvSensor implements EnvSensor {
 	private LocUserEnv prevULoc;
 	private LocUserEnv currULoc;
     private DurationUserEnv.Builder durationUserEnvBuilder;
+	private SharedPreferences preferenceSettings;
 	
 	private LocEnvSensor(Context cxt){
+		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		
 		locationManager = (LocationManager) cxt.getSystemService(Context.LOCATION_SERVICE);
 		Criteria crit = new Criteria();
 		crit.setAccuracy(Criteria.ACCURACY_FINE);

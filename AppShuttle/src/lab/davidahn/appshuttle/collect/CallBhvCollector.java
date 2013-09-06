@@ -1,13 +1,12 @@
 package lab.davidahn.appshuttle.collect;
 
-import static lab.davidahn.appshuttle.Settings.preferenceSettings;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.CallUserBhv;
@@ -15,6 +14,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.provider.CallLog;
 
@@ -22,8 +22,11 @@ public class CallBhvCollector implements BhvCollector {
 	private static CallBhvCollector callBhvCollector;
 	private ContentResolver contentResolver;
 	private Date lastCallDate;
+	private SharedPreferences preferenceSettings;
 
 	private CallBhvCollector(Context cxt){
+		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+
 		contentResolver = cxt.getContentResolver();
 	}
 	

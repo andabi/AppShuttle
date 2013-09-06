@@ -1,13 +1,12 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
-import static lab.davidahn.appshuttle.Settings.preferenceSettings;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -16,19 +15,24 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import android.app.AlarmManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 public abstract class ContextMatcher {
 	protected MatcherType matcherType;
 	protected Context cxt;
 	protected double minLikelihood;
 	protected int minNumCxt;
-
+	protected long duration;
+	protected SharedPreferences preferenceSettings;
+	
 	protected MatcherType getMatcherType(){
 		return matcherType;
 	}
 
 	public ContextMatcher(Context cxt, double minLikelihood, int minNumCxt) {
 		this.cxt = cxt;
+		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		
 		this.minLikelihood = minLikelihood;
 		this.minNumCxt = minNumCxt;
 	}

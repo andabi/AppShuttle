@@ -1,7 +1,5 @@
 package lab.davidahn.appshuttle;
 
-import static lab.davidahn.appshuttle.Settings.preferenceSettings;
-
 import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectionService;
@@ -16,6 +14,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 
 public class AppShuttleService extends Service {
@@ -24,13 +23,15 @@ public class AppShuttleService extends Service {
 	private PendingIntent reportingCxtOperation;
 	private PendingIntent notiViewOperation;
 	private PendingIntent compactingCxtOperation;
+	private SharedPreferences preferenceSettings;
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
 		Settings.preferenceSettings(getApplicationContext());
-	
+		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
 		registerReceiver(screenOnReceiver, filter);
@@ -109,11 +110,12 @@ public class AppShuttleService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-			if(Settings.preferenceSettings.getBoolean("service.view.enabled", true)){
+			if(preferenceSettings.getBoolean("service.view.enabled", true)){
 				Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
 				PendingIntent notiViewOperation = PendingIntent.getBroadcast(context, 0, notiViewIntent, 0);
-				alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Settings.preferenceSettings.getLong("service.view.period", 30000), notiViewOperation);
+				alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.view.period", 30000), notiViewOperation);
 			}
 		}
 	};

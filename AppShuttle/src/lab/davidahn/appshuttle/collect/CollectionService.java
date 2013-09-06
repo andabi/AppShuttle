@@ -1,7 +1,5 @@
 package lab.davidahn.appshuttle.collect;
 
-import static lab.davidahn.appshuttle.Settings.preferenceSettings;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.GlobalState;
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -21,12 +20,15 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 public class CollectionService extends IntentService {
 	private Calendar calendar;
-    Map<EnvType, EnvSensor> sensors;
-    List<BhvCollector> collectors;
+    private Map<EnvType, EnvSensor> sensors;
+    private List<BhvCollector> collectors;
+	private SharedPreferences preferenceSettings;
 	
 	public CollectionService() {
 		this("CollectionService");
@@ -38,6 +40,8 @@ public class CollectionService extends IntentService {
 
 	public void onCreate() {
 		super.onCreate();
+		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+
 		calendar = Calendar.getInstance();
 
 		sensors = new HashMap<EnvType, EnvSensor>();
