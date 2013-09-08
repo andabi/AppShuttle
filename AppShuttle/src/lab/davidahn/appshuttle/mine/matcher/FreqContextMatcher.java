@@ -11,8 +11,8 @@ import android.content.Context;
 public class FreqContextMatcher extends ContextMatcher{
 	long acceptanceDelay;
 	
-	public FreqContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long acceptanceDelay) {
-		super(cxt, minLikelihood, minNumCxt);
+	public FreqContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, long acceptanceDelay) {
+		super(cxt, duration, minLikelihood, minNumCxt);
 		matcherType = MatcherType.FREQUENCY;
 		this.acceptanceDelay = acceptanceDelay;
 	}

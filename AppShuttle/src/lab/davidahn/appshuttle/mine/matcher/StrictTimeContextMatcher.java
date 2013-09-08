@@ -14,8 +14,8 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 	protected long tolerance;
 	protected long acceptanceDelay;
 	
-	public StrictTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
-		super(cxt, minLikelihood, minNumCxt);
+	public StrictTimeContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+		super(cxt, duration, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
 		this.acceptanceDelay = acceptanceDelay;

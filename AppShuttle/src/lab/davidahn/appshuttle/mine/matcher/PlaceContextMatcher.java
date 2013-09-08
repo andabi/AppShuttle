@@ -17,8 +17,8 @@ import android.content.Context;
 public class PlaceContextMatcher extends ContextMatcher {
 	int toleranceInMeter;
 
-	public PlaceContextMatcher(Context cxt, double minLikelihood, int minNumCxt, int toleranceInMeter) {
-		super(cxt, minLikelihood, minNumCxt);
+	public PlaceContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, int toleranceInMeter) {
+		super(cxt, duration, minLikelihood, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
 		matcherType = MatcherType.PLACE;
 	}

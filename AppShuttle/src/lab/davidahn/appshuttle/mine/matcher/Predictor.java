@@ -33,6 +33,7 @@ public class Predictor {
 
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
 		cxtMatcherList.add(new WeakTimeContextMatcher(cxt
+				, preferenceSettings.getLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY)
 				, preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
 				, preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
@@ -40,6 +41,7 @@ public class Predictor {
 				, preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
 				));
 		cxtMatcherList.add(new StrictTimeContextMatcher(cxt
+				, preferenceSettings.getLong("matcher.strict_time.duration", 5 * AlarmManager.INTERVAL_DAY)
 				, preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
 				, preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
 				, AlarmManager.INTERVAL_DAY
@@ -47,11 +49,13 @@ public class Predictor {
 				, preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)
 				));
 		cxtMatcherList.add(new PlaceContextMatcher(cxt
+				, preferenceSettings.getLong("matcher.place.duration", 5 * AlarmManager.INTERVAL_DAY)
 				, preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
 				, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
 				, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
 				));
 		cxtMatcherList.add(new FreqContextMatcher(cxt
+				, preferenceSettings.getLong("matcher.freq.duration", 5 * AlarmManager.INTERVAL_DAY)
 				, Double.MIN_VALUE
 				, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
 				, preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)

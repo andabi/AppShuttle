@@ -29,10 +29,10 @@ public abstract class ContextMatcher {
 		return matcherType;
 	}
 
-	public ContextMatcher(Context cxt, double minLikelihood, int minNumCxt) {
+	public ContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt) {
 		this.cxt = cxt;
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		
+		this.duration = duration;
 		this.minLikelihood = minLikelihood;
 		this.minNumCxt = minNumCxt;
 	}
@@ -43,12 +43,12 @@ public abstract class ContextMatcher {
 		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
 		Date toTime = uCxt.getTime();
-		Date fromTime = new Date(toTime.getTime() - preferenceSettings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY));
+		Date fromTime = new Date(toTime.getTime() - duration);
 		
 		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTime().getTime() 
+			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTime().getTime()
 					< preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60))   //noise
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);

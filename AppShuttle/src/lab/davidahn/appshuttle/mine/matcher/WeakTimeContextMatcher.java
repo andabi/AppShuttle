@@ -17,9 +17,9 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 	protected long tolerance;
 	protected long acceptanceDelay;
 
-	public WeakTimeContextMatcher(Context cxt, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+	public WeakTimeContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
 		//TODO if tolerance is longer than 24h
-		super(cxt, minLikelihood, minNumCxt);
+		super(cxt, duration, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
 		this.acceptanceDelay = acceptanceDelay;

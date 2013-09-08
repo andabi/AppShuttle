@@ -22,8 +22,8 @@ import android.content.Context;
 public class LocContextMatcher extends ContextMatcher {
 	int toleranceInMeter;
 
-	public LocContextMatcher(Context cxt, double minLikelihood, int minNumCxt, int toleranceInMeter) {
-		super(cxt, minLikelihood, minNumCxt);
+	public LocContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, int toleranceInMeter) {
+		super(cxt, duration, minLikelihood, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
 		matcherType = MatcherType.LOCATION;
 	}
