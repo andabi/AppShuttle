@@ -48,9 +48,8 @@ public class FreqContextMatcher extends ContextMatcher{
 	}
 
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double calcLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
-//		int numRelatedCxt = matchedCxt.getNumRelatedCxt();
 		likelihood = 1.0 * numRelatedCxt / Integer.MAX_VALUE;
 		return likelihood;
 	}
