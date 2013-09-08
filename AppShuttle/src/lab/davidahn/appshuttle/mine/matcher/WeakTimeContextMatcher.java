@@ -2,7 +2,10 @@ package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.DurationUserBhv;
@@ -35,7 +38,7 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-				mergedRfdUCxtBuilder.setProperty("startTime", rfdUCxt.getTime());
+				mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTime());
 				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
@@ -45,7 +48,7 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setProperty("startTime", rfdUCxt.getTime());
+					mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTime());
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 					mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 				}
@@ -60,9 +63,11 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 	
 	@Override
 	protected double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
+		double relatedness = 0;
+		
 		long currTime = uCxt.getTime().getTime();
 		long currTimePeriodic = currTime % period;
-		long targetTime = ((Date) rfdUCxt.getProperty("startTime")).getTime();
+		long targetTime = ((Date) rfdUCxt.getProperty("time")).getTime();
 		long targetTimePeriodic = targetTime % period;
 		
 		long mean = currTimePeriodic;
@@ -70,9 +75,46 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 		NormalDistribution nd = new NormalDistribution(mean, std);
 
 		if(Time.isBetween((currTimePeriodic - tolerance) % period, targetTimePeriodic, (currTimePeriodic + tolerance) % period)){
-			return nd.density(targetTimePeriodic) / nd.density(mean);
+			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
-			return 0;
+			relatedness = 0;
 		}
+		return relatedness;
+	}
+	
+	@Override
+	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+		assert(matcherCountUnitList.size() >= minNumCxt);
+		
+		double inverseEntropy = 0;
+		Set<Long> uniqueTime = new HashSet<Long>();
+		
+		for(MatcherCountUnit unit : matcherCountUnitList){
+			long time = ((Date) unit.getProperty("time")).getTime();
+			long timePeriodic = time % period;
+			Iterator<Long> it = uniqueTime.iterator();
+			boolean unique = true;
+			if(!uniqueTime.isEmpty()){
+				while(it.hasNext()){
+					Long uniqueTimeElem = it.next();
+					if(Time.isBetween((uniqueTimeElem - tolerance) % period, timePeriodic, (uniqueTimeElem + tolerance) % period)){
+						unique = false;
+						break;
+					}
+				}
+			}
+			if(unique)
+				uniqueTime.add(timePeriodic);
+		}
+		int entropy = uniqueTime.size();
+		if(entropy > 0) {
+			inverseEntropy = 1.0 / entropy;
+		} else {
+			inverseEntropy = 0;
+		}
+		
+		assert(0 <= inverseEntropy && inverseEntropy <= 1);
+		
+		return inverseEntropy;
 	}
 }

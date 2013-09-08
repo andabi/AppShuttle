@@ -48,13 +48,13 @@ public class Settings {
 		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 
 		editor.putLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.weak_time.min_likelihood", 0.3f);
+		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
 		editor.putInt("matcher.weak_time.min_num_cxt", 3);
 		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
 		editor.putLong("matcher.weak_time.tolerance", preferenceSettings.getLong("matcher.time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
 		
 		editor.putLong("matcher.strict_time.duration", 5 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.strict_time.min_likelihood", 0.3f);
+		editor.putFloat("matcher.strict_time.min_likelihood", 0.5f);
 		editor.putInt("matcher.strict_time.min_num_cxt", 3);
 		editor.putLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
 		editor.putLong("matcher.strict_time.tolerance", preferenceSettings.getLong("matcher.time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);

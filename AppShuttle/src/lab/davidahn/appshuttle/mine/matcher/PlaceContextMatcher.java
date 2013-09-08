@@ -1,8 +1,11 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -114,7 +117,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 //		}
 	
 	@Override
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double calcLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 //		int numTotalCxt = matchedCxt.getNumTotalCxt();
 //		Map<MatcherCountUnit, Double> relatedCxtMap = matchedCxt.getRelatedCxt();
 		
@@ -122,11 +125,50 @@ public class PlaceContextMatcher extends ContextMatcher {
 		for(double relatedness : relatedCxtMap.values()){
 			likelihood+=relatedness;
 		}
-		if(numTotalCxt > 0)
-			likelihood /= numTotalCxt;
+		if(numRelatedCxt > 0)
+			likelihood /= numRelatedCxt;
 		else
 			likelihood = 0;
 		return likelihood;
+	}
+	
+	@Override
+	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+		assert(matcherCountUnitList.size() >= minNumCxt);
+		
+		double inverseEntropy = 0;
+		Set<UserPlace> uniquePlace = new HashSet<UserPlace>();
+		
+		for(MatcherCountUnit unit : matcherCountUnitList){
+			UserPlace uPlace = ((UserPlace) unit.getProperty("place"));
+			Iterator<UserPlace> it = uniquePlace.iterator();
+			boolean unique = true;
+			if(!uniquePlace.isEmpty()){
+				while(it.hasNext()){
+					UserPlace uniquePlaceElem = it.next();
+					try {
+						if(uPlace.isSame(uniquePlaceElem)){
+							unique = false;
+							break;
+						}
+					} catch (InvalidUserEnvException e) {
+						unique = false;
+					}
+				}
+			}
+			if(unique)
+				uniquePlace.add(uPlace);
+		}
+		int entropy = uniquePlace.size();
+		if(entropy > 0) {
+			inverseEntropy = 1.0 / entropy;
+		} else {
+			inverseEntropy = 0;
+		}
+		
+		assert(0 <= inverseEntropy && inverseEntropy <= 1);
+		
+		return inverseEntropy;
 	}
 	
 //	private boolean moved(Entry<Date, UserLoc> start, Entry<Date, UserLoc> end){
