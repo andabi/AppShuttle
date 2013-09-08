@@ -32,6 +32,12 @@ public class Predictor {
 		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
 
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
+		cxtMatcherList.add(new FreqContextMatcher(cxt
+				, preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
+				, Double.MIN_VALUE
+				, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
+				, preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
+				));
 		cxtMatcherList.add(new WeakTimeContextMatcher(cxt
 				, preferenceSettings.getLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY)
 				, preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
@@ -54,16 +60,12 @@ public class Predictor {
 				, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
 				, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
 				));
-		cxtMatcherList.add(new FreqContextMatcher(cxt
-				, preferenceSettings.getLong("matcher.freq.duration", 5 * AlarmManager.INTERVAL_DAY)
-				, Double.MIN_VALUE
-				, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
-				, preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
-				));
 //		cxtMatcherList.add(new LocContextMatcher(cxt
+//				, preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
 //				, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
 //				, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
-//				, preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)));
+//				, preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
+
 
 		UserBhvManager userBhvManager = UserBhvManager.getInstance(cxt);
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
@@ -82,6 +84,9 @@ public class Predictor {
 						currUserCxt.getUserEnvs(), 
 						uBhv, matchedResults, score);
 				predicted.add(predictedBhv);
+				
+			} else {
+				userBhvManager.unregisterBhv(uBhv);
 			}
 		}
 
@@ -89,14 +94,17 @@ public class Predictor {
 			if(predicted.isEmpty()) break;
 			res.add(predicted.remove());
 		}
+
 		return res;
 	}
 	
 	private double calcScore(EnumMap<MatcherType, MatchedResult> matchedResults){
 		double score = 0;
 		for(MatcherType matcherType : matchedResults.keySet()){
-//			if(matchedResults.get(matcherType).isMatched())
-			score += Math.pow(10, matcherType.getPriority()) + matchedResults.get(matcherType).getLikelihood();
+			int priority = matcherType.getPriority();
+			double likelihood = matchedResults.get(matcherType).getLikelihood();
+			double inverseEntropy = matchedResults.get(matcherType).getInverseEntropy();
+			score += Math.pow(10, priority) * (1 + inverseEntropy + 0.1 * (1 + likelihood));
 		}
 		return score;
 	}

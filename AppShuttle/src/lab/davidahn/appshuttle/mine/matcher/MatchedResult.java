@@ -16,6 +16,7 @@ public class MatchedResult implements Comparable<MatchedResult> {
 	private Map<EnvType, UserEnv> userEnvs;
 	private UserBhv userBhv;
 	private double likelihood;
+	private double inverseEntropy;
 	private int numTotalCxt;
 	private int numRelatedCxt;
 	private Map<MatcherCountUnit, Double> relatedCxt;
@@ -55,6 +56,14 @@ public class MatchedResult implements Comparable<MatchedResult> {
 
 	public void setLikelihood(double likelihood) {
 		this.likelihood = likelihood;
+	}
+	
+	public double getInverseEntropy() {
+		return inverseEntropy;
+	}
+
+	public void setInverseEntropy(double inverseEntropy) {
+		this.inverseEntropy = inverseEntropy;
 	}
 
 	public UserBhv getUserBhvs() {

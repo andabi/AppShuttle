@@ -55,6 +55,10 @@ public abstract class ContextMatcher {
 		}
 		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList);
 		
+		if(mergedRfdCxtList.isEmpty()){
+			return null;
+		}
+		
 		int numTotalCxt = 0;
 		int numRelatedCxt = 0;
 		Map<MatcherCountUnit, Double> relatedCxt = new HashMap<MatcherCountUnit, Double>();
@@ -69,30 +73,35 @@ public abstract class ContextMatcher {
 		}
 		if(numRelatedCxt < minNumCxt)
 			return null;
-		
-		double likelihood = calcLikelihood(numTotalCxt, numRelatedCxt, relatedCxt, uCxt);
+		double likelihood = calcLikelihood(numRelatedCxt, relatedCxt, uCxt);
 		if(likelihood < minLikelihood)
 			return null;
-		else {
-			MatchedResult matchedCxt = new MatchedResult(uCxt.getTime(), uCxt.getTimeZone(), uEnvs);
-			matchedCxt.setUserBhv(uBhv);
-			matchedCxt.setMatcherType(getMatcherType());
-			matchedCxt.setNumTotalCxt(numTotalCxt);
-			matchedCxt.setNumRelatedCxt(numRelatedCxt);
-			matchedCxt.setRelatedCxt(relatedCxt);
-			matchedCxt.setLikelihood(likelihood);
-			return matchedCxt;
-		}
+		double inverseEntropy = calcInverseEntropy(mergedRfdCxtList);
+		MatchedResult matchedCxt = new MatchedResult(uCxt.getTime(), uCxt.getTimeZone(), uEnvs);
+		matchedCxt.setUserBhv(uBhv);
+		matchedCxt.setMatcherType(getMatcherType());
+		matchedCxt.setNumTotalCxt(numTotalCxt);
+		matchedCxt.setNumRelatedCxt(numRelatedCxt);
+		matchedCxt.setRelatedCxt(relatedCxt);
+		matchedCxt.setLikelihood(likelihood);
+		matchedCxt.setInverseEntropy(inverseEntropy);
+		return matchedCxt;
 	}
 	
-	protected double calcLikelihood(int numTotalCxt, int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double calcLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
 		for(double relatedness : relatedCxtMap.values()){
 			likelihood+=relatedness;
 		}
-		likelihood /= numTotalCxt;
+		likelihood /= numRelatedCxt;
 		return likelihood;
-	}	
+	}
+	
+	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+		double entropy = 1.0;
+		double inverseEntropy = 1.0 / entropy;
+		return inverseEntropy;
+	}
 
 	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList);
 	protected abstract double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
