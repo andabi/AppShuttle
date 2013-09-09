@@ -55,7 +55,7 @@ public class Predictor {
 				, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
 				));
 		cxtMatcherList.add(new FreqContextMatcher(cxt
-				, preferenceSettings.getLong("matcher.freq.duration", 5 * AlarmManager.INTERVAL_DAY)
+				, preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
 				, Double.MIN_VALUE
 				, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
 				, preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
