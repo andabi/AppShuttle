@@ -67,7 +67,7 @@ public class CallBhvCollector implements BhvCollector {
 			long duration = cursor.getInt(durationIdx) * 1000;
 			int type = cursor.getInt(typeIdx);
 			
-			if(type == CallLog.Calls.INCOMING_TYPE || type == CallLog.Calls.OUTGOING_TYPE) {
+			if(duration > 0 && (type == CallLog.Calls.INCOMING_TYPE || type == CallLog.Calls.OUTGOING_TYPE)) {
 				DurationUserBhv durationUserBhv =  new DurationUserBhv.Builder()
 				.setTime(date)
 				.setEndTime(new Date(date.getTime() + duration))
