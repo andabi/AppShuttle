@@ -22,6 +22,7 @@ public abstract class ContextMatcher {
 	protected Context cxt;
 	protected double minLikelihood;
 	protected int minNumCxt;
+	protected Date time;
 	protected long duration;
 	protected SharedPreferences preferenceSettings;
 	
@@ -29,9 +30,10 @@ public abstract class ContextMatcher {
 		return matcherType;
 	}
 
-	public ContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt) {
+	public ContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt) {
 		this.cxt = cxt;
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		this.time = time;
 		this.duration = duration;
 		this.minLikelihood = minLikelihood;
 		this.minNumCxt = minNumCxt;
@@ -42,7 +44,7 @@ public abstract class ContextMatcher {
 
 		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
-		Date toTime = uCxt.getTime();
+		Date toTime = time;
 		Date fromTime = new Date(toTime.getTime() - duration);
 		
 		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(fromTime, toTime, uBhv);
@@ -53,7 +55,7 @@ public abstract class ContextMatcher {
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);
 		}
-		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList);
+		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList, uCxt);
 		
 		if(mergedRfdCxtList.isEmpty()){
 			return null;
@@ -103,7 +105,7 @@ public abstract class ContextMatcher {
 		return inverseEntropy;
 	}
 
-	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList);
+	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
 	protected abstract double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
 	
 //			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)

@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -25,8 +26,8 @@ import android.content.Context;
 public class LocContextMatcher extends ContextMatcher {
 	int toleranceInMeter;
 
-	public LocContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, int toleranceInMeter) {
-		super(cxt, duration, minLikelihood, minNumCxt);
+	public LocContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt, int toleranceInMeter) {
+		super(cxt, time, duration, minLikelihood, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
 		matcherType = MatcherType.LOCATION;
 	}
@@ -45,7 +46,7 @@ public class LocContextMatcher extends ContextMatcher {
 //	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
 
@@ -67,7 +68,7 @@ public class LocContextMatcher extends ContextMatcher {
 							res.add(mergedRfdUCxtBuilder.build());
 							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 							mergedRfdUCxtBuilder.setProperty("loc", userLoc);
-							mergedRfdUCxtBuilder.setProperty("loc", duration);
+							mergedRfdUCxtBuilder.setProperty("duration", duration);
 						}
 					}
 					lastKnownUserLoc = userLoc;
@@ -78,6 +79,14 @@ public class LocContextMatcher extends ContextMatcher {
 		}
 		if(mergedRfdUCxtBuilder != null)
 			res.add(mergedRfdUCxtBuilder.build());
+		try {
+			UserLoc currULoc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+			if(lastKnownUserLoc != null && lastKnownUserLoc.isSame(currULoc)){
+				res.remove(res.size()-1);
+			}
+		} catch (InvalidUserEnvException e) {
+			;
+		}
 		return res;
 	}
 	

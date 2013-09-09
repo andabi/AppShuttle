@@ -17,8 +17,8 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 	protected long tolerance;
 	protected long acceptanceDelay;
 	
-	public StrictTimeContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
-		super(cxt, duration, minLikelihood, minNumCxt);
+	public StrictTimeContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+		super(cxt, time, duration, minLikelihood, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
 		this.acceptanceDelay = acceptanceDelay;
@@ -34,7 +34,7 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 //	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		DurationUserBhv prevRfdUCxt = null;

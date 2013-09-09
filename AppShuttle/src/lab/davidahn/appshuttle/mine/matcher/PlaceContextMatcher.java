@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -20,14 +21,14 @@ import android.content.Context;
 public class PlaceContextMatcher extends ContextMatcher {
 	int toleranceInMeter;
 
-	public PlaceContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, int toleranceInMeter) {
-		super(cxt, duration, minLikelihood, minNumCxt);
+	public PlaceContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt, int toleranceInMeter) {
+		super(cxt, time, duration, minLikelihood, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
 		matcherType = MatcherType.PLACE;
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
 
@@ -55,7 +56,15 @@ public class PlaceContextMatcher extends ContextMatcher {
 			}
 		}
 		if(mergedRfdUCxtBuilder != null)
-			res.add(mergedRfdUCxtBuilder.build());
+			res.add(mergedRfdUCxtBuilder.build());		
+		try {
+			UserPlace currUPlace = ((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace();
+			if(lastKnownUserPlace != null && lastKnownUserPlace.isSame(currUPlace)){
+				res.remove(res.size()-1);
+			}
+		} catch (InvalidUserEnvException e) {
+			;
+		}
 		return res;
 	}
 	

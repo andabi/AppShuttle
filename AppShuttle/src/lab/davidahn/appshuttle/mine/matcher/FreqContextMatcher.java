@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,14 +12,14 @@ import android.content.Context;
 public class FreqContextMatcher extends ContextMatcher{
 	long acceptanceDelay;
 	
-	public FreqContextMatcher(Context cxt, long duration, double minLikelihood, int minNumCxt, long acceptanceDelay) {
-		super(cxt, duration, minLikelihood, minNumCxt);
+	public FreqContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt, long acceptanceDelay) {
+		super(cxt, time, duration, minLikelihood, minNumCxt);
 		matcherType = MatcherType.FREQUENCY;
 		this.acceptanceDelay = acceptanceDelay;
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		DurationUserBhv prevRfdUCxt = null;
