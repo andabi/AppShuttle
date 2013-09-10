@@ -79,14 +79,14 @@ public class LocContextMatcher extends ContextMatcher {
 		}
 		if(mergedRfdUCxtBuilder != null)
 			res.add(mergedRfdUCxtBuilder.build());
-		try {
-			UserLoc currULoc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-			if(lastKnownUserLoc != null && lastKnownUserLoc.isSame(currULoc)){
-				res.remove(res.size()-1);
-			}
-		} catch (InvalidUserEnvException e) {
-			;
-		}
+//		try {
+//			UserLoc currULoc = ((LocUserEnv)uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
+//			if(lastKnownUserLoc != null && lastKnownUserLoc.isSame(currULoc)){
+//				res.remove(res.size()-1);
+//			}
+//		} catch (InvalidUserEnvException e) {
+//			;
+//		}
 		return res;
 	}
 	

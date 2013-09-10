@@ -57,14 +57,14 @@ public class PlaceContextMatcher extends ContextMatcher {
 		}
 		if(mergedRfdUCxtBuilder != null)
 			res.add(mergedRfdUCxtBuilder.build());		
-		try {
-			UserPlace currUPlace = ((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace();
-			if(lastKnownUserPlace != null && lastKnownUserPlace.isSame(currUPlace)){
-				res.remove(res.size()-1);
-			}
-		} catch (InvalidUserEnvException e) {
-			;
-		}
+//		try {
+//			UserPlace currUPlace = ((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace();
+//			if(lastKnownUserPlace != null && lastKnownUserPlace.isSame(currUPlace)){
+//				res.remove(res.size()-1);
+//			}
+//		} catch (InvalidUserEnvException e) {
+//			;
+//		}
 		return res;
 	}
 	
