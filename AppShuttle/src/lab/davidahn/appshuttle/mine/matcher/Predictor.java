@@ -65,13 +65,13 @@ public class Predictor {
 				, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
 				, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
 				));
-//		cxtMatcherList.add(new LocContextMatcher(cxt
-//				, currUserCxt.getTime()
-//				, preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
-//				, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
-//				, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
-//				, preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
-
+		cxtMatcherList.add(new LocContextMatcher(cxt
+				, currUserCxt.getTime()
+				, preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
+				, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
+				, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
+				, preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
+				));
 
 		UserBhvManager userBhvManager = UserBhvManager.getInstance(cxt);
 		for(UserBhv uBhv : userBhvManager.getBhvList()){

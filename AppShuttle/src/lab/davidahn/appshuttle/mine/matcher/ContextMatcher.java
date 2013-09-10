@@ -61,6 +61,10 @@ public abstract class ContextMatcher {
 			return null;
 		}
 		
+		if(mergedRfdCxtList.isEmpty()){
+			return null;
+		}
+		
 		int numTotalCxt = 0;
 		int numRelatedCxt = 0;
 		Map<MatcherCountUnit, Double> relatedCxt = new HashMap<MatcherCountUnit, Double>();
