@@ -42,7 +42,7 @@ public class Settings {
 		editor.putString("email.receiver.addr", "andabi412@gmail.com");
 		
 		//matcher
-		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 180);
 		
 		editor.putLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY);
 		editor.putInt("matcher.freq.min_num_cxt", 3);

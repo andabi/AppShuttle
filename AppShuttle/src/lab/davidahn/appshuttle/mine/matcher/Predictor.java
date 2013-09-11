@@ -93,12 +93,14 @@ public class Predictor {
 					matchedResults.put(cxtMatcher.getMatcherType(), matchedResult);
 			}
 
-			double score = calcScore(matchedResults);
-			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
-					currUserCxt.getTimeZone(), 
-					currUserCxt.getUserEnvs(), 
-					uBhv, matchedResults, score);
-			predicted.add(predictedBhv);
+			if(!matchedResults.isEmpty()) {
+				double score = calcScore(matchedResults);
+				PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
+						currUserCxt.getTimeZone(), 
+						currUserCxt.getUserEnvs(), 
+						uBhv, matchedResults, score);
+				predicted.add(predictedBhv);
+			}
 		}
 
 		for(int i=0;i<topN;i++){
