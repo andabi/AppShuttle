@@ -29,7 +29,7 @@ public class SnapshotUserCxt {
 		userBhvs = new ArrayList<UserBhv>();
 	}
 	
-	public Date getTime() {
+	public Date getTimeDate() {
 		return time;
 	}
 	public void setTime(Date time) {

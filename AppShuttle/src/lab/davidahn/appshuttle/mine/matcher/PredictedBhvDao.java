@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
+import java.util.Date;
+
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
 import android.content.Context;
@@ -44,7 +46,7 @@ public class PredictedBhvDao {
 		Log.i("stored predicted bhv", predictedBhv.toString());
 	}
 	
-	public void deletePredictedBhv(long time){
-		db.execSQL("DELETE FROM predicted_bhv WHERE time < " + time +";");
+	public void deletePredictedBhv(Date timeDate){
+		db.execSQL("DELETE FROM predicted_bhv WHERE time < " + timeDate.getTime() +";");
 	}
 }

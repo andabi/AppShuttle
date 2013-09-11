@@ -83,7 +83,7 @@ public abstract class ContextMatcher {
 		if(likelihood < minLikelihood)
 			return null;
 		double inverseEntropy = calcInverseEntropy(mergedRfdCxtList);
-		MatchedResult matchedCxt = new MatchedResult(uCxt.getTime(), uCxt.getTimeZone(), uEnvs);
+		MatchedResult matchedCxt = new MatchedResult(uCxt.getTimeDate(), uCxt.getTimeZone(), uEnvs);
 		matchedCxt.setUserBhv(uBhv);
 		matchedCxt.setMatcherType(getMatcherType());
 		matchedCxt.setNumTotalCxt(numTotalCxt);

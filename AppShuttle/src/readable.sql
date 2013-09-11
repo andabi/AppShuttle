@@ -1,5 +1,3 @@
->> history_user_bhv
-
 select 
 	datetime(time/1000, 'unixepoch', 'localtime') as time, 
 	duration,
@@ -7,10 +5,8 @@ select
 	timezone,
 	bhv_type,
 	bhv_name
-from history_user_bhv;
+from history_user_bhv
 
-
->> history_user_env
 
 select 
 	datetime(time/1000, 'unixepoch', 'localtime') as time, 
@@ -19,10 +15,8 @@ select
 	timezone,
 	env_type,
 	user_env
-from history_user_env;
+from history_user_env
 
-
->> matched_result
 
 select 
 	datetime(time/1000, 'unixepoch', 'localtime') as time, 
@@ -31,11 +25,9 @@ select
 	bhv_name,
 	matcher_type,
 	likelihood
-from matched_result;
+from matched_result
  
  
->> predicted_bhv
-
 select 
 	datetime(time/1000, 'unixepoch', 'localtime') as time, 
 	timezone,
@@ -43,4 +35,4 @@ select
 	bhv_type,
 	bhv_name,
 	score
-from predicted_bhv;
+from predicted_bhv

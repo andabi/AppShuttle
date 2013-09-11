@@ -75,7 +75,7 @@ public class CollectionService extends IntentService {
 			uCxt.addUserBhvAll(userBhvList);
 			
 			List<DurationUserBhv> durationUserBhvList = 
-					collector.refineDurationUserBhv(uCxt.getTime(), uCxt.getTimeZone(), userBhvList);
+					collector.refineDurationUserBhv(uCxt.getTimeDate(), uCxt.getTimeZone(), userBhvList);
 			storeDurationUserBhv(durationUserBhvList);
 
 			UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());

@@ -54,9 +54,21 @@ public class PlaceEnvSensor implements EnvSensor {
 					if(geocoded != null && !geocoded.isEmpty()) {
 						Address addr = geocoded.get(0);
 						StringBuilder sb = new StringBuilder();
-						sb.append(addr.getCountryName()).append(" ")
-							.append(addr.getAdminArea()).append(" ")
-							.append(addr.getLocality());
+						
+						String countryName = addr.getCountryName();
+						String adminArea = addr.getAdminArea();
+						String locality = addr.getLocality();
+						
+						if(countryName == null)
+							countryName = "";
+						if(adminArea == null)
+							adminArea = "";
+						if(locality == null)
+							locality = "";
+						
+						sb.append(countryName).append(" ")
+							.append(adminArea).append(" ")
+							.append(locality);
 //						addr.getAddressLine(0);
 						String placeName = sb.toString();
 						if(placeName != null) {
@@ -100,7 +112,7 @@ public class PlaceEnvSensor implements EnvSensor {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
 		} else {
 			if(isChanged()){
-				durationUserEnvBuilder.setEndTime(uCxt.getTime());
+				durationUserEnvBuilder.setEndTime(uCxt.getTimeDate());
 				res = durationUserEnvBuilder.build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
 			}
@@ -110,8 +122,8 @@ public class PlaceEnvSensor implements EnvSensor {
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(SnapshotUserCxt uCxt) {
 		return new DurationUserEnv.Builder()
-			.setTime(uCxt.getTime())
-			.setEndTime(uCxt.getTime())
+			.setTime(uCxt.getTimeDate())
+			.setEndTime(uCxt.getTimeDate())
 			.setTimeZone(uCxt.getTimeZone())
 			.setUserEnv(uCxt.getUserEnv(EnvType.PLACE));
 	}

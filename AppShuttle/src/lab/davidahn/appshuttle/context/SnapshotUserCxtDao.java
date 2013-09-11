@@ -47,7 +47,7 @@ public class SnapshotUserCxtDao {
 		for(UserBhv uBhv : uCxt.getUserBhvs()){
 			ContentValues row = new ContentValues();
 			Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
-			row.put("time", uCxt.getTime().getTime());
+			row.put("time", uCxt.getTimeDate().getTime());
 			row.put("timezone", uCxt.getTimeZone().getID());
 			row.put("user_envs", gson.toJson(uEnvs));
 			row.put("bhv_type", uBhv.getBhvType().toString());

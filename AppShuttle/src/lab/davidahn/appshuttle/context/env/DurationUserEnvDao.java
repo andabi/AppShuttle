@@ -123,7 +123,7 @@ public class DurationUserEnvDao {
 		return res;
 	}
 	
-	public void deleteDurationUserEnv(long time){
-		db.execSQL("DELETE FROM history_user_env WHERE time < " + time +";");
+	public void deleteDurationUserEnv(Date timeDate){
+		db.execSQL("DELETE FROM history_user_env WHERE time < " + timeDate.getTime() +";");
 	}
 }

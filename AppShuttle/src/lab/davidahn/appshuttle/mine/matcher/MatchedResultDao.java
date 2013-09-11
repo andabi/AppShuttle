@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
+import java.util.Date;
+
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
 import android.content.Context;
@@ -35,7 +37,7 @@ public class MatchedResultDao {
 		Log.i("stored matched result", mCxt.toString());
 	}
 	
-	public void deleteMatchedResult(long time){
-		db.execSQL("DELETE FROM matched_result WHERE time < " + time +";");
+	public void deleteMatchedResult(Date timeDate){
+		db.execSQL("DELETE FROM matched_result WHERE time < " + timeDate.getTime() +";");
 	}
 }

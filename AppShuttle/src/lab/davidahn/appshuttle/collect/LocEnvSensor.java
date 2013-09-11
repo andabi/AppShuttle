@@ -108,7 +108,7 @@ public class LocEnvSensor implements EnvSensor {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
 		} else {
 			if(isChanged()){
-				durationUserEnvBuilder.setEndTime(uCxt.getTime());
+				durationUserEnvBuilder.setEndTime(uCxt.getTimeDate());
 				res = durationUserEnvBuilder.build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
 			}
@@ -118,8 +118,8 @@ public class LocEnvSensor implements EnvSensor {
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(SnapshotUserCxt uCxt) {
 		return new DurationUserEnv.Builder()
-			.setTime(uCxt.getTime())
-			.setEndTime(uCxt.getTime())
+			.setTime(uCxt.getTimeDate())
+			.setEndTime(uCxt.getTimeDate())
 			.setTimeZone(uCxt.getTimeZone())
 			.setUserEnv(uCxt.getUserEnv(EnvType.LOCATION));
 	}

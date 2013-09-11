@@ -97,8 +97,8 @@ public class DuratinoUserBhvDao {
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +";");
 	}
 	
-	public void deleteRfdCxtBefore(long time){
-		db.execSQL("DELETE FROM history_user_bhv WHERE time < " + time +";");
+	public void deleteRfdCxtBefore(Date timeDate){
+		db.execSQL("DELETE FROM history_user_bhv WHERE time < " + timeDate.getTime() +";");
 	}
 	
 	public List<DurationUserBhv> retrieveRfdCxtByBhv(Date fromTime, Date toTime, UserBhv uBhv) {

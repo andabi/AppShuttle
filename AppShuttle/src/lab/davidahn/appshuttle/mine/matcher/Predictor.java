@@ -35,7 +35,7 @@ public class Predictor {
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
 		if(MatcherType.FREQUENCY.enabled()){
 			cxtMatcherList.add(new FreqContextMatcher(cxt
-					, currUserCxt.getTime()
+					, currUserCxt.getTimeDate()
 					, preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
 					, Double.MIN_VALUE
 					, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
@@ -44,7 +44,7 @@ public class Predictor {
 		}
 		if(MatcherType.WEAK_TIME.enabled()){
 			cxtMatcherList.add(new WeakTimeContextMatcher(cxt
-					, new Date(currUserCxt.getTime().getTime() - preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
+					, new Date(currUserCxt.getTimeDate().getTime() - preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
 					, preferenceSettings.getLong("matcher.weak_time.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
 					, preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
@@ -55,7 +55,7 @@ public class Predictor {
 		}
 		if(MatcherType.STRICT_TIME.enabled()){
 			cxtMatcherList.add(new StrictTimeContextMatcher(cxt
-					, new Date(currUserCxt.getTime().getTime() - preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
+					, new Date(currUserCxt.getTimeDate().getTime() - preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
 					, preferenceSettings.getLong("matcher.strict_time.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
 					, preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
@@ -66,7 +66,7 @@ public class Predictor {
 		}
 		if(MatcherType.PLACE.enabled()){
 			cxtMatcherList.add(new PlaceContextMatcher(cxt
-					, currUserCxt.getTime()
+					, currUserCxt.getTimeDate()
 					, preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
 					, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
@@ -75,7 +75,7 @@ public class Predictor {
 		}
 		if(MatcherType.LOCATION.enabled()){
 			cxtMatcherList.add(new LocContextMatcher(cxt
-					, currUserCxt.getTime()
+					, currUserCxt.getTimeDate()
 					, preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
 					, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
 					, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
@@ -93,17 +93,12 @@ public class Predictor {
 					matchedResults.put(cxtMatcher.getMatcherType(), matchedResult);
 			}
 
-			if(matchedResults.size() > 0){
-				double score = calcScore(matchedResults);
-				PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTime(), 
-						currUserCxt.getTimeZone(), 
-						currUserCxt.getUserEnvs(), 
-						uBhv, matchedResults, score);
-				predicted.add(predictedBhv);
-				
-			} else {
-				userBhvManager.unregisterBhv(uBhv);
-			}
+			double score = calcScore(matchedResults);
+			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
+					currUserCxt.getTimeZone(), 
+					currUserCxt.getUserEnvs(), 
+					uBhv, matchedResults, score);
+			predicted.add(predictedBhv);
 		}
 
 		for(int i=0;i<topN;i++){

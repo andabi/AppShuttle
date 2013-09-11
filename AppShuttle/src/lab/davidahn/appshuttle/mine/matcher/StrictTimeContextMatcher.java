@@ -69,7 +69,7 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 	protected double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
 		double relatedness = 0;
 		
-		long currTime = uCxt.getTime().getTime();
+		long currTime = uCxt.getTimeDate().getTime();
 		long currTimePeriodic = currTime % period;
 		long targetTime = ((Date) rfdUCxt.getProperty("time")).getTime();
 		long targetTimePeriodic = targetTime % period;
