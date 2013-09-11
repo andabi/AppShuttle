@@ -67,10 +67,24 @@ public class NotiViewService extends Service {
 		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
 
 		Predictor predictor = new Predictor(getApplicationContext());
-		List<PredictedBhv> predictedBhvForView = predictor.predict(Integer.MAX_VALUE);
+		List<PredictedBhv> predictedBhvList = predictor.predict(Integer.MAX_VALUE);
+
+		Set<UserBhv> predictedBhvSet = new HashSet<UserBhv>();
+		for(PredictedBhv predictedBhv : predictedBhvList) {
+			predictedBhvSet.add(predictedBhv.getUserBhv());
+		}
 		
-		Set<UserBhv> matchedBhvSet = new HashSet<UserBhv>();
-		for(PredictedBhv predictedBhv : predictedBhvForView) {
+		Set<UserBhv> recentPredictedBhvSet = ((AppShuttleApplication)getApplicationContext()).getRecentPredictedBhvSet();
+		for(PredictedBhv predictedBhv : predictedBhvList) {
+			if(recentPredictedBhvSet == null ||
+					!recentPredictedBhvSet.contains(predictedBhv.getUserBhv())){
+				predictor.storePredictedBhv(predictedBhv);
+			}
+		}
+		((AppShuttleApplication)getApplicationContext()).setRecentPredictedBhvSet(predictedBhvSet);
+		
+		Set<UserBhv> predictedBhvSetForView = new HashSet<UserBhv>();
+		for(PredictedBhv predictedBhv : predictedBhvList) {
 			UserBhv uBhv = predictedBhv.getUserBhv();
 			BhvType bhvType = uBhv.getBhvType();
 			String bhvName = uBhv.getBhvName();
@@ -107,21 +121,13 @@ public class NotiViewService extends Service {
 			} else {
 				continue;
 			}
-			matchedBhvSet.add(uBhv);
+			predictedBhvSetForView.add(uBhv);
 			if(iconSlotIdList.isEmpty()) 
 				break;
 		}
-		
-		Set<UserBhv> recentMatchedBhvSet = ((AppShuttleApplication)getApplicationContext()).getRecentMatchedBhvSet();
-		for(PredictedBhv predictedBhv : predictedBhvForView) {
-			if(recentMatchedBhvSet == null ||
-					!recentMatchedBhvSet.contains(predictedBhv.getUserBhv())){
-				predictor.storePredictedBhv(predictedBhv);
-			}
-		}
 
 		Notification notiUpdate;
-		if(predictedBhvForView.isEmpty()) {
+		if(predictedBhvSetForView.isEmpty()) {
 			notiUpdate = new Notification.Builder(NotiViewService.this)
 			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiRemoteViews)
@@ -130,7 +136,8 @@ public class NotiViewService extends Service {
 //			notificationManager.cancel(NOTI_UPDATE);
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		} else { 
-			if(matchedBhvSet.equals(recentMatchedBhvSet)){
+			Set<UserBhv> recentPredictedBhvSetForView = ((AppShuttleApplication)getApplicationContext()).getRecentPredictedBhvSetForView();
+			if(predictedBhvSetForView.equals(recentPredictedBhvSetForView)){
 				notiUpdate = new Notification.Builder(NotiViewService.this)
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiRemoteViews)
@@ -146,7 +153,7 @@ public class NotiViewService extends Service {
 			}
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		}
-		((AppShuttleApplication)getApplicationContext()).setRecentMatchedBhvSet(matchedBhvSet);
+		((AppShuttleApplication)getApplicationContext()).setRecentPredictedBhvSetForView(predictedBhvSetForView);
 
 		return START_NOT_STICKY;
 	}

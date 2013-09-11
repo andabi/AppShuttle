@@ -8,7 +8,8 @@ import android.app.Application;
 
 public class AppShuttleApplication extends Application {
 	private SnapshotUserCxt currUserCxt;
-	private Set<UserBhv> recentMatchedBhvSet;
+	private Set<UserBhv> recentPredictedBhvSet;
+	private Set<UserBhv> recentPredictedBhvSetForView;
 	
 	public SnapshotUserCxt getCurrUserCxt() {
 		return currUserCxt;
@@ -16,10 +17,17 @@ public class AppShuttleApplication extends Application {
 	public void setCurrUserCxt(SnapshotUserCxt currUserCxt) {
 		this.currUserCxt = currUserCxt;
 	}
-	public Set<UserBhv> getRecentMatchedBhvSet() {
-		return recentMatchedBhvSet;
+	public Set<UserBhv> getRecentPredictedBhvSet() {
+		return recentPredictedBhvSet;
 	}
-	public void setRecentMatchedBhvSet(Set<UserBhv> recentMatchedBhvSet) {
-		this.recentMatchedBhvSet = recentMatchedBhvSet;
+	public void setRecentPredictedBhvSet(Set<UserBhv> recentPredictedBhvSet) {
+		this.recentPredictedBhvSet = recentPredictedBhvSet;
+	}
+	public Set<UserBhv> getRecentPredictedBhvSetForView() {
+		return recentPredictedBhvSetForView;
+	}
+	public void setRecentPredictedBhvSetForView(
+			Set<UserBhv> recentPredictedBhvSetForView) {
+		this.recentPredictedBhvSetForView = recentPredictedBhvSetForView;
 	}
 }

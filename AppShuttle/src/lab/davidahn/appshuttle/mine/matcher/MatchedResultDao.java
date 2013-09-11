@@ -32,6 +32,7 @@ public class MatchedResultDao {
 		row.put("bhv_name", mCxt.getUserBhvs().getBhvName());
 		row.put("matcher_type", mCxt.getMatcherType().toString());
 		row.put("likelihood", mCxt.getLikelihood());
+		row.put("inverse_entropy", mCxt.getInverseEntropy());
 		db.insert("matched_result", null, row);
 
 		Log.i("stored matched result", mCxt.toString());
