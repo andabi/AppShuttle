@@ -37,7 +37,8 @@ public class Predictor {
 			cxtMatcherList.add(new FreqContextMatcher(cxt
 					, currUserCxt.getTimeDate()
 					, preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
-					, Double.MIN_VALUE
+					, 0.0
+					, 0.0
 					, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
 					, preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
 					));
@@ -47,6 +48,7 @@ public class Predictor {
 					, new Date(currUserCxt.getTimeDate().getTime() - preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
 					, preferenceSettings.getLong("matcher.weak_time.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
+					, preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f)
 					, preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
 					, AlarmManager.INTERVAL_DAY
 					, preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)
@@ -58,6 +60,7 @@ public class Predictor {
 					, new Date(currUserCxt.getTimeDate().getTime() - preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
 					, preferenceSettings.getLong("matcher.strict_time.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
+					, preferenceSettings.getFloat("matcher.strict_time.min_inverse_entropy", 0.2f)
 					, preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
 					, AlarmManager.INTERVAL_DAY
 					, preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)
@@ -69,6 +72,7 @@ public class Predictor {
 					, currUserCxt.getTimeDate()
 					, preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
+					, preferenceSettings.getFloat("matcher.place.min_inverse_entropy", 0.3f)
 					, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
 					, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
 					));
@@ -78,6 +82,7 @@ public class Predictor {
 					, currUserCxt.getTimeDate()
 					, preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
 					, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
+					, preferenceSettings.getFloat("matcher.loc.min_inverse_entropy", 0.2f)
 					, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
 					, preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
 					));

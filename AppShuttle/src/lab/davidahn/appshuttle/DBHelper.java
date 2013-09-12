@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 	
 	private DBHelper(Context cxt) {
-		super(cxt, cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 28);
+		super(cxt, cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 29);
 	}
 	
 	public void onCreate(SQLiteDatabase db) {
@@ -25,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				");");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS history_user_bhv (" +
-				"time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, initial_user_envs TEXT, bhv_type TEXT, bhv_name TEXT, " +
+				"time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, bhv_type TEXT, bhv_name TEXT, " +
 				"PRIMARY KEY (time, timezone, bhv_type, bhv_name) " +
 				");");
 		

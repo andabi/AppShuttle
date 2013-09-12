@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.DuratinoUserBhvDao;
-import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
+import lab.davidahn.appshuttle.context.bhv.DuratinoUserBhvDao;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
@@ -21,6 +21,7 @@ public abstract class ContextMatcher {
 	protected MatcherType matcherType;
 	protected Context cxt;
 	protected double minLikelihood;
+	protected double minInverseEntropy;
 	protected int minNumCxt;
 	protected Date time;
 	protected long duration;
@@ -30,12 +31,13 @@ public abstract class ContextMatcher {
 		return matcherType;
 	}
 
-	public ContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt) {
+	public ContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
 		this.cxt = cxt;
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		this.time = time;
 		this.duration = duration;
 		this.minLikelihood = minLikelihood;
+		this.minInverseEntropy = minInverseEntropy;
 		this.minNumCxt = minNumCxt;
 	}
 
@@ -61,7 +63,8 @@ public abstract class ContextMatcher {
 			return null;
 		}
 		
-		if(mergedRfdCxtList.isEmpty()){
+		double inverseEntropy = calcInverseEntropy(mergedRfdCxtList);
+		if(inverseEntropy < minInverseEntropy){
 			return null;
 		}
 		
@@ -79,10 +82,11 @@ public abstract class ContextMatcher {
 		}
 		if(numRelatedCxt < minNumCxt)
 			return null;
+		
 		double likelihood = calcLikelihood(numRelatedCxt, relatedCxt, uCxt);
 		if(likelihood < minLikelihood)
 			return null;
-		double inverseEntropy = calcInverseEntropy(mergedRfdCxtList);
+		
 		MatchedResult matchedCxt = new MatchedResult(uCxt.getTimeDate(), uCxt.getTimeZone(), uEnvs);
 		matchedCxt.setUserBhv(uBhv);
 		matchedCxt.setMatcherType(getMatcherType());
@@ -104,8 +108,7 @@ public abstract class ContextMatcher {
 	}
 	
 	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		double entropy = 1.0;
-		double inverseEntropy = 1.0 / entropy;
+		double inverseEntropy = Double.MIN_VALUE;
 		return inverseEntropy;
 	}
 

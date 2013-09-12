@@ -42,7 +42,7 @@ public class Settings {
 		editor.putString("email.receiver.addr", "andabi412@gmail.com");
 		
 		//matcher
-		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 180);
+		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		
 		editor.putLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
@@ -50,23 +50,27 @@ public class Settings {
 
 		editor.putLong("matcher.weak_time.duration", 4 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
+		editor.putFloat("matcher.weak_time.min_inverse_entropy", 0.2f);
 		editor.putInt("matcher.weak_time.min_num_cxt", 2);
 		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
 		editor.putLong("matcher.weak_time.tolerance", preferenceSettings.getLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
 		
 		editor.putLong("matcher.strict_time.duration", 4 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.strict_time.min_likelihood", 0.5f);
+		editor.putFloat("matcher.strict_time.min_inverse_entropy", 0.2f);
 		editor.putInt("matcher.strict_time.min_num_cxt", 2);
 		editor.putLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
 		editor.putLong("matcher.strict_time.tolerance", preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
 		
 		editor.putLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.place.min_likelihood", 0.7f);
+		editor.putFloat("matcher.place.min_inverse_entropy", 0.3f);
 		editor.putInt("matcher.place.min_num_cxt", 3);
 		editor.putInt("matcher.place.distance_tolerance", 2000);
 		
 		editor.putLong("matcher.loc.duration", 6 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.loc.min_likelihood", 0.7f);
+		editor.putFloat("matcher.loc.min_inverse_entropy", 0.2f);
 		editor.putInt("matcher.loc.min_num_cxt", 3);
 		editor.putInt("matcher.loc.distance_tolerance", 100);
 

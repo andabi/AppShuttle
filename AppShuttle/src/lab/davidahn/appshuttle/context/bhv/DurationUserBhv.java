@@ -1,13 +1,7 @@
-package lab.davidahn.appshuttle.context;
+package lab.davidahn.appshuttle.context.bhv;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
-
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public class DurationUserBhv {
 	private final Date time;
@@ -15,7 +9,7 @@ public class DurationUserBhv {
 	private final Date endTime;
 	private final TimeZone timeZone;
 	private final UserBhv bhv;
-	private final Map<EnvType, UserEnv> initialUEnvs;
+//	private final Map<EnvType, UserEnv> initialUEnvs;
 //	private final List<ChangedUserEnv> changedUEnvs;
 //	private final Map<EnvType, UserEnv> lastUEnvs;
 
@@ -30,7 +24,7 @@ public class DurationUserBhv {
 		endTime = builder.endTime;
 		timeZone = builder.timeZone;
 		bhv = builder.bhv;
-		initialUEnvs = builder.initialUEnvs;
+//		initialUEnvs = builder.initialUEnvs;
 //		changedUEnvs = builder.changedUEnvs;
 //		lastUEnvs = builder.lastUEnvs;
 //		locs = builder.locs;
@@ -51,9 +45,9 @@ public class DurationUserBhv {
 	public TimeZone getTimeZone() {
 		return timeZone;
 	}
-	public Map<EnvType, UserEnv> getInitialUEnvs() {
-		return initialUEnvs;
-	}
+//	public Map<EnvType, UserEnv> getInitialUEnvs() {
+//		return initialUEnvs;
+//	}
 //	public List<ChangedUserEnv> getChangedUEnvs() {
 //		return changedUEnvs;
 //	}
@@ -95,7 +89,7 @@ public class DurationUserBhv {
 		private Date endTime = null;
 		private TimeZone timeZone = null;
 		private UserBhv bhv = null;
-		private Map<EnvType, UserEnv> initialUEnvs = new HashMap<EnvType, UserEnv>();
+//		private Map<EnvType, UserEnv> initialUEnvs = new HashMap<EnvType, UserEnv>();
 //		private final List<ChangedUserEnv> changedUEnvs = new ArrayList<ChangedUserEnv>();
 //		private final Map<EnvType, UserEnv> lastUEnvs = new HashMap<EnvType, UserEnv>();
 //		private Map<Date, UserLoc> locs = new TreeMap<Date, UserLoc>();
@@ -140,15 +134,15 @@ public class DurationUserBhv {
 			return this;
 		}
 		
-		public Builder addInitialUserEnv(UserEnv userEnv){
-			initialUEnvs.put(userEnv.getEnvType(), userEnv);
-			return this;
-		}
-		
-		public Builder setInitialUserEnvs(HashMap<EnvType, UserEnv> initialUEnvs){
-			this.initialUEnvs = initialUEnvs;
-			return this;
-		}
+//		public Builder addInitialUserEnv(UserEnv userEnv){
+//			initialUEnvs.put(userEnv.getEnvType(), userEnv);
+//			return this;
+//		}
+//		
+//		public Builder setInitialUserEnvs(HashMap<EnvType, UserEnv> initialUEnvs){
+//			this.initialUEnvs = initialUEnvs;
+//			return this;
+//		}
 		
 //		public Builder setLocs(Map<Date, UserLoc> locs){
 //			this.locs = locs;

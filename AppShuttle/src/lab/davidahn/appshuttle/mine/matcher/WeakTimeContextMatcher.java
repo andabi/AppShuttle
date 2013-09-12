@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.commons.Time;
-import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
@@ -20,9 +20,9 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 	protected long tolerance;
 	protected long acceptanceDelay;
 
-	public WeakTimeContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+	public WeakTimeContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
 		//TODO if tolerance is longer than 24h
-		super(cxt, time, duration, minLikelihood, minNumCxt);
+		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
 		this.acceptanceDelay = acceptanceDelay;

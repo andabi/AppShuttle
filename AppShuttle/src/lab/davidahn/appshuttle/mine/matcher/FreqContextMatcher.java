@@ -5,15 +5,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import android.content.Context;
 
 public class FreqContextMatcher extends ContextMatcher{
 	long acceptanceDelay;
 	
-	public FreqContextMatcher(Context cxt, Date time, long duration, double minLikelihood, int minNumCxt, long acceptanceDelay) {
-		super(cxt, time, duration, minLikelihood, minNumCxt);
+	public FreqContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
+		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		matcherType = MatcherType.FREQUENCY;
 		this.acceptanceDelay = acceptanceDelay;
 	}

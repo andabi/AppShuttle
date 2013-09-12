@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.CallUserBhv;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
