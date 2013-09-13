@@ -31,6 +31,8 @@ public class Settings {
 		editor.putLong("collection.location.tolerance.time", 10000);
 		editor.putInt("collection.location.tolerance.distance", 500);
 		
+		editor.putInt("collection.place.num_address_prefix_words", 3);
+		
 		editor.putLong("collection.call.initial_history.period", 6 * AlarmManager.INTERVAL_DAY);
 		
 		editor.putBoolean("collection.store_cxt.enabled", false);
