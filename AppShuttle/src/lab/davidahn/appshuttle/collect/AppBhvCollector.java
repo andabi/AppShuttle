@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.collect;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,7 +42,6 @@ public class AppBhvCollector implements BhvCollector {
 
 	private AppBhvCollector(Context cxt){
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-
 		activityManager = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
 		packageManager = cxt.getPackageManager();
 		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 
@@ -78,7 +78,12 @@ public class AppBhvCollector implements BhvCollector {
 	    return res;
 	}
 	
-	public List<DurationUserBhv> refineDurationUserBhv(Date currTime, TimeZone timezone, List<UserBhv> userBhvList) {
+	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+		List<DurationUserBhv> res = Collections.emptyList();
+		return res;
+	}
+	
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone timezone, List<UserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
 

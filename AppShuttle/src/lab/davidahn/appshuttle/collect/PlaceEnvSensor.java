@@ -1,20 +1,19 @@
 package lab.davidahn.appshuttle.collect;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
+import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
@@ -26,10 +25,8 @@ public class PlaceEnvSensor implements EnvSensor {
 	private PlaceUserEnv currUPlace;
 	private LocEnvSensor locEnvCollector;
     private DurationUserEnv.Builder durationUserEnvBuilder;
-	private SharedPreferences preferenceSettings;
 	
 	private PlaceEnvSensor(Context cxt){
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		geocoder = new Geocoder(cxt);
 		locEnvCollector = LocEnvSensor.getInstance(cxt);
 		prevUPlace = null;
@@ -63,22 +60,32 @@ public class PlaceEnvSensor implements EnvSensor {
 						if(addressLine == null) {
 							return currUPlace;
 						}
-							
-						StringTokenizer st = new StringTokenizer(addressLine);
-						int numWord = preferenceSettings.getInt("collection.place.num_address_prefix_words", 3);
+
+						String adminArea = addr.getAdminArea();
+						String subAdminArea = addr.getSubAdminArea();
+						String locality = addr.getLocality();
+						String subLocality = addr.getSubLocality();
+						
 						StringBuilder sb = new StringBuilder();
-						while(st.hasMoreTokens() && numWord-- > 0){
-							sb.append(st.nextToken()).append(" ");
-						}
-						sb.deleteCharAt(sb.length()-1);
+						if(adminArea != null)
+							sb.append(" ").append(adminArea);
+						if(subAdminArea != null)
+							sb.append(" ").append(subAdminArea);
+						if(locality != null)
+							sb.append(" ").append(locality);
+						if(subLocality != null)
+							sb.append(" ").append(subLocality);
+						
 						String placeName = sb.toString();
 						
 						double placeLongitude = currLongitude;
 						double placeLatitude = currLatitude;
+						
 						if(addr.hasLongitude())
 							placeLongitude = addr.getLongitude();
 						if(addr.hasLatitude())
 							placeLatitude = addr.getLatitude();
+						
 						currUPlace = new PlaceUserEnv(new UserPlace(placeLongitude, placeLatitude, placeName));
 					}
 				} catch (IOException e) {
@@ -106,44 +113,64 @@ public class PlaceEnvSensor implements EnvSensor {
 		return changed;
 	}
 	
-	public DurationUserEnv refineDurationUserEnv(SnapshotUserCxt uCxt) {
+	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
+			TimeZone currTimeZone) {
+		return Collections.emptyList();
+	}
+
+	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
 		if(durationUserEnvBuilder == null) {
-			durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
+			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
 			if(isChanged()){
-				durationUserEnvBuilder.setEndTime(uCxt.getTimeDate());
+				durationUserEnvBuilder.setEndTime(currTimeDate);
 				res = durationUserEnvBuilder.build();
-				durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
+				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
 		}
 		return res;
 	}
 	
-	private DurationUserEnv.Builder makeDurationUserEnvBuilder(SnapshotUserCxt uCxt) {
+	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		return new DurationUserEnv.Builder()
-			.setTime(uCxt.getTimeDate())
-			.setEndTime(uCxt.getTimeDate())
-			.setTimeZone(uCxt.getTimeZone())
-			.setUserEnv(uCxt.getUserEnv(EnvType.PLACE));
+			.setTime(currTimeDate)
+			.setEndTime(currTimeDate)
+			.setTimeZone(currTimeZone)
+			.setUserEnv(uEnv);
 	}
+	
+	
+//	public DurationUserEnv extractDurationUserEnv(SnapshotUserCxt uCxt) {
+//		DurationUserEnv res = null;
+//		if(durationUserEnvBuilder == null) {
+//			durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
+//		} else {
+//			if(isChanged()){
+//				durationUserEnvBuilder.setEndTime(uCxt.getTimeDate());
+//				res = durationUserEnvBuilder.build();
+//				durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
+//			}
+//		}
+//		return res;
+//	}
+//	
+//	private DurationUserEnv.Builder makeDurationUserEnvBuilder(SnapshotUserCxt uCxt) {
+//		return new DurationUserEnv.Builder()
+//			.setTime(uCxt.getTimeDate())
+//			.setEndTime(uCxt.getTimeDate())
+//			.setTimeZone(uCxt.getTimeZone())
+//			.setUserEnv(uCxt.getUserEnv(EnvType.PLACE));
+//	}
 }
 
+//StringTokenizer st = new StringTokenizer(addressLine);
+//int numWord = preferenceSettings.getInt("collection.place.num_address_prefix_words", 3);
+
+//while(st.hasMoreTokens() && numWord-- > 0){
+//	sb.append(st.nextToken()).append(" ");
+//}
+//sb.deleteCharAt(sb.length()-1);
 //String countryName = addr.getCountryName();
 //if(countryName != null)
 //	sb.append(countryName);
-//
-//String adminArea = addr.getAdminArea();
-//if(adminArea != null)
-//	sb.append(" ").append(adminArea);
-//
-//String locality = addr.getLocality();
-//if(locality != null)
-//	sb.append(" ").append(locality);
-//
-//StringTokenizer st = new StringTokenizer(sb.toString());
-//if(st.countTokens() < 4){
-//	String featureName = addr.getFeatureName();
-//	if(featureName != null)
-//		sb.append(" ").append(featureName);
-//}

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
@@ -41,7 +42,6 @@ public class CollectionService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-
 		calendar = Calendar.getInstance();
 
 		sensors = new HashMap<EnvType, EnvSensor>();
@@ -51,13 +51,44 @@ public class CollectionService extends IntentService {
 		collectors = new ArrayList<BhvCollector>();
 		collectors.add(AppBhvCollector.getInstance(getApplicationContext()));
 		collectors.add(CallBhvCollector.getInstance(getApplicationContext()));
+		
+		preCollection();
 	}
 	
-	public void onHandleIntent(Intent intent){
+	private void preCollection() {
+		Date currTimeDate = new Date(System.currentTimeMillis());
+		TimeZone currTimeZone = calendar.getTimeZone();
+		
+		for(EnvType envType : sensors.keySet()){
+			EnvSensor sensor = sensors.get(envType);
+
+			List<DurationUserEnv> preExtractedDurationUserEnvList = sensor.preExtractDurationUserEnv(currTimeDate, currTimeZone);
+			for(DurationUserEnv preExtractedDurationUserEnv : preExtractedDurationUserEnvList)
+				storeDurationUserEnv(preExtractedDurationUserEnv);
+		}
+		
+		for(BhvCollector collector : collectors){
+			List<DurationUserBhv> preExtractedDurationUserBhvList = 
+					collector.preExtractDurationUserBhv(currTimeDate, currTimeZone);
+			storeDurationUserBhv(preExtractedDurationUserBhvList);
+
+			UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
+			for(DurationUserBhv preExtractedDurationUserBhv : preExtractedDurationUserBhvList){
+				UserBhv uBhv = preExtractedDurationUserBhv.getBhv();
+				if(uBhv.isValid(getApplicationContext()))
+					userBhvManager.registerBhv(uBhv);
+			}
+		}
+	}
+
+	public void onHandleIntent(Intent intent){		
 		SnapshotUserCxt uCxt = new SnapshotUserCxt();
 
-		uCxt.setTime(new Date(System.currentTimeMillis()));
-		uCxt.setTimeZone(calendar.getTimeZone());
+		Date currTimeDate = new Date(System.currentTimeMillis());
+		TimeZone currTimeZone = calendar.getTimeZone();
+
+		uCxt.setTime(currTimeDate);
+		uCxt.setTimeZone(currTimeZone);
 		
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
@@ -65,7 +96,7 @@ public class CollectionService extends IntentService {
 			
 			uCxt.addUserEnv(envType, uEnv);
 
-			DurationUserEnv durationUserEnv = sensor.refineDurationUserEnv(uCxt);
+			DurationUserEnv durationUserEnv = sensor.extractDurationUserEnv(currTimeDate, currTimeZone, uEnv);
 			if(durationUserEnv != null)
 				storeDurationUserEnv(durationUserEnv);
 		}
@@ -75,7 +106,7 @@ public class CollectionService extends IntentService {
 			uCxt.addUserBhvAll(userBhvList);
 			
 			List<DurationUserBhv> durationUserBhvList = 
-					collector.refineDurationUserBhv(uCxt.getTimeDate(), uCxt.getTimeZone(), userBhvList);
+					collector.extractDurationUserBhv(currTimeDate, currTimeZone, userBhvList);
 			storeDurationUserBhv(durationUserBhvList);
 
 			UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
@@ -85,15 +116,16 @@ public class CollectionService extends IntentService {
 					userBhvManager.registerBhv(uBhv);
 			}
 		}
+		
+		if(preferenceSettings.getBoolean("collection.store_cxt.enabled", false))
+			storeSnapshotCxt(uCxt);
+
 		((AppShuttleApplication)getApplicationContext()).setCurrUserCxt(uCxt);
-		storeSnapshotCxt(uCxt);
 	}
 	
 	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
-		if(preferenceSettings.getBoolean("collection.store_cxt.enabled", false)) {
-			SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance(getApplicationContext());
-			snapshotUserCxtDao.storeCxt(uCxt);
-		}
+		SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance(getApplicationContext());
+		snapshotUserCxtDao.storeCxt(uCxt);
 	}
 
 	private void storeDurationUserEnv(DurationUserEnv durationUserEnv) {

@@ -11,5 +11,8 @@ public interface BhvCollector {
 
 	public <T extends UserBhv> List<T> collect();
 
-	public List<DurationUserBhv> refineDurationUserBhv(Date currTime, TimeZone timeZone, List<UserBhv> userBhvList);
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<UserBhv> userBhvList);
+	
+	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone);
+
 }

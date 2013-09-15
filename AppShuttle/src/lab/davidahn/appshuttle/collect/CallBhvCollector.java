@@ -2,6 +2,7 @@ package lab.davidahn.appshuttle.collect;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -21,12 +22,11 @@ import android.provider.CallLog;
 public class CallBhvCollector implements BhvCollector {
 	private static CallBhvCollector callBhvCollector;
 	private ContentResolver contentResolver;
-	private Date lastCallDate;
+	private Date lastCallTimeDate;
 	private SharedPreferences preferenceSettings;
 
 	private CallBhvCollector(Context cxt){
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-
 		contentResolver = cxt.getContentResolver();
 	}
 	
@@ -37,18 +37,28 @@ public class CallBhvCollector implements BhvCollector {
 	
 	public List<UserBhv> collect(){
 		List<UserBhv> res = new ArrayList<UserBhv>();
+
 		return res;
 	}
 	
-	public List<DurationUserBhv> refineDurationUserBhv(Date currTime, TimeZone currTimeZone, List<UserBhv> userBhvList) {
-		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		
-		if(lastCallDate == null){
-			Date period = new Date(preferenceSettings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
-			lastCallDate = new Date(currTime.getTime() - period.getTime());
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<UserBhv> userBhvList) {
+		List<DurationUserBhv> res = Collections.emptyList();
+		if(lastCallTimeDate != null){
+			res = extractCallBhvDuring(lastCallTimeDate, currTimeDate);
 		}
-		Cursor cursor = contentResolver.query(CallLog.Calls.CONTENT_URI, null, CallLog.Calls.DATE + " > " + lastCallDate.getTime(), null, 
-				CallLog.Calls.DATE + " ASC");
+		
+		lastCallTimeDate = currTimeDate;
+
+		return res;
+	}
+	
+	private List<DurationUserBhv> extractCallBhvDuring(Date beginTime, Date endTime){
+		Cursor cursor = contentResolver.query(CallLog.Calls.CONTENT_URI, null, 
+				CallLog.Calls.DATE + " >= " + beginTime.getTime() + "AND" + CallLog.Calls.DATE + " < " + endTime.getTime(),
+				null, 
+				CallLog.Calls.DATE + " ASC"
+				);
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while(cursor.moveToNext()) {
 			int nameIdx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
 			int dateIdx = cursor.getColumnIndex(CallLog.Calls.DATE);
@@ -76,9 +86,19 @@ public class CallBhvCollector implements BhvCollector {
 				.build();
 				res.add(durationUserBhv);
 			}
-			lastCallDate = date;
 		}
 		cursor.close();
+		return res;
+	}
+
+	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+		Date initialHistoryPeriod = new Date(preferenceSettings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
+		lastCallTimeDate = new Date(currTimeDate.getTime() - initialHistoryPeriod.getTime());
+		List<DurationUserBhv> res = Collections.emptyList();
+		res = extractCallBhvDuring(lastCallTimeDate, currTimeDate);
+
+		lastCallTimeDate = currTimeDate;
+
 		return res;
 	}
 }

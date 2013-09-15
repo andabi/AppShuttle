@@ -1,13 +1,15 @@
 package lab.davidahn.appshuttle.collect;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.LocUserEnv;
+import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -102,26 +104,31 @@ public class LocEnvSensor implements EnvSensor {
 		return changed;
 	}
 	
-	public DurationUserEnv refineDurationUserEnv(SnapshotUserCxt uCxt) {
+	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
+			TimeZone currTimeZone) {
+		return Collections.emptyList();
+	}
+
+	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
 		if(durationUserEnvBuilder == null) {
-			durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
+			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
 			if(isChanged()){
-				durationUserEnvBuilder.setEndTime(uCxt.getTimeDate());
+				durationUserEnvBuilder.setEndTime(currTimeDate);
 				res = durationUserEnvBuilder.build();
-				durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
+				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
 		}
 		return res;
 	}
 	
-	private DurationUserEnv.Builder makeDurationUserEnvBuilder(SnapshotUserCxt uCxt) {
+	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		return new DurationUserEnv.Builder()
-			.setTime(uCxt.getTimeDate())
-			.setEndTime(uCxt.getTimeDate())
-			.setTimeZone(uCxt.getTimeZone())
-			.setUserEnv(uCxt.getUserEnv(EnvType.LOCATION));
+			.setTime(currTimeDate)
+			.setEndTime(currTimeDate)
+			.setTimeZone(currTimeZone)
+			.setUserEnv(uEnv);
 	}
 	
 	LocationListener locationListener = new LocationListener() {
