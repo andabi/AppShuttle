@@ -14,7 +14,6 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
-import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.content.Context;
 
@@ -38,7 +37,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime()
 					, rfdUCxt.getEndTime(), EnvType.PLACE)){
 				try {
-					UserPlace userPlace = ((PlaceUserEnv)durationUserEnv.getUserEnv()).getPlace();
+					UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
 					if(lastKnownUserPlace == null) {
 						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
 						mergedRfdUCxtBuilder.setProperty("place", userPlace);
@@ -100,7 +99,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 	@Override
 	protected double calcRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		try{
-			UserPlace uPlace = ((PlaceUserEnv) uCxt.getUserEnv(EnvType.PLACE)).getPlace();
+			UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
 //			UserLoc uLoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
 			if(uPlace.isSame((UserPlace) unit.getProperty("place")))
 				return 1;

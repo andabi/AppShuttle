@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
+import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
-import lab.davidahn.appshuttle.context.env.PlaceUserEnv;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
@@ -21,8 +21,8 @@ import android.util.Log;
 public class PlaceEnvSensor implements EnvSensor {
 	private static PlaceEnvSensor placeEnvSensor;
 	private Geocoder geocoder;
-	private PlaceUserEnv prevUPlace;
-	private PlaceUserEnv currUPlace;
+	private UserPlace prevUPlace;
+	private UserPlace currUPlace;
 	private LocEnvSensor locEnvCollector;
     private DurationUserEnv.Builder durationUserEnvBuilder;
 	
@@ -38,12 +38,12 @@ public class PlaceEnvSensor implements EnvSensor {
 		return placeEnvSensor;
 	}
 	
-	public PlaceUserEnv sense(){
+	public UserPlace sense(){
 		prevUPlace = currUPlace;
-		currUPlace = new PlaceUserEnv(new UserPlace(0, 0, null, Validity.INVALID));
-		UserLoc currLoc = locEnvCollector.getCurrULoc().getLoc();
+		currUPlace = new UserPlace(0, 0, null, Validity.INVALID);
+		UserLoc currLoc = locEnvCollector.getCurrULoc();
 		if(prevUPlace != null && 
-				prevUPlace.getPlace().isValid() && 
+				prevUPlace.isValid() && 
 				currLoc.isValid() && 
 				!locEnvCollector.isChanged()){
 			currUPlace = prevUPlace;
@@ -86,7 +86,7 @@ public class PlaceEnvSensor implements EnvSensor {
 						if(addr.hasLatitude())
 							placeLatitude = addr.getLatitude();
 						
-						currUPlace = new PlaceUserEnv(new UserPlace(placeLongitude, placeLatitude, placeName));
+						currUPlace = new UserPlace(placeLongitude, placeLatitude, placeName);
 					}
 				} catch (IOException e) {
 					;
@@ -102,7 +102,7 @@ public class PlaceEnvSensor implements EnvSensor {
 		boolean changed = false;
 		if(prevUPlace != null){
 			try {
-				if(!currUPlace.getPlace().isSame(prevUPlace.getPlace())) {
+				if(!currUPlace.isSame(prevUPlace)) {
 					changed = true;
 					Log.i("changed env", "place moved");
 				}
@@ -137,9 +137,10 @@ public class PlaceEnvSensor implements EnvSensor {
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
 			.setTimeZone(currTimeZone)
+			.setEnvType(EnvType.PLACE)
 			.setUserEnv(uEnv);
 	}
-	
+}
 	
 //	public DurationUserEnv extractDurationUserEnv(SnapshotUserCxt uCxt) {
 //		DurationUserEnv res = null;
@@ -162,7 +163,7 @@ public class PlaceEnvSensor implements EnvSensor {
 //			.setTimeZone(uCxt.getTimeZone())
 //			.setUserEnv(uCxt.getUserEnv(EnvType.PLACE));
 //	}
-}
+//}
 
 //StringTokenizer st = new StringTokenizer(addressLine);
 //int numWord = preferenceSettings.getInt("collection.place.num_address_prefix_words", 3);

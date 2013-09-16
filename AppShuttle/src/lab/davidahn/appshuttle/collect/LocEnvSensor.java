@@ -7,8 +7,8 @@ import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
+import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
-import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
@@ -25,8 +25,8 @@ public class LocEnvSensor implements EnvSensor {
 	private LocationManager locationManager;
 	private String bestProvider;
 	private Location lastKnownLoc;
-	private LocUserEnv prevULoc;
-	private LocUserEnv currULoc;
+	private UserLoc prevULoc;
+	private UserLoc currULoc;
     private DurationUserEnv.Builder durationUserEnvBuilder;
 	private SharedPreferences preferenceSettings;
 	
@@ -67,19 +67,19 @@ public class LocEnvSensor implements EnvSensor {
 		return locEnvSensor;
 	}
 	
-	public LocUserEnv getCurrULoc() {
+	public UserLoc getCurrULoc() {
 		return currULoc;
 	}
 
-	public LocUserEnv sense(){
+	public UserLoc sense(){
 		prevULoc = currULoc;
 		if (lastKnownLoc == null) {
 //			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(0, 0, UserLoc.Validity.INVALID)));
 			Log.d("location", "sensing failure");
-			currULoc = new LocUserEnv(new UserLoc(0, 0, UserLoc.Validity.INVALID));
+			currULoc = new UserLoc(0, 0, UserLoc.Validity.INVALID);
 		}
 		else {
-			currULoc =  new LocUserEnv(new UserLoc(lastKnownLoc.getLongitude(), lastKnownLoc.getLatitude(), UserLoc.Validity.VALID));
+			currULoc =  new UserLoc(lastKnownLoc.getLongitude(), lastKnownLoc.getLatitude(), UserLoc.Validity.VALID);
 //			uCxt.addUserEnv(EnvType.LOCATION, new LocUserEnv(new UserLoc(currentLoc.getLatitude(), currentLoc.getLongitude(), UserLoc.Validity.VALID)));
 		}
 		return currULoc;
@@ -93,7 +93,7 @@ public class LocEnvSensor implements EnvSensor {
 //			prevULoc = ((LocUserEnv)GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)).getLoc();
 			try {
 //				if(!currULoc.getLoc().proximity(prevULoc.getLoc(), settings.getInt("collection.location.tolerance.distance", 100))) {
-				if(!currULoc.getLoc().isSame(prevULoc.getLoc())) {
+				if(!currULoc.isSame(prevULoc)) {
 					Log.i("changed env", "loc moved");
 					changed = true;
 				}
@@ -128,6 +128,7 @@ public class LocEnvSensor implements EnvSensor {
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
 			.setTimeZone(currTimeZone)
+			.setEnvType(EnvType.LOCATION)
 			.setUserEnv(uEnv);
 	}
 	

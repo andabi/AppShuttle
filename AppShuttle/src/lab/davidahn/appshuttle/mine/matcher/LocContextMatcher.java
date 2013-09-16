@@ -14,7 +14,6 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
-import lab.davidahn.appshuttle.context.env.LocUserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
 
@@ -57,7 +56,7 @@ public class LocContextMatcher extends ContextMatcher {
 			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime()
 					, rfdUCxt.getEndTime(), EnvType.LOCATION)){
 				try {
-					UserLoc userLoc = ((LocUserEnv)durationUserEnv.getUserEnv()).getLoc();
+					UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 					long duration = durationUserEnv.getDuration();
 					if(lastKnownUserLoc == null) {
 						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
@@ -157,7 +156,7 @@ public class LocContextMatcher extends ContextMatcher {
 			long duration = ((Long) unit.getProperty("duration"));
 			totalSpentTime += duration;
 			try{
-				if(userLoc.proximity(((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc(), toleranceInMeter)){
+				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), toleranceInMeter)){
 					validSpentTime += duration;
 				}
 			} catch (InvalidUserEnvException e) {

@@ -9,7 +9,7 @@ import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public interface EnvSensor {
 
-	public <T extends UserEnv> T sense();
+	public UserEnv sense();
 	
 	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv);
 	

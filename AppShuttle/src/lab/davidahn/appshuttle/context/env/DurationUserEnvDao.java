@@ -29,7 +29,7 @@ public class DurationUserEnvDao {
 		return durationUserEnvDao;
 	}
 
-	public void storeDurationUserEnv(DurationUserEnv durationUserEnv) {
+	public <T extends UserEnv> void storeDurationUserEnv(DurationUserEnv durationUserEnv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		ContentValues row = new ContentValues();
@@ -43,7 +43,7 @@ public class DurationUserEnvDao {
 		Log.i("stored history_user_env", durationUserEnv.toString());
 	}
 	
-	public DurationUserEnv retrieveDurationUserEnvContains(Date time, EnvType envType) {
+	public <T extends UserEnv> DurationUserEnv retrieveDurationUserEnvContains(Date time, EnvType envType) {
 	Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 	Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time < "
 			+ time.getTime() + " AND end_time > " + time.getTime() +" AND env_type = '" + envType.toString() + "';", null);
@@ -52,13 +52,14 @@ public class DurationUserEnvDao {
 		Date startTime = new Date(cur.getLong(0));
 		Date endTime = new Date(cur.getLong(2));
 		TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-		@SuppressWarnings("unchecked")
-		UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
+		UserEnv userEnv = gson.fromJson(cur.getString(5), UserEnv.class);
+//		UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
 
 		DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
 		.setTime(startTime)
 		.setEndTime(endTime)
 		.setTimeZone(timezone)
+		.setEnvType(envType)
 		.setUserEnv(userEnv)
 		.build();
 		Log.i("retrieved history_user_env", durationUserEnv.toString());
@@ -68,7 +69,7 @@ public class DurationUserEnvDao {
 	return res;
 	}
 	
-	public List<DurationUserEnv> retrieveDurationUserEnvIncluded(Date fromTime, Date toTime, EnvType envType) {
+	public <T extends UserEnv> List<DurationUserEnv> retrieveDurationUserEnvIncluded(Date fromTime, Date toTime, EnvType envType) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +" AND env_type = '" + envType.toString() + "';", null);
@@ -77,13 +78,13 @@ public class DurationUserEnvDao {
 			Date time = new Date(cur.getLong(0));
 			Date endTime = new Date(cur.getLong(2));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-			@SuppressWarnings("unchecked")
-			UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
+			UserEnv userEnv = gson.fromJson(cur.getString(5), UserEnv.class);
 
 			DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
 			.setTime(time)
 			.setEndTime(endTime)
 			.setTimeZone(timezone)
+			.setEnvType(envType)
 			.setUserEnv(userEnv)
 			.build();
 			Log.i("retrieved history_user_env", durationUserEnv.toString());
@@ -94,7 +95,7 @@ public class DurationUserEnvDao {
 	}
 	
 	
-	public List<DurationUserEnv> retrieveDurationUserEnv(Date fromTime, Date toTime, EnvType envType){
+	public <T extends UserEnv> List<DurationUserEnv> retrieveDurationUserEnv(Date fromTime, Date toTime, EnvType envType){
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		DurationUserEnv headPiece = retrieveDurationUserEnvContains(fromTime, envType);
 		if(headPiece != null)

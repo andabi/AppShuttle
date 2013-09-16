@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle.context.env;
 import android.location.Location;
 
 
-public class UserLoc {
+public class UserLoc implements UserEnv {
 	private double longitude;
 	private double latitude;
 	private Validity validity;

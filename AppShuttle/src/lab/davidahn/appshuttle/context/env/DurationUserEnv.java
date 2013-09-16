@@ -16,7 +16,7 @@ public class DurationUserEnv {
 		this.endTime = builder.endTime;
 		this.timeZone = builder.timeZone;
 		this.usrEnv = builder.usrEnv;
-		envType = usrEnv.getEnvType();
+		this.envType = builder.envType;
 		updateDuration();
 	}
 	
@@ -92,6 +92,7 @@ public class DurationUserEnv {
 		private Date time = null;
 		private Date endTime = null;
 		private TimeZone timeZone = null;
+		private EnvType envType;
 		private UserEnv usrEnv = null;
 		
 		public Builder(){}
@@ -112,11 +113,14 @@ public class DurationUserEnv {
 			this.timeZone = timeZone;
 			return this;
 		}
-		public Builder setUserEnv(UserEnv usrEnv){
-			this.usrEnv = usrEnv;
+		public Builder setEnvType(EnvType envType){
+			this.envType = envType;
 			return this;
 		}
-
+		public Builder setUserEnv(UserEnv userEnv){
+			this.usrEnv = userEnv;
+			return this;
+		}
 		public UserEnv getUserEnv() {
 			return usrEnv;
 		}

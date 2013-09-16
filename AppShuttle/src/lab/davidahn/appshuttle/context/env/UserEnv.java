@@ -1,21 +1,5 @@
 package lab.davidahn.appshuttle.context.env;
 
-public class UserEnv {
-	protected EnvType envType;
-	
-	public UserEnv(EnvType envType) {
-		this.envType = envType;
-	}
+public interface UserEnv {
 
-	public EnvType getEnvType() {
-		return envType;
-	}
-	
-	public void setEnvType(EnvType envType) {
-		this.envType = envType;
-	}
-	
-	public String toString(){
-		return envType.toString();
-	}
 }

@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle.context.env;
 import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
 
 
-public class UserPlace {
+public class UserPlace implements UserEnv {
 	private String name;
 	private UserLoc coordinates;
 	private Validity validity;
