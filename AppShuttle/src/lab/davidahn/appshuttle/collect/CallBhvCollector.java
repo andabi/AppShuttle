@@ -54,7 +54,7 @@ public class CallBhvCollector implements BhvCollector {
 	
 	private List<DurationUserBhv> extractCallBhvDuring(Date beginTime, Date endTime){
 		Cursor cursor = contentResolver.query(CallLog.Calls.CONTENT_URI, null, 
-				CallLog.Calls.DATE + " >= " + beginTime.getTime() + "AND" + CallLog.Calls.DATE + " < " + endTime.getTime(),
+				CallLog.Calls.DATE + " >= " + beginTime.getTime() + " AND " + CallLog.Calls.DATE + " < " + endTime.getTime(),
 				null, 
 				CallLog.Calls.DATE + " ASC"
 				);

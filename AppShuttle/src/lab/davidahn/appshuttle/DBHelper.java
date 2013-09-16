@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 	
 	private DBHelper(Context cxt) {
-		super(cxt, cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 29);
+		super(cxt, cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 30);
 	}
 	
 	public void onCreate(SQLiteDatabase db) {

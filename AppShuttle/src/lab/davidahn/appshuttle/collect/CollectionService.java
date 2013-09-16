@@ -20,27 +20,30 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.IBinder;
+import android.util.Log;
 
-public class CollectionService extends IntentService {
+public class CollectionService extends Service {
 	private Calendar calendar;
     private Map<EnvType, EnvSensor> sensors;
     private List<BhvCollector> collectors;
 	private SharedPreferences preferenceSettings;
 	
-	public CollectionService() {
-		this("CollectionService");
-	}
-	
-	public CollectionService(String name) {
-		super(name);
-	}
+//	public CollectionService() {
+//		this("CollectionService");
+//	}
+//	
+//	public CollectionService(String name) {
+//		super(name);
+//	}
 
 	public void onCreate() {
 		super.onCreate();
+		
 		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		calendar = Calendar.getInstance();
 
@@ -80,8 +83,10 @@ public class CollectionService extends IntentService {
 			}
 		}
 	}
-
-	public void onHandleIntent(Intent intent){		
+	
+	public int onStartCommand(Intent intent, int flags, int startId){
+		super.onStartCommand(intent, flags, startId);
+		
 		SnapshotUserCxt uCxt = new SnapshotUserCxt();
 
 		Date currTimeDate = new Date(System.currentTimeMillis());
@@ -121,6 +126,16 @@ public class CollectionService extends IntentService {
 			storeSnapshotCxt(uCxt);
 
 		((AppShuttleApplication)getApplicationContext()).setCurrUserCxt(uCxt);
+		
+		return START_NOT_STICKY;
+	}
+	
+	public IBinder onBind(Intent intent){
+		return null;
+	}
+
+	public void onHandleIntent(Intent intent){		
+
 	}
 	
 	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
