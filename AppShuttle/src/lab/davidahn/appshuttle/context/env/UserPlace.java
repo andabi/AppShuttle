@@ -1,15 +1,19 @@
 package lab.davidahn.appshuttle.context.env;
 
+import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
 
-public class UserPlace extends UserLoc {
+
+public class UserPlace {
 	private String name;
+	private UserLoc coordinates;
+	private Validity validity;
 
 	public UserPlace(double longitude, double latitude, String name) {
-		super(longitude, latitude);
+		coordinates = new UserLoc(longitude, latitude);
 		this.name = name;
 	}
 	public UserPlace(double longitude, double latitude, String name, Validity validity) {
-		super(longitude, latitude, validity);
+		coordinates = new UserLoc(longitude, latitude, validity);
 		this.name = name;
 	}
 	public String getName() throws InvalidUserEnvException {
@@ -19,6 +23,21 @@ public class UserPlace extends UserLoc {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public UserLoc getCoordinates() {
+		return coordinates;
+	}
+	public void setCoordinates(UserLoc coordinates) {
+		this.coordinates = coordinates;
+	}
+	public boolean isValid(){
+		if(validity == Validity.VALID) 
+			return true;
+		else 
+			return false;
+	}
+	public void setValidity(Validity validity) {
+		this.validity = validity;
 	}
 	
 	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {
@@ -33,7 +52,7 @@ public class UserPlace extends UserLoc {
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		if(validity == Validity.VALID)
-			msg.append(name).append(" (").append(longitude).append(", ").append(latitude).append(") ");
+			msg.append(name).append(" (").append(coordinates).append(") ");
 		else
 			msg.append("invalid");
 		return msg.toString();

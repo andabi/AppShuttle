@@ -4,9 +4,9 @@ import android.location.Location;
 
 
 public class UserLoc {
-	protected double longitude;
-	protected double latitude;
-	protected Validity validity;
+	private double longitude;
+	private double latitude;
+	private Validity validity;
 
 	public UserLoc(double longitude, double latitude) {
 		this.longitude = longitude;
