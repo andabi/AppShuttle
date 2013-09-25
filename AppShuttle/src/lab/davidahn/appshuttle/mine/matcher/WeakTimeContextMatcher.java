@@ -38,17 +38,17 @@ public class WeakTimeContextMatcher extends ContextMatcher {
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-				mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTime());
+				mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
 				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
-				if(rfdUCxt.getTime().getTime() - prevRfdUCxt.getEndTime().getTime()
+				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTime().getTime()
 						< acceptanceDelay){
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-					mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTime());
+					mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 					mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 				}

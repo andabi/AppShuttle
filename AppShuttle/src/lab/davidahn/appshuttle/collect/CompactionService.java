@@ -6,7 +6,7 @@ import java.util.List;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DuratinoUserBhvDao;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
@@ -37,7 +37,7 @@ public class CompactionService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		DuratinoUserBhvDao durationUserBhvDao = DuratinoUserBhvDao.getInstance(getApplicationContext());
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
 		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
 		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
@@ -47,13 +47,13 @@ public class CompactionService extends IntentService {
 		long expirationDuration = preferenceSettings.getLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
 		Date expirationBoundTimeDate = new Date(currUserCxt.getTimeDate().getTime() - expirationDuration);
 
-		durationUserBhvDao.deleteRfdCxtBefore(expirationBoundTimeDate);
+		durationUserBhvDao.deleteDurationBhvBefore(expirationBoundTimeDate);
 		durationUserEnvDao.deleteDurationUserEnv(expirationBoundTimeDate);
 		matchedResultDao.deleteMatchedResult(expirationBoundTimeDate);
 		predictedBhvDao.deletePredictedBhv(expirationBoundTimeDate);
 		
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
-			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveRfdCxtByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
+			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveDurationBhvByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
 			if(durationUserBhvList.isEmpty())
 				userBhvManager.unregisterBhv(uBhv);
 		}

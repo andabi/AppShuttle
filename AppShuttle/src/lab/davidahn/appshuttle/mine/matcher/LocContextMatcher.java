@@ -53,7 +53,7 @@ public class LocContextMatcher extends ContextMatcher {
 		UserLoc lastKnownUserLoc = null;
 
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime()
+			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTimeDate()
 					, rfdUCxt.getEndTime(), EnvType.LOCATION)){
 				try {
 					UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();

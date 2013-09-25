@@ -33,7 +33,7 @@ public class DurationUserBhv {
 //		lastPlace = builder.lastPlace;
 	}
 	
-	public Date getTime() {
+	public Date getTimeDate() {
 		return time;
 	}
 	public long getDuration() {

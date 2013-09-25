@@ -37,6 +37,9 @@ public class Settings {
 		
 		editor.putBoolean("collection.store_cxt.enabled", false);
 		
+		//context
+//		editor.putInt("context.bhv.duration_user_bhv.cache_size", 100);
+		
 		//report
 		editor.putString("email.sender.addr", "davidahn412@gmail.com");
 		editor.putString("email.sender.pwd", "rnrmfepdl");

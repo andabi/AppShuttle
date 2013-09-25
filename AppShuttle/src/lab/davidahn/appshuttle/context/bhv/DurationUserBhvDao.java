@@ -22,25 +22,25 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class DuratinoUserBhvDao {
-	private static DuratinoUserBhvDao rfdUserCxtDao;
+public class DurationUserBhvDao {
+	private static DurationUserBhvDao rfdUserCxtDao;
 	private SQLiteDatabase db;
 
-	private DuratinoUserBhvDao(Context cxt) {
+	private DurationUserBhvDao(Context cxt) {
 		db = DBHelper.getInstance(cxt).getWritableDatabase();
 	}
 
-	public synchronized static DuratinoUserBhvDao getInstance(Context cxt) {
+	public synchronized static DurationUserBhvDao getInstance(Context cxt) {
 		if (rfdUserCxtDao == null)
-			rfdUserCxtDao = new DuratinoUserBhvDao(cxt);
+			rfdUserCxtDao = new DurationUserBhvDao(cxt);
 		return rfdUserCxtDao;
 	}
 
-	public void storeRfdCxt(DurationUserBhv rfdUCxt) {
+	public void storeDurationBhv(DurationUserBhv rfdUCxt) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
-		row.put("time", rfdUCxt.getTime().getTime());
+		row.put("time", rfdUCxt.getTimeDate().getTime());
 		row.put("duration", rfdUCxt.getDuration());
 		row.put("end_time", rfdUCxt.getEndTime().getTime());
 		row.put("timezone", rfdUCxt.getTimeZone().getID());
@@ -50,7 +50,7 @@ public class DuratinoUserBhvDao {
 		Log.i("stored duration bhv", rfdUCxt.toString());
 	}
 
-	public List<DurationUserBhv> retrieveRfdCxt(long fromTime, long toTime) {
+	public List<DurationUserBhv> retrieveDurationBhv(long fromTime, long toTime) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		Cursor cur = db.rawQuery("SELECT * FROM history_user_bhv WHERE time >= "
@@ -81,16 +81,16 @@ public class DuratinoUserBhvDao {
 		return res;
 	}
 	
-	public void deleteRfdCxt(Date fromTime, Date toTime){
+	public void deleteDurationBhv(Date fromTime, Date toTime){
 		db.execSQL("DELETE FROM history_user_bhv WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +";");
 	}
 	
-	public void deleteRfdCxtBefore(Date timeDate){
+	public void deleteDurationBhvBefore(Date timeDate){
 		db.execSQL("DELETE FROM history_user_bhv WHERE time < " + timeDate.getTime() +";");
 	}
 	
-	public List<DurationUserBhv> retrieveRfdCxtByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
+	public List<DurationUserBhv> retrieveDurationBhvByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		

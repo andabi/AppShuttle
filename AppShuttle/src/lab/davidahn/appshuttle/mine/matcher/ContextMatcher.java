@@ -8,8 +8,8 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DuratinoUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
@@ -42,17 +42,17 @@ public abstract class ContextMatcher {
 	}
 
 	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt uCxt){
-		DuratinoUserBhvDao rfdUserCxtDao = DuratinoUserBhvDao.getInstance(cxt);
+		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance(cxt);
 
 		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 		
 		Date toTime = time;
 		Date fromTime = new Date(toTime.getTime() - duration);
 		
-		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveRfdCxtByBhv(fromTime, toTime, uBhv);
+		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveDurationBhvByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTime().getTime()
+			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTimeDate().getTime()
 					< preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60))   //noise
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);

@@ -14,7 +14,7 @@ import android.content.Context;
  */
 
 public class UserBhvManager {
-	private volatile List<UserBhv> bhvList;
+	private List<UserBhv> bhvList;
 	private Context cxt;
 
 	private static UserBhvManager userBhvManager;

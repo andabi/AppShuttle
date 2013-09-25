@@ -34,7 +34,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		UserPlace lastKnownUserPlace = null;
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTime()
+			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTimeDate()
 					, rfdUCxt.getEndTime(), EnvType.PLACE)){
 				try {
 					UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
