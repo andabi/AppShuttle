@@ -7,10 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Utils
+public class MapUtils
 {
-    public static <K, V extends Comparable<? super V>> Map<K, V> 
-        sortByValue( Map<K, V> map )
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue( Map<K, V> map )
     {
         List<Map.Entry<K, V>> list =
             new LinkedList<Map.Entry<K, V>>( map.entrySet() );

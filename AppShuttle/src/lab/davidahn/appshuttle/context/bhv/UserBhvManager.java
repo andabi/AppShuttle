@@ -1,9 +1,17 @@
 package lab.davidahn.appshuttle.context.bhv;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
+
+/**
+ * 
+ * @author andabi
+ * @thread safe
+ */
 
 public class UserBhvManager {
 	private volatile List<UserBhv> bhvList;
@@ -13,7 +21,7 @@ public class UserBhvManager {
 	
 	private UserBhvManager(Context cxt) {
 		this.cxt = cxt;
-		bhvList = new CopyOnWriteArrayList<UserBhv>();
+		bhvList = new ArrayList<UserBhv>();
 	}
 
 	public synchronized static UserBhvManager getInstance(Context cxt) {
@@ -25,10 +33,10 @@ public class UserBhvManager {
 	}
 	
 	public List<UserBhv> getBhvList(){
-		return bhvList;
+		return Collections.unmodifiableList(bhvList);
 	}
 	
-	public void registerBhv(UserBhv uBhv){
+	public synchronized void registerBhv(UserBhv uBhv){
 		if(bhvList.contains(uBhv))
 			return ;
 
@@ -38,13 +46,13 @@ public class UserBhvManager {
 		bhvList.add(uBhv);
 	}
 	
-	public void unregisterBhv(UserBhv uBhv){	
+	public synchronized void unregisterBhv(UserBhv uBhv){	
 		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
 		userBhvDao.deleteUserBhv(uBhv);
 		bhvList.remove(uBhv);
 	}
 
-	private void syncBhvListFromPermanentStorage() {
+	private synchronized void syncBhvListFromPermanentStorage() {
 		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
 		bhvList = new CopyOnWriteArrayList<UserBhv>(userBhvDao.retrieveUserBhv());
 	}
