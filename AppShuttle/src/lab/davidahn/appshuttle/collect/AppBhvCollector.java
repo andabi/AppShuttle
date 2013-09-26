@@ -30,15 +30,15 @@ import android.os.PowerManager;
 import android.util.Log;
 
 public class AppBhvCollector implements BhvCollector {
-	private static AppBhvCollector appBhvCollector;
-	
+	private SharedPreferences preferenceSettings;
 	private ActivityManager activityManager;
 	private PackageManager packageManager;
 	private PowerManager powerManager;
 	private KeyguardManager keyguardManager;
-	private SharedPreferences preferenceSettings;
 
-	private Map<UserBhv, DurationUserBhv.Builder> ongoingBhvMap;
+	private Map<UserBhv, DurationUserBhv.Builder> ongoingBhvBuilderMap;
+
+	private static AppBhvCollector appBhvCollector;
 
 	private AppBhvCollector(Context cxt){
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
@@ -46,7 +46,8 @@ public class AppBhvCollector implements BhvCollector {
 		packageManager = cxt.getPackageManager();
 		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 
 	    keyguardManager = (KeyguardManager) cxt.getSystemService(Context.KEYGUARD_SERVICE);
-		ongoingBhvMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
+	    
+		ongoingBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 	}
 	
 	public synchronized static AppBhvCollector getInstance(Context cxt){
@@ -86,31 +87,31 @@ public class AppBhvCollector implements BhvCollector {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
 
-		if(ongoingBhvMap.isEmpty()) {
+		if(ongoingBhvBuilderMap.isEmpty()) {
 			for(UserBhv uBhv : userBhvList){
-				ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
+				ongoingBhvBuilderMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 				, new Date(currTime.getTime() + adjustment)
 				, currTimezone
 				, uBhv));
 			}
 		} else {
 			for(UserBhv uBhv : userBhvList){
-				if(ongoingBhvMap.containsKey(uBhv)){
-					DurationUserBhv.Builder rfdUCxtBuilder = ongoingBhvMap.get(uBhv);
+				if(ongoingBhvBuilderMap.containsKey(uBhv)){
+					DurationUserBhv.Builder rfdUCxtBuilder = ongoingBhvBuilderMap.get(uBhv);
 					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
 				} else {
-					ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
+					ongoingBhvBuilderMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 					, new Date(currTime.getTime() + adjustment)
 					, currTimezone
 					, uBhv));
 				}
 			}
-			for(UserBhv ongoingBhv : new HashSet<UserBhv>((ongoingBhvMap.keySet()))){
-				DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvMap.get(ongoingBhv);
+			for(UserBhv ongoingBhv : new HashSet<UserBhv>((ongoingBhvBuilderMap.keySet()))){
+				DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvBuilderMap.get(ongoingBhv);
 				if(currTime.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
 						> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
 					res.add(ongoingRfdUCxtBuilder.build());
-					ongoingBhvMap.remove(ongoingBhv);
+					ongoingBhvBuilderMap.remove(ongoingBhv);
 				}
 			}
 		}
@@ -121,12 +122,12 @@ public class AppBhvCollector implements BhvCollector {
 	public List<DurationUserBhv> postExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 
-		for(UserBhv ongoingBhv : new HashSet<UserBhv>(ongoingBhvMap.keySet())){
-			DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvMap.get(ongoingBhv);
+		for(UserBhv ongoingBhv : new HashSet<UserBhv>(ongoingBhvBuilderMap.keySet())){
+			DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvBuilderMap.get(ongoingBhv);
 			if(currTimeDate.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
 					> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
 				res.add(ongoingRfdUCxtBuilder.build());
-				ongoingBhvMap.remove(ongoingBhv);
+				ongoingBhvBuilderMap.remove(ongoingBhv);
 			}
 		}
 		

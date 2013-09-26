@@ -27,9 +27,8 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 
 public class CollectionService extends Service {
-	private Calendar calendar;
-	private SharedPreferences preferenceSettings;
-
+	private Date currTimeDate;
+	private TimeZone currTimeZone;
 	private Map<EnvType, EnvSensor> sensors;
     private List<BhvCollector> collectors;
 	
@@ -44,9 +43,9 @@ public class CollectionService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		
-		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		calendar = Calendar.getInstance();
-
+		currTimeDate = new Date(System.currentTimeMillis());
+		currTimeZone = Calendar.getInstance().getTimeZone();
+		
 		sensors = new HashMap<EnvType, EnvSensor>();
 		sensors.put(EnvType.LOCATION, LocEnvSensor.getInstance(getApplicationContext()));
 		sensors.put(EnvType.PLACE, PlaceEnvSensor.getInstance(getApplicationContext()));
@@ -55,15 +54,14 @@ public class CollectionService extends Service {
 		collectors.add(AppBhvCollector.getInstance(getApplicationContext()));
 		collectors.add(CallBhvCollector.getInstance(getApplicationContext()));
 		
-		preCollection();
+		preCollectCollectDurationUserContext();
 	}
 	
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
 		
-		SnapshotUserCxt uCxt = CollectionSnapshotUserContext();
-		
-		CollectionDurationContext(uCxt);
+		SnapshotUserCxt uCxt = CollectSnapshotUserContext();
+		CollectDurationUserContext(uCxt);
 
 		((AppShuttleApplication)getApplicationContext()).setCurrUserCxt(uCxt);
 		
@@ -77,16 +75,11 @@ public class CollectionService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		
-		postCollection();
+		postCollectDurationUserContext();
 	}
 	
-	private void preCollection() {
-		Date currTimeDate = new Date(System.currentTimeMillis());
-		TimeZone currTimeZone = calendar.getTimeZone();
-		
-		for(EnvType envType : sensors.keySet()){
-			EnvSensor sensor = sensors.get(envType);
-
+	private void preCollectCollectDurationUserContext() {
+		for(EnvSensor sensor : sensors.values()){
 			List<DurationUserEnv> preExtractedDurationUserEnvList = sensor.preExtractDurationUserEnv(currTimeDate, currTimeZone);
 			for(DurationUserEnv preExtractedDurationUserEnv : preExtractedDurationUserEnvList)
 				storeDurationUserEnv(preExtractedDurationUserEnv);
@@ -97,20 +90,13 @@ public class CollectionService extends Service {
 					collector.preExtractDurationUserBhv(currTimeDate, currTimeZone);
 			storeDurationUserBhv(preExtractedDurationUserBhvList);
 
-			UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
-			for(DurationUserBhv preExtractedDurationUserBhv : preExtractedDurationUserBhvList){
-				UserBhv uBhv = preExtractedDurationUserBhv.getBhv();
-				if(uBhv.isValid(getApplicationContext()))
-					userBhvManager.registerBhv(uBhv);
-			}
+			registerEachBhv(preExtractedDurationUserBhvList);
 		}
 	}
 	
-	private SnapshotUserCxt CollectionSnapshotUserContext() {
+	private SnapshotUserCxt CollectSnapshotUserContext() {
 		SnapshotUserCxt uCxt = new SnapshotUserCxt();
 
-		Date currTimeDate = new Date(System.currentTimeMillis());
-		TimeZone currTimeZone = calendar.getTimeZone();
 		uCxt.setTime(currTimeDate);
 		uCxt.setTimeZone(currTimeZone);
 		
@@ -125,22 +111,19 @@ public class CollectionService extends Service {
 			uCxt.addUserBhvAll(userBhvList);
 		}
 		
-		if(preferenceSettings.getBoolean("collection.store_cxt.enabled", false))
-			storeSnapshotCxt(uCxt);
+		storeSnapshotCxt(uCxt);
 		
 		return uCxt;
 	}
 
-	private void CollectionDurationContext(SnapshotUserCxt uCxt) {
+	private void CollectDurationUserContext(SnapshotUserCxt uCxt) {
 		Date currTimeDate = uCxt.getTimeDate();
 		TimeZone currTimeZone = uCxt.getTimeZone();
 		
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
-
 			DurationUserEnv durationUserEnv = sensor.extractDurationUserEnv(currTimeDate, currTimeZone, uCxt.getUserEnv(envType));
-			if(durationUserEnv != null)
-				storeDurationUserEnv(durationUserEnv);
+			storeDurationUserEnv(durationUserEnv);
 		}
 		
 		for(BhvCollector collector : collectors){
@@ -148,46 +131,53 @@ public class CollectionService extends Service {
 					collector.extractDurationUserBhv(currTimeDate, currTimeZone, uCxt.getUserBhvs());
 			storeDurationUserBhv(durationUserBhvList);
 
-			UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
-			for(DurationUserBhv durationUserBhv : durationUserBhvList){
-				UserBhv uBhv = durationUserBhv.getBhv();
-				if(uBhv.isValid(getApplicationContext()))
-					userBhvManager.registerBhv(uBhv);
-			}
+			registerEachBhv(durationUserBhvList);
 		}
 	}
 	
-	private void postCollection() {
-		Date currTimeDate = new Date(System.currentTimeMillis());
-		TimeZone currTimeZone = calendar.getTimeZone();
-		
-		for(EnvType envType : sensors.keySet()){
-			EnvSensor sensor = sensors.get(envType);
+	private void postCollectDurationUserContext() {
+		postCollectDurationUserEnv();
+		postCollectDurationUserBhv();
+	}
 
+	private void postCollectDurationUserBhv() {
+		for(EnvSensor sensor : sensors.values()){
 			DurationUserEnv postExtractedDurationUserEnv = sensor.postExtractDurationUserEnv(currTimeDate, currTimeZone);
 			storeDurationUserEnv(postExtractedDurationUserEnv);
 		}
-		
+	}
+
+	private void postCollectDurationUserEnv() {
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> postExtractedDurationUserBhvList = 
 					collector.postExtractDurationUserBhv(currTimeDate, currTimeZone);
 			storeDurationUserBhv(postExtractedDurationUserBhvList);
 
-			UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
-			for(DurationUserBhv postExtractedDurationUserBhv : postExtractedDurationUserBhvList){
-				UserBhv uBhv = postExtractedDurationUserBhv.getBhv();
-				if(uBhv.isValid(getApplicationContext()))
-					userBhvManager.registerBhv(uBhv);
-			}
+			registerEachBhv(postExtractedDurationUserBhvList);
+		}
+	}
+
+	private void registerEachBhv(List<DurationUserBhv> durationUserBhvList) {
+		UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
+		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			UserBhv uBhv = durationUserBhv.getBhv();
+			if(uBhv.isValid(getApplicationContext()))
+				userBhvManager.registerBhv(uBhv);
 		}
 	}
 
 	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
+		SharedPreferences preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+
+		if(!preferenceSettings.getBoolean("collection.store_cxt.enabled", false))
+			return;
 		SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance(getApplicationContext());
 		snapshotUserCxtDao.storeCxt(uCxt);
 	}
 
 	private void storeDurationUserEnv(DurationUserEnv durationUserEnv) {
+		if(durationUserEnv == null)
+			return;
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
 		durationUserEnvDao.storeDurationUserEnv(durationUserEnv);
 	}
