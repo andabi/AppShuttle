@@ -15,4 +15,6 @@ public interface EnvSensor {
 	
 	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone);
 	
+	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone);
+
 }

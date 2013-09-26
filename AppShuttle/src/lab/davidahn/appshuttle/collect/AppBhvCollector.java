@@ -79,11 +79,10 @@ public class AppBhvCollector implements BhvCollector {
 	}
 	
 	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
-		List<DurationUserBhv> res = Collections.emptyList();
-		return res;
+		return Collections.emptyList();
 	}
-	
-	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone timezone, List<UserBhv> userBhvList) {
+
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<UserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
 
@@ -91,31 +90,46 @@ public class AppBhvCollector implements BhvCollector {
 			for(UserBhv uBhv : userBhvList){
 				ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 				, new Date(currTime.getTime() + adjustment)
-				, timezone
+				, currTimezone
 				, uBhv));
 			}
 		} else {
 			for(UserBhv uBhv : userBhvList){
 				if(ongoingBhvMap.containsKey(uBhv)){
 					DurationUserBhv.Builder rfdUCxtBuilder = ongoingBhvMap.get(uBhv);
-					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment));
+					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
 				} else {
 					ongoingBhvMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 					, new Date(currTime.getTime() + adjustment)
-					, timezone
+					, currTimezone
 					, uBhv));
 				}
 			}
-			Set<UserBhv> ongoingBhvSet = new HashSet<UserBhv>(ongoingBhvMap.keySet());
-			for(UserBhv ongoingBhv : ongoingBhvSet){
+			for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
 				DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvMap.get(ongoingBhv);
 				if(currTime.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
-						> preferenceSettings.getLong("service.collection.period", 6000) * 1.5){
+						> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
 					res.add(ongoingRfdUCxtBuilder.build());
 					ongoingBhvMap.remove(ongoingBhv);
 				}
 			}
 		}
+		return res;
+	}
+	
+	@Override
+	public List<DurationUserBhv> postExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+
+		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
+			DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvMap.get(ongoingBhv);
+			if(currTimeDate.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
+					> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
+				res.add(ongoingRfdUCxtBuilder.build());
+				ongoingBhvMap.remove(ongoingBhv);
+			}
+		}
+		
 		return res;
 	}
 	
@@ -206,6 +220,7 @@ public class AppBhvCollector implements BhvCollector {
 		ResolveInfo resolveInfo = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		return resolveInfo.activityInfo.packageName;
 	}
+
 	
 //	private String getScreenLockPackage(){
 //		Intent intent = new Intent(Intent.ACTION_SCREEN_ON);

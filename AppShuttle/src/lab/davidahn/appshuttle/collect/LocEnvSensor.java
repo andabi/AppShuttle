@@ -115,12 +115,16 @@ public class LocEnvSensor implements EnvSensor {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
 			if(isChanged()){
-				durationUserEnvBuilder.setEndTime(currTimeDate);
+				durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone);
 				res = durationUserEnvBuilder.build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
 		}
 		return res;
+	}
+	
+	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
+		return durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 	}
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {

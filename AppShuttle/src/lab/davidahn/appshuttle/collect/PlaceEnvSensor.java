@@ -132,6 +132,10 @@ public class PlaceEnvSensor implements EnvSensor {
 		return res;
 	}
 	
+	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
+		return durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
+	}
+	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		return new DurationUserEnv.Builder()
 			.setTime(currTimeDate)

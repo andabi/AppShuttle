@@ -52,6 +52,17 @@ public class CallBhvCollector implements BhvCollector {
 		return res;
 	}
 	
+	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+		Date initialHistoryPeriod = new Date(preferenceSettings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
+		lastCallTimeDate = new Date(currTimeDate.getTime() - initialHistoryPeriod.getTime());
+		List<DurationUserBhv> res = Collections.emptyList();
+		res = extractCallBhvDuring(lastCallTimeDate, currTimeDate);
+
+		lastCallTimeDate = currTimeDate;
+
+		return res;
+	}
+	
 	private List<DurationUserBhv> extractCallBhvDuring(Date beginTime, Date endTime){
 		Cursor cursor = contentResolver.query(CallLog.Calls.CONTENT_URI, null, 
 				CallLog.Calls.DATE + " >= " + beginTime.getTime() + " AND " + CallLog.Calls.DATE + " < " + endTime.getTime(),
@@ -90,15 +101,9 @@ public class CallBhvCollector implements BhvCollector {
 		cursor.close();
 		return res;
 	}
-
-	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
-		Date initialHistoryPeriod = new Date(preferenceSettings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY));
-		lastCallTimeDate = new Date(currTimeDate.getTime() - initialHistoryPeriod.getTime());
-		List<DurationUserBhv> res = Collections.emptyList();
-		res = extractCallBhvDuring(lastCallTimeDate, currTimeDate);
-
-		lastCallTimeDate = currTimeDate;
-
-		return res;
+	
+	@Override
+	public List<DurationUserBhv> postExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+		return Collections.emptyList();
 	}
 }
