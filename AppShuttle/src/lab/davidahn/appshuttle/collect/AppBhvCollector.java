@@ -105,7 +105,7 @@ public class AppBhvCollector implements BhvCollector {
 					, uBhv));
 				}
 			}
-			for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
+			for(UserBhv ongoingBhv : new HashSet<UserBhv>((ongoingBhvMap.keySet()))){
 				DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvMap.get(ongoingBhv);
 				if(currTime.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
 						> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
@@ -121,7 +121,7 @@ public class AppBhvCollector implements BhvCollector {
 	public List<DurationUserBhv> postExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 
-		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
+		for(UserBhv ongoingBhv : new HashSet<UserBhv>(ongoingBhvMap.keySet())){
 			DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvMap.get(ongoingBhv);
 			if(currTimeDate.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
 					> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
