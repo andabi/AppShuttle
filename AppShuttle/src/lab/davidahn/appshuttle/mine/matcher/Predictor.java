@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
@@ -25,11 +26,11 @@ public class Predictor {
 	}
 	
 	public List<PredictedBhv> predict(int topN){
-		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
 		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)cxt.getApplicationContext()).getCurrUserCxt();
-		if(((AppShuttleApplication) cxt.getApplicationContext()).getCurrUserCxt() == null) 
-			return res;
-		
+		if(currUserCxt == null)
+			return Collections.emptyList();
+
+		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
 		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
 
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
@@ -90,22 +91,22 @@ public class Predictor {
 		
 		UserBhvManager userBhvManager = UserBhvManager.getInstance(cxt);
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
-			EnumMap<MatcherType, MatchedResult> matchedResults = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
-
+			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 			for(ContextMatcher cxtMatcher : cxtMatcherList){
 				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt);
-				if(matchedResult != null)
-					matchedResults.put(cxtMatcher.getMatcherType(), matchedResult);
+				if(matchedResult == null)
+					continue;
+				matchedResultMap.put(cxtMatcher.getMatcherType(), matchedResult);
 			}
 
-			if(!matchedResults.isEmpty()) {
-				double score = calcScore(matchedResults);
-				PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
-						currUserCxt.getTimeZone(), 
-						currUserCxt.getUserEnvs(), 
-						uBhv, matchedResults, score);
-				predicted.add(predictedBhv);
-			}
+			if(matchedResultMap.isEmpty()) 
+				continue;
+			double score = calcScore(matchedResultMap);
+			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
+					currUserCxt.getTimeZone(), 
+					currUserCxt.getUserEnvs(), 
+					uBhv, matchedResultMap, score);
+			predicted.add(predictedBhv);
 		}
 
 		for(int i=0;i<topN;i++){

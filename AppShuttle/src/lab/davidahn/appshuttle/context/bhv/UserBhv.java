@@ -62,12 +62,13 @@ public class UserBhv {
 		if((o instanceof UserBhv) && bhvName.equals(((UserBhv)o).bhvName) 
 				&& bhvType == ((UserBhv)o).bhvType)
 			return true;
-		else return false;
+		else 
+			return false;
 	}
 	
 	@Override
 	public int hashCode(){
-		return (bhvType.hashCode() + bhvName.hashCode()) / 2;
+		return bhvType.hashCode() ^ bhvName.hashCode();
 	}
 	
 	public boolean isValid(Context cxt) {

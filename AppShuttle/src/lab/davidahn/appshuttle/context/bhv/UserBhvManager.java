@@ -1,9 +1,7 @@
 package lab.davidahn.appshuttle.context.bhv;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
 
@@ -14,46 +12,39 @@ import android.content.Context;
  */
 
 public class UserBhvManager {
-	private List<UserBhv> bhvList;
-	private Context cxt;
+	private List<UserBhv> _bhvList;
+	private UserBhvDao _userBhvDao;
 
 	private static UserBhvManager userBhvManager;
 	
 	private UserBhvManager(Context cxt) {
-		this.cxt = cxt;
-		bhvList = new ArrayList<UserBhv>();
+		_userBhvDao = UserBhvDao.getInstance(cxt);
+		_bhvList = _userBhvDao.retrieveUserBhv();
 	}
 
 	public synchronized static UserBhvManager getInstance(Context cxt) {
 		if (userBhvManager == null) {
 			userBhvManager = new UserBhvManager(cxt);
-			userBhvManager.syncBhvListFromPermanentStorage();
 		}
 		return userBhvManager;
 	}
 	
 	public List<UserBhv> getBhvList(){
-		return Collections.unmodifiableList(bhvList);
+		return Collections.unmodifiableList(_bhvList);
 	}
 	
 	public synchronized void registerBhv(UserBhv uBhv){
-		if(bhvList.contains(uBhv))
+		if(_bhvList.contains(uBhv))
 			return ;
 
-		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
-		userBhvDao.storeUserBhv(uBhv);
+		_userBhvDao.storeUserBhv(uBhv);
 
-		bhvList.add(uBhv);
+		_bhvList.add(uBhv);
 	}
 	
 	public synchronized void unregisterBhv(UserBhv uBhv){	
-		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
-		userBhvDao.deleteUserBhv(uBhv);
-		bhvList.remove(uBhv);
-	}
+		_userBhvDao.deleteUserBhv(uBhv);
 
-	private synchronized void syncBhvListFromPermanentStorage() {
-		UserBhvDao userBhvDao = UserBhvDao.getInstance(cxt);
-		bhvList = new CopyOnWriteArrayList<UserBhv>(userBhvDao.retrieveUserBhv());
+		_bhvList.remove(uBhv);
 	}
 }

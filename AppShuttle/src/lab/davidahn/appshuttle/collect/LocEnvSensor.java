@@ -58,8 +58,7 @@ public class LocEnvSensor implements EnvSensor {
 					locationListener);
 		}
 		
-		prevULoc = null;
-		currULoc = null;
+		prevULoc = currULoc = null;
 	}
 	
 	public synchronized static LocEnvSensor getInstance(Context cxt){
@@ -115,8 +114,7 @@ public class LocEnvSensor implements EnvSensor {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
 			if(isChanged()){
-				durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone);
-				res = durationUserEnvBuilder.build();
+				res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
 		}
@@ -124,7 +122,9 @@ public class LocEnvSensor implements EnvSensor {
 	}
 	
 	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
-		return durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
+		DurationUserEnv res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
+		durationUserEnvBuilder = null;
+		return res;
 	}
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {

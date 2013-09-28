@@ -52,8 +52,7 @@ public class DurationUserEnvDao {
 		Date startTime = new Date(cur.getLong(0));
 		Date endTime = new Date(cur.getLong(2));
 		TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-		UserEnv userEnv = gson.fromJson(cur.getString(5), UserEnv.class);
-//		UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
+		UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
 
 		DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
 		.setTime(startTime)
@@ -78,7 +77,7 @@ public class DurationUserEnvDao {
 			Date time = new Date(cur.getLong(0));
 			Date endTime = new Date(cur.getLong(2));
 			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-			UserEnv userEnv = gson.fromJson(cur.getString(5), UserEnv.class);
+			UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
 
 			DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
 			.setTime(time)

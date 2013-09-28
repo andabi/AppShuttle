@@ -131,6 +131,8 @@ public class AppBhvCollector implements BhvCollector {
 			}
 		}
 		
+		ongoingBhvBuilderMap = null;
+		
 		return res;
 	}
 	
