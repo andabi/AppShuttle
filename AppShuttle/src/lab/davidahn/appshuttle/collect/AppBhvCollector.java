@@ -27,7 +27,6 @@ import android.os.PowerManager;
 import android.util.Log;
 
 public class AppBhvCollector extends BaseBhvCollector {
-//	private SharedPreferences preferenceSettings;
 	private ActivityManager activityManager;
 	private PackageManager packageManager;
 	private PowerManager powerManager;
@@ -39,7 +38,6 @@ public class AppBhvCollector extends BaseBhvCollector {
 
 	private AppBhvCollector(Context cxt){
 		super(cxt);
-//		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		activityManager = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
 		packageManager = cxt.getPackageManager();
 		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 

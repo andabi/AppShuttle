@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 	private static DBHelper dbHelper = null;
 	
-	public static void create(Context cxt){
+	public synchronized static void create(Context cxt){
 		dbHelper = new DBHelper(cxt);
 	}
 
-	public static DBHelper getInstance(){
+	public synchronized static DBHelper getInstance(){
 		return dbHelper;
 	}
 	

@@ -19,7 +19,6 @@ import android.provider.CallLog;
 
 public class CallBhvCollector extends BaseBhvCollector {
 	private ContentResolver contentResolver;
-//	private SharedPreferences preferenceSettings;
 
 	private Date lastCallTimeDate;
 
@@ -27,7 +26,6 @@ public class CallBhvCollector extends BaseBhvCollector {
 
 	private CallBhvCollector(Context cxt){
 		super(cxt);
-//		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		contentResolver = cxt.getContentResolver();
 	}
 	
