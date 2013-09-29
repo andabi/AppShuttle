@@ -15,18 +15,17 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserLoc;
-import android.content.Context;
 
 /**
  * K-NN based algorithm
  * @author andabi
  *
  */
-public class LocContextMatcher extends ContextMatcher {
+public class LocContextMatcher extends TemplateContextMatcher {
 	int toleranceInMeter;
 
-	public LocContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
-		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+	public LocContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
+		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
 		_matcherType = MatcherType.LOCATION;
 	}
@@ -47,7 +46,7 @@ public class LocContextMatcher extends ContextMatcher {
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(_cxt);
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance();
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		UserLoc lastKnownUserLoc = null;

@@ -33,10 +33,10 @@ public class Predictor {
 		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
 		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
 
-		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
+		List<TemplateContextMatcher> cxtMatcherList = new ArrayList<TemplateContextMatcher>();
 		if(MatcherType.FREQUENCY.enabled()){
-			cxtMatcherList.add(new FreqContextMatcher(_cxt
-					, currUserCxt.getTimeDate()
+			cxtMatcherList.add(new FreqContextMatcher(
+					currUserCxt.getTimeDate()
 					, _preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
 					, 0.0
 					, 0.0
@@ -45,8 +45,8 @@ public class Predictor {
 					));
 		}
 		if(MatcherType.WEAK_TIME.enabled()){
-			cxtMatcherList.add(new WeakTimeContextMatcher(_cxt
-					, new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
+			cxtMatcherList.add(new WeakTimeContextMatcher(
+					new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
 					, _preferenceSettings.getLong("matcher.weak_time.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, _preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
 					, _preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f)
@@ -57,8 +57,8 @@ public class Predictor {
 					));
 		}
 		if(MatcherType.STRICT_TIME.enabled()){
-			cxtMatcherList.add(new StrictTimeContextMatcher(_cxt
-					, new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
+			cxtMatcherList.add(new StrictTimeContextMatcher(
+					new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
 					, _preferenceSettings.getLong("matcher.strict_time.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, _preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
 					, _preferenceSettings.getFloat("matcher.strict_time.min_inverse_entropy", 0.2f)
@@ -69,8 +69,8 @@ public class Predictor {
 					));
 		}
 		if(MatcherType.PLACE.enabled()){
-			cxtMatcherList.add(new PlaceContextMatcher(_cxt
-					, currUserCxt.getTimeDate()
+			cxtMatcherList.add(new PlaceContextMatcher(
+					currUserCxt.getTimeDate()
 					, _preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
 					, _preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
 					, _preferenceSettings.getFloat("matcher.place.min_inverse_entropy", 0.3f)
@@ -79,8 +79,8 @@ public class Predictor {
 					));
 		}
 		if(MatcherType.LOCATION.enabled()){
-			cxtMatcherList.add(new LocContextMatcher(_cxt
-					, currUserCxt.getTimeDate()
+			cxtMatcherList.add(new LocContextMatcher(
+					currUserCxt.getTimeDate()
 					, _preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
 					, _preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
 					, _preferenceSettings.getFloat("matcher.loc.min_inverse_entropy", 0.2f)
@@ -90,10 +90,11 @@ public class Predictor {
 		}
 		
 		UserBhvManager userBhvManager = UserBhvManager.getInstance(_cxt);
+		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
 			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
-			for(ContextMatcher cxtMatcher : cxtMatcherList){
-				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt);
+			for(TemplateContextMatcher cxtMatcher : cxtMatcherList){
+				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt, noiseTimeTolerance);
 				if(matchedResult == null)
 					continue;
 				matchedResultMap.put(cxtMatcher.getMatcherType(), matchedResult);
@@ -129,7 +130,7 @@ public class Predictor {
 	}
 
 	public void storePredictedBhv(PredictedBhv predictedBhv){
-		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(_cxt);
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
 		predictedBhvDao.storePredictedBhv(predictedBhv);
 	}
 }

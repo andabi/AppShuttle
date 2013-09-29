@@ -4,7 +4,6 @@ import java.util.Date;
 
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -12,13 +11,13 @@ public class MatchedResultDao {
 	private static MatchedResultDao matchedResultDao;
 	private SQLiteDatabase db;
 
-	private MatchedResultDao(Context cxt) {
-		db = DBHelper.getInstance(cxt).getWritableDatabase();
+	private MatchedResultDao() {
+		db = DBHelper.getInstance().getWritableDatabase();
 	}
 
-	public synchronized static MatchedResultDao getInstance(Context cxt) {
+	public synchronized static MatchedResultDao getInstance() {
 		if (matchedResultDao == null)
-			matchedResultDao = new MatchedResultDao(cxt);
+			matchedResultDao = new MatchedResultDao();
 		return matchedResultDao;
 	}
 

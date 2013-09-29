@@ -4,7 +4,6 @@ import java.util.Date;
 
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -16,14 +15,14 @@ public class PredictedBhvDao {
 	private SQLiteDatabase db;
 	private MatchedResultDao matchedResultDao;
 
-	private PredictedBhvDao(Context cxt) {
-		db = DBHelper.getInstance(cxt).getWritableDatabase();
-		matchedResultDao = MatchedResultDao.getInstance(cxt);
+	private PredictedBhvDao() {
+		db = DBHelper.getInstance().getWritableDatabase();
+		matchedResultDao = MatchedResultDao.getInstance();
 	}
 
-	public synchronized static PredictedBhvDao getInstance(Context cxt) {
+	public synchronized static PredictedBhvDao getInstance() {
 		if (predictedBhvDao == null)
-			predictedBhvDao = new PredictedBhvDao(cxt);
+			predictedBhvDao = new PredictedBhvDao();
 		return predictedBhvDao;
 	}
 

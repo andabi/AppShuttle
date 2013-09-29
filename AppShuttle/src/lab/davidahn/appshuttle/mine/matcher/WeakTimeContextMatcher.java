@@ -13,16 +13,14 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-import android.content.Context;
-
-public class WeakTimeContextMatcher extends ContextMatcher {
+public class WeakTimeContextMatcher extends TemplateContextMatcher {
 	protected long period;
 	protected long tolerance;
 	protected long acceptanceDelay;
 
-	public WeakTimeContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+	public WeakTimeContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
 		//TODO if tolerance is longer than 24h
-		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
 		this.acceptanceDelay = acceptanceDelay;

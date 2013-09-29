@@ -7,7 +7,6 @@ import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -19,13 +18,13 @@ public class DurationUserEnvDao {
 	private static DurationUserEnvDao durationUserEnvDao;
 	private SQLiteDatabase db;
 
-	private DurationUserEnvDao(Context cxt) {
-		db = DBHelper.getInstance(cxt).getWritableDatabase();
+	private DurationUserEnvDao() {
+		db = DBHelper.getInstance().getWritableDatabase();
 	}
 
-	public synchronized static DurationUserEnvDao getInstance(Context cxt) {
+	public synchronized static DurationUserEnvDao getInstance() {
 		if (durationUserEnvDao == null)
-			durationUserEnvDao = new DurationUserEnvDao(cxt);
+			durationUserEnvDao = new DurationUserEnvDao();
 		return durationUserEnvDao;
 	}
 

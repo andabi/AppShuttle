@@ -6,20 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
-import android.app.AlarmManager;
-import android.content.Context;
-import android.content.SharedPreferences;
 
-public abstract class ContextMatcher {
-	protected Context _cxt;
-
+public abstract class TemplateContextMatcher {
 	protected MatcherType _matcherType;
 	protected double _minLikelihood;
 	protected double _minInverseEntropy;
@@ -31,8 +25,7 @@ public abstract class ContextMatcher {
 		return _matcherType;
 	}
 
-	public ContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
-		_cxt = cxt;
+	public TemplateContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
 		_time = time;
 		_duration = duration;
 		_minLikelihood = minLikelihood;
@@ -40,10 +33,8 @@ public abstract class ContextMatcher {
 		_minNumCxt = minNumCxt;
 	}
 
-	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt){
-		SharedPreferences preferenceSettings = _cxt.getSharedPreferences(_cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-
-		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance(_cxt);
+	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt, long noiseTimeTolerance){
+		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
 
 		Map<EnvType, UserEnv> uEnvs = currUCxt.getUserEnvs();
 		
@@ -53,8 +44,7 @@ public abstract class ContextMatcher {
 		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTimeDate().getTime()
-					< preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60))   //noise
+			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);
 		}

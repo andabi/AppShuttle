@@ -51,7 +51,7 @@ public class CompactionService extends IntentService {
 	
 	private void compactUserBhv(Date expirationBoundTimeDate) {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)getApplicationContext()).getCurrUserCxt();
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
 			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
@@ -66,22 +66,22 @@ public class CompactionService extends IntentService {
 	}
 
 	private void compactHistoryUserBhv(Date expirationBoundTimeDate) {
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		durationUserBhvDao.deleteBefore(expirationBoundTimeDate);
 	}
 
 	private void compactHistoryUserEnv(Date expirationBoundTimeDate) {
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance();
 		durationUserEnvDao.deleteBefore(expirationBoundTimeDate);
 	}
 	
 	private void compactPredictedBhv(Date expirationBoundTimeDate) {
-		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
 		predictedBhvDao.deletePredictedBhv(expirationBoundTimeDate);
 	}
 
 	private void compactMatchedResult(Date expirationBoundTimeDate) {
-		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
+		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance();
 		matchedResultDao.deleteMatchedResult(expirationBoundTimeDate);
 	}
 }

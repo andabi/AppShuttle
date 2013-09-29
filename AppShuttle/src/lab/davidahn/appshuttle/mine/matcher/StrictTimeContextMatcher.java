@@ -10,15 +10,14 @@ import java.util.Set;
 import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import android.content.Context;
 
-public class StrictTimeContextMatcher extends ContextMatcher {
+public class StrictTimeContextMatcher extends TemplateContextMatcher {
 	protected long period;
 	protected long tolerance;
 	protected long acceptanceDelay;
 	
-	public StrictTimeContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
-		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+	public StrictTimeContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		this.period = period;
 		this.tolerance = tolerance;
 		this.acceptanceDelay = acceptanceDelay;

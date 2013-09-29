@@ -7,13 +7,12 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import android.content.Context;
 
-public class FreqContextMatcher extends ContextMatcher{
+public class FreqContextMatcher extends TemplateContextMatcher{
 	long acceptanceDelay;
 	
-	public FreqContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
-		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+	public FreqContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
+		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_matcherType = MatcherType.FREQUENCY;
 		this.acceptanceDelay = acceptanceDelay;
 	}

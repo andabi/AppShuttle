@@ -18,7 +18,7 @@ public class UserBhvManager {
 	private static UserBhvManager userBhvManager;
 	
 	private UserBhvManager(Context cxt) {
-		_userBhvDao = UserBhvDao.getInstance(cxt);
+		_userBhvDao = UserBhvDao.getInstance();
 		_bhvList = _userBhvDao.retrieveUserBhv();
 	}
 

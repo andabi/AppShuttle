@@ -26,13 +26,13 @@ public class DurationUserBhvDao {
 	private static DurationUserBhvDao rfdUserCxtDao;
 	private SQLiteDatabase db;
 
-	private DurationUserBhvDao(Context cxt) {
-		db = DBHelper.getInstance(cxt).getWritableDatabase();
+	private DurationUserBhvDao() {
+		db = DBHelper.getInstance().getWritableDatabase();
 	}
 
-	public synchronized static DurationUserBhvDao getInstance(Context cxt) {
+	public synchronized static DurationUserBhvDao getInstance() {
 		if (rfdUserCxtDao == null)
-			rfdUserCxtDao = new DurationUserBhvDao(cxt);
+			rfdUserCxtDao = new DurationUserBhvDao();
 		return rfdUserCxtDao;
 	}
 

@@ -181,19 +181,19 @@ public class CollectionService extends Service {
 
 		if(!preferenceSettings.getBoolean("collection.store_cxt.enabled", false))
 			return;
-		SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance(getApplicationContext());
+		SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance();
 		snapshotUserCxtDao.storeCxt(uCxt);
 	}
 
 	private void storeDurationUserEnv(DurationUserEnv durationUserEnv) {
 		if(durationUserEnv == null)
 			return;
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance();
 		durationUserEnvDao.store(durationUserEnv);
 	}
 	
 	private void storeDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			durationUserBhvDao.store(durationUserBhv);
 		}		

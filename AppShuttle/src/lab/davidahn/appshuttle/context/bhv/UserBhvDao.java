@@ -8,7 +8,6 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -21,13 +20,13 @@ public class UserBhvDao {
 	private static UserBhvDao userBhvDao;
 	private SQLiteDatabase db;
 	
-	private UserBhvDao(Context cxt) {
-		db = DBHelper.getInstance(cxt).getWritableDatabase();
+	private UserBhvDao() {
+		db = DBHelper.getInstance().getWritableDatabase();
 	}
 
-	public synchronized static UserBhvDao getInstance(Context cxt) {
+	public synchronized static UserBhvDao getInstance() {
 		if (userBhvDao == null)
-			userBhvDao = new UserBhvDao(cxt);
+			userBhvDao = new UserBhvDao();
 		return userBhvDao;
 	}
 

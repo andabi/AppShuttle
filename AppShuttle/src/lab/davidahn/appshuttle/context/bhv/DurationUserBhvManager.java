@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 
 import com.google.common.collect.EvictingQueue;
 
+//TODO
 public class DurationUserBhvManager {
 	private DurationUserBhvDao _durationUserBhvDao;
 	private EvictingQueue<DurationUserBhv> _cachedBhvQueue;
@@ -24,7 +25,7 @@ public class DurationUserBhvManager {
 	private DurationUserBhvManager(Context cxt) {
 		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 
-		_durationUserBhvDao = DurationUserBhvDao.getInstance(cxt);
+		_durationUserBhvDao = DurationUserBhvDao.getInstance();
 		_cacheSize = preferenceSettings.getInt("context.bhv.duration_user_bhv.cache_size", 100);
 		_cachedBhvQueue = EvictingQueue.create(_cacheSize);
 	}

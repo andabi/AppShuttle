@@ -15,13 +15,12 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserPlace;
-import android.content.Context;
 
-public class PlaceContextMatcher extends ContextMatcher {
+public class PlaceContextMatcher extends TemplateContextMatcher {
 	int toleranceInMeter;
 
-	public PlaceContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
-		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+	public PlaceContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
+		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
 		_matcherType = MatcherType.PLACE;
 	}
@@ -29,7 +28,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(_cxt);
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance();
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		UserPlace lastKnownUserPlace = null;
