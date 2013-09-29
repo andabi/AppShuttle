@@ -29,7 +29,7 @@ public class DurationUserEnvDao {
 		return durationUserEnvDao;
 	}
 
-	public <T extends UserEnv> void storeDurationUserEnv(DurationUserEnv durationUserEnv) {
+	public <T extends UserEnv> void store(DurationUserEnv durationUserEnv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		ContentValues row = new ContentValues();
@@ -43,10 +43,13 @@ public class DurationUserEnvDao {
 		Log.i("stored history_user_env", durationUserEnv.toString());
 	}
 	
-	public <T extends UserEnv> DurationUserEnv retrieveDurationUserEnvContains(Date time, EnvType envType) {
+	public <T extends UserEnv> DurationUserEnv retrieveContains(Date time, EnvType envType) {
 	Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-	Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time < "
-			+ time.getTime() + " AND end_time > " + time.getTime() +" AND env_type = '" + envType.toString() + "';", null);
+	Cursor cur = db.rawQuery("SELECT * " +
+			"FROM history_user_env " +
+			"WHERE time < " + time.getTime() + " " +
+					"AND end_time > " + time.getTime() +" " +
+					"AND env_type = '" + envType.toString() + "';", null);
 	DurationUserEnv res = null;
 	while (cur.moveToNext()) {
 		Date startTime = new Date(cur.getLong(0));
@@ -68,10 +71,13 @@ public class DurationUserEnvDao {
 	return res;
 	}
 	
-	public <T extends UserEnv> List<DurationUserEnv> retrieveDurationUserEnvIncluded(Date fromTime, Date toTime, EnvType envType) {
+	public <T extends UserEnv> List<DurationUserEnv> retrieveIncluded(Date fromTime, Date toTime, EnvType envType) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-		Cursor cur = db.rawQuery("SELECT * FROM history_user_env WHERE time >= "
-				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +" AND env_type = '" + envType.toString() + "';", null);
+		Cursor cur = db.rawQuery("SELECT * " +
+				"FROM history_user_env " +
+				"WHERE time >= " + fromTime.getTime() + " " +
+					"AND end_time <= " + toTime.getTime() +" " +
+					"AND env_type = '" + envType.toString() + "';", null);
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		while (cur.moveToNext()) {
 			Date time = new Date(cur.getLong(0));
@@ -94,19 +100,19 @@ public class DurationUserEnvDao {
 	}
 	
 	
-	public <T extends UserEnv> List<DurationUserEnv> retrieveDurationUserEnv(Date fromTime, Date toTime, EnvType envType){
+	public <T extends UserEnv> List<DurationUserEnv> retrieve(Date fromTime, Date toTime, EnvType envType){
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
-		DurationUserEnv headPiece = retrieveDurationUserEnvContains(fromTime, envType);
+		DurationUserEnv headPiece = retrieveContains(fromTime, envType);
 		if(headPiece != null)
 			res.add(headPiece);
-		List<DurationUserEnv> middlePieces = retrieveDurationUserEnvIncluded(fromTime, toTime, envType);
+		List<DurationUserEnv> middlePieces = retrieveIncluded(fromTime, toTime, envType);
 		res.addAll(middlePieces);
 //			if(!middlePieces.isEmpty()) {
 //				if(!res.get(res.size()-1).equals(middlePieces.get(0)))
 //					res.add(middlePieces.get(0));
 //				res.addAll(middlePieces.subList(1, middlePieces.size()));
 //			}
-		DurationUserEnv tailPiece = retrieveDurationUserEnvContains(toTime, envType);
+		DurationUserEnv tailPiece = retrieveContains(toTime, envType);
 //		if(!res.get(res.size()-1).equals(tailPiece)) // && res.get(res.size()-1).getEndTime().getTime() < toTime.getTime())
 		if(tailPiece != null){
 			if(!res.isEmpty()) {
@@ -123,7 +129,16 @@ public class DurationUserEnvDao {
 		return res;
 	}
 	
-	public void deleteDurationUserEnv(Date timeDate){
-		db.execSQL("DELETE FROM history_user_env WHERE time < " + timeDate.getTime() +";");
+	public void deleteBefore(Date timeDate){
+		db.execSQL("DELETE " +
+				"FROM history_user_env " +
+				"WHERE time <= " + timeDate.getTime() +";");
+	}
+	
+	public void delete(Date beginTime, Date endTime){
+		db.execSQL("DELETE " +
+				"FROM history_user_env " + 
+				"WHERE time <= " + beginTime.getTime() + " " +
+					"AND end_time < " + endTime.getTime() + "';");
 	}
 }

@@ -29,6 +29,8 @@ public class AppShuttleService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
+		DBHelper.create(getApplicationContext());
+		
 		Settings.preferenceSettings(getApplicationContext());
 		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		

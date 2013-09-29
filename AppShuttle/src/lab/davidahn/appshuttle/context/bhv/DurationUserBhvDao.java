@@ -36,7 +36,7 @@ public class DurationUserBhvDao {
 		return rfdUserCxtDao;
 	}
 
-	public void storeDurationBhv(DurationUserBhv rfdUCxt) {
+	public void store(DurationUserBhv rfdUCxt) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
@@ -46,11 +46,12 @@ public class DurationUserBhvDao {
 		row.put("timezone", rfdUCxt.getTimeZone().getID());
 		row.put("bhv_type", rfdUCxt.getBhv().getBhvType().toString());
 		row.put("bhv_name", rfdUCxt.getBhv().getBhvName());
-		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
+		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
+//		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 		Log.i("stored duration bhv", rfdUCxt.toString());
 	}
 
-	public List<DurationUserBhv> retrieveDurationBhv(long fromTime, long toTime) {
+	public List<DurationUserBhv> retrieve(long fromTime, long toTime) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		Cursor cur = db.rawQuery("SELECT * FROM history_user_bhv WHERE time >= "
@@ -81,16 +82,16 @@ public class DurationUserBhvDao {
 		return res;
 	}
 	
-	public void deleteDurationBhv(Date fromTime, Date toTime){
+	public void delete(Date fromTime, Date toTime){
 		db.execSQL("DELETE FROM history_user_bhv WHERE time >= "
 				+ fromTime.getTime() + " AND end_time <= " + toTime.getTime() +";");
 	}
 	
-	public void deleteDurationBhvBefore(Date timeDate){
+	public void deleteBefore(Date timeDate){
 		db.execSQL("DELETE FROM history_user_bhv WHERE time < " + timeDate.getTime() +";");
 	}
 	
-	public List<DurationUserBhv> retrieveDurationBhvByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
+	public List<DurationUserBhv> retrieveByBhv(Date fromTime, Date toTime, UserBhv uBhv) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		

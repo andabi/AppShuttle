@@ -7,15 +7,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 	private static DBHelper dbHelper = null;
 	
-	public synchronized static DBHelper getInstance(Context cxt){
-		if(dbHelper == null){
-			dbHelper = new DBHelper(cxt.getApplicationContext());
-		}
+	public static void create(Context cxt){
+		dbHelper = new DBHelper(cxt);
+	}
+
+	public static DBHelper getInstance(){
 		return dbHelper;
 	}
 	
 	private DBHelper(Context cxt) {
-		super(cxt, cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 30);
+		super(cxt, /*String dbName = */ cxt.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE).getString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString()), null, 30);
 	}
 	
 	public void onCreate(SQLiteDatabase db) {
@@ -46,7 +47,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		
 //		db.execSQL("CREATE TABLE IF NOT EXISTS snapshot_context (time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, " +
 //				"PRIMARY KEY (time, timezone, bhv_type, bhv_name) );");
-//		db.execSQL("CREATE TABLE IF NOT EXISTS changed_env (time INTEGER, timezone TEXT, env_type TEXT, from_value TEXT, to_value TEXT, PRIMARY KEY (time, timezone, env_type) );");
 
 	}
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -56,7 +56,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS matched_result");
 		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
 //		db.execSQL("DROP TABLE IF EXISTS snapshot_context");
-//		db.execSQL("DROP TABLE IF EXISTS changed_env");
 		onCreate(db);
 	}
 }

@@ -18,15 +18,19 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 
-public class PlaceEnvSensor implements EnvSensor {
-	private static PlaceEnvSensor placeEnvSensor;
+public class PlaceEnvSensor extends BaseEnvSensor {
 	private Geocoder geocoder;
+	
 	private UserPlace prevUPlace;
 	private UserPlace currUPlace;
-	private LocEnvSensor locEnvCollector;
     private DurationUserEnv.Builder durationUserEnvBuilder;
+    private LocEnvSensor locEnvCollector;
 	
-	private PlaceEnvSensor(Context cxt){
+    private static PlaceEnvSensor placeEnvSensor;
+
+    private PlaceEnvSensor(Context cxt){
+    	super(cxt);
+    	
 		geocoder = new Geocoder(cxt);
 		locEnvCollector = LocEnvSensor.getInstance(cxt);
 		prevUPlace = currUPlace = null;

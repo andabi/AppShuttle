@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.AppUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
@@ -21,7 +19,6 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -29,8 +26,8 @@ import android.content.pm.ResolveInfo;
 import android.os.PowerManager;
 import android.util.Log;
 
-public class AppBhvCollector implements BhvCollector {
-	private SharedPreferences preferenceSettings;
+public class AppBhvCollector extends BaseBhvCollector {
+//	private SharedPreferences preferenceSettings;
 	private ActivityManager activityManager;
 	private PackageManager packageManager;
 	private PowerManager powerManager;
@@ -41,7 +38,8 @@ public class AppBhvCollector implements BhvCollector {
 	private static AppBhvCollector appBhvCollector;
 
 	private AppBhvCollector(Context cxt){
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		super(cxt);
+//		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		activityManager = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
 		packageManager = cxt.getPackageManager();
 		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 
@@ -78,11 +76,8 @@ public class AppBhvCollector implements BhvCollector {
 	    }
 	    return res;
 	}
-	
-	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
-		return Collections.emptyList();
-	}
 
+	@Override
 	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<UserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
@@ -162,6 +157,7 @@ public class AppBhvCollector implements BhvCollector {
 		return res;
 	}
 	
+	@SuppressWarnings("unused")
 	private Set<String> getCurrentService(){
 		Set<String> res = new HashSet<String>();
 		res.addAll(getCurrentService(0, false));
@@ -169,6 +165,7 @@ public class AppBhvCollector implements BhvCollector {
 
 	}
 	
+	@SuppressWarnings("unused")
 	private List<String> getInstalledApp(boolean getSysApp){
 		List<String> res = new ArrayList<String>();
 		for(ApplicationInfo appInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){

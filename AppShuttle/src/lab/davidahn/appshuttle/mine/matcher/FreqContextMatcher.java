@@ -14,7 +14,7 @@ public class FreqContextMatcher extends ContextMatcher{
 	
 	public FreqContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
 		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
-		matcherType = MatcherType.FREQUENCY;
+		_matcherType = MatcherType.FREQUENCY;
 		this.acceptanceDelay = acceptanceDelay;
 	}
 	

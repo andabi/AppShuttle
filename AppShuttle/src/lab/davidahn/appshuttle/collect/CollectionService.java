@@ -189,13 +189,13 @@ public class CollectionService extends Service {
 		if(durationUserEnv == null)
 			return;
 		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
-		durationUserEnvDao.storeDurationUserEnv(durationUserEnv);
+		durationUserEnvDao.store(durationUserEnv);
 	}
 	
 	private void storeDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			durationUserBhvDao.storeDurationBhv(durationUserBhv);
+			durationUserBhvDao.store(durationUserBhv);
 		}		
 	}
 }

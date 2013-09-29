@@ -37,7 +37,7 @@ public class DurationUserBhvManager {
 	}
 	
 	public synchronized void storeDurationBhv(DurationUserBhv uBhv) {
-		_durationUserBhvDao.storeDurationBhv(uBhv);
+		_durationUserBhvDao.store(uBhv);
 		_cachedBhvQueue.add(uBhv);
 		_eldestCachedBhvDate = uBhv.getTimeDate();
 	}

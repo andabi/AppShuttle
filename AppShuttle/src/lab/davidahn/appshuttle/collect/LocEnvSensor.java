@@ -5,14 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,18 +18,19 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
-public class LocEnvSensor implements EnvSensor {
-	private static LocEnvSensor locEnvSensor;
+public class LocEnvSensor extends BaseEnvSensor {
 	private LocationManager locationManager;
-	private String bestProvider;
 	private Location lastKnownLoc;
+	
+	private String bestProvider;
 	private UserLoc prevULoc;
 	private UserLoc currULoc;
     private DurationUserEnv.Builder durationUserEnvBuilder;
-	private SharedPreferences preferenceSettings;
+
+    private static LocEnvSensor locEnvSensor;
 	
 	private LocEnvSensor(Context cxt){
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		super(cxt);
 		
 		locationManager = (LocationManager) cxt.getSystemService(Context.LOCATION_SERVICE);
 		Criteria crit = new Criteria();

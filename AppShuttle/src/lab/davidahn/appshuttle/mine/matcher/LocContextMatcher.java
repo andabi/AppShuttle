@@ -28,7 +28,7 @@ public class LocContextMatcher extends ContextMatcher {
 	public LocContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
 		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
-		matcherType = MatcherType.LOCATION;
+		_matcherType = MatcherType.LOCATION;
 	}
 	
 //	@Override
@@ -47,13 +47,13 @@ public class LocContextMatcher extends ContextMatcher {
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(_cxt);
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		UserLoc lastKnownUserLoc = null;
 
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTimeDate()
+			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieve(rfdUCxt.getTimeDate()
 					, rfdUCxt.getEndTime(), EnvType.LOCATION)){
 				try {
 					UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
@@ -172,7 +172,7 @@ public class LocContextMatcher extends ContextMatcher {
 	
 	@Override
 	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= minNumCxt);
+		assert(matcherCountUnitList.size() >= _minNumCxt);
 		
 		double inverseEntropy = 0;
 		Set<UserLoc> uniqueLoc = new HashSet<UserLoc>();

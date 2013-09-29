@@ -25,7 +25,7 @@ public class Settings {
 		
 		editor.putBoolean("service.compaction.enabled", true);
 		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
-		editor.putLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("service.compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
 
 		//collection
 		editor.putLong("collection.location.tolerance.time", 10000);

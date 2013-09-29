@@ -22,7 +22,7 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 		this.period = period;
 		this.tolerance = tolerance;
 		this.acceptanceDelay = acceptanceDelay;
-		matcherType = MatcherType.STRICT_TIME;
+		_matcherType = MatcherType.STRICT_TIME;
 	}
 
 //	protected List<RfdUserCxt> retrieveCxt(UserEnv uEnv){
@@ -84,7 +84,7 @@ public class StrictTimeContextMatcher extends ContextMatcher {
 	
 	@Override
 	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= minNumCxt);
+		assert(matcherCountUnitList.size() >= _minNumCxt);
 		
 		double inverseEntropy = 0;
 		Set<Long> uniqueTime = new HashSet<Long>();

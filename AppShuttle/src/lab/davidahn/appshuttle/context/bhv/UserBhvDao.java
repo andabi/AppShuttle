@@ -39,7 +39,8 @@ public class UserBhvDao {
 		row.put("bhv_name", uBhv.getBhvName());
 		row.put("metas", gson.toJson(uBhv.getMetas()));
 //		db.insert("user_bhv", null, row);
-		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
+		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
+//		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 		Log.i("stored user bhv", uBhv.toString());
 	}
 	

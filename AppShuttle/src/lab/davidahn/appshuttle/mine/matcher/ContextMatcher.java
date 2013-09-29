@@ -18,38 +18,39 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public abstract class ContextMatcher {
-	protected MatcherType matcherType;
-	protected Context cxt;
-	protected double minLikelihood;
-	protected double minInverseEntropy;
-	protected int minNumCxt;
-	protected Date time;
-	protected long duration;
-	protected SharedPreferences preferenceSettings;
+	protected Context _cxt;
+
+	protected MatcherType _matcherType;
+	protected double _minLikelihood;
+	protected double _minInverseEntropy;
+	protected int _minNumCxt;
+	protected Date _time;
+	protected long _duration;
 	
 	protected MatcherType getMatcherType(){
-		return matcherType;
+		return _matcherType;
 	}
 
 	public ContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
-		this.cxt = cxt;
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		this.time = time;
-		this.duration = duration;
-		this.minLikelihood = minLikelihood;
-		this.minInverseEntropy = minInverseEntropy;
-		this.minNumCxt = minNumCxt;
+		_cxt = cxt;
+		_time = time;
+		_duration = duration;
+		_minLikelihood = minLikelihood;
+		_minInverseEntropy = minInverseEntropy;
+		_minNumCxt = minNumCxt;
 	}
 
-	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt uCxt){
-		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance(cxt);
+	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt){
+		SharedPreferences preferenceSettings = _cxt.getSharedPreferences(_cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 
-		Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
+		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance(_cxt);
+
+		Map<EnvType, UserEnv> uEnvs = currUCxt.getUserEnvs();
 		
-		Date toTime = time;
-		Date fromTime = new Date(toTime.getTime() - duration);
+		Date toTime = _time;
+		Date fromTime = new Date(toTime.getTime() - _duration);
 		
-		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveDurationBhvByBhv(fromTime, toTime, uBhv);
+		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTimeDate().getTime()
@@ -57,14 +58,14 @@ public abstract class ContextMatcher {
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);
 		}
-		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList, uCxt);
+		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList, currUCxt);
 		
 		if(mergedRfdCxtList.isEmpty()){
 			return null;
 		}
 		
 		double inverseEntropy = calcInverseEntropy(mergedRfdCxtList);
-		if(inverseEntropy < minInverseEntropy){
+		if(inverseEntropy < _minInverseEntropy){
 			return null;
 		}
 		
@@ -74,20 +75,20 @@ public abstract class ContextMatcher {
 		
 		for(MatcherCountUnit mergedRfdCxt : mergedRfdCxtList) {
 			numTotalCxt++;
-			double relatedness = calcRelatedness(mergedRfdCxt, uCxt);
+			double relatedness = calcRelatedness(mergedRfdCxt, currUCxt);
 			if(relatedness > 0 ) {
 				numRelatedCxt++;
 				relatedCxt.put(mergedRfdCxt, relatedness);
 			}
 		}
-		if(numRelatedCxt < minNumCxt)
+		if(numRelatedCxt < _minNumCxt)
 			return null;
 		
-		double likelihood = calcLikelihood(numRelatedCxt, relatedCxt, uCxt);
-		if(likelihood < minLikelihood)
+		double likelihood = calcLikelihood(numRelatedCxt, relatedCxt, currUCxt);
+		if(likelihood < _minLikelihood)
 			return null;
 		
-		MatchedResult matchedCxt = new MatchedResult(uCxt.getTimeDate(), uCxt.getTimeZone(), uEnvs);
+		MatchedResult matchedCxt = new MatchedResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), uEnvs);
 		matchedCxt.setUserBhv(uBhv);
 		matchedCxt.setMatcherType(getMatcherType());
 		matchedCxt.setNumTotalCxt(numTotalCxt);

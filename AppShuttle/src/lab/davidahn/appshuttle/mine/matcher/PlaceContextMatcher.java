@@ -23,18 +23,18 @@ public class PlaceContextMatcher extends ContextMatcher {
 	public PlaceContextMatcher(Context cxt, Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
 		super(cxt, time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		this.toleranceInMeter = toleranceInMeter;
-		matcherType = MatcherType.PLACE;
+		_matcherType = MatcherType.PLACE;
 	}
 	
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(cxt);
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(_cxt);
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		UserPlace lastKnownUserPlace = null;
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieveDurationUserEnv(rfdUCxt.getTimeDate()
+			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieve(rfdUCxt.getTimeDate()
 					, rfdUCxt.getEndTime(), EnvType.PLACE)){
 				try {
 					UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
@@ -142,7 +142,7 @@ public class PlaceContextMatcher extends ContextMatcher {
 	
 	@Override
 	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= minNumCxt);
+		assert(matcherCountUnitList.size() >= _minNumCxt);
 		
 		double inverseEntropy = 0;
 		Set<UserPlace> uniquePlace = new HashSet<UserPlace>();

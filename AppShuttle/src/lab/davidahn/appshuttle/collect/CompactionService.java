@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 public class CompactionService extends IntentService {
-	private SharedPreferences preferenceSettings;
 	
 	public CompactionService() {
 		this("CompactionService");
@@ -32,34 +31,57 @@ public class CompactionService extends IntentService {
 
 	public void onCreate() {
 		super.onCreate();
-		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-
 	}
 	
 	public void onHandleIntent(Intent intent){
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
-		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
-		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
-		UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
+		SharedPreferences preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 
 		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)getApplicationContext()).getCurrUserCxt();
-		long expirationDuration = preferenceSettings.getLong("service.compaction.expiration", 30 * AlarmManager.INTERVAL_DAY);
+		long expirationDuration = preferenceSettings.getLong("service.compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
 		Date expirationBoundTimeDate = new Date(currUserCxt.getTimeDate().getTime() - expirationDuration);
 
-		durationUserBhvDao.deleteDurationBhvBefore(expirationBoundTimeDate);
-		durationUserEnvDao.deleteDurationUserEnv(expirationBoundTimeDate);
-		matchedResultDao.deleteMatchedResult(expirationBoundTimeDate);
-		predictedBhvDao.deletePredictedBhv(expirationBoundTimeDate);
+		compactHistoryUserBhv(expirationBoundTimeDate);
+		compactHistoryUserEnv(expirationBoundTimeDate);
 		
+		compactPredictedBhv(expirationBoundTimeDate);
+		compactMatchedResult(expirationBoundTimeDate);
+
+		compactUserBhv(expirationBoundTimeDate);
+	}
+	
+	private void compactUserBhv(Date expirationBoundTimeDate) {
+		UserBhvManager userBhvManager = UserBhvManager.getInstance(getApplicationContext());
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
+		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)getApplicationContext()).getCurrUserCxt();
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
-			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveDurationBhvByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
+			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
 			if(durationUserBhvList.isEmpty())
 				userBhvManager.unregisterBhv(uBhv);
 		}
+
 	}
 	
 	public void onDestroy() {
 		super.onDestroy();
+	}
+
+	private void compactHistoryUserBhv(Date expirationBoundTimeDate) {
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance(getApplicationContext());
+		durationUserBhvDao.deleteBefore(expirationBoundTimeDate);
+	}
+
+	private void compactHistoryUserEnv(Date expirationBoundTimeDate) {
+		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance(getApplicationContext());
+		durationUserEnvDao.deleteBefore(expirationBoundTimeDate);
+	}
+	
+	private void compactPredictedBhv(Date expirationBoundTimeDate) {
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(getApplicationContext());
+		predictedBhvDao.deletePredictedBhv(expirationBoundTimeDate);
+	}
+
+	private void compactMatchedResult(Date expirationBoundTimeDate) {
+		MatchedResultDao matchedResultDao = MatchedResultDao.getInstance(getApplicationContext());
+		matchedResultDao.deleteMatchedResult(expirationBoundTimeDate);
 	}
 }

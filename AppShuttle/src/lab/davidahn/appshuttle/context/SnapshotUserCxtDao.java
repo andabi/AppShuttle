@@ -28,16 +28,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class SnapshotUserCxtDao {
-	private static SnapshotUserCxtDao userCxtDao;
 	private SQLiteDatabase db;
 
-	private SnapshotUserCxtDao(Context cxt) {
-		db = DBHelper.getInstance(cxt).getWritableDatabase();
+	private static SnapshotUserCxtDao userCxtDao;
+
+	private SnapshotUserCxtDao() {
+		db = DBHelper.getInstance().getWritableDatabase();
 	}
 
-	public synchronized static SnapshotUserCxtDao getInstance(Context cxt) {
+	public synchronized static SnapshotUserCxtDao getInstance() {
 		if (userCxtDao == null)
-			userCxtDao = new SnapshotUserCxtDao(cxt);
+			userCxtDao = new SnapshotUserCxtDao();
 		return userCxtDao;
 	}
 

@@ -17,16 +17,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class Predictor {
-	private Context cxt;
-	private SharedPreferences preferenceSettings;
+	private Context _cxt;
+	private SharedPreferences _preferenceSettings;
 	
 	public Predictor(Context cxt){
-		this.cxt = cxt;		
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		_cxt = cxt;		
+		_preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 	}
 	
 	public List<PredictedBhv> predict(int topN){
-		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)cxt.getApplicationContext()).getCurrUserCxt();
+		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)_cxt.getApplicationContext()).getCurrUserCxt();
 		if(currUserCxt == null)
 			return Collections.emptyList();
 
@@ -35,61 +35,61 @@ public class Predictor {
 
 		List<ContextMatcher> cxtMatcherList = new ArrayList<ContextMatcher>();
 		if(MatcherType.FREQUENCY.enabled()){
-			cxtMatcherList.add(new FreqContextMatcher(cxt
+			cxtMatcherList.add(new FreqContextMatcher(_cxt
 					, currUserCxt.getTimeDate()
-					, preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
+					, _preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
 					, 0.0
 					, 0.0
-					, preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
-					, preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
+					, _preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
+					, _preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
 					));
 		}
 		if(MatcherType.WEAK_TIME.enabled()){
-			cxtMatcherList.add(new WeakTimeContextMatcher(cxt
-					, new Date(currUserCxt.getTimeDate().getTime() - preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
-					, preferenceSettings.getLong("matcher.weak_time.duration", 6 * AlarmManager.INTERVAL_DAY)
-					, preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
-					, preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f)
-					, preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
+			cxtMatcherList.add(new WeakTimeContextMatcher(_cxt
+					, new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
+					, _preferenceSettings.getLong("matcher.weak_time.duration", 6 * AlarmManager.INTERVAL_DAY)
+					, _preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
+					, _preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f)
+					, _preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
 					, AlarmManager.INTERVAL_DAY
-					, preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)
-					, preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
+					, _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)
+					, _preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
 					));
 		}
 		if(MatcherType.STRICT_TIME.enabled()){
-			cxtMatcherList.add(new StrictTimeContextMatcher(cxt
-					, new Date(currUserCxt.getTimeDate().getTime() - preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
-					, preferenceSettings.getLong("matcher.strict_time.duration", 6 * AlarmManager.INTERVAL_DAY)
-					, preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
-					, preferenceSettings.getFloat("matcher.strict_time.min_inverse_entropy", 0.2f)
-					, preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
+			cxtMatcherList.add(new StrictTimeContextMatcher(_cxt
+					, new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
+					, _preferenceSettings.getLong("matcher.strict_time.duration", 6 * AlarmManager.INTERVAL_DAY)
+					, _preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
+					, _preferenceSettings.getFloat("matcher.strict_time.min_inverse_entropy", 0.2f)
+					, _preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
 					, AlarmManager.INTERVAL_DAY
-					, preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)
-					, preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)
+					, _preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)
+					, _preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)
 					));
 		}
 		if(MatcherType.PLACE.enabled()){
-			cxtMatcherList.add(new PlaceContextMatcher(cxt
+			cxtMatcherList.add(new PlaceContextMatcher(_cxt
 					, currUserCxt.getTimeDate()
-					, preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
-					, preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
-					, preferenceSettings.getFloat("matcher.place.min_inverse_entropy", 0.3f)
-					, preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
-					, preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
+					, _preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
+					, _preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
+					, _preferenceSettings.getFloat("matcher.place.min_inverse_entropy", 0.3f)
+					, _preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
+					, _preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
 					));
 		}
 		if(MatcherType.LOCATION.enabled()){
-			cxtMatcherList.add(new LocContextMatcher(cxt
+			cxtMatcherList.add(new LocContextMatcher(_cxt
 					, currUserCxt.getTimeDate()
-					, preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
-					, preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
-					, preferenceSettings.getFloat("matcher.loc.min_inverse_entropy", 0.2f)
-					, preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
-					, preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
+					, _preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
+					, _preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
+					, _preferenceSettings.getFloat("matcher.loc.min_inverse_entropy", 0.2f)
+					, _preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
+					, _preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
 					));
 		}
 		
-		UserBhvManager userBhvManager = UserBhvManager.getInstance(cxt);
+		UserBhvManager userBhvManager = UserBhvManager.getInstance(_cxt);
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
 			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 			for(ContextMatcher cxtMatcher : cxtMatcherList){
@@ -129,7 +129,7 @@ public class Predictor {
 	}
 
 	public void storePredictedBhv(PredictedBhv predictedBhv){
-		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(cxt);
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance(_cxt);
 		predictedBhvDao.storePredictedBhv(predictedBhv);
 	}
 }

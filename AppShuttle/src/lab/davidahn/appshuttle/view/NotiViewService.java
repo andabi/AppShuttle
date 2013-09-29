@@ -148,7 +148,7 @@ public class NotiViewService extends Service {
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiRemoteViews)
 				.setOngoing(true)
-				.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
+//				.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
 				.build();
 			}
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
