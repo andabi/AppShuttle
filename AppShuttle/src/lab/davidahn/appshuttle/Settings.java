@@ -14,8 +14,8 @@ public class Settings {
 		editor.putString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString());
 
 		//service
-		editor.putBoolean("service.collection.enabled", false);
-		editor.putLong("service.collection.period", 10000);
+		editor.putBoolean("service.collection.enabled", true);
+		editor.putLong("service.collection.period", 60000);
 		
 		editor.putBoolean("service.view.enabled", true);
 		editor.putLong("service.view.peroid", 300000);
