@@ -126,7 +126,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 			}
 		}
 		
-		ongoingBhvBuilderMap = null;
+		ongoingBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 		
 		return res;
 	}
