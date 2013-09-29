@@ -7,9 +7,19 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.Application;
 
 public class AppShuttleApplication extends Application {
+	private static AppShuttleApplication instance;
+	
 	private SnapshotUserCxt currUserCxt;
 	private Set<UserBhv> recentPredictedBhvSet;
 	private Set<UserBhv> recentPredictedBhvSetForView;
+	
+	
+	public AppShuttleApplication(){
+		instance = this;
+	}
+	public static AppShuttleApplication getContext(){
+		return instance;
+	}
 	
 	public SnapshotUserCxt getCurrUserCxt() {
 		return currUserCxt;
