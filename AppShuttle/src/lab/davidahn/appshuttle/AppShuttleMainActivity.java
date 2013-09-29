@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 
-public class MainActivity extends Activity {
+public class AppShuttleMainActivity extends Activity {
 	private Button btnStart;
 	private Button btnStop;
 	private Button btnReport;

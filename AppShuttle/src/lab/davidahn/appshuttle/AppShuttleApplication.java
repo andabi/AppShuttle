@@ -8,6 +8,7 @@ import android.app.Application;
 
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
+//	private SharedPreferences preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 	
 	private SnapshotUserCxt currUserCxt;
 	private Set<UserBhv> recentPredictedBhvSet;
@@ -20,6 +21,10 @@ public class AppShuttleApplication extends Application {
 	public static AppShuttleApplication getContext(){
 		return instance;
 	}
+	
+//	public SharedPreferences getPrefereceSettings(){
+//		return preferenceSettings;
+//	}
 	
 	public SnapshotUserCxt getCurrUserCxt() {
 		return currUserCxt;

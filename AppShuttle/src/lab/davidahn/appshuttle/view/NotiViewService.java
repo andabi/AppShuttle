@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.MainActivity;
+import lab.davidahn.appshuttle.AppShuttleMainActivity;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
@@ -64,7 +64,7 @@ public class NotiViewService extends Service {
 		iconSlotScoreIdList.offer(R.id.icon_slot2_text);
 		iconSlotScoreIdList.offer(R.id.icon_slot3_text);
 
-		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
+		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
 
 		Predictor predictor = new Predictor(getApplicationContext());
 		List<PredictedBhv> predictedBhvList = predictor.predict(Integer.MAX_VALUE);
