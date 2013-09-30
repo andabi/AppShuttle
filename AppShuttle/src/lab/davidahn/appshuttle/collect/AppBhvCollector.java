@@ -1,15 +1,15 @@
 package lab.davidahn.appshuttle.collect;
 
+import static lab.davidahn.appshuttle.context.bhv.UserBhvFactory.create;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.AppUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
@@ -24,52 +24,57 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.os.PowerManager;
-import android.util.Log;
 
+/**
+ * singleton 
+ * @author andabi
+ * 
+ */
 public class AppBhvCollector extends BaseBhvCollector {
-	private ActivityManager activityManager;
-	private PackageManager packageManager;
-	private PowerManager powerManager;
-	private KeyguardManager keyguardManager;
+	private ActivityManager _activityManager;
+	private PackageManager _packageManager;
+	private PowerManager _powerManager;
+	private KeyguardManager _keyguardManager;
 
-	private Map<UserBhv, DurationUserBhv.Builder> ongoingBhvBuilderMap;
+	private Map<UserBhv, DurationUserBhv.Builder> _durationUserBhvBuilderMap;
 
-	private static AppBhvCollector appBhvCollector;
+	private static AppBhvCollector _appBhvCollector = new AppBhvCollector();
 
-	private AppBhvCollector(Context cxt){
-		super(cxt);
-		activityManager = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
-		packageManager = cxt.getPackageManager();
-		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 
-	    keyguardManager = (KeyguardManager) cxt.getSystemService(Context.KEYGUARD_SERVICE);
+	private AppBhvCollector(){
+		super();
+		_activityManager = (ActivityManager) _appShuttleContext.getSystemService(Context.ACTIVITY_SERVICE);
+		_packageManager = _appShuttleContext.getPackageManager();
+		_powerManager = (PowerManager) _appShuttleContext.getSystemService(Context.POWER_SERVICE); 
+	    _keyguardManager = (KeyguardManager) _appShuttleContext.getSystemService(Context.KEYGUARD_SERVICE);
 	    
-		ongoingBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
+		_durationUserBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 	}
 	
-	public synchronized static AppBhvCollector getInstance(Context cxt){
-		if(appBhvCollector == null) 
-			appBhvCollector = new AppBhvCollector(cxt);
-		return appBhvCollector;
+	public static AppBhvCollector getInstance(){
+		return _appBhvCollector;
 	}
 	
 	public List<UserBhv> collect() {
 		List<UserBhv> res = new ArrayList<UserBhv>();
+		
 		res.addAll(collectActivityBhv());
 		res.addAll(collectServiceBhv());
+		
 		return res;
 	}
 	
 	private List<UserBhv> collectActivityBhv() {
 		List<UserBhv> res = new ArrayList<UserBhv>();
-	    if (!powerManager.isScreenOn()) { //screen off
-	    	res.add(new UserBhv(BhvType.NONE, "screen.off"));
-			Log.d("collection", "screen off");
-        } else if (keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
-				res.add(new UserBhv(BhvType.NONE, "lock.screen.on"));
-				Log.d("collection", "lock screen on");
+		
+	    if (!_powerManager.isScreenOn()) { //screen off
+	    	res.add(create(BhvType.NONE, "screen.off"));
+//			Log.d("collection", "screen off");
+        } else if (_keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
+				res.add(create(BhvType.NONE, "lock.screen.on"));
+//				Log.d("collection", "lock screen on");
 	    } else {
-			for(String bhvName : getCurrentActivity()){
-				res.add(new AppUserBhv(BhvType.APP, bhvName));
+			for(String bhvName : getPresentActivityList()){
+				res.add(create(BhvType.APP, bhvName));
 			}
 	    }
 	    return res;
@@ -78,33 +83,33 @@ public class AppBhvCollector extends BaseBhvCollector {
 	@Override
 	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<UserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		long adjustment = preferenceSettings.getLong("service.collection.period", 10000) / 2;
+		long adjustment = _preferenceSettings.getLong("service.collection.period", 10000) / 2;
 
-		if(ongoingBhvBuilderMap.isEmpty()) {
+		if(_durationUserBhvBuilderMap.isEmpty()) {
 			for(UserBhv uBhv : userBhvList){
-				ongoingBhvBuilderMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
+				_durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 				, new Date(currTime.getTime() + adjustment)
 				, currTimezone
 				, uBhv));
 			}
 		} else {
 			for(UserBhv uBhv : userBhvList){
-				if(ongoingBhvBuilderMap.containsKey(uBhv)){
-					DurationUserBhv.Builder rfdUCxtBuilder = ongoingBhvBuilderMap.get(uBhv);
+				if(_durationUserBhvBuilderMap.containsKey(uBhv)){
+					DurationUserBhv.Builder rfdUCxtBuilder = _durationUserBhvBuilderMap.get(uBhv);
 					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
 				} else {
-					ongoingBhvBuilderMap.put(uBhv, makeDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
+					_durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 					, new Date(currTime.getTime() + adjustment)
 					, currTimezone
 					, uBhv));
 				}
 			}
-			for(UserBhv ongoingBhv : new HashSet<UserBhv>((ongoingBhvBuilderMap.keySet()))){
-				DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvBuilderMap.get(ongoingBhv);
-				if(currTime.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
-						> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
-					res.add(ongoingRfdUCxtBuilder.build());
-					ongoingBhvBuilderMap.remove(ongoingBhv);
+			for(UserBhv uBhv : new HashSet<UserBhv>((_durationUserBhvBuilderMap.keySet()))){
+				DurationUserBhv.Builder _durationUserBhvBuilder = _durationUserBhvBuilderMap.get(uBhv);
+				if(currTime.getTime() - _durationUserBhvBuilder.getEndTime().getTime() 
+						> _preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
+					res.add(_durationUserBhvBuilder.build());
+					_durationUserBhvBuilderMap.remove(uBhv);
 				}
 			}
 		}
@@ -116,21 +121,21 @@ public class AppBhvCollector extends BaseBhvCollector {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 
 //		for(UserBhv ongoingBhv : new HashSet<UserBhv>(ongoingBhvBuilderMap.keySet())){
-		for(UserBhv ongoingBhv : ongoingBhvBuilderMap.keySet()){
-			DurationUserBhv.Builder ongoingRfdUCxtBuilder = ongoingBhvBuilderMap.get(ongoingBhv);
-			if(currTimeDate.getTime() - ongoingRfdUCxtBuilder.getEndTime().getTime() 
-					> preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
-				res.add(ongoingRfdUCxtBuilder.build());
+		for(UserBhv uBhv : _durationUserBhvBuilderMap.keySet()){
+			DurationUserBhv.Builder durationUserBhvBuilder = _durationUserBhvBuilderMap.get(uBhv);
+			if(currTimeDate.getTime() - durationUserBhvBuilder.getEndTime().getTime() 
+					> _preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
+				res.add(durationUserBhvBuilder.build());
 //				ongoingBhvBuilderMap.remove(ongoingBhv);
 			}
 		}
 		
-		ongoingBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
+		_durationUserBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 		
 		return res;
 	}
 	
-	private DurationUserBhv.Builder makeDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, UserBhv bhv) {
+	private DurationUserBhv.Builder createDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, UserBhv bhv) {
 		return new DurationUserBhv.Builder()
 		.setTime(time)
 		.setEndTime(endTime)
@@ -146,10 +151,10 @@ public class AppBhvCollector extends BaseBhvCollector {
 	    return res;
 	}
 	
-	private List<String> getCurrentActivity(){
+	private List<String> getPresentActivityList(){
 		List<String> res = new ArrayList<String>();
 		try {
-			res.addAll(getCurrentApp(1, true));
+			res.addAll(getPresentApp(1, true));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -157,18 +162,18 @@ public class AppBhvCollector extends BaseBhvCollector {
 	}
 	
 	@SuppressWarnings("unused")
-	private Set<String> getCurrentService(){
-		Set<String> res = new HashSet<String>();
-		res.addAll(getCurrentService(0, false));
+	private List<String> getPresentServiceList(){
+		List<String> res = new ArrayList<String>();
+		res.addAll(getPresentService(0, false));
 		return res;
 
 	}
 	
 	@SuppressWarnings("unused")
-	private List<String> getInstalledApp(boolean getSysApp){
+	private List<String> getInstalledAppList(boolean includeSystemApp){
 		List<String> res = new ArrayList<String>();
-		for(ApplicationInfo appInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){
-			if(!getSysApp && isSystemApp(appInfo))
+		for(ApplicationInfo appInfo : _packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){
+			if(!includeSystemApp && isSystemApp(appInfo))
 				continue;
 			res.add(appInfo.packageName);
 		}
@@ -183,15 +188,15 @@ public class AppBhvCollector extends BaseBhvCollector {
 	    return ((serviceInfo.flags & RunningServiceInfo.FLAG_SYSTEM_PROCESS) != 0) ? true : false;
 	}
 
-
-	private List<String> getCurrentApp(int max, boolean getSysApp) throws NameNotFoundException{
+	private List<String> getPresentApp(int max, boolean includeSystemApp) throws NameNotFoundException{
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
+		
 		List<String> res = new ArrayList<String>();
 		String packageName = "";
-		for(RunningTaskInfo taskInfo : activityManager.getRunningTasks(Integer.MAX_VALUE)){
+		for(RunningTaskInfo taskInfo : _activityManager.getRunningTasks(Integer.MAX_VALUE)){
 			packageName = taskInfo.baseActivity.getPackageName();
-			if(!getSysApp && isSystemApp(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)))
+			if(!includeSystemApp && isSystemApp(_packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)))
 				continue;
 //			res.add(pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA).processName);
 			res.add(packageName);
@@ -200,12 +205,13 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 
-	private List<String> getCurrentService(int max, boolean getSysService){
+	private List<String> getPresentService(int max, boolean includeSystemApp){
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
+		
 		List<String> res = new ArrayList<String>();
-		for(RunningServiceInfo serviceInfo : activityManager.getRunningServices(Integer.MAX_VALUE)) {
-			if(!getSysService && isSystemService(serviceInfo))
+		for(RunningServiceInfo serviceInfo : _activityManager.getRunningServices(Integer.MAX_VALUE)) {
+			if(!includeSystemApp && isSystemService(serviceInfo))
 				continue;
 			res.add(serviceInfo.service.getClassName());
 			if(res.size() >= max) break;
@@ -213,14 +219,13 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 
-	public String getHomePackage(){
+	public String getHomePackageName(){
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
-		ResolveInfo resolveInfo = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		ResolveInfo resolveInfo = _packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		return resolveInfo.activityInfo.packageName;
 	}
 
-	
 //	private String getScreenLockPackage(){
 //		Intent intent = new Intent(Intent.ACTION_SCREEN_ON);
 ////		intent.addCategory(Intent.CATEGORY_HOME);

@@ -19,6 +19,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -66,7 +67,7 @@ public class NotiViewService extends Service {
 
 		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
 
-		Predictor predictor = new Predictor(getApplicationContext());
+		Predictor predictor = new Predictor();
 		List<PredictedBhv> predictedBhvList = predictor.predict(Integer.MAX_VALUE);
 
 		Set<UserBhv> predictedBhvSet = new HashSet<UserBhv>();
@@ -74,14 +75,14 @@ public class NotiViewService extends Service {
 			predictedBhvSet.add(predictedBhv.getUserBhv());
 		}
 		
-		Set<UserBhv> recentPredictedBhvSet = ((AppShuttleApplication)getApplicationContext()).getRecentPredictedBhvSet();
+		Set<UserBhv> recentPredictedBhvSet = AppShuttleApplication.getContext().getRecentPredictedBhvSet();
 		for(PredictedBhv predictedBhv : predictedBhvList) {
 			if(recentPredictedBhvSet == null ||
 					!recentPredictedBhvSet.contains(predictedBhv.getUserBhv())){
 				predictor.storePredictedBhv(predictedBhv);
 			}
 		}
-		((AppShuttleApplication)getApplicationContext()).setRecentPredictedBhvSet(predictedBhvSet);
+		AppShuttleApplication.getContext().setRecentPredictedBhvSet(predictedBhvSet);
 		
 		Set<UserBhv> predictedBhvSetForView = new HashSet<UserBhv>();
 		for(PredictedBhv predictedBhv : predictedBhvList) {
@@ -136,7 +137,7 @@ public class NotiViewService extends Service {
 //			notificationManager.cancel(NOTI_UPDATE);
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		} else { 
-			Set<UserBhv> recentPredictedBhvSetForView = ((AppShuttleApplication)getApplicationContext()).getRecentPredictedBhvSetForView();
+			Set<UserBhv> recentPredictedBhvSetForView = AppShuttleApplication.getContext().getRecentPredictedBhvSetForView();
 			if(predictedBhvSetForView.equals(recentPredictedBhvSetForView)){
 				notiUpdate = new Notification.Builder(NotiViewService.this)
 				.setSmallIcon(R.drawable.appshuttle)
@@ -153,7 +154,7 @@ public class NotiViewService extends Service {
 			}
 			notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		}
-		((AppShuttleApplication)getApplicationContext()).setRecentPredictedBhvSetForView(predictedBhvSetForView);
+		AppShuttleApplication.getContext().setRecentPredictedBhvSetForView(predictedBhvSetForView);
 
 		return START_NOT_STICKY;
 	}

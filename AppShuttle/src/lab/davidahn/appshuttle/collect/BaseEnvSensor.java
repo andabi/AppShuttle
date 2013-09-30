@@ -5,17 +5,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.UserEnv;
-import android.content.Context;
 import android.content.SharedPreferences;
 
-public class BaseEnvSensor implements EnvSensor {
-	protected SharedPreferences preferenceSettings;
+public abstract class BaseEnvSensor implements EnvSensor {
+	protected AppShuttleApplication _appShuttleContext;
+	protected SharedPreferences _preferenceSettings;
 
-	public BaseEnvSensor(Context cxt){
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+	public BaseEnvSensor(){
+		_appShuttleContext = AppShuttleApplication.getContext();
+		_preferenceSettings = _appShuttleContext.getPreferenceSettings();
+//		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 	
 	public UserEnv sense() {
@@ -33,4 +35,6 @@ public class BaseEnvSensor implements EnvSensor {
 	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
 		return null;
 	}
+	
+	public abstract boolean isChanged();
 }

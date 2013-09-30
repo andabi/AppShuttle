@@ -3,9 +3,6 @@ package lab.davidahn.appshuttle.context.bhv;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.content.Context;
-
-
 public class UserBhv {
 	protected BhvType bhvType;
 	protected String bhvName;
@@ -71,10 +68,7 @@ public class UserBhv {
 		return bhvType.hashCode() ^ bhvName.hashCode();
 	}
 	
-	public boolean isValid(Context cxt) {
-		if(bhvType == BhvType.NONE)
-			return false;
-		else
-			return true;
+	public boolean isValid() {
+		return true;
 	}
 }

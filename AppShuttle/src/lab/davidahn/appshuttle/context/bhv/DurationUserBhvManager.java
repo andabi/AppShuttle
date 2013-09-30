@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -23,7 +23,8 @@ public class DurationUserBhvManager {
 	private static DurationUserBhvManager durationUserBhvManager;
 
 	private DurationUserBhvManager(Context cxt) {
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+//		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 
 		_durationUserBhvDao = DurationUserBhvDao.getInstance();
 		_cacheSize = preferenceSettings.getInt("context.bhv.duration_user_bhv.cache_size", 100);

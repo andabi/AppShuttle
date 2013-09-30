@@ -5,10 +5,12 @@ import java.util.Set;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
-//	private SharedPreferences preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+	private SharedPreferences preferenceSettings;
 	
 	private SnapshotUserCxt currUserCxt;
 	private Set<UserBhv> recentPredictedBhvSet;
@@ -22,10 +24,12 @@ public class AppShuttleApplication extends Application {
 		return instance;
 	}
 	
-//	public SharedPreferences getPrefereceSettings(){
-//		return preferenceSettings;
-//	}
-	
+	public SharedPreferences getPreferenceSettings(){
+		if(preferenceSettings == null)
+			preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		return preferenceSettings;
+	}
+
 	public SnapshotUserCxt getCurrUserCxt() {
 		return currUserCxt;
 	}

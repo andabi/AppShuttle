@@ -5,17 +5,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 public class BaseBhvCollector implements BhvCollector {
-	protected SharedPreferences preferenceSettings;
+	protected AppShuttleApplication _appShuttleContext;
+	protected SharedPreferences _preferenceSettings;
 
-	public BaseBhvCollector(Context cxt){
-		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+	public BaseBhvCollector(){
+		_appShuttleContext = AppShuttleApplication.getContext();
+		_preferenceSettings = _appShuttleContext.getPreferenceSettings();
+//		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 
 	public List<UserBhv> collect() {

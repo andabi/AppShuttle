@@ -8,25 +8,23 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.AlarmManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 public class Predictor {
-	private Context _cxt;
 	private SharedPreferences _preferenceSettings;
 	
-	public Predictor(Context cxt){
-		_cxt = cxt;		
-		_preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+	public Predictor(){
+//		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		_preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 	}
 	
 	public List<PredictedBhv> predict(int topN){
-		SnapshotUserCxt currUserCxt = ((AppShuttleApplication)_cxt.getApplicationContext()).getCurrUserCxt();
+		SnapshotUserCxt currUserCxt = AppShuttleApplication.getContext().getCurrUserCxt();
+
 		if(currUserCxt == null)
 			return Collections.emptyList();
 
@@ -89,7 +87,7 @@ public class Predictor {
 					));
 		}
 		
-		UserBhvManager userBhvManager = UserBhvManager.getInstance(_cxt);
+		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		for(UserBhv uBhv : userBhvManager.getBhvList()){
 			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);

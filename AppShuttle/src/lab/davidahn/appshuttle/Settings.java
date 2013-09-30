@@ -1,21 +1,21 @@
 package lab.davidahn.appshuttle;
 
 import android.app.AlarmManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 
 public class Settings {
-	public static void preferenceSettings(Context cxt) {
-		SharedPreferences preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+	public static void preferenceSettings() {
+//		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 		SharedPreferences.Editor editor = preferenceSettings.edit();
 		
 		//general
-		editor.putString("database.name", new StringBuilder(cxt.getResources().getString(R.string.app_name)).append(".db").toString());
+		editor.putString("database.name", new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
 
 		//service
 		editor.putBoolean("service.collection.enabled", true);
-		editor.putLong("service.collection.period", 60000);
+		editor.putLong("service.collection.period", 30000);
 		
 		editor.putBoolean("service.view.enabled", true);
 		editor.putLong("service.view.peroid", 300000);
@@ -28,7 +28,7 @@ public class Settings {
 		editor.putLong("service.compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
 
 		//collection
-		editor.putLong("collection.location.tolerance.time", 10000);
+		editor.putLong("collection.location.tolerance.time", 300000);
 		editor.putInt("collection.location.tolerance.distance", 500);
 		
 		editor.putInt("collection.place.num_address_prefix_words", 3);

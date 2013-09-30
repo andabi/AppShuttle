@@ -29,9 +29,10 @@ public class AppShuttleService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		Settings.preferenceSettings(getApplicationContext());
-		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		
+		Settings.preferenceSettings();
+//		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
+
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
 		registerReceiver(screenOnReceiver, filter);
@@ -110,7 +111,7 @@ public class AppShuttleService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 			if(preferenceSettings.getBoolean("service.view.enabled", true)){
 				Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
