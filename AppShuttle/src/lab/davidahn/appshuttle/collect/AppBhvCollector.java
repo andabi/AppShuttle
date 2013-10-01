@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.collect;
 
-import static lab.davidahn.appshuttle.context.bhv.UserBhvFactory.create;
+import static lab.davidahn.appshuttle.context.bhv.UserBhv.create;
 
 import java.util.ArrayList;
 import java.util.Date;

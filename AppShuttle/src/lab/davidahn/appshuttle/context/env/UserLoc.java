@@ -19,7 +19,7 @@ public class UserLoc implements UserEnv {
 		if (validity == UserLocValidity.VALID)
 			return new UserLoc(longitude, longitude);
 		else
-			return new InvalidUserLoc();
+			return InvalidUserLoc.getInstance();
 	}
 	
 //	public UserLoc(double longitude, double latitude, Validity validity) {

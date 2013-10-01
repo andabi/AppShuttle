@@ -2,8 +2,14 @@ package lab.davidahn.appshuttle.context.env;
 
 
 public class InvalidUserLoc extends UserLoc {
-	public InvalidUserLoc() {
+	private static InvalidUserLoc invalidUserLoc = new InvalidUserLoc();
+	
+	private InvalidUserLoc() {
 		super(0,0);
+	}
+	
+	public static InvalidUserLoc getInstance(){
+		return invalidUserLoc;
 	}
 	
 	@Override

@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.collect;
 
+import static lab.davidahn.appshuttle.context.bhv.UserBhv.create;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,7 +13,6 @@ import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.CallUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import static lab.davidahn.appshuttle.context.bhv.UserBhvFactory.create;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.database.Cursor;

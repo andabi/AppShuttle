@@ -13,6 +13,19 @@ public class UserBhv {
 		_bhvName = bhvName;
 		_metas = new HashMap<String, Object>();
 	}
+	
+	public static UserBhv create(BhvType bhvType, String bhvname){
+		switch (bhvType){
+			case NONE:
+				return new NoneUserBhv(bhvType, bhvname);
+			case APP:
+				return new AppUserBhv(bhvType, bhvname);
+			case CALL:
+				return new CallUserBhv(bhvType, bhvname);
+			default:
+				throw new IllegalArgumentException("unknown bhv type");
+		}
+	}
 
 	public BhvType getBhvType() {
 		return _bhvType;

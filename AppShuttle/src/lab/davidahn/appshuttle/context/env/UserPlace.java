@@ -15,7 +15,7 @@ public class UserPlace implements UserEnv {
 	
 	public static UserPlace create(String name, UserLoc coordinates) {
 		if(name == null || name.equals(""))
-			return new InvalidUserPlace();
+			return InvalidUserPlace.getInstance();
 		else
 			return new UserPlace(name, coordinates);
 	}
