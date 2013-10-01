@@ -28,18 +28,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class SnapshotUserCxtDao {
-	private SQLiteDatabase db;
+	private SQLiteDatabase _db;
 
-	private static SnapshotUserCxtDao userCxtDao;
+	private static SnapshotUserCxtDao _userCxtDao = new SnapshotUserCxtDao();
 
 	private SnapshotUserCxtDao() {
-		db = DBHelper.getInstance().getWritableDatabase();
+		_db = DBHelper.getInstance().getWritableDatabase();
 	}
 
-	public synchronized static SnapshotUserCxtDao getInstance() {
-		if (userCxtDao == null)
-			userCxtDao = new SnapshotUserCxtDao();
-		return userCxtDao;
+	public static SnapshotUserCxtDao getInstance() {
+		return _userCxtDao;
 	}
 
 	public void storeCxt(SnapshotUserCxt uCxt) {
@@ -53,7 +51,7 @@ public class SnapshotUserCxtDao {
 			row.put("user_envs", gson.toJson(uEnvs));
 			row.put("bhv_type", uBhv.getBhvType().toString());
 			row.put("bhv_name", uBhv.getBhvName());
-			db.insert("snapshot_context", null, row);
+			_db.insert("snapshot_context", null, row);
 			Log.i("stored cxt", uCxt.toString());
 		}
 	}
@@ -62,7 +60,7 @@ public class SnapshotUserCxtDao {
 	public List<SnapshotUserCxt> retrieveCxt(Date sTime, Date eTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
+		Cursor cur = _db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 		List<SnapshotUserCxt> res = new ArrayList<SnapshotUserCxt>();
 		
@@ -103,7 +101,7 @@ public class SnapshotUserCxtDao {
 	public File loadCxtAsCsvFile(Context cxt, String fileName, Date sTime, Date eTime) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
+		Cursor cur = _db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
 
 		try {

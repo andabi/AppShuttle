@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
-import lab.davidahn.appshuttle.context.env.InvalidUserLoc;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserLoc.UserLocValidity;
@@ -89,22 +87,19 @@ public class LocEnvSensor extends BaseEnvSensor {
 	}
 	
 	public boolean isChanged(){
-//		UserLoc currULoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-		boolean changed = false;
-		//moved check
-		if(_prevULoc != null){
-//			prevULoc = ((LocUserEnv)GlobalState.prevUCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-			try {
-//				if(!currULoc.getLoc().proximity(prevULoc.getLoc(), settings.getInt("collection.location.tolerance.distance", 100))) {
-				if(!_currULoc.isSame(_prevULoc)) {
-					Log.i("changed env", "loc moved");
-					changed = true;
-				}
-			} catch (InvalidUserEnvException e) {
-				;
+		if(_prevULoc == null)
+			return false;
+		
+		try {
+			if(!_currULoc.isSame(_prevULoc)) {
+				Log.i("user env", "location moved");
+				return true;
+			} else {
+				return false;
 			}
+		} catch (InvalidUserEnvException e) {
+			return false;
 		}
-		return changed;
 	}
 	
 	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
@@ -132,16 +127,11 @@ public class LocEnvSensor extends BaseEnvSensor {
 	}
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
-		EnvType envType = EnvType.LOCATION;
-		if(uEnv instanceof InvalidUserLoc){
-			envType = EnvType.INVALID_LOCATION;
-		}
-
 		return new DurationUserEnv.Builder()
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
 			.setTimeZone(currTimeZone)
-			.setEnvType(envType)
+			.setEnvType(uEnv.getEnvType())
 			.setUserEnv(uEnv);
 	}
 	
@@ -156,10 +146,11 @@ public class LocEnvSensor extends BaseEnvSensor {
 
 		public void onProviderEnabled(String provider) {
 			_locationManager.requestLocationUpdates(_bestProvider, 
-					_preferenceSettings.getLong("collection.location.tolerance.time", 6000), 
-					_preferenceSettings.getInt("collection.location.tolerance.distance", 100), 
+					_preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
+					_preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
 					locationListener);
-			_lastKnownLoc = _locationManager.getLastKnownLocation(provider);
+			
+			_lastKnownLoc = _locationManager.getLastKnownLocation(_bestProvider);
 		}
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {

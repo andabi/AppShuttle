@@ -4,60 +4,61 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserBhv {
-	protected BhvType bhvType;
-	protected String bhvName;
-	protected Map<String, Object> metas;
+	protected BhvType _bhvType;
+	protected String _bhvName;
+	protected Map<String, Object> _metas;
 	
 	public UserBhv(BhvType bhvType, String bhvName) {
-		this.bhvType = bhvType;
-		this.bhvName = bhvName;
-		this.metas = new HashMap<String, Object>();
+		_bhvType = bhvType;
+		_bhvName = bhvName;
+		_metas = new HashMap<String, Object>();
 	}
 
 	public BhvType getBhvType() {
-		return bhvType;
+		return _bhvType;
 	}
 	
 	public void setBhvType(BhvType bhvType) {
-		this.bhvType = bhvType;
+		_bhvType = bhvType;
 	}
 	
 	public String getBhvName() {
-		return bhvName;
+		return _bhvName;
 	}
 
 	public void setBhvName(String bhvName) {
-		this.bhvName = bhvName;
+		_bhvName = bhvName;
 	}
 	
 	public Map<String, Object> getMetas() {
-		return metas;
+		return _metas;
 	}
 	
 	public void setMetas(Map<String, Object> metas) {
-		this.metas = metas;
+		_metas = metas;
 	}
 
 	public Object getMeta(String key) {
-		return metas.get(key);
+		return _metas.get(key);
 	}
 	
 	public void setMeta(String key, Object val){
-		metas.put(key, val);
+		_metas.put(key, val);
 	}
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("behavior type: ").append(bhvType.toString()).append(", ");
-		msg.append("behavior name: ").append(bhvName).append(", ");
-		msg.append("metas: ").append(metas.toString());
+		msg.append("behavior type: ").append(_bhvType.toString()).append(", ");
+		msg.append("behavior name: ").append(_bhvName).append(", ");
+		msg.append("metas: ").append(_metas.toString());
 		return msg.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o){
-		if((o instanceof UserBhv) && bhvName.equals(((UserBhv)o).bhvName) 
-				&& bhvType == ((UserBhv)o).bhvType)
+		if((o instanceof UserBhv) 
+				&& _bhvName.equals(((UserBhv)o)._bhvName) 
+				&& _bhvType == ((UserBhv)o)._bhvType)
 			return true;
 		else 
 			return false;
@@ -65,7 +66,7 @@ public class UserBhv {
 	
 	@Override
 	public int hashCode(){
-		return bhvType.hashCode() ^ bhvName.hashCode();
+		return _bhvType.hashCode() ^ _bhvName.hashCode();
 	}
 	
 	public boolean isValid() {

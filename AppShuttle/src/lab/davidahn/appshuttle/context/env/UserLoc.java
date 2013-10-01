@@ -73,6 +73,10 @@ public class UserLoc implements UserEnv {
 		else return false;
 	}
 	
+	public EnvType getEnvType(){
+		return EnvType.LOCATION;
+	}
+	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 //		if(_validity == Validity.VALID)

@@ -9,7 +9,7 @@ public class UserPlace implements UserEnv {
 //	public UserPlace() {}
 
 	public UserPlace(String name, UserLoc coordinates) {
-		this._name = name;
+		_name = name;
 		_coordinates = coordinates;
 	}
 	
@@ -21,7 +21,7 @@ public class UserPlace implements UserEnv {
 	}
 //	public UserPlace(double longitude, double latitude, String name, Validity validity) {
 //		coordinates = new UserLoc(longitude, latitude, validity);
-//		this.name = name;
+//		name = name;
 //	}
 	public String getName() throws InvalidUserEnvException {
 //		if(_validity == Validity.INVALID)
@@ -29,13 +29,13 @@ public class UserPlace implements UserEnv {
 		return _name;
 	}
 	public void setName(String name) {
-		this._name = name;
+		_name = name;
 	}
 	public UserLoc getCoordinates() {
 		return _coordinates;
 	}
 	public void setCoordinates(UserLoc coordinates) {
-		this._coordinates = coordinates;
+		_coordinates = coordinates;
 	}
 	public boolean isValid(){
 //		if(_validity == Validity.VALID) 
@@ -51,6 +51,10 @@ public class UserPlace implements UserEnv {
 			return true;
 		else 
 			return false;
+	}
+	
+	public EnvType getEnvType(){
+		return EnvType.PLACE;
 	}
 	
 	public String toString(){

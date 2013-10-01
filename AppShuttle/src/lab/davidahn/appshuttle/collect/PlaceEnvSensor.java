@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
-import lab.davidahn.appshuttle.context.env.InvalidUserPlace;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserLoc.UserLocValidity;
@@ -19,96 +17,101 @@ import android.location.Geocoder;
 import android.util.Log;
 
 public class PlaceEnvSensor extends BaseEnvSensor {
-	private Geocoder _geocoder;
-	
 	private UserPlace _prevUPlace;
 	private UserPlace _currUPlace;
     private DurationUserEnv.Builder _durationUserEnvBuilder;
-    private LocEnvSensor _locEnvCollector;
 	
-    private static PlaceEnvSensor _placeEnvSensor;
+    private static PlaceEnvSensor _placeEnvSensor = new PlaceEnvSensor();
 
     private PlaceEnvSensor(){
     	super();
-    	
-		_geocoder = new Geocoder(_appShuttleContext);
-		_locEnvCollector = LocEnvSensor.getInstance();
 		_prevUPlace = _currUPlace = null;
 	}
 	
-	public synchronized static PlaceEnvSensor getInstance(){
-		if(_placeEnvSensor == null) _placeEnvSensor = new PlaceEnvSensor();
+	public static PlaceEnvSensor getInstance(){
 		return _placeEnvSensor;
 	}
 	
 	public UserPlace sense(){
 		_prevUPlace = _currUPlace;
-		_currUPlace = new InvalidUserPlace();
+		
+		LocEnvSensor _locEnvCollector = LocEnvSensor.getInstance();
 		UserLoc currLoc = _locEnvCollector.getCurrULoc();
-		if(_prevUPlace != null && 
-				_prevUPlace.isValid() && 
-				currLoc.isValid() && 
-				!_locEnvCollector.isChanged()){
-			_currUPlace = _prevUPlace;
-		} else {
-			try {
-				double currLongitude = currLoc.getLongitude();
-				double currLatitude = currLoc.getLatitude();
-				try {
-					List<Address> geocoded = _geocoder.getFromLocation(currLatitude, currLongitude, 1);
-					if(geocoded != null && !geocoded.isEmpty()) {
-						Address addr = geocoded.get(0);
-						String addressLine = addr.getAddressLine(0);
-						
-						if(addressLine == null) {
-							return _currUPlace;
-						}
-
-						String adminArea = addr.getAdminArea();
-						String subAdminArea = addr.getSubAdminArea();
-						String locality = addr.getLocality();
-						String subLocality = addr.getSubLocality();
-						
-						StringBuilder sb = new StringBuilder();
-						if(adminArea != null)
-							sb.append(" ").append(adminArea);
-						if(subAdminArea != null)
-							sb.append(" ").append(subAdminArea);
-						if(locality != null)
-							sb.append(" ").append(locality);
-						if(subLocality != null)
-							sb.append(" ").append(subLocality);
-						
-						String placeName = sb.toString();
-						
-						UserLocValidity validity = addr.hasLongitude() && addr.hasLatitude() ? UserLocValidity.VALID : UserLocValidity.INVALID;
-						UserLoc coordinates = UserLoc.create(validity, addr.getLongitude(), addr.getLatitude());
-						
-						_currUPlace = UserPlace.create(placeName, coordinates);
-					}
-				} catch (IOException e) {
-					;
-				}
-			} catch (InvalidUserEnvException e) {
-				;
-			}
+		
+		_currUPlace = UserPlace.create(null, currLoc);
+		
+		if(!currLoc.isValid()) {
+			return _currUPlace;
 		}
-		return _currUPlace;
+		
+		if(_prevUPlace != null && !_locEnvCollector.isChanged( /* && _prevUPlace.isValid() */ )){
+			_currUPlace = _prevUPlace;
+			
+			return _currUPlace;
+		}
+		
+		double currLocLongitude, currLocLatitude;
+		try {
+			currLocLatitude = currLoc.getLatitude();
+			currLocLongitude = currLoc.getLongitude();
+		} catch (InvalidUserEnvException e) {
+			throw new RuntimeException("current location is not invalid");
+		}
+
+		try {
+	    	Geocoder _geocoder = new Geocoder(_appShuttleContext);
+    		List<Address> geocoded = _geocoder.getFromLocation(currLocLatitude, currLocLongitude, 1);
+			if(geocoded == null || geocoded.isEmpty())
+				return _currUPlace;
+		
+			Address addr = geocoded.get(0);
+			String addressLine = addr.getAddressLine(0);
+			
+			if(addressLine == null) {
+				return _currUPlace;
+			}
+
+			String adminArea = addr.getAdminArea();
+			String subAdminArea = addr.getSubAdminArea();
+			String locality = addr.getLocality();
+			String subLocality = addr.getSubLocality();
+			
+			StringBuilder sb = new StringBuilder();
+			if(adminArea != null)
+				sb.append(" ").append(adminArea);
+			if(subAdminArea != null)
+				sb.append(" ").append(subAdminArea);
+			if(locality != null)
+				sb.append(" ").append(locality);
+			if(subLocality != null)
+				sb.append(" ").append(subLocality);
+			
+			String placeName = sb.toString();
+			
+			UserLocValidity coordinatesValidity = addr.hasLongitude() && addr.hasLatitude() ? UserLocValidity.VALID : UserLocValidity.INVALID;
+			UserLoc coordinates = UserLoc.create(coordinatesValidity, addr.getLongitude(), addr.getLatitude());
+			_currUPlace = UserPlace.create(placeName, coordinates);
+			
+			return _currUPlace;
+		} catch (IOException e) {
+			return _currUPlace;
+		}
 	}
 	
 	public boolean isChanged(){
-		boolean changed = false;
-		if(_prevUPlace != null){
-			try {
-				if(!_currUPlace.isSame(_prevUPlace)) {
-					changed = true;
-					Log.i("changed env", "place moved");
-				}
-			} catch (InvalidUserEnvException e) {
-				;
+		if(_prevUPlace == null)
+			return false;
+		
+		try {
+			if(!_currUPlace.isSame(_prevUPlace)) {
+				Log.i("user env", "place moved");
+				return true;
+			} else {
+				return false;
 			}
+		} catch (InvalidUserEnvException e) {
+			return false;
 		}
-		return changed;
 	}
 	
 	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
@@ -136,16 +139,11 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	}
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
-		EnvType envType = EnvType.PLACE;
-		if(uEnv instanceof InvalidUserPlace){
-			envType = EnvType.PLACE;
-		}
-		
 		return new DurationUserEnv.Builder()
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
 			.setTimeZone(currTimeZone)
-			.setEnvType(envType)
+			.setEnvType(uEnv.getEnvType())
 			.setUserEnv(uEnv);
 	}
 }
