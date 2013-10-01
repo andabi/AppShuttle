@@ -8,8 +8,10 @@ import java.util.TimeZone;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
+import lab.davidahn.appshuttle.context.env.InvalidUserLoc;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
+import lab.davidahn.appshuttle.context.env.UserLoc.UserLocValidity;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -79,12 +81,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 	public UserLoc sense(){
 		_prevULoc = _currULoc;
 
-		if (_lastKnownLoc == null) {
-			Log.d("location", "sensing failure");
-			return new UserLoc(0, 0, UserLoc.Validity.INVALID);
-		}
-		
-		_currULoc =  new UserLoc(_lastKnownLoc.getLongitude(), _lastKnownLoc.getLatitude(), UserLoc.Validity.VALID);
+		UserLocValidity validity = (_lastKnownLoc == null) ? UserLocValidity.VALID : UserLocValidity.INVALID;
+		_currULoc =  UserLoc.create(validity, _lastKnownLoc.getLongitude(), _lastKnownLoc.getLatitude());
+//		Log.d("location", "sensing failure");
+
 		return _currULoc;
 	}
 	
@@ -132,11 +132,16 @@ public class LocEnvSensor extends BaseEnvSensor {
 	}
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
+		EnvType envType = EnvType.LOCATION;
+		if(uEnv instanceof InvalidUserLoc){
+			envType = EnvType.INVALID_LOCATION;
+		}
+
 		return new DurationUserEnv.Builder()
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
 			.setTimeZone(currTimeZone)
-			.setEnvType(EnvType.LOCATION)
+			.setEnvType(envType)
 			.setUserEnv(uEnv);
 	}
 	

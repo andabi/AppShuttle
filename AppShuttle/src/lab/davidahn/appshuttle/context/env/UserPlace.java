@@ -1,49 +1,53 @@
 package lab.davidahn.appshuttle.context.env;
 
-import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
-
 
 public class UserPlace implements UserEnv {
-	private String name;
-	private UserLoc coordinates;
-	private Validity validity;
+	protected String _name;
+	protected UserLoc _coordinates;
+//	protected Validity _validity;
 
-	public UserPlace(double longitude, double latitude, String name) {
-		coordinates = new UserLoc(longitude, latitude);
-		this.name = name;
+//	public UserPlace() {}
+
+	public UserPlace(String name, UserLoc coordinates) {
+		this._name = name;
+		_coordinates = coordinates;
 	}
-	public UserPlace(double longitude, double latitude, String name, Validity validity) {
-		coordinates = new UserLoc(longitude, latitude, validity);
-		this.name = name;
+	
+	public static UserPlace create(String name, UserLoc coordinates) {
+		if(name == null || name == "")
+			return new InvalidUserPlace();
+		else
+			return new UserPlace(name, coordinates);
 	}
+//	public UserPlace(double longitude, double latitude, String name, Validity validity) {
+//		coordinates = new UserLoc(longitude, latitude, validity);
+//		this.name = name;
+//	}
 	public String getName() throws InvalidUserEnvException {
-		if(validity == Validity.INVALID)
-			throw new InvalidUserEnvException();
-		return name;
+//		if(_validity == Validity.INVALID)
+//			throw new InvalidUserEnvException();
+		return _name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this._name = name;
 	}
 	public UserLoc getCoordinates() {
-		return coordinates;
+		return _coordinates;
 	}
 	public void setCoordinates(UserLoc coordinates) {
-		this.coordinates = coordinates;
+		this._coordinates = coordinates;
 	}
 	public boolean isValid(){
-		if(validity == Validity.VALID) 
+//		if(_validity == Validity.VALID) 
 			return true;
-		else 
-			return false;
-	}
-	public void setValidity(Validity validity) {
-		this.validity = validity;
+//		else 
+//			return false;
 	}
 	
 	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {
-		if(validity == Validity.INVALID || !uPlace.isValid()) 
-			throw new InvalidUserEnvException();
-		if(name.equals(uPlace.getName())) 
+//		if(_validity == Validity.INVALID || !uPlace.isValid()) 
+//			throw new InvalidUserEnvException();
+		if(_name.equals(uPlace.getName())) 
 			return true;
 		else 
 			return false;
@@ -51,26 +55,26 @@ public class UserPlace implements UserEnv {
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		if(validity == Validity.VALID)
-			msg.append(name).append(" (").append(coordinates).append(") ");
-		else
-			msg.append("invalid");
+//		if(_validity == Validity.VALID)
+		msg.append(_name).append(" (").append(_coordinates).append(") ");
+//		else
+//			msg.append("invalid");
 		return msg.toString();
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if(!super.equals(o))
+		if(o instanceof UserPlace && _name.equals(((UserPlace)o)._name))
+			return true;
+		else 
 			return false;
-		else {
-			if(name.equals(((UserPlace)o).name))
-				return true;
-			else return false;
-		}
 	}
 	
 	@Override
 	public int hashCode(){
-		return 0;
+//		if(_name == null)
+//			return 0;
+					
+		return _name.hashCode();
 	}
 }

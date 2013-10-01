@@ -5,7 +5,9 @@ public enum EnvType {
 //	PLACE;
 
 	LOCATION(UserLoc.class),
-	PLACE(UserPlace.class);
+	INVALID_LOCATION(InvalidUserLoc.class),
+	PLACE(UserPlace.class),
+	INVALID_PLACE(InvalidUserPlace.class);
 	
 	private Class<? extends UserEnv> clazz;
 	

@@ -9,9 +9,10 @@ import java.util.TimeZone;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
+import lab.davidahn.appshuttle.context.env.InvalidUserPlace;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
-import lab.davidahn.appshuttle.context.env.UserLoc.Validity;
+import lab.davidahn.appshuttle.context.env.UserLoc.UserLocValidity;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.location.Address;
 import android.location.Geocoder;
@@ -42,7 +43,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	
 	public UserPlace sense(){
 		_prevUPlace = _currUPlace;
-		_currUPlace = new UserPlace(0, 0, null, Validity.INVALID);
+		_currUPlace = new InvalidUserPlace();
 		UserLoc currLoc = _locEnvCollector.getCurrULoc();
 		if(_prevUPlace != null && 
 				_prevUPlace.isValid() && 
@@ -80,15 +81,10 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 						
 						String placeName = sb.toString();
 						
-						double placeLongitude = currLongitude;
-						double placeLatitude = currLatitude;
+						UserLocValidity validity = addr.hasLongitude() && addr.hasLatitude() ? UserLocValidity.VALID : UserLocValidity.INVALID;
+						UserLoc coordinates = UserLoc.create(validity, addr.getLongitude(), addr.getLatitude());
 						
-						if(addr.hasLongitude())
-							placeLongitude = addr.getLongitude();
-						if(addr.hasLatitude())
-							placeLatitude = addr.getLatitude();
-						
-						_currUPlace = new UserPlace(placeLongitude, placeLatitude, placeName);
+						_currUPlace = UserPlace.create(placeName, coordinates);
 					}
 				} catch (IOException e) {
 					;
@@ -126,7 +122,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
 			if(isChanged()){
-				res = _durationUserEnvBuilder.setEndTime(currTimeDate).build();
+				res = _durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
 		}
@@ -140,11 +136,16 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	}
 	
 	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
+		EnvType envType = EnvType.PLACE;
+		if(uEnv instanceof InvalidUserPlace){
+			envType = EnvType.PLACE;
+		}
+		
 		return new DurationUserEnv.Builder()
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
 			.setTimeZone(currTimeZone)
-			.setEnvType(EnvType.PLACE)
+			.setEnvType(envType)
 			.setUserEnv(uEnv);
 	}
 }
