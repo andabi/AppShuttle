@@ -11,9 +11,8 @@ import java.util.Set;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
+import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 
 public class PlaceContextMatcher extends TemplateContextMatcher {
@@ -28,29 +27,25 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance();
+		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		UserPlace lastKnownUserPlace = null;
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieve(rfdUCxt.getTimeDate()
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(rfdUCxt.getTimeDate()
 					, rfdUCxt.getEndTime(), EnvType.PLACE)){
-				try {
-					UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
-					if(lastKnownUserPlace == null) {
-						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-						mergedRfdUCxtBuilder.setProperty("place", userPlace);
-					} else {
-							if(!userPlace.isSame(lastKnownUserPlace)){
-								res.add(mergedRfdUCxtBuilder.build());
-								mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-								mergedRfdUCxtBuilder.setProperty("place", userPlace);
-							}
-					}
-					lastKnownUserPlace = userPlace;
-				} catch (InvalidUserEnvException e) {
-					;
+				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
+				if(lastKnownUserPlace == null) {
+					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
+					mergedRfdUCxtBuilder.setProperty("place", userPlace);
+				} else {
+						if(!userPlace.equals(lastKnownUserPlace)){
+							res.add(mergedRfdUCxtBuilder.build());
+							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
+							mergedRfdUCxtBuilder.setProperty("place", userPlace);
+						}
 				}
+				lastKnownUserPlace = userPlace;
 			}
 		}
 		if(mergedRfdUCxtBuilder != null)
@@ -97,16 +92,12 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 
 	@Override
 	protected double calcRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
-		try{
-			UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
+		UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
 //			UserLoc uLoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
-			if(uPlace.isSame((UserPlace) unit.getProperty("place")))
-				return 1;
-			else
-				return 0;
-		} catch (InvalidUserEnvException e) {
+		if(uPlace.equals((UserPlace) unit.getProperty("place")))
+			return 1;
+		else
 			return 0;
-		}
 	}
 //		if(rfdUCxt.getPlace().equals(((PlaceUserEnv)uCxt.getUserEnv(EnvType.PLACE)).getPlace()))
 //			return 1;
@@ -153,13 +144,9 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 			if(!uniquePlace.isEmpty()){
 				while(it.hasNext()){
 					UserPlace uniquePlaceElem = it.next();
-					try {
-						if(uPlace.isSame(uniquePlaceElem)){
-							unique = false;
-							break;
-						}
-					} catch (InvalidUserEnvException e) {
+					if(uPlace.equals(uniquePlaceElem)){
 						unique = false;
+						break;
 					}
 				}
 			}

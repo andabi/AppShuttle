@@ -2,7 +2,7 @@ package lab.davidahn.appshuttle.context.env;
 
 import android.location.Location;
 
-public class UserLoc implements UserEnv {
+public class UserLoc extends UserEnv {
 	protected double _longitude;
 	protected double _latitude;
 //	protected Validity _validity;
@@ -43,21 +43,15 @@ public class UserLoc implements UserEnv {
 	public void setLatitude(double latitude) {
 		_latitude = latitude;
 	}
-	public boolean isValid(){
-//		if(_validity == Validity.VALID) 
+
+//	public boolean isSame(UserEnv uLoc) throws InvalidUserEnvException {
+////		if(_validity == Validity.INVALID || !uLoc.isValid()) 
+////			throw new InvalidUserEnvException();
+//		if(equals(uLoc))
 //			return true;
 //		else 
-		return false;
-	}
-
-	public boolean isSame(UserLoc uLoc) throws InvalidUserEnvException {
-//		if(_validity == Validity.INVALID || !uLoc.isValid()) 
-//			throw new InvalidUserEnvException();
-		if(equals(uLoc))
-			return true;
-		else 
-			return false;
-	}
+//			return false;
+//	}
 	
 	public boolean proximity(UserLoc uLoc, int toleranceInMeter) throws InvalidUserEnvException {
 //		if(_validity == Validity.INVALID || !uLoc.isValid()) 
@@ -92,7 +86,8 @@ public class UserLoc implements UserEnv {
 				&& _longitude == ((UserLoc)o)._longitude)
 //				&& _validity == ((UserLoc)o)._validity)
 			return true;
-		else return false;
+		else
+			return false;
 	}
 	
 	@Override

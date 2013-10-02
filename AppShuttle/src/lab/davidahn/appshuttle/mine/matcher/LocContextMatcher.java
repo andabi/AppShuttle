@@ -11,7 +11,7 @@ import java.util.Set;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
+import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserLoc;
@@ -46,15 +46,15 @@ public class LocContextMatcher extends TemplateContextMatcher {
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance();
+		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		UserLoc lastKnownUserLoc = null;
 
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvDao.retrieve(rfdUCxt.getTimeDate()
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(rfdUCxt.getTimeDate()
 					, rfdUCxt.getEndTime(), EnvType.LOCATION)){
-				try {
+//				try {
 					UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 					long duration = durationUserEnv.getDuration();
 					if(lastKnownUserLoc == null) {
@@ -62,7 +62,7 @@ public class LocContextMatcher extends TemplateContextMatcher {
 						mergedRfdUCxtBuilder.setProperty("loc", userLoc);
 						mergedRfdUCxtBuilder.setProperty("duration", duration);
 					} else {
-						if(!userLoc.isSame(lastKnownUserLoc)){
+						if(!userLoc.equals(lastKnownUserLoc)){
 							res.add(mergedRfdUCxtBuilder.build());
 							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 							mergedRfdUCxtBuilder.setProperty("loc", userLoc);
@@ -70,9 +70,9 @@ public class LocContextMatcher extends TemplateContextMatcher {
 						}
 					}
 					lastKnownUserLoc = userLoc;
-				} catch (InvalidUserEnvException e) {
-					;
-				}
+//				} catch (InvalidUserEnvException e) {
+//					;
+//				}
 			}
 		}
 		if(mergedRfdUCxtBuilder != null)

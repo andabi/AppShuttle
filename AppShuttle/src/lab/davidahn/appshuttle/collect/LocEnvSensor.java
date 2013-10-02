@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserLoc.UserLocValidity;
@@ -90,14 +89,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 		if(_prevULoc == null)
 			return false;
 		
-		try {
-			if(!_currULoc.isSame(_prevULoc)) {
-				Log.i("user env", "location moved");
-				return true;
-			} else {
-				return false;
-			}
-		} catch (InvalidUserEnvException e) {
+		if(!_currULoc.equals(_prevULoc)) {
+			Log.i("user env", "location moved");
+			return true;
+		} else {
 			return false;
 		}
 	}

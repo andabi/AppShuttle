@@ -55,7 +55,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			currLocLatitude = currLoc.getLatitude();
 			currLocLongitude = currLoc.getLongitude();
 		} catch (InvalidUserEnvException e) {
-			throw new RuntimeException("current location is not invalid");
+			throw new RuntimeException("current location is valid. no reachable.");
 		}
 
 		try {
@@ -102,14 +102,10 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		if(_prevUPlace == null)
 			return false;
 		
-		try {
-			if(!_currUPlace.isSame(_prevUPlace)) {
-				Log.i("user env", "place moved");
-				return true;
-			} else {
-				return false;
-			}
-		} catch (InvalidUserEnvException e) {
+		if(!_currUPlace.equals(_prevUPlace)) {
+			Log.i("user env", "place moved");
+			return true;
+		} else {
 			return false;
 		}
 	}

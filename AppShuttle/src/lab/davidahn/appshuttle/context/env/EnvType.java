@@ -6,6 +6,7 @@ public enum EnvType {
 
 	LOCATION(UserLoc.class),
 	INVALID_LOCATION(InvalidUserLoc.class),
+	
 	PLACE(UserPlace.class),
 	INVALID_PLACE(InvalidUserPlace.class);
 	

@@ -16,7 +16,7 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnvDao;
+import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import android.app.Service;
@@ -188,8 +188,8 @@ public class CollectionService extends Service {
 	private void storeDurationUserEnv(DurationUserEnv durationUserEnv) {
 		if(durationUserEnv == null)
 			return;
-		DurationUserEnvDao durationUserEnvDao = DurationUserEnvDao.getInstance();
-		durationUserEnvDao.store(durationUserEnv);
+		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
+		durationUserEnvManager.store(durationUserEnv);
 	}
 	
 	private void storeDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {

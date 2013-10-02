@@ -11,36 +11,39 @@ import java.util.Set;
  */
 
 public class UserBhvManager {
-	private Set<UserBhv> _bhvList;
+	private Set<UserBhv> _bhvSet;
 	private UserBhvDao _userBhvDao;
 
 	private static UserBhvManager userBhvManager = new UserBhvManager();
 	private UserBhvManager() {
 		_userBhvDao = UserBhvDao.getInstance();
-		_bhvList = new HashSet<UserBhv>();
+		_bhvSet = new HashSet<UserBhv>();
 
-		_bhvList.addAll(_userBhvDao.retrieveUserBhv());
+		_bhvSet.addAll(_userBhvDao.retrieveUserBhv());
 	}
 	public static UserBhvManager getInstance() {
 		return userBhvManager;
 	}
 	
-	public Set<UserBhv> getBhvList(){
-		return Collections.unmodifiableSet(_bhvList);
+	public Set<UserBhv> getBhvSet(){
+		return Collections.unmodifiableSet(_bhvSet);
 	}
 	
 	public synchronized void registerBhv(UserBhv uBhv){
-		if(_bhvList.contains(uBhv))
+		if(_bhvSet.contains(uBhv))
 			return ;
 
 		_userBhvDao.storeUserBhv(uBhv);
 
-		_bhvList.add(uBhv);
+		_bhvSet.add(uBhv);
 	}
 	
-	public synchronized void unregisterBhv(UserBhv uBhv){	
+	public synchronized void unregisterBhv(UserBhv uBhv){
+		if(!_bhvSet.contains(uBhv))
+			return ;
+
 		_userBhvDao.deleteUserBhv(uBhv);
 
-		_bhvList.remove(uBhv);
+		_bhvSet.remove(uBhv);
 	}
 }

@@ -64,6 +64,8 @@ public class SnapshotUserCxt {
 	public void addUserBhvAll(List<UserBhv> userBhvList) {
 		_userBhvs.addAll(userBhvList);
 	}
+	
+	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("time: ").append(_time).append(", ");
@@ -72,13 +74,14 @@ public class SnapshotUserCxt {
 		msg.append("userBhvs: ").append(_userBhvs.toString());
 		return msg.toString();
 	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if((o instanceof SnapshotUserCxt) 
 				&& _time.equals(((SnapshotUserCxt)o)._time)
-				&& _timeZone.equals(((SnapshotUserCxt)o)._timeZone)
-				&& _userEnvs.equals(((SnapshotUserCxt)o)._userEnvs)
-				&& _userBhvs.equals(((SnapshotUserCxt)o)._userBhvs))
+				&& _timeZone.equals(((SnapshotUserCxt)o)._timeZone))
+//				&& _userEnvs.equals(((SnapshotUserCxt)o)._userEnvs)
+//				&& _userBhvs.equals(((SnapshotUserCxt)o)._userBhvs))
 			return true;
 		else 
 			return false;
@@ -86,6 +89,6 @@ public class SnapshotUserCxt {
 	
 	@Override
 	public int hashCode(){
-		return 0;
+		return _time.hashCode() ^ _timeZone.hashCode();
 	}
 }

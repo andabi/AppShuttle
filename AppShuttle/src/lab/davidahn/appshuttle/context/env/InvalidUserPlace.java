@@ -22,10 +22,10 @@ public class InvalidUserPlace extends UserPlace {
 		return false;
 	}
 	
-	@Override
-	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {
-		throw new InvalidUserEnvException(EnvType.INVALID_PLACE, this);
-	}
+//	@Override
+//	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {
+//		throw new InvalidUserEnvException(EnvType.INVALID_PLACE, this);
+//	}
 	
 	@Override
 	public EnvType getEnvType(){

@@ -9,13 +9,13 @@ public class DurationUserEnv {
 	private Date _endTimeDate;
 	private TimeZone _timeZone;
 	private EnvType _envType;
-	private UserEnv _usrEnv;
+	private UserEnv _uEnv;
 
 	public DurationUserEnv(Builder builder) {
 		_timeDate = builder._timeDate;
 		_endTimeDate = builder._endTimeDate;
 		_timeZone = builder._timeZone;
-		_usrEnv = builder._usrEnv;
+		_uEnv = builder._uEnv;
 		_envType = builder._envType;
 		updateDuration();
 	}
@@ -53,16 +53,17 @@ public class DurationUserEnv {
 		_envType = envType;
 	}
 	public UserEnv getUserEnv() {
-		return _usrEnv;
+		return _uEnv;
 	}
 	public void setUserEnv(UserEnv userEnv) {
-		_usrEnv = userEnv;
+		_uEnv = userEnv;
 	}
 
 	private void updateDuration() {
 		_duration = _endTimeDate.getTime() - _timeDate.getTime();
 	}
 
+	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("time: ").append(_timeDate).append(", ");
@@ -70,7 +71,7 @@ public class DurationUserEnv {
 		msg.append("endTime: ").append(_endTimeDate).append(", ");
 		msg.append("timezone: ").append(_timeZone.getID()).append(", ");
 		msg.append("envType: ").append(_envType.toString()).append(", ");
-		msg.append("userEnv: ").append(_usrEnv.toString());
+		msg.append("userEnv: ").append(_uEnv.toString());
 		return msg.toString();
 	}
 	@Override
@@ -80,12 +81,13 @@ public class DurationUserEnv {
 				&& _timeZone.equals(((DurationUserEnv)o)._timeZone)
 				&& _envType.equals(((DurationUserEnv)o)._envType))
 			return true;
-		else return false;
+		else
+			return false;
 	}
 	
 	@Override
 	public int hashCode(){
-		return 0;
+		return _timeDate.hashCode() ^ _timeZone.hashCode() ^ _envType.hashCode();
 	}
 	
 	public static class Builder{
@@ -93,7 +95,7 @@ public class DurationUserEnv {
 		private Date _endTimeDate = null;
 		private TimeZone _timeZone = null;
 		private EnvType _envType;
-		private UserEnv _usrEnv = null;
+		private UserEnv _uEnv = null;
 		
 		public Builder(){}
 		
@@ -118,11 +120,11 @@ public class DurationUserEnv {
 			return this;
 		}
 		public Builder setUserEnv(UserEnv userEnv){
-			_usrEnv = userEnv;
+			_uEnv = userEnv;
 			return this;
 		}
 		public UserEnv getUserEnv() {
-			return _usrEnv;
+			return _uEnv;
 		}
 	}
 }

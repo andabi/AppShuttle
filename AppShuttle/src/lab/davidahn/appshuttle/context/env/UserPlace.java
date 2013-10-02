@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle.context.env;
 
 
-public class UserPlace implements UserEnv {
+public class UserPlace extends UserEnv {
 	protected String _name;
 	protected UserLoc _coordinates;
 //	protected Validity _validity;
@@ -37,21 +37,15 @@ public class UserPlace implements UserEnv {
 	public void setCoordinates(UserLoc coordinates) {
 		_coordinates = coordinates;
 	}
-	public boolean isValid(){
-//		if(_validity == Validity.VALID) 
-			return true;
+	
+//	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {
+////		if(_validity == Validity.INVALID || !uPlace.isValid()) 
+////			throw new InvalidUserEnvException();
+//		if(equals(uPlace)) 
+//			return true;
 //		else 
 //			return false;
-	}
-	
-	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {
-//		if(_validity == Validity.INVALID || !uPlace.isValid()) 
-//			throw new InvalidUserEnvException();
-		if(_name.equals(uPlace.getName())) 
-			return true;
-		else 
-			return false;
-	}
+//	}
 	
 	public EnvType getEnvType(){
 		return EnvType.PLACE;
@@ -76,9 +70,6 @@ public class UserPlace implements UserEnv {
 	
 	@Override
 	public int hashCode(){
-//		if(_name == null)
-//			return 0;
-					
 		return _name.hashCode();
 	}
 }

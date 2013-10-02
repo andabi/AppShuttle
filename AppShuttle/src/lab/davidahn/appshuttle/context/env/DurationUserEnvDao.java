@@ -26,7 +26,7 @@ public class DurationUserEnvDao {
 		return durationUserEnvDao;
 	}
 
-	public <T extends UserEnv> void store(DurationUserEnv durationUserEnv) {
+	public void store(DurationUserEnv durationUserEnv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		ContentValues row = new ContentValues();
@@ -37,16 +37,46 @@ public class DurationUserEnvDao {
 		row.put("env_type", durationUserEnv.getEnvType().toString());
 		row.put("user_env", gson.toJson(durationUserEnv.getUserEnv()));
 		_db.insert("history_user_env", null, row);
+		
 		Log.i("stored history_user_env", durationUserEnv.toString());
 	}
 	
-	public <T extends UserEnv> DurationUserEnv retrieveContains(Date time, EnvType envType) {
+//	public <T extends UserEnv> List<DurationUserEnv> retrieve(Date fromTime, Date toTime, EnvType envType){
+//		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
+//		DurationUserEnv headPiece = retrieveContains(fromTime, envType);
+//		if(headPiece != null)
+//			res.add(headPiece);
+//		List<DurationUserEnv> middlePieces = retrieveIncluded(fromTime, toTime, envType);
+//		res.addAll(middlePieces);
+////			if(!middlePieces.isEmpty()) {
+////				if(!res.get(res.size()-1).equals(middlePieces.get(0)))
+////					res.add(middlePieces.get(0));
+////				res.addAll(middlePieces.subList(1, middlePieces.size()));
+////			}
+//		DurationUserEnv tailPiece = retrieveContains(toTime, envType);
+////		if(!res.get(res.size()-1).equals(tailPiece)) // && res.get(res.size()-1).getEndTime().getTime() < toTime.getTime())
+//		if(tailPiece != null){
+//			if(!res.isEmpty()) {
+//				if(!res.get(res.size()-1).equals(tailPiece))
+//					res.add(tailPiece);
+//			} else {
+//				res.add(tailPiece);
+//			}
+//		}
+//		if(!res.isEmpty()) {
+//			res.get(0).setTime(fromTime);
+//			res.get(res.size()-1).setEndTime(toTime);
+//		}
+//		return res;
+//	}
+	
+	public DurationUserEnv retrieveContainsByEnv(Date time, EnvType envType) {
 	Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 	Cursor cur = _db.rawQuery("SELECT * " +
 			"FROM history_user_env " +
-			"WHERE time < " + time.getTime() + " " +
-					"AND end_time > " + time.getTime() +" " +
-					"AND env_type = '" + envType.toString() + "';", null);
+			"WHERE time <= " + time.getTime() + " " +
+				"AND end_time > " + time.getTime() +" " +
+				"AND env_type = '" + envType.toString() + "';", null);
 	DurationUserEnv res = null;
 	while (cur.moveToNext()) {
 		Date startTime = new Date(cur.getLong(0));
@@ -68,12 +98,12 @@ public class DurationUserEnvDao {
 	return res;
 	}
 	
-	public <T extends UserEnv> List<DurationUserEnv> retrieveIncluded(Date fromTime, Date toTime, EnvType envType) {
+	public List<DurationUserEnv> retrieveBetweenByEnv(Date fromTime, Date toTime, EnvType envType) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Cursor cur = _db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
 				"WHERE time >= " + fromTime.getTime() + " " +
-					"AND end_time <= " + toTime.getTime() +" " +
+					"AND end_time < " + toTime.getTime() +" " +
 					"AND env_type = '" + envType.toString() + "';", null);
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		while (cur.moveToNext()) {
@@ -96,46 +126,16 @@ public class DurationUserEnvDao {
 		return res;
 	}
 	
-	
-	public <T extends UserEnv> List<DurationUserEnv> retrieve(Date fromTime, Date toTime, EnvType envType){
-		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
-		DurationUserEnv headPiece = retrieveContains(fromTime, envType);
-		if(headPiece != null)
-			res.add(headPiece);
-		List<DurationUserEnv> middlePieces = retrieveIncluded(fromTime, toTime, envType);
-		res.addAll(middlePieces);
-//			if(!middlePieces.isEmpty()) {
-//				if(!res.get(res.size()-1).equals(middlePieces.get(0)))
-//					res.add(middlePieces.get(0));
-//				res.addAll(middlePieces.subList(1, middlePieces.size()));
-//			}
-		DurationUserEnv tailPiece = retrieveContains(toTime, envType);
-//		if(!res.get(res.size()-1).equals(tailPiece)) // && res.get(res.size()-1).getEndTime().getTime() < toTime.getTime())
-		if(tailPiece != null){
-			if(!res.isEmpty()) {
-				if(!res.get(res.size()-1).equals(tailPiece))
-					res.add(tailPiece);
-			} else {
-				res.add(tailPiece);
-			}
-		}
-		if(!res.isEmpty()) {
-			res.get(0).setTime(fromTime);
-			res.get(res.size()-1).setEndTime(toTime);
-		}
-		return res;
-	}
-	
 	public void deleteBefore(Date timeDate){
 		_db.execSQL("DELETE " +
 				"FROM history_user_env " +
-				"WHERE time <= " + timeDate.getTime() +";");
+				"WHERE time < " + timeDate.getTime() +";");
 	}
 	
-	public void delete(Date beginTime, Date endTime){
+	public void deleteBetween(Date beginTime, Date endTime){
 		_db.execSQL("DELETE " +
 				"FROM history_user_env " + 
-				"WHERE time <= " + beginTime.getTime() + " " +
+				"WHERE time >= " + beginTime.getTime() + " " +
 					"AND end_time < " + endTime.getTime() + "';");
 	}
 }
