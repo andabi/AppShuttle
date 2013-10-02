@@ -14,6 +14,8 @@ public class UserBhv {
 		_metas = new HashMap<String, Object>();
 	}
 	
+	//TODO userBhv pool 관리
+	
 	public static UserBhv create(BhvType bhvType, String bhvname){
 		switch (bhvType){
 			case NONE:

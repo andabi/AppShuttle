@@ -9,46 +9,46 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 
 public class MatcherCountUnit {
-	private final UserBhv uBhv;
-	private final List<DurationUserBhv> rfdUserCxtList;
-	private final Map<String, Object> properties;
+	private final UserBhv _uBhv;
+	private final List<DurationUserBhv> _durationUserBhvList;
+	private final Map<String, Object> _properties;
 
 	private MatcherCountUnit(Builder builder) {
-		uBhv = builder.uBhv;
-		rfdUserCxtList = builder.rfdUserCxtList;
-		properties = builder.properties;
+		_uBhv = builder._uBhv;
+		_durationUserBhvList = builder._durationUserBhvList;
+		_properties = builder._properties;
 	}
 	
 	public UserBhv getUBhv() {
-		return uBhv;
+		return _uBhv;
 	}
 
 	public List<DurationUserBhv> getRfdUserCxtList() {
-		return rfdUserCxtList;
+		return _durationUserBhvList;
 	}
 
 	public Map<String, Object> getProperties() {
-		return properties;
+		return _properties;
 	}
 
 	public Object getProperty(String key) {
-		return properties.get(key);
+		return _properties.get(key);
 	}
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("bhv: ").append(uBhv).append(", ");
-		msg.append("properties: ").append(properties.toString());
+		msg.append("bhv: ").append(_uBhv).append(", ");
+		msg.append("properties: ").append(_properties.toString());
 		return msg.toString();
 	}
 	
 	public static class Builder {
-		private UserBhv uBhv = null;
-		private List<DurationUserBhv> rfdUserCxtList = new ArrayList<DurationUserBhv>();
-		private Map<String, Object> properties = new HashMap<String, Object>();
+		private UserBhv _uBhv = null;
+		private List<DurationUserBhv> _durationUserBhvList = new ArrayList<DurationUserBhv>();
+		private Map<String, Object> _properties = new HashMap<String, Object>();
 
 		public Builder(UserBhv uBhv){
-			this.uBhv = uBhv;
+			_uBhv = uBhv;
 		}
 		
 		public MatcherCountUnit build(){
@@ -56,11 +56,11 @@ public class MatcherCountUnit {
 		}
 		
 		public void setProperty(String key, Object val){
-			properties.put(key, val);
+			_properties.put(key, val);
 		}
 		
 		public void addRfdUserCxtList(DurationUserBhv rfdUserCxt){
-			rfdUserCxtList.add(rfdUserCxt);
+			_durationUserBhvList.add(rfdUserCxt);
 		}	
 	}
 }

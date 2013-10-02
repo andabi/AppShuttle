@@ -10,65 +10,65 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public class PredictedBhv implements Comparable<PredictedBhv> {
-	private final Date time;
-	private final TimeZone timeZone;
-	private final Map<EnvType, UserEnv> userEnvs;
-	private final UserBhv uBhv;
-	private final EnumMap<MatcherType, MatchedResult> matchedResults;
-	private final double score;
+	private final Date _timeDate;
+	private final TimeZone _timeZone;
+	private final Map<EnvType, UserEnv> _uEnvs;
+	private final UserBhv _uBhv;
+	private final EnumMap<MatcherType, MatchedResult> _matchedResults;
+	private final double _score;
 	
 	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
-		this.time = time;
-		this.timeZone = timeZone;
-		this.userEnvs = userEnvs;
-		this.uBhv = uBhv;
-		this.matchedResults = matchedResults;
-		this.score = score;
+		_timeDate = time;
+		_timeZone = timeZone;
+		_uEnvs = userEnvs;
+		_uBhv = uBhv;
+		_matchedResults = matchedResults;
+		_score = score;
 	}
 	
 	public Date getTime() {
-		return time;
+		return _timeDate;
 	}
 
 	public TimeZone getTimeZone() {
-		return timeZone;
+		return _timeZone;
 	}
 
 	public Map<EnvType, UserEnv> getUserEnvMap() {
-		return userEnvs;
+		return _uEnvs;
 	}
 
 	public UserEnv getUserEnv(EnvType envType) {
-		return userEnvs.get(envType);
+		return _uEnvs.get(envType);
 	}
 	
 	public UserBhv getUserBhv() {
-		return uBhv;
+		return _uBhv;
 	}
 
 	public Map<MatcherType, MatchedResult> getMatchedResultMap() {
-		return matchedResults;
+		return _matchedResults;
 	}
 	
 	public MatchedResult getMatchedResult(MatcherType matcherType) {
-		return matchedResults.get(matcherType);
+		return _matchedResults.get(matcherType);
 	}
 
 	public double getScore() {
-		return score;
+		return _score;
 	}
 	
 	public int compareTo(PredictedBhv predictedBhv){
-		if(score < predictedBhv.score) return 1;
-		else if(score == predictedBhv.score) return 0;
+		if(_score < predictedBhv._score) return 1;
+		else if(_score == predictedBhv._score) return 0;
 		else return -1;
 	}
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("matched results: ").append(matchedResults.toString()).append(", ");
-		msg.append("predicted bhv: ").append(uBhv.toString()).append(", ");
-		msg.append("score: ").append(score);
+		msg.append("matched results: ").append(_matchedResults.toString()).append(", ");
+		msg.append("predicted bhv: ").append(_uBhv.toString()).append(", ");
+		msg.append("score: ").append(_score);
 		return msg.toString();
 	}
 }

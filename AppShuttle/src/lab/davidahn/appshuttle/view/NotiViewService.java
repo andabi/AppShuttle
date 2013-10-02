@@ -19,7 +19,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -31,14 +30,14 @@ import android.widget.RemoteViews;
 
 public class NotiViewService extends Service {
 	private static final int NOTI_UPDATE = 1;
-	private NotificationManager notificationManager;
-	private PackageManager packageManager;
+	private NotificationManager _notificationManager;
+	private PackageManager _packageManager;
 //	private LayoutInflater layoutInflater;
 
 	public void onCreate(){
 		super.onCreate();
-		notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		packageManager = getPackageManager();
+		_notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		_packageManager = getPackageManager();
 //		layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -90,7 +89,7 @@ public class NotiViewService extends Service {
 			BhvType bhvType = uBhv.getBhvType();
 			String bhvName = uBhv.getBhvName();
 			if(bhvType == BhvType.APP){
-				Intent launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
+				Intent launchIntent = _packageManager.getLaunchIntentForPackage(bhvName);
 				if(launchIntent == null){
 					continue;
 				} else {
@@ -98,7 +97,7 @@ public class NotiViewService extends Service {
 					int iconSlotScoreId = iconSlotScoreIdList.poll();
 					
 					try {
-						BitmapDrawable iconDrawable = (BitmapDrawable) packageManager.getApplicationIcon(bhvName);
+						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
 						notiRemoteViews.setImageViewBitmap(iconSlotId, iconDrawable.getBitmap());
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
@@ -135,7 +134,7 @@ public class NotiViewService extends Service {
 			.setOngoing(true)
 			.build();
 //			notificationManager.cancel(NOTI_UPDATE);
-			notificationManager.notify(NOTI_UPDATE, notiUpdate);
+			_notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		} else { 
 			Set<UserBhv> recentPredictedBhvSetForView = AppShuttleApplication.getContext().getRecentPredictedBhvSetForView();
 			if(predictedBhvSetForView.equals(recentPredictedBhvSetForView)){
@@ -152,7 +151,7 @@ public class NotiViewService extends Service {
 //				.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
 				.build();
 			}
-			notificationManager.notify(NOTI_UPDATE, notiUpdate);
+			_notificationManager.notify(NOTI_UPDATE, notiUpdate);
 		}
 		AppShuttleApplication.getContext().setRecentPredictedBhvSetForView(predictedBhvSetForView);
 
@@ -161,7 +160,7 @@ public class NotiViewService extends Service {
 	
 	public void onDestroy() {
 		super.onDestroy();
-		notificationManager.cancelAll();
+		_notificationManager.cancelAll();
 	}
 	
 	@Override

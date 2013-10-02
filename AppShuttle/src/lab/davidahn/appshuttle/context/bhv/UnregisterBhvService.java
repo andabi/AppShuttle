@@ -19,13 +19,17 @@ public class UnregisterBhvService extends IntentService {
 	public void onHandleIntent(Intent intent) {
 		BhvType bhvType = (BhvType) intent.getExtras().get("bhv_type");
 		String bhvName = intent.getExtras().getString("bhv_name");
-		UserBhv uBhv = new UserBhv(bhvType, bhvName);
-		
-		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		userBhvManager.unregisterBhv(uBhv);
-	}
 
+		//TODO pool에서 받아오는 걸로 바꾸기
+		unregisterBhv(new UserBhv(bhvType, bhvName));
+	}
+	
 	public void onDestroy() {
 		super.onDestroy();
+	}
+
+	private void unregisterBhv(UserBhv uBhv) {
+		UserBhvManager userBhvManager = UserBhvManager.getInstance();
+		userBhvManager.unregisterBhv(uBhv);
 	}
 }

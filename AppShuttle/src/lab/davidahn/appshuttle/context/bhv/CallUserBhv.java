@@ -10,14 +10,14 @@ public class CallUserBhv extends UserBhv {
 //		setMeta("cachedName", cachedName);
 	}
 
-	public String getCachedName() {
-		return (String)getMeta("cachedName");
-//		return cachedName;
-	}
+//	public String getCachedName() {
+//		return (String)getMeta("cachedName");
+////		return cachedName;
+//	}
 
-	public void setCachedName(String cachedName) {
-		setMeta("cachedName", cachedName);
-//		this.cachedName = cachedName;
-	}
+//	public void setCachedName(String cachedName) {
+//		setMeta("cachedName", cachedName);
+////		this.cachedName = cachedName;
+//	}
 	
 }

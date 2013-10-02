@@ -17,16 +17,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class UserBhvDao {
-	private static UserBhvDao userBhvDao;
-	private SQLiteDatabase db;
+	private SQLiteDatabase _db;
 	
+	private static UserBhvDao userBhvDao = new UserBhvDao();
 	private UserBhvDao() {
-		db = DBHelper.getInstance().getWritableDatabase();
+		_db = DBHelper.getInstance().getWritableDatabase();
 	}
-
-	public synchronized static UserBhvDao getInstance() {
-		if (userBhvDao == null)
-			userBhvDao = new UserBhvDao();
+	public static UserBhvDao getInstance() {
 		return userBhvDao;
 	}
 
@@ -38,7 +35,7 @@ public class UserBhvDao {
 		row.put("bhv_name", uBhv.getBhvName());
 		row.put("metas", gson.toJson(uBhv.getMetas()));
 //		db.insert("user_bhv", null, row);
-		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
+		_db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 		Log.i("stored user bhv", uBhv.toString());
 	}
@@ -46,9 +43,8 @@ public class UserBhvDao {
 	public List<UserBhv> retrieveUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = db.rawQuery("SELECT * FROM list_user_bhv;", null);
+		Cursor cur = _db.rawQuery("SELECT * FROM list_user_bhv;", null);
 		List<UserBhv> res = new ArrayList<UserBhv>();
-		
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
@@ -64,7 +60,10 @@ public class UserBhvDao {
 	}
 	
 	public void deleteUserBhv(UserBhv uBhv) {
-		db.execSQL("DELETE FROM list_user_bhv WHERE bhv_type = '"
-				+ uBhv.getBhvType() + "' AND bhv_name = '" + uBhv.getBhvName() +"';");
+		_db.execSQL("" +
+				"DELETE " +
+				"FROM list_user_bhv " +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 }

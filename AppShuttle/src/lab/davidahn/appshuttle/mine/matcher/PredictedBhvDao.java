@@ -11,18 +11,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class PredictedBhvDao {
-	private static PredictedBhvDao predictedBhvDao;
-	private SQLiteDatabase db;
-	private MatchedResultDao matchedResultDao;
+	private SQLiteDatabase _db;
+	private MatchedResultDao _matchedResultDao;
 
+	private static PredictedBhvDao predictedBhvDao = new PredictedBhvDao();
 	private PredictedBhvDao() {
-		db = DBHelper.getInstance().getWritableDatabase();
-		matchedResultDao = MatchedResultDao.getInstance();
+		_db = DBHelper.getInstance().getWritableDatabase();
+		_matchedResultDao = MatchedResultDao.getInstance();
 	}
 
-	public synchronized static PredictedBhvDao getInstance() {
-		if (predictedBhvDao == null)
-			predictedBhvDao = new PredictedBhvDao();
+	public static PredictedBhvDao getInstance() {
 		return predictedBhvDao;
 	}
 
@@ -36,16 +34,19 @@ public class PredictedBhvDao {
 		row.put("bhv_type", predictedBhv.getUserBhv().getBhvType().toString());
 		row.put("bhv_name", predictedBhv.getUserBhv().getBhvName());
 		row.put("score", predictedBhv.getScore());
-		db.insert("predicted_bhv", null, row);
+		_db.insert("predicted_bhv", null, row);
 
 		for(MatchedResult matchedRes : predictedBhv.getMatchedResultMap().values()) {
-			matchedResultDao.storeMatchedResult(matchedRes);
+			_matchedResultDao.storeMatchedResult(matchedRes);
 		}
 		
 		Log.i("stored predicted bhv", predictedBhv.toString());
 	}
 	
 	public void deletePredictedBhv(Date timeDate){
-		db.execSQL("DELETE FROM predicted_bhv WHERE time < " + timeDate.getTime() +";");
+		_db.execSQL("" +
+				"DELETE " +
+				"FROM predicted_bhv " +
+				"WHERE time < " + timeDate.getTime() +";");
 	}
 }

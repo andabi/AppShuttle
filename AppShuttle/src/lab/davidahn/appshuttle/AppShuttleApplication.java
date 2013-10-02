@@ -10,11 +10,11 @@ import android.content.SharedPreferences;
 
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
-	private SharedPreferences preferenceSettings;
+	private SharedPreferences _preferenceSettings;
 	
-	private SnapshotUserCxt currUserCxt;
-	private Set<UserBhv> recentPredictedBhvSet;
-	private Set<UserBhv> recentPredictedBhvSetForView;
+	private SnapshotUserCxt _currUserCxt;
+	private Set<UserBhv> _recentPredictedBhvSet;
+	private Set<UserBhv> _recentPredictedBhvSetForView;
 	
 	
 	public AppShuttleApplication(){
@@ -25,28 +25,28 @@ public class AppShuttleApplication extends Application {
 	}
 	
 	public SharedPreferences getPreferenceSettings(){
-		if(preferenceSettings == null)
-			preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		return preferenceSettings;
+		if(_preferenceSettings == null)
+			_preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
+		return _preferenceSettings;
 	}
 
 	public SnapshotUserCxt getCurrUserCxt() {
-		return currUserCxt;
+		return _currUserCxt;
 	}
 	public void setCurrUserCxt(SnapshotUserCxt currUserCxt) {
-		this.currUserCxt = currUserCxt;
+		_currUserCxt = currUserCxt;
 	}
 	public Set<UserBhv> getRecentPredictedBhvSet() {
-		return recentPredictedBhvSet;
+		return _recentPredictedBhvSet;
 	}
 	public void setRecentPredictedBhvSet(Set<UserBhv> recentPredictedBhvSet) {
-		this.recentPredictedBhvSet = recentPredictedBhvSet;
+		_recentPredictedBhvSet = recentPredictedBhvSet;
 	}
 	public Set<UserBhv> getRecentPredictedBhvSetForView() {
-		return recentPredictedBhvSetForView;
+		return _recentPredictedBhvSetForView;
 	}
 	public void setRecentPredictedBhvSetForView(
 			Set<UserBhv> recentPredictedBhvSetForView) {
-		this.recentPredictedBhvSetForView = recentPredictedBhvSetForView;
+		_recentPredictedBhvSetForView = recentPredictedBhvSetForView;
 	}
 }

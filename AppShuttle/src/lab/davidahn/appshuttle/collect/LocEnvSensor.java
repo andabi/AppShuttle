@@ -27,10 +27,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 	private UserLoc _currULoc;
     private DurationUserEnv.Builder _durationUserEnvBuilder;
 
-    private static LocEnvSensor _locEnvSensor = new LocEnvSensor();
+    private static LocEnvSensor locEnvSensor = new LocEnvSensor();
 	
 	public static LocEnvSensor getInstance(){
-		return _locEnvSensor;
+		return locEnvSensor;
 	}
 	
 	private LocEnvSensor(){

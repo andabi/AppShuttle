@@ -21,7 +21,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	private UserPlace _currUPlace;
     private DurationUserEnv.Builder _durationUserEnvBuilder;
 	
-    private static PlaceEnvSensor _placeEnvSensor = new PlaceEnvSensor();
+    private static PlaceEnvSensor placeEnvSensor = new PlaceEnvSensor();
 
     private PlaceEnvSensor(){
     	super();
@@ -29,7 +29,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	}
 	
 	public static PlaceEnvSensor getInstance(){
-		return _placeEnvSensor;
+		return placeEnvSensor;
 	}
 	
 	public UserPlace sense(){

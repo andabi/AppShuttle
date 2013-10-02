@@ -23,15 +23,15 @@ public class CallBhvCollector extends BaseBhvCollector {
 
 	private Date _lastCallTimeDate;
 
-	private static CallBhvCollector _callBhvCollector = new CallBhvCollector();
+	private static CallBhvCollector callBhvCollector = new CallBhvCollector();
 
 	private CallBhvCollector(){
 		super();
 		_contentResolver = _appShuttleContext.getContentResolver();
 	}
 	
-	public synchronized static CallBhvCollector getInstance(){
-		return _callBhvCollector;
+	public static CallBhvCollector getInstance(){
+		return callBhvCollector;
 	}
 	
 	@Override
@@ -93,7 +93,8 @@ public class CallBhvCollector extends BaseBhvCollector {
 				continue;
 			
 			CallUserBhv callUserBhv = (CallUserBhv) create(BhvType.CALL, number);
-			callUserBhv.setCachedName(name);
+			callUserBhv.setMeta("cachedName", name);
+//			callUserBhv.setCachedName(name);
 			
 			DurationUserBhv durationUserBhv =  new DurationUserBhv.Builder()
 			.setTime(date)

@@ -8,16 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class MatchedResultDao {
-	private static MatchedResultDao matchedResultDao;
-	private SQLiteDatabase db;
+	private static MatchedResultDao matchedResultDao = new MatchedResultDao();
+	private SQLiteDatabase _db;
 
 	private MatchedResultDao() {
-		db = DBHelper.getInstance().getWritableDatabase();
+		_db = DBHelper.getInstance().getWritableDatabase();
 	}
 
-	public synchronized static MatchedResultDao getInstance() {
-		if (matchedResultDao == null)
-			matchedResultDao = new MatchedResultDao();
+	public static MatchedResultDao getInstance() {
 		return matchedResultDao;
 	}
 
@@ -32,12 +30,12 @@ public class MatchedResultDao {
 		row.put("matcher_type", mCxt.getMatcherType().toString());
 		row.put("likelihood", mCxt.getLikelihood());
 		row.put("inverse_entropy", mCxt.getInverseEntropy());
-		db.insert("matched_result", null, row);
+		_db.insert("matched_result", null, row);
 
 		Log.i("stored matched result", mCxt.toString());
 	}
 	
 	public void deleteMatchedResult(Date timeDate){
-		db.execSQL("DELETE FROM matched_result WHERE time < " + timeDate.getTime() +";");
+		_db.execSQL("DELETE FROM matched_result WHERE time < " + timeDate.getTime() +";");
 	}
 }

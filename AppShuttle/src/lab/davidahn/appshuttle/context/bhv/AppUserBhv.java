@@ -27,9 +27,9 @@ public class AppUserBhv extends UserBhv {
 		}
 		
 		return true;
-	//	getScreenLockPackage();
-	//	if(res.get(0).startsWith(getScreenLockPackage())) { //custom screen locker
-	//		res.remove(0);
-	//	}
 	}
 }
+//	getScreenLockPackage();
+//	if(res.get(0).startsWith(getScreenLockPackage())) { //custom screen locker
+//		res.remove(0);
+//	}

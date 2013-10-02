@@ -168,7 +168,7 @@ public class CollectionService extends Service {
 	private void registerEachBhv(List<DurationUserBhv> durationUserBhvList) {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			UserBhv uBhv = durationUserBhv.getBhv();
+			UserBhv uBhv = durationUserBhv.getUserBhv();
 			if(uBhv.isValid())
 				userBhvManager.registerBhv(uBhv);
 		}

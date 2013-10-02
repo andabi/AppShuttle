@@ -30,14 +30,14 @@ import com.google.gson.reflect.TypeToken;
 public class SnapshotUserCxtDao {
 	private SQLiteDatabase _db;
 
-	private static SnapshotUserCxtDao _userCxtDao = new SnapshotUserCxtDao();
+	private static SnapshotUserCxtDao userCxtDao = new SnapshotUserCxtDao();
 
 	private SnapshotUserCxtDao() {
 		_db = DBHelper.getInstance().getWritableDatabase();
 	}
 
 	public static SnapshotUserCxtDao getInstance() {
-		return _userCxtDao;
+		return userCxtDao;
 	}
 
 	public void storeCxt(SnapshotUserCxt uCxt) {

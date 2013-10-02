@@ -38,7 +38,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 
 	private Map<UserBhv, DurationUserBhv.Builder> _durationUserBhvBuilderMap;
 
-	private static AppBhvCollector _appBhvCollector = new AppBhvCollector();
+	private static AppBhvCollector appBhvCollector = new AppBhvCollector();
 
 	private AppBhvCollector(){
 		super();
@@ -51,7 +51,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 	}
 	
 	public static AppBhvCollector getInstance(){
-		return _appBhvCollector;
+		return appBhvCollector;
 	}
 	
 	public List<UserBhv> collect() {

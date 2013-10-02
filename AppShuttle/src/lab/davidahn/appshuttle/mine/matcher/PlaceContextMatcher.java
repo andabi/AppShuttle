@@ -17,11 +17,11 @@ import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 
 public class PlaceContextMatcher extends TemplateContextMatcher {
-	int toleranceInMeter;
+	int _toleranceInMeter;
 
 	public PlaceContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
 		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
-		this.toleranceInMeter = toleranceInMeter;
+		_toleranceInMeter = toleranceInMeter;
 		_matcherType = MatcherType.PLACE;
 	}
 	
@@ -38,12 +38,12 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 				try {
 					UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
 					if(lastKnownUserPlace == null) {
-						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 						mergedRfdUCxtBuilder.setProperty("place", userPlace);
 					} else {
 							if(!userPlace.isSame(lastKnownUserPlace)){
 								res.add(mergedRfdUCxtBuilder.build());
-								mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+								mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 								mergedRfdUCxtBuilder.setProperty("place", userPlace);
 							}
 					}

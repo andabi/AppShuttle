@@ -153,33 +153,31 @@ public class Mail extends javax.mail.Authenticator {
 		return _body;
 	}
 
-	public void setBody(String _body) {
-		this._body = _body;
+	public void setBody(String body) {
+		_body = body;
 	}
 
 	public String[] getTo() {
 		return _to;
 	}
 
-	public void setTo(String[] _to) {
-		this._to = _to;
+	public void setTo(String[] to) {
+		_to = to;
 	}
 
 	public String getFrom() {
 		return _from;
 	}
 
-	public void setFrom(String _from) {
-		this._from = _from;
+	public void setFrom(String from) {
+		_from = from;
 	}
 
 	public String getSubject() {
 		return _subject;
 	}
 
-	public void setSubject(String _subject) {
-		this._subject = _subject;
+	public void setSubject(String subject) {
+		_subject = subject;
 	}
-
-	// more of the getters and setters …..
 }

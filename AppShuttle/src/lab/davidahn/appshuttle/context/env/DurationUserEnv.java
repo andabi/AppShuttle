@@ -4,81 +4,81 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DurationUserEnv {
-	private Date time;
-	private long duration;
-	private Date endTime;
-	private TimeZone timeZone;
-	private EnvType envType;
-	private UserEnv usrEnv;
+	private Date _timeDate;
+	private long _duration;
+	private Date _endTimeDate;
+	private TimeZone _timeZone;
+	private EnvType _envType;
+	private UserEnv _usrEnv;
 
 	public DurationUserEnv(Builder builder) {
-		this.time = builder.time;
-		this.endTime = builder.endTime;
-		this.timeZone = builder.timeZone;
-		this.usrEnv = builder.usrEnv;
-		this.envType = builder.envType;
+		_timeDate = builder._timeDate;
+		_endTimeDate = builder._endTimeDate;
+		_timeZone = builder._timeZone;
+		_usrEnv = builder._usrEnv;
+		_envType = builder._envType;
 		updateDuration();
 	}
 	
 	public Date getTime() {
-		return time;
+		return _timeDate;
 	}
 	public void setTime(Date time) {
-		this.time = time;
+		_timeDate = time;
 		updateDuration();
 	}
 	public long getDuration() {
-		return duration;
+		return _duration;
 	}
 	public void setDuration(long duration) {
-		this.duration = duration;
+		_duration = duration;
 	}
 	public Date getEndTime() {
-		return endTime;
+		return _endTimeDate;
 	}
 	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+		_endTimeDate = endTime;
 		updateDuration();
 	}
 	public TimeZone getTimeZone() {
-		return timeZone;
+		return _timeZone;
 	}
 	public void setTimeZone(TimeZone timezone) {
-		this.timeZone = timezone;
+		_timeZone = timezone;
 	}
 	public EnvType getEnvType() {
-		return envType;
+		return _envType;
 	}
 	public void setEnvType(EnvType envType) {
-		this.envType = envType;
+		_envType = envType;
 	}
 	public UserEnv getUserEnv() {
-		return usrEnv;
+		return _usrEnv;
 	}
 	public void setUserEnv(UserEnv userEnv) {
-		this.usrEnv = userEnv;
+		_usrEnv = userEnv;
 	}
 
 	private void updateDuration() {
-		duration = endTime.getTime() - time.getTime();
+		_duration = _endTimeDate.getTime() - _timeDate.getTime();
 	}
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("time: ").append(time).append(", ");
-		msg.append("duration: ").append(duration).append(", ");
-		msg.append("endTime: ").append(endTime).append(", ");
-		msg.append("timezone: ").append(timeZone.getID()).append(", ");
-		msg.append("envType: ").append(envType.toString()).append(", ");
-		msg.append("userEnv: ").append(usrEnv.toString());
+		msg.append("time: ").append(_timeDate).append(", ");
+		msg.append("duration: ").append(_duration).append(", ");
+		msg.append("endTime: ").append(_endTimeDate).append(", ");
+		msg.append("timezone: ").append(_timeZone.getID()).append(", ");
+		msg.append("envType: ").append(_envType.toString()).append(", ");
+		msg.append("userEnv: ").append(_usrEnv.toString());
 		return msg.toString();
 	}
 	@Override
 	public boolean equals(Object o) {
 		if((o instanceof DurationUserEnv) 
-				&& time.equals(((DurationUserEnv)o).time)
-				&& timeZone.equals(((DurationUserEnv)o).timeZone)
-				&& envType.equals(((DurationUserEnv)o).envType))
+				&& _timeDate.equals(((DurationUserEnv)o)._timeDate)
+				&& _timeZone.equals(((DurationUserEnv)o)._timeZone)
+				&& _envType.equals(((DurationUserEnv)o)._envType))
 			return true;
 		else return false;
 	}
@@ -89,11 +89,11 @@ public class DurationUserEnv {
 	}
 	
 	public static class Builder{
-		private Date time = null;
-		private Date endTime = null;
-		private TimeZone timeZone = null;
-		private EnvType envType;
-		private UserEnv usrEnv = null;
+		private Date _timeDate = null;
+		private Date _endTimeDate = null;
+		private TimeZone _timeZone = null;
+		private EnvType _envType;
+		private UserEnv _usrEnv = null;
 		
 		public Builder(){}
 		
@@ -102,27 +102,27 @@ public class DurationUserEnv {
 		}
 		
 		public Builder setTime(Date time){
-			this.time = time;
+			_timeDate = time;
 			return this;
 		}
 		public Builder setEndTime(Date endTime){
-			this.endTime = endTime;
+			_endTimeDate = endTime;
 			return this;
 		}
 		public Builder setTimeZone(TimeZone timeZone){
-			this.timeZone = timeZone;
+			_timeZone = timeZone;
 			return this;
 		}
 		public Builder setEnvType(EnvType envType){
-			this.envType = envType;
+			_envType = envType;
 			return this;
 		}
 		public Builder setUserEnv(UserEnv userEnv){
-			this.usrEnv = userEnv;
+			_usrEnv = userEnv;
 			return this;
 		}
 		public UserEnv getUserEnv() {
-			return usrEnv;
+			return _usrEnv;
 		}
 	}
 }

@@ -14,16 +14,16 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 public class WeakTimeContextMatcher extends TemplateContextMatcher {
-	protected long period;
-	protected long tolerance;
-	protected long acceptanceDelay;
+	protected long _period;
+	protected long _tolerance;
+	protected long _acceptanceDelay;
 
 	public WeakTimeContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
 		//TODO if tolerance is longer than 24h
 		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
-		this.period = period;
-		this.tolerance = tolerance;
-		this.acceptanceDelay = acceptanceDelay;
+		_period = period;
+		_tolerance = tolerance;
+		_acceptanceDelay = acceptanceDelay;
 		_matcherType = MatcherType.WEAK_TIME;
 	}
 
@@ -35,17 +35,17 @@ public class WeakTimeContextMatcher extends TemplateContextMatcher {
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
-				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 				mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
 				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
 				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< acceptanceDelay){
+						< _acceptanceDelay){
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 					mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
 					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
 					mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
@@ -64,15 +64,15 @@ public class WeakTimeContextMatcher extends TemplateContextMatcher {
 		double relatedness = 0;
 		
 		long currTime = uCxt.getTimeDate().getTime();
-		long currTimePeriodic = currTime % period;
+		long currTimePeriodic = currTime % _period;
 		long targetTime = ((Date) rfdUCxt.getProperty("time")).getTime();
-		long targetTimePeriodic = targetTime % period;
+		long targetTimePeriodic = targetTime % _period;
 		
 		long mean = currTimePeriodic;
-		long std = tolerance / 2;
+		long std = _tolerance / 2;
 		NormalDistribution nd = new NormalDistribution(mean, std);
 
-		if(Time.isBetween((currTimePeriodic - tolerance) % period, targetTimePeriodic, (currTimePeriodic + tolerance) % period)){
+		if(Time.isBetween((currTimePeriodic - _tolerance) % _period, targetTimePeriodic, (currTimePeriodic + _tolerance) % _period)){
 			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
 			relatedness = 0;
@@ -89,13 +89,13 @@ public class WeakTimeContextMatcher extends TemplateContextMatcher {
 		
 		for(MatcherCountUnit unit : matcherCountUnitList){
 			long time = ((Date) unit.getProperty("time")).getTime();
-			long timePeriodic = time % period;
+			long timePeriodic = time % _period;
 			Iterator<Long> it = uniqueTime.iterator();
 			boolean unique = true;
 			if(!uniqueTime.isEmpty()){
 				while(it.hasNext()){
 					Long uniqueTimeElem = it.next();
-					if(Time.isBetween((uniqueTimeElem - tolerance) % period, timePeriodic, (uniqueTimeElem + tolerance) % period)){
+					if(Time.isBetween((uniqueTimeElem - _tolerance) % _period, timePeriodic, (uniqueTimeElem + _tolerance) % _period)){
 						unique = false;
 						break;
 					}

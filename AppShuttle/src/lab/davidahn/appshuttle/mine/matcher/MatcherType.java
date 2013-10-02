@@ -9,19 +9,19 @@ public enum MatcherType {
 //	WEEKLY_TIME
 //	UNFAMILIER_PLACE
 	
-	private int priority;
-	private boolean enabled;
+	private int _priority;
+	private boolean _enabled;
 	
 	MatcherType(int priority, boolean enabled){
-		this.priority = priority;
-		this.enabled = enabled;
+		_priority = priority;
+		_enabled = enabled;
 	}
 
 	public int getPriority() {
-		return priority;
+		return _priority;
 	}
 	
 	public boolean enabled() {
-		return enabled;
+		return _enabled;
 	}
 }

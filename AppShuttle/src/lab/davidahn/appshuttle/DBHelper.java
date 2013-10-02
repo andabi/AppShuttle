@@ -5,19 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-	private static final String DB_NAME = AppShuttleApplication
-			.getContext()
-			.getSharedPreferences("AppShuttle", Context.MODE_PRIVATE)
-			.getString(
-					"database.name",
-					new StringBuilder(AppShuttleApplication.getContext()
-							.getResources().getString(R.string.app_name))
-							.append(".db").toString());
+	private static final String DB_NAME = AppShuttleApplication.getContext().getSharedPreferences(
+			"AppShuttle", Context.MODE_PRIVATE).getString("database.name", 
+					new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
 
-	private static DBHelper dbHelper = new DBHelper(
-			AppShuttleApplication.getContext());
-
-	public synchronized static DBHelper getInstance() {
+	private static DBHelper dbHelper = new DBHelper(AppShuttleApplication.getContext());
+	public static DBHelper getInstance() {
 		return dbHelper;
 	}
 

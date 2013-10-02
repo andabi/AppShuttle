@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.common.collect.EvictingQueue;
@@ -18,23 +17,18 @@ public class DurationUserBhvManager {
 	private int _cacheSize;
 	private Date _eldestCachedBhvDate;
 
-	private SharedPreferences preferenceSettings;
+	private SharedPreferences _preferenceSettings;
 
-	private static DurationUserBhvManager durationUserBhvManager;
-
-	private DurationUserBhvManager(Context cxt) {
+	private static DurationUserBhvManager durationUserBhvManager = new DurationUserBhvManager();
+	private DurationUserBhvManager() {
 //		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
+		_preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 
 		_durationUserBhvDao = DurationUserBhvDao.getInstance();
-		_cacheSize = preferenceSettings.getInt("context.bhv.duration_user_bhv.cache_size", 100);
+		_cacheSize = _preferenceSettings.getInt("context.bhv.duration_user_bhv.cache_size", 100);
 		_cachedBhvQueue = EvictingQueue.create(_cacheSize);
 	}
-
-	public synchronized static DurationUserBhvManager getInstance(Context cxt) {
-		if (durationUserBhvManager == null) {
-			durationUserBhvManager = new DurationUserBhvManager(cxt);
-		}
+	public static DurationUserBhvManager getInstance() {
 		return durationUserBhvManager;
 	}
 	

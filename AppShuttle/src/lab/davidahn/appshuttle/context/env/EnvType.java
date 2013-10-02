@@ -9,13 +9,13 @@ public enum EnvType {
 	PLACE(UserPlace.class),
 	INVALID_PLACE(InvalidUserPlace.class);
 	
-	private Class<? extends UserEnv> clazz;
+	private Class<? extends UserEnv> _clazz;
 	
 	EnvType(Class<? extends UserEnv> clazz){
-		this.clazz = clazz;
+		_clazz = clazz;
 	}
 
 	public Class<? extends UserEnv> getClazz() {
-		return clazz;
+		return _clazz;
 	}
 }

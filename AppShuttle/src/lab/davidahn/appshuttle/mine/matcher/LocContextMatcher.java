@@ -22,11 +22,11 @@ import lab.davidahn.appshuttle.context.env.UserLoc;
  *
  */
 public class LocContextMatcher extends TemplateContextMatcher {
-	int toleranceInMeter;
+	int _toleranceInMeter;
 
 	public LocContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
 		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
-		this.toleranceInMeter = toleranceInMeter;
+		_toleranceInMeter = toleranceInMeter;
 		_matcherType = MatcherType.LOCATION;
 	}
 	
@@ -58,13 +58,13 @@ public class LocContextMatcher extends TemplateContextMatcher {
 					UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 					long duration = durationUserEnv.getDuration();
 					if(lastKnownUserLoc == null) {
-						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 						mergedRfdUCxtBuilder.setProperty("loc", userLoc);
 						mergedRfdUCxtBuilder.setProperty("duration", duration);
 					} else {
 						if(!userLoc.isSame(lastKnownUserLoc)){
 							res.add(mergedRfdUCxtBuilder.build());
-							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 							mergedRfdUCxtBuilder.setProperty("loc", userLoc);
 							mergedRfdUCxtBuilder.setProperty("duration", duration);
 						}
@@ -155,7 +155,7 @@ public class LocContextMatcher extends TemplateContextMatcher {
 			long duration = ((Long) unit.getProperty("duration"));
 			totalSpentTime += duration;
 			try{
-				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), toleranceInMeter)){
+				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), _toleranceInMeter)){
 					validSpentTime += duration;
 				}
 			} catch (InvalidUserEnvException e) {
@@ -184,7 +184,7 @@ public class LocContextMatcher extends TemplateContextMatcher {
 				while(it.hasNext()){
 					UserLoc uniqueLocElem = it.next();
 					try {
-						if(uLoc.proximity(uniqueLocElem, toleranceInMeter)){
+						if(uLoc.proximity(uniqueLocElem, _toleranceInMeter)){
 							unique = false;
 							break;
 						}

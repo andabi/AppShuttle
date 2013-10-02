@@ -10,125 +10,125 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public class MatchedResult implements Comparable<MatchedResult> {
-	private MatcherType matcherType;
-	private Date time;
-	private TimeZone timeZone;
-	private Map<EnvType, UserEnv> userEnvs;
-	private UserBhv userBhv;
-	private double likelihood;
-	private double inverseEntropy;
-	private int numTotalCxt;
-	private int numRelatedCxt;
-	private Map<MatcherCountUnit, Double> relatedCxt;
+	private MatcherType _matcherType;
+	private Date _timeDate;
+	private TimeZone _timeZone;
+	private Map<EnvType, UserEnv> _userEnvs;
+	private UserBhv _uBhv;
+	private double _likelihood;
+	private double _inverseEntropy;
+	private int _numTotalCxt;
+	private int _numRelatedCxt;
+	private Map<MatcherCountUnit, Double> _relatedCxt;
 	
 	public MatchedResult(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnv){
-		this.time = time;
-		this.timeZone = timeZone;
-		this.userEnvs = userEnv;
+		_timeDate = time;
+		_timeZone = timeZone;
+		_userEnvs = userEnv;
 	}
 	
 	public Date getTime() {
-		return time;
+		return _timeDate;
 	}
 
 	public void setTime(Date time) {
-		this.time = time;
+		_timeDate = time;
 	}
 
 	public TimeZone getTimeZone() {
-		return timeZone;
+		return _timeZone;
 	}
 
 	public void setTimeZone(TimeZone timeZone) {
-		this.timeZone = timeZone;
+		_timeZone = timeZone;
 	}
 
 	public Map<EnvType, UserEnv> getUserEnv() {
-		return userEnvs;
+		return _userEnvs;
 	}
 	public void setUserEnv(Map<EnvType, UserEnv> userEnv) {
-		this.userEnvs = userEnv;
+		_userEnvs = userEnv;
 	}
 
 	public double getLikelihood() {
-		return likelihood;
+		return _likelihood;
 	}
 
 	public void setLikelihood(double likelihood) {
-		this.likelihood = likelihood;
+		_likelihood = likelihood;
 	}
 	
 	public double getInverseEntropy() {
-		return inverseEntropy;
+		return _inverseEntropy;
 	}
 
 	public void setInverseEntropy(double inverseEntropy) {
-		this.inverseEntropy = inverseEntropy;
+		_inverseEntropy = inverseEntropy;
 	}
 
 	public UserBhv getUserBhvs() {
-		return userBhv;
+		return _uBhv;
 	}
 	
 	public UserEnv getUserEnv(EnvType envType) {
-		return userEnvs.get(envType);
+		return _userEnvs.get(envType);
 	}
 
 	public void setUserBhv(UserBhv bhvName) {
-		this.userBhv = bhvName;
+		_uBhv = bhvName;
 	}
 
 	public int getNumTotalCxt() {
-		return numTotalCxt;
+		return _numTotalCxt;
 	}
 
 	public void setNumTotalCxt(int numTotalCxt) {
-		this.numTotalCxt = numTotalCxt;
+		_numTotalCxt = numTotalCxt;
 	}
 
 	public int getNumRelatedCxt() {
-		return numRelatedCxt;
+		return _numRelatedCxt;
 	}
 
 	public void setNumRelatedCxt(int numRelatedCxt) {
-		this.numRelatedCxt = numRelatedCxt;
+		_numRelatedCxt = numRelatedCxt;
 	}
 	
 	public Map<MatcherCountUnit, Double> getRelatedCxt(){
-		return relatedCxt;
+		return _relatedCxt;
 	}
 	
 	public void setRelatedCxt(Map<MatcherCountUnit, Double> relatedCxt) {
-		this.relatedCxt = relatedCxt;
+		_relatedCxt = relatedCxt;
 	}
 
 	public void addRelatedCxt(MatcherCountUnit rfdUCxt, double relatedness) {
-		if(relatedCxt == null) relatedCxt = new HashMap<MatcherCountUnit, Double>();
-		relatedCxt.put(rfdUCxt, relatedness);
+		if(_relatedCxt == null) _relatedCxt = new HashMap<MatcherCountUnit, Double>();
+		_relatedCxt.put(rfdUCxt, relatedness);
 	}
 
 	public MatcherType getMatcherType() {
-		return matcherType;
+		return _matcherType;
 	}
 
 	public void setMatcherType(MatcherType matcherType) {
-		this.matcherType = matcherType;
+		_matcherType = matcherType;
 	}
 
 	public int compareTo(MatchedResult matchedCxt){
-		if(likelihood < matchedCxt.likelihood) return 1;
-		else if(likelihood == matchedCxt.likelihood) return 0;
+		if(_likelihood < matchedCxt._likelihood) return 1;
+		else if(_likelihood == matchedCxt._likelihood) return 0;
 		else return -1;
 	}
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append(userEnvs.toString()).append(", ");
-		msg.append(userBhv.toString()).append(", ");
-		msg.append("condition: ").append(matcherType).append(", ");
-		msg.append("likelihood: ").append(likelihood).append(", ");
-		msg.append("numTotalCxt: ").append(numTotalCxt).append(", ");
-		msg.append("relatedCxt: ").append(relatedCxt);
+		msg.append(_userEnvs.toString()).append(", ");
+		msg.append(_uBhv.toString()).append(", ");
+		msg.append("condition: ").append(_matcherType).append(", ");
+		msg.append("likelihood: ").append(_likelihood).append(", ");
+		msg.append("numTotalCxt: ").append(_numTotalCxt).append(", ");
+		msg.append("relatedCxt: ").append(_relatedCxt);
 		return msg.toString();
 	}
 }

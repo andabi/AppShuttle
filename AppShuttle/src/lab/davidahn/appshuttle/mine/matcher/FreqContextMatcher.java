@@ -9,12 +9,12 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
 public class FreqContextMatcher extends TemplateContextMatcher{
-	long acceptanceDelay;
+	long _acceptanceDelay;
 	
 	public FreqContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
 		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_matcherType = MatcherType.FREQUENCY;
-		this.acceptanceDelay = acceptanceDelay;
+		_acceptanceDelay = acceptanceDelay;
 	}
 	
 	@Override
@@ -25,13 +25,13 @@ public class FreqContextMatcher extends TemplateContextMatcher{
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			if(prevRfdUCxt == null){
-				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 			} else {
 				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTime().getTime()
-						< acceptanceDelay){
+						< _acceptanceDelay){
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 				}
 			}
 			prevRfdUCxt = rfdUCxt;
