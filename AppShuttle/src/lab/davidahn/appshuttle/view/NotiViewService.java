@@ -11,8 +11,8 @@ import lab.davidahn.appshuttle.AppShuttleMainActivity;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfoDao;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfoDao;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -80,10 +80,11 @@ public class NotiViewService extends Service {
 		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
 		
 		fillNotiRemoteViews(notiRemoteViews, predictedBhvInfoList);
-		
+
 		Notification notiUpdate = new Notification.Builder(NotiViewService.this)
 			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiRemoteViews)
+			.setPriority(Notification.PRIORITY_HIGH)
 			.setOngoing(true)
 			.build();
 		_notificationManager.notify(NOTI_UPDATE, notiUpdate);

@@ -2,8 +2,6 @@ package lab.davidahn.appshuttle;
 
 import java.util.Set;
 
-import com.bugsense.trace.BugSenseHandler;
-
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.Application;
@@ -14,6 +12,7 @@ public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
 	private SharedPreferences _preferenceSettings;
 	
+	private long _launchTime;
 	private SnapshotUserCxt _currUserCxt;
 	private Set<UserBhv> _recentPredictedBhvSet;
 //	private Set<UserBhv> _recentPredictedBhvSetForView;
@@ -21,7 +20,7 @@ public class AppShuttleApplication extends Application {
 	
 	public AppShuttleApplication(){
 		instance = this;
-		BugSenseHandler.initAndStartSession(this, "a3573081");
+		_launchTime = System.currentTimeMillis();
 	}
 	public static AppShuttleApplication getContext(){
 		return instance;
@@ -33,6 +32,10 @@ public class AppShuttleApplication extends Application {
 		return _preferenceSettings;
 	}
 
+	public long getLaunchTime(){
+		return _launchTime;
+	}
+	
 	public SnapshotUserCxt getCurrUserCxt() {
 		return _currUserCxt;
 	}

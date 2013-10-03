@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -19,6 +21,9 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		BugSenseHandler.initAndStartSession(this, "a3573081");
+		
 		setContentView(R.layout.activity_main);		
 		btnStart = (Button)findViewById(R.id.startBtn);
 		btnStop = (Button)findViewById(R.id.stopBtn);
