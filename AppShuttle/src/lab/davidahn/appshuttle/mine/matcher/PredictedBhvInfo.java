@@ -9,7 +9,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public class PredictedBhv implements Comparable<PredictedBhv> {
+public class PredictedBhvInfo implements Comparable<PredictedBhvInfo> {
 	private final Date _timeDate;
 	private final TimeZone _timeZone;
 	private final Map<EnvType, UserEnv> _uEnvs;
@@ -17,7 +17,7 @@ public class PredictedBhv implements Comparable<PredictedBhv> {
 	private final EnumMap<MatcherType, MatchedResult> _matchedResults;
 	private final double _score;
 	
-	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
+	public PredictedBhvInfo(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
 		_timeDate = time;
 		_timeZone = timeZone;
 		_uEnvs = userEnvs;
@@ -58,7 +58,7 @@ public class PredictedBhv implements Comparable<PredictedBhv> {
 		return _score;
 	}
 	
-	public int compareTo(PredictedBhv predictedBhv){
+	public int compareTo(PredictedBhvInfo predictedBhv){
 		if(_score < predictedBhv._score) return 1;
 		else if(_score == predictedBhv._score) return 0;
 		else return -1;

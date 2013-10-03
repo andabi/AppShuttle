@@ -142,12 +142,12 @@ public class LocContextMatcher extends TemplateContextMatcher {
 //		return res;
 
 	@Override
-	protected double calcRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
+	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		return 1;
 	}
 	
 	@Override
-	protected double calcLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		long totalSpentTime = 0, validSpentTime = 0;
 		
 		for(MatcherCountUnit unit : relatedCxtMap.keySet()){
@@ -170,7 +170,7 @@ public class LocContextMatcher extends TemplateContextMatcher {
 	}
 	
 	@Override
-	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		assert(matcherCountUnitList.size() >= _minNumCxt);
 		
 		double inverseEntropy = 0;

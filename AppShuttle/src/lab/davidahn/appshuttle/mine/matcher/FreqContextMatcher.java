@@ -43,12 +43,12 @@ public class FreqContextMatcher extends TemplateContextMatcher{
 	}
 	
 	@Override
-	protected double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
+	protected double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
 		return 1;
 	}
 
 	@Override
-	protected double calcLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
 		likelihood = 1.0 * numRelatedCxt / Integer.MAX_VALUE;
 		return likelihood;

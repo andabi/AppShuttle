@@ -54,7 +54,7 @@ public abstract class TemplateContextMatcher {
 			return null;
 		}
 		
-		double inverseEntropy = calcInverseEntropy(mergedRfdCxtList);
+		double inverseEntropy = computeInverseEntropy(mergedRfdCxtList);
 		if(inverseEntropy < _minInverseEntropy){
 			return null;
 		}
@@ -65,7 +65,7 @@ public abstract class TemplateContextMatcher {
 		
 		for(MatcherCountUnit mergedRfdCxt : mergedRfdCxtList) {
 			numTotalCxt++;
-			double relatedness = calcRelatedness(mergedRfdCxt, currUCxt);
+			double relatedness = computeRelatedness(mergedRfdCxt, currUCxt);
 			if(relatedness > 0 ) {
 				numRelatedCxt++;
 				relatedCxt.put(mergedRfdCxt, relatedness);
@@ -74,7 +74,7 @@ public abstract class TemplateContextMatcher {
 		if(numRelatedCxt < _minNumCxt)
 			return null;
 		
-		double likelihood = calcLikelihood(numRelatedCxt, relatedCxt, currUCxt);
+		double likelihood = computeLikelihood(numRelatedCxt, relatedCxt, currUCxt);
 		if(likelihood < _minLikelihood)
 			return null;
 		
@@ -89,7 +89,7 @@ public abstract class TemplateContextMatcher {
 		return matchedCxt;
 	}
 	
-	protected double calcLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
 		for(double relatedness : relatedCxtMap.values()){
 			likelihood+=relatedness;
@@ -98,13 +98,13 @@ public abstract class TemplateContextMatcher {
 		return likelihood;
 	}
 	
-	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		double inverseEntropy = Double.MIN_VALUE;
 		return inverseEntropy;
 	}
 
 	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
-	protected abstract double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
+	protected abstract double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
 	
 //			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)
 //				matchedCxt.setMatched(true);
@@ -123,7 +123,7 @@ public abstract class TemplateContextMatcher {
 //			if(!numTotalCxtByBhv.containsKey(userBhv)) numTotalCxtByBhv.put(userBhv, 1);
 //			numTotalCxtByBhv.put(userBhv, numTotalCxtByBhv.get(userBhv) + 1);
 //			
-//			double relatedness = calcRelatedness(rfdUCxt, uEnv);			
+//			double relatedness = computeRelatedness(rfdUCxt, uEnv);			
 //			if(relatedness > 0 ) {
 //				//numRelatedCxtByBhv
 //				if(!numRelatedCxtByBhv.containsKey(userBhv)) numRelatedCxtByBhv.put(userBhv, 0);
@@ -148,7 +148,7 @@ public abstract class TemplateContextMatcher {
 //			matchedCxt.setNumTotalCxt(numTotalCxtByBhv.get(userBhv));
 //			matchedCxt.setNumRelatedCxt(numRelatedCxtByBhv.get(userBhv));
 //			matchedCxt.setRelatedCxt(relatedCxtByBhv.get(userBhv));
-//			double likelihood = calcLikelihood(matchedCxt);
+//			double likelihood = computeLikelihood(matchedCxt);
 //
 //			if(likelihood < minLikelihood) continue;
 //

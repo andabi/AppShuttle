@@ -14,7 +14,7 @@ public class AppShuttleApplication extends Application {
 	
 	private SnapshotUserCxt _currUserCxt;
 	private Set<UserBhv> _recentPredictedBhvSet;
-	private Set<UserBhv> _recentPredictedBhvSetForView;
+//	private Set<UserBhv> _recentPredictedBhvSetForView;
 	
 	
 	public AppShuttleApplication(){
@@ -42,11 +42,11 @@ public class AppShuttleApplication extends Application {
 	public void setRecentPredictedBhvSet(Set<UserBhv> recentPredictedBhvSet) {
 		_recentPredictedBhvSet = recentPredictedBhvSet;
 	}
-	public Set<UserBhv> getRecentPredictedBhvSetForView() {
-		return _recentPredictedBhvSetForView;
-	}
-	public void setRecentPredictedBhvSetForView(
-			Set<UserBhv> recentPredictedBhvSetForView) {
-		_recentPredictedBhvSetForView = recentPredictedBhvSetForView;
-	}
+//	public Set<UserBhv> getRecentPredictedBhvSetForView() {
+//		return _recentPredictedBhvSetForView;
+//	}
+//	public void setRecentPredictedBhvSetForView(
+//			Set<UserBhv> recentPredictedBhvSetForView) {
+//		_recentPredictedBhvSetForView = recentPredictedBhvSetForView;
+//	}
 }

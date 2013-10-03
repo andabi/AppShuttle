@@ -11,7 +11,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.mine.matcher.MatchedResultDao;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvDao;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfoDao;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.content.Intent;
@@ -63,8 +63,8 @@ public class CompactionService extends IntentService {
 	}
 	
 	private void compactPredictedBhv(Date expirationBoundTimeDate) {
-		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
-		predictedBhvDao.deletePredictedBhv(expirationBoundTimeDate);
+		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
+		predictedBhvDao.deletePredictedBhvInfo(expirationBoundTimeDate);
 	}
 
 	private void compactMatchedResult(Date expirationBoundTimeDate) {

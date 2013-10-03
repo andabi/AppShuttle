@@ -91,7 +91,7 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 //	}
 
 	@Override
-	protected double calcRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
+	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
 //			UserLoc uLoc = ((LocUserEnv) uCxt.getUserEnv(EnvType.LOCATION)).getLoc();
 		if(uPlace.equals((UserPlace) unit.getProperty("place")))
@@ -115,7 +115,7 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 //		}
 	
 	@Override
-	protected double calcLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 //		int numTotalCxt = matchedCxt.getNumTotalCxt();
 //		Map<MatcherCountUnit, Double> relatedCxtMap = matchedCxt.getRelatedCxt();
 		
@@ -131,7 +131,7 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 	}
 	
 	@Override
-	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		assert(matcherCountUnitList.size() >= _minNumCxt);
 		
 		double inverseEntropy = 0;
@@ -231,14 +231,14 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 //			
 //			if(!relatednessSparseArrayMap.containsKey(userBhv)) relatednessSparseArrayMap.put(userBhv, new SparseArray<Double>());
 //			SparseArray<Double> relatedCxtSparseArray = relatednessSparseArrayMap.get(userBhv);
-//			double relatedness = calcRelatedness(rfdUCxt, uEnv);
+//			double relatedness = computeRelatedness(rfdUCxt, uEnv);
 //			relatedCxtSparseArray.put(contextId, relatedness);
 //			relatednessSparseArrayMap.put(userBhv, relatedCxtSparseArray);
 //		}
 //
 //		for(UserBhv userBhv : relatednessSparseArrayMap.keySet()){
 //			SparseArray<Double> relatedCxtMap = relatednessSparseArrayMap.get(userBhv);
-//			double likelihood = calcLikelihood(relatedCxtMap);
+//			double likelihood = computeLikelihood(relatedCxtMap);
 //			if(likelihood <= threshold) continue;
 //
 //			MatchedCxt matchedCxt = new MatchedCxt(uEnv);

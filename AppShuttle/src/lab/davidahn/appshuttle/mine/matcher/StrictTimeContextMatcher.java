@@ -65,7 +65,7 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 	}
 	
 	@Override
-	protected double calcRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
+	protected double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
 		double relatedness = 0;
 		
 		long currTime = uCxt.getTimeDate().getTime();
@@ -82,7 +82,7 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 	}
 	
 	@Override
-	protected double calcInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		assert(matcherCountUnitList.size() >= _minNumCxt);
 		
 		double inverseEntropy = 0;

@@ -17,19 +17,23 @@ import android.content.SharedPreferences;
 public class Predictor {
 	private SharedPreferences _preferenceSettings;
 	
-	public Predictor(){
+	private static Predictor predictor = new Predictor();
+	private Predictor(){
 //		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		_preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 	}
+	public static Predictor getInstance() {
+		return predictor;
+	}
 	
-	public List<PredictedBhv> predict(int topN){
+	public List<PredictedBhvInfo> predict(int topN){
 		SnapshotUserCxt currUserCxt = AppShuttleApplication.getContext().getCurrUserCxt();
 
 		if(currUserCxt == null)
 			return Collections.emptyList();
 
-		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
-		PriorityQueue<PredictedBhv> predicted = new PriorityQueue<PredictedBhv>();
+		List<PredictedBhvInfo> res = new ArrayList<PredictedBhvInfo>();
+		PriorityQueue<PredictedBhvInfo> predicted = new PriorityQueue<PredictedBhvInfo>();
 
 		List<TemplateContextMatcher> cxtMatcherList = new ArrayList<TemplateContextMatcher>();
 		if(MatcherType.FREQUENCY.enabled()){
@@ -100,8 +104,8 @@ public class Predictor {
 
 			if(matchedResultMap.isEmpty()) 
 				continue;
-			double score = calcScore(matchedResultMap);
-			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
+			double score = computePredictionScore(matchedResultMap);
+			PredictedBhvInfo predictedBhv = new PredictedBhvInfo(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
 					uBhv, matchedResultMap, score);
@@ -116,7 +120,7 @@ public class Predictor {
 		return res;
 	}
 	
-	private double calcScore(EnumMap<MatcherType, MatchedResult> matchedResults){
+	private double computePredictionScore(EnumMap<MatcherType, MatchedResult> matchedResults){
 		double score = 0;
 		for(MatcherType matcherType : matchedResults.keySet()){
 			int priority = matcherType.getPriority();
@@ -126,12 +130,8 @@ public class Predictor {
 		}
 		return score;
 	}
-
-	public void storePredictedBhv(PredictedBhv predictedBhv){
-		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
-		predictedBhvDao.storePredictedBhv(predictedBhv);
-	}
 }
+
 //ContextMatcher timeCxtMatcher = new TimeContextMatcher(cxt
 //, settings.getFloat("matcher.time.min_likelihood", 0.7f)
 //, settings.getInt("matcher.time.min_num_cxt", 3)
