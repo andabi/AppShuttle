@@ -11,8 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
-
 public class AppShuttleMainActivity extends Activity {
 	private Button btnStart;
 	private Button btnStop;
@@ -21,13 +19,12 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		BugSenseHandler.initAndStartSession(this, "a3573081");
 		setContentView(R.layout.activity_main);		
 		btnStart = (Button)findViewById(R.id.startBtn);
 		btnStop = (Button)findViewById(R.id.stopBtn);
 		btnReport = (Button)findViewById(R.id.reportBtn);
 
-		if(isServiceRunning()){
+		if(isAppShuttleServiceRunning()){
 			btnStart.setEnabled(false);
 			btnStop.setEnabled(true);
 			btnReport.setEnabled(true);
@@ -60,7 +57,7 @@ public class AppShuttleMainActivity extends Activity {
 		startService(new Intent(this, ReportingCxtService.class));
 	}
 	
-	private boolean isServiceRunning() {
+	private boolean isAppShuttleServiceRunning() {
 	    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
 	        if (AppShuttleService.class.getName().equals(service.service.getClassName())) {

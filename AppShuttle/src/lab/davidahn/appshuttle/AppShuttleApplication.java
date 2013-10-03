@@ -2,6 +2,8 @@ package lab.davidahn.appshuttle;
 
 import java.util.Set;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.Application;
@@ -19,6 +21,7 @@ public class AppShuttleApplication extends Application {
 	
 	public AppShuttleApplication(){
 		instance = this;
+		BugSenseHandler.initAndStartSession(this, "a3573081");
 	}
 	public static AppShuttleApplication getContext(){
 		return instance;
