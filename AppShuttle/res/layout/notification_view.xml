@@ -81,6 +81,7 @@
 	    android:orientation="vertical"
 	    android:layout_width="wrap_content"
 	    android:layout_height="match_parent"
+	    android:layout_marginRight="15dip"
 		>	    
 	    <ImageView
 		    android:id="@+id/icon_slot3"
@@ -90,6 +91,23 @@
 	    	/>
 	    <TextView
 	        android:id="@+id/icon_slot3_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        />
+    </LinearLayout>
+    <LinearLayout
+	    android:orientation="vertical"
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent"
+		>	    
+	    <ImageView
+		    android:id="@+id/icon_slot4"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:clickable="true"
+	    	/>
+	    <TextView
+	        android:id="@+id/icon_slot4_text"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
 	        />

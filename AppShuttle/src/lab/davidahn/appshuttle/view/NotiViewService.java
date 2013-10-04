@@ -84,8 +84,9 @@ public class NotiViewService extends Service {
 		Notification notiUpdate = new Notification.Builder(NotiViewService.this)
 			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiRemoteViews)
-			.setPriority(Notification.PRIORITY_HIGH)
 			.setOngoing(true)
+			.setWhen(AppShuttleApplication.getContext().getLaunchTime())
+			.setPriority(Notification.PRIORITY_MAX)
 			.build();
 		_notificationManager.notify(NOTI_UPDATE, notiUpdate);
 	}
@@ -96,12 +97,14 @@ public class NotiViewService extends Service {
 		iconSlotIdList.offer(R.id.icon_slot1);
 		iconSlotIdList.offer(R.id.icon_slot2);
 		iconSlotIdList.offer(R.id.icon_slot3);
+		iconSlotIdList.offer(R.id.icon_slot4);
 		
 		Queue<Integer> iconSlotScoreIdList = new LinkedList<Integer>();
 		iconSlotScoreIdList.offer(R.id.icon_slot0_text);
 		iconSlotScoreIdList.offer(R.id.icon_slot1_text);
 		iconSlotScoreIdList.offer(R.id.icon_slot2_text);
 		iconSlotScoreIdList.offer(R.id.icon_slot3_text);
+		iconSlotScoreIdList.offer(R.id.icon_slot4_text);
 
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
@@ -137,7 +140,7 @@ public class NotiViewService extends Service {
 				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
 				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, callIntent, 0));
 				notiRemoteViews.setTextViewText(iconSlotScoreId, 
-						(String) predictedBhv.getMeta("cachedName"));
+						((String) predictedBhv.getMeta("cachedName")).substring(0, 4));
 			} else {
 				continue;
 			}
