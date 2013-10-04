@@ -1,9 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -22,12 +20,16 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.IBinder;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 public class NotiViewService extends Service {
 	private static final int NOTI_UPDATE = 1;
@@ -76,10 +78,7 @@ public class NotiViewService extends Service {
 
 	@SuppressLint("NewApi")
 	private void updateNotiView(List<PredictedBhvInfo> predictedBhvInfoList) {
-		RemoteViews notiRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_view);
-		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
-		
-		fillNotiRemoteViews(notiRemoteViews, predictedBhvInfoList);
+		RemoteViews notiRemoteViews = createNotiRemoteViews(predictedBhvInfoList);
 
 		Notification notiUpdate = new Notification.Builder(NotiViewService.this)
 			.setSmallIcon(R.drawable.appshuttle)
@@ -90,19 +89,32 @@ public class NotiViewService extends Service {
 		_notificationManager.notify(NOTI_UPDATE, notiUpdate);
 	}
 
-	private void fillNotiRemoteViews(RemoteViews notiRemoteViews, List<PredictedBhvInfo> predictedBhvInfoList) {
-		Queue<Integer> iconSlotIdList = new LinkedList<Integer>();
-		iconSlotIdList.offer(R.id.icon_slot0);
-		iconSlotIdList.offer(R.id.icon_slot1);
-		iconSlotIdList.offer(R.id.icon_slot2);
-		iconSlotIdList.offer(R.id.icon_slot3);
-		
-		Queue<Integer> iconSlotScoreIdList = new LinkedList<Integer>();
-		iconSlotScoreIdList.offer(R.id.icon_slot0_text);
-		iconSlotScoreIdList.offer(R.id.icon_slot1_text);
-		iconSlotScoreIdList.offer(R.id.icon_slot2_text);
-		iconSlotScoreIdList.offer(R.id.icon_slot3_text);
+	private RemoteViews createNotiRemoteViews(List<PredictedBhvInfo> predictedBhvInfoList) {
 
+//		Queue<Integer> iconSlotIdList = new LinkedList<Integer>();
+//		iconSlotIdList.offer(R.id.icon_slot0);
+//		iconSlotIdList.offer(R.id.icon_slot1);
+//		iconSlotIdList.offer(R.id.icon_slot2);
+//		iconSlotIdList.offer(R.id.icon_slot3);
+//		
+//		Queue<Integer> iconSlotScoreIdList = new LinkedList<Integer>();
+//		iconSlotScoreIdList.offer(R.id.icon_slot0_text);
+//		iconSlotScoreIdList.offer(R.id.icon_slot1_text);
+//		iconSlotScoreIdList.offer(R.id.icon_slot2_text);
+//		iconSlotScoreIdList.offer(R.id.icon_slot3_text);
+		
+		RemoteViews notiRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_view);
+		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
+		LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		LinearLayout notiViewLayout = (LinearLayout)layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
+
+		TextView textView = new TextView(this);
+		textView.setText("text");
+		textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
+				LinearLayout.LayoutParams.WRAP_CONTENT));
+		notiViewLayout.addView(textView);
+		
+		int count = 3;
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 			BhvType bhvType = predictedBhv.getBhvType();
@@ -113,38 +125,77 @@ public class NotiViewService extends Service {
 				if(launchIntent == null){
 					continue;
 				} else {
-					int iconSlotId = iconSlotIdList.poll();
-					int iconSlotScoreId = iconSlotScoreIdList.poll();
+//					int iconSlotImageId = iconSlotIdList.poll();
+//					int iconSlotTextId = iconSlotScoreIdList.poll();
 					
+					LinearLayout bhvBundleLayout = new LinearLayout(this);
+					bhvBundleLayout.setOrientation(LinearLayout.VERTICAL);
+					MarginLayoutParams bhvBundleLayoutParams = new LinearLayout.MarginLayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
+							LinearLayout.LayoutParams.MATCH_PARENT);
+					bhvBundleLayoutParams.setMargins(0, 0, 15, 0);
+					bhvBundleLayout.setLayoutParams(bhvBundleLayoutParams);
+					bhvBundleLayout.setGravity(Gravity.CENTER);
+					
+					ImageView bhvIconView = new ImageView(this);
+					bhvIconView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
+							LinearLayout.LayoutParams.WRAP_CONTENT));
+					bhvIconView.setClickable(true);
 					try {
 						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
-						notiRemoteViews.setImageViewBitmap(iconSlotId, iconDrawable.getBitmap());
+						bhvIconView.setImageBitmap(iconDrawable.getBitmap());
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
-					} catch (NullPointerException e) {
-						e.printStackTrace();
 					}
-					notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, launchIntent, 0));
-					notiRemoteViews.setTextViewText(iconSlotScoreId, "");
+
+					TextView bhvTextView = new TextView(this);
+					bhvTextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
+							LinearLayout.LayoutParams.WRAP_CONTENT));
+					bhvTextView.setText("text");
+					
+					bhvBundleLayout.addView(bhvIconView);
+					bhvBundleLayout.addView(bhvTextView);
+					
+//					notiRemoteViews = new RemoteViews(getPackageName(), bhvBundleLayout.getId());
+//					notiRemoteViews.getLayoutId();
+//					notiLayout.addView(bhvTextView);
+					notiViewLayout.addView(bhvBundleLayout);
+					notiRemoteViews.setOnClickPendingIntent(bhvIconView.getId(), PendingIntent.getActivity(this, 0, launchIntent, 0));
+//					
+//					try {
+//						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
+//						notiRemoteViews.setImageViewBitmap(bhvIconView.getId(), iconDrawable.getBitmap());
+//					} catch (NameNotFoundException e) {
+//						e.printStackTrace();
+//					} catch (NullPointerException e) {
+//						e.printStackTrace();
+//					}
+//					notiRemoteViews.setOnClickPendingIntent(bhvIconView.getId(), PendingIntent.getActivity(this, 0, launchIntent, 0));
+//					notiRemoteViews.setTextViewText(iconSlotTextId, "");
 				}
 			} else if (bhvType == BhvType.CALL){
-				int iconSlotId = iconSlotIdList.poll();
-				int iconSlotScoreId = iconSlotScoreIdList.poll();
-				
-				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
-				notiRemoteViews.setImageViewBitmap(iconSlotId, callContactIcon);
-
-				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
-				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, callIntent, 0));
-				notiRemoteViews.setTextViewText(iconSlotScoreId, 
-						(String) predictedBhv.getMeta("cachedName"));
+//				int iconSlotId = iconSlotIdList.poll();
+//				int iconSlotScoreId = iconSlotScoreIdList.poll();
+//				
+//				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
+//				notiRemoteViews.setImageViewBitmap(iconSlotId, callContactIcon);
+//
+//				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+//				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, callIntent, 0));
+//				notiRemoteViews.setTextViewText(iconSlotScoreId, 
+//						(String) predictedBhv.getMeta("cachedName"));
 			} else {
 				continue;
 			}
 			
-			if(iconSlotIdList.isEmpty()) 
+			if(--count <= 0)
 				break;
+//			if(iconSlotIdList.isEmpty()) 
+//				break;
 		}
+
+		notiRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_view);
+//		notiRemoteViews.addView(R.layout.notification_view, notiViewLayout);
+		return notiRemoteViews;
 	}
 	
 	private void storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
