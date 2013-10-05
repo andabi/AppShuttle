@@ -20,16 +20,12 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.IBinder;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup.MarginLayoutParams;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RemoteViews;
-import android.widget.TextView;
 
 public class NotiViewService extends Service {
 	private static final int NOTI_UPDATE = 1;
@@ -83,119 +79,55 @@ public class NotiViewService extends Service {
 		Notification notiUpdate = new Notification.Builder(NotiViewService.this)
 			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiRemoteViews)
-			.setPriority(Notification.PRIORITY_HIGH)
+			.setPriority(Notification.PRIORITY_MAX)
 			.setOngoing(true)
 			.build();
 		_notificationManager.notify(NOTI_UPDATE, notiUpdate);
 	}
 
 	private RemoteViews createNotiRemoteViews(List<PredictedBhvInfo> predictedBhvInfoList) {
+		RemoteViews notiView = new RemoteViews(getPackageName(), R.layout.noti);
+		notiView.setOnClickPendingIntent(R.id.self_icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
+//		LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//		LinearLayout notiViewLayout = (LinearLayout)layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
 
-//		Queue<Integer> iconSlotIdList = new LinkedList<Integer>();
-//		iconSlotIdList.offer(R.id.icon_slot0);
-//		iconSlotIdList.offer(R.id.icon_slot1);
-//		iconSlotIdList.offer(R.id.icon_slot2);
-//		iconSlotIdList.offer(R.id.icon_slot3);
-//		
-//		Queue<Integer> iconSlotScoreIdList = new LinkedList<Integer>();
-//		iconSlotScoreIdList.offer(R.id.icon_slot0_text);
-//		iconSlotScoreIdList.offer(R.id.icon_slot1_text);
-//		iconSlotScoreIdList.offer(R.id.icon_slot2_text);
-//		iconSlotScoreIdList.offer(R.id.icon_slot3_text);
-		
-		RemoteViews notiRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_view);
-		notiRemoteViews.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
-		LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		LinearLayout notiViewLayout = (LinearLayout)layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
-
-		TextView textView = new TextView(this);
-		textView.setText("text");
-		textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
-				LinearLayout.LayoutParams.WRAP_CONTENT));
-		notiViewLayout.addView(textView);
-		
-		int count = 3;
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 			BhvType bhvType = predictedBhv.getBhvType();
 			String bhvName = predictedBhv.getBhvName();
 			
+			RemoteViews notiElemView = new RemoteViews(getPackageName(), R.layout.noti_element);
 			if(bhvType == BhvType.APP){
 				Intent launchIntent = _packageManager.getLaunchIntentForPackage(bhvName);
 				if(launchIntent == null){
 					continue;
 				} else {
-//					int iconSlotImageId = iconSlotIdList.poll();
-//					int iconSlotTextId = iconSlotScoreIdList.poll();
-					
-					LinearLayout bhvBundleLayout = new LinearLayout(this);
-					bhvBundleLayout.setOrientation(LinearLayout.VERTICAL);
-					MarginLayoutParams bhvBundleLayoutParams = new LinearLayout.MarginLayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
-							LinearLayout.LayoutParams.MATCH_PARENT);
-					bhvBundleLayoutParams.setMargins(0, 0, 15, 0);
-					bhvBundleLayout.setLayoutParams(bhvBundleLayoutParams);
-					bhvBundleLayout.setGravity(Gravity.CENTER);
-					
-					ImageView bhvIconView = new ImageView(this);
-					bhvIconView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
-							LinearLayout.LayoutParams.WRAP_CONTENT));
-					bhvIconView.setClickable(true);
 					try {
 						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
-						bhvIconView.setImageBitmap(iconDrawable.getBitmap());
+						notiElemView.setImageViewBitmap(R.id.noti_elem_image, iconDrawable.getBitmap());
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
+					} catch (NullPointerException e) {
+						e.printStackTrace();
 					}
-
-					TextView bhvTextView = new TextView(this);
-					bhvTextView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 
-							LinearLayout.LayoutParams.WRAP_CONTENT));
-					bhvTextView.setText("text");
-					
-					bhvBundleLayout.addView(bhvIconView);
-					bhvBundleLayout.addView(bhvTextView);
-					
-//					notiRemoteViews = new RemoteViews(getPackageName(), bhvBundleLayout.getId());
-//					notiRemoteViews.getLayoutId();
-//					notiLayout.addView(bhvTextView);
-					notiViewLayout.addView(bhvBundleLayout);
-					notiRemoteViews.setOnClickPendingIntent(bhvIconView.getId(), PendingIntent.getActivity(this, 0, launchIntent, 0));
-//					
-//					try {
-//						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
-//						notiRemoteViews.setImageViewBitmap(bhvIconView.getId(), iconDrawable.getBitmap());
-//					} catch (NameNotFoundException e) {
-//						e.printStackTrace();
-//					} catch (NullPointerException e) {
-//						e.printStackTrace();
-//					}
-//					notiRemoteViews.setOnClickPendingIntent(bhvIconView.getId(), PendingIntent.getActivity(this, 0, launchIntent, 0));
-//					notiRemoteViews.setTextViewText(iconSlotTextId, "");
+					notiElemView.setOnClickPendingIntent(R.id.noti_elem_image, PendingIntent.getActivity(this, 0, launchIntent, 0));
 				}
 			} else if (bhvType == BhvType.CALL){
-//				int iconSlotId = iconSlotIdList.poll();
-//				int iconSlotScoreId = iconSlotScoreIdList.poll();
-//				
-//				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
-//				notiRemoteViews.setImageViewBitmap(iconSlotId, callContactIcon);
-//
-//				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
-//				notiRemoteViews.setOnClickPendingIntent(iconSlotId, PendingIntent.getActivity(this, 0, callIntent, 0));
-//				notiRemoteViews.setTextViewText(iconSlotScoreId, 
-//						(String) predictedBhv.getMeta("cachedName"));
+				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
+				notiElemView.setImageViewBitmap(R.id.noti_elem_image, callContactIcon);
+
+				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+				notiElemView.setOnClickPendingIntent(R.id.noti_elem_image, PendingIntent.getActivity(this, 0, callIntent, 0));
+				notiElemView.setTextViewText(R.id.noti_elem_text, 
+						(String) predictedBhv.getMeta("cachedName"));
 			} else {
 				continue;
 			}
 			
-			if(--count <= 0)
-				break;
-//			if(iconSlotIdList.isEmpty()) 
-//				break;
+			notiView.addView(R.id.noti_container, notiElemView);
 		}
 
-		notiRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_view);
-//		notiRemoteViews.addView(R.layout.notification_view, notiViewLayout);
-		return notiRemoteViews;
+		return notiView;
 	}
 	
 	private void storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {

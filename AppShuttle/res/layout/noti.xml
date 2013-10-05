@@ -1,22 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/noti_container"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="5dip"
-   	android:paddingTop="5dip"
-    android:gravity="top"
 	>
 	<LinearLayout
 	    android:orientation="vertical"
 	    android:layout_width="wrap_content"
 	    android:layout_height="match_parent"
-	    android:layout_marginRight="15dip"
-	    android:paddingBottom="7dip"
-    	android:paddingTop="7dip"
+	    android:layout_marginRight="5dip"
+	    android:paddingBottom="15dip"
+    	android:paddingTop="15dip"
 	    android:gravity="center"
 		>
 	    <ImageView
-	        android:id="@+id/icon"
+	        android:id="@+id/self_icon"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:src="@drawable/appshuttle"
