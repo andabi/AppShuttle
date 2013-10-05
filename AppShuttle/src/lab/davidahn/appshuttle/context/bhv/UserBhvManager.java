@@ -21,7 +21,7 @@ public class UserBhvManager {
 
 		_bhvSet.addAll(_userBhvDao.retrieveUserBhv());
 	}
-	public static UserBhvManager getInstance() {
+	public synchronized static UserBhvManager getInstance() {
 		return userBhvManager;
 	}
 	

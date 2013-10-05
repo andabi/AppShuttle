@@ -22,9 +22,9 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		BugSenseHandler.initAndStartSession(this, "a3573081");
+//		BugSenseHandler.initAndStartSession(this, "a3573081");
 		
-		setContentView(R.layout.activity_main);		
+		setContentView(R.layout.main);		
 		btnStart = (Button)findViewById(R.id.startBtn);
 		btnStop = (Button)findViewById(R.id.stopBtn);
 		btnReport = (Button)findViewById(R.id.reportBtn);
