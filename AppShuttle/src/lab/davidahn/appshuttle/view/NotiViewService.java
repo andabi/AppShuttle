@@ -44,7 +44,7 @@ public class NotiViewService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
 		
-		updateNotiView(predictBhv());
+		updateNotiView(predictAndGetBhv());
 		
 //		View notiLayout = layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
 //		ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
@@ -63,22 +63,23 @@ public class NotiViewService extends Service {
 		_notificationManager.cancelAll();
 	}
 
-	private List<PredictedBhvInfo> predictBhv() {
+	private List<PredictedBhvInfo> predictAndGetBhv() {
 		Predictor predictor = Predictor.getInstance();
 		List<PredictedBhvInfo> predictedBhvInfoList = predictor.predict(Integer.MAX_VALUE);
 
-		storeNewPredictedBhv(predictedBhvInfoList);
+		@SuppressWarnings("unused")
+		boolean stored = storeNewPredictedBhv(predictedBhvInfoList);
 
 		return predictedBhvInfoList;
 	}
 
 	@SuppressLint("NewApi")
 	private void updateNotiView(List<PredictedBhvInfo> predictedBhvInfoList) {
-		RemoteViews notiRemoteViews = createNotiRemoteViews(predictedBhvInfoList);
+		RemoteViews notiView = createNotiRemoteViews(predictedBhvInfoList);
 
 		Notification notiUpdate = new Notification.Builder(NotiViewService.this)
 			.setSmallIcon(R.drawable.appshuttle)
-			.setContent(notiRemoteViews)
+			.setContent(notiView)
 			.setOngoing(true)
 			.setWhen(AppShuttleApplication.getContext().getLaunchTime())
 			.setPriority(Notification.PRIORITY_MAX)
@@ -88,10 +89,15 @@ public class NotiViewService extends Service {
 
 	private RemoteViews createNotiRemoteViews(List<PredictedBhvInfo> predictedBhvInfoList) {
 		RemoteViews notiView = new RemoteViews(getPackageName(), R.layout.noti);
-		notiView.setOnClickPendingIntent(R.id.self_icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
+		//clean
+		notiView.removeAllViews(R.id.noti_container);
+
+		RemoteViews notiIconView = new RemoteViews(getPackageName(), R.layout.noti_icon);
+		notiIconView.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
+		notiView.addView(R.id.noti_container, notiIconView);
 //		LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 //		LinearLayout notiViewLayout = (LinearLayout)layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
-
+		
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 			BhvType bhvType = predictedBhv.getBhvType();
@@ -131,19 +137,23 @@ public class NotiViewService extends Service {
 		return notiView;
 	}
 	
-	private void storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
+	private boolean storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
 		Set<UserBhv> lastPredictedBhvSet = AppShuttleApplication.getContext().getRecentPredictedBhvSet();
 		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
+		boolean stored = false;
 
 		Set<UserBhv> currPredictedBhvSet = new HashSet<UserBhv>();
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
-			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv))
+			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
 				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
+				stored = true;
+			}
 			currPredictedBhvSet.add(predictedBhv);
 		}
 
 		AppShuttleApplication.getContext().setRecentPredictedBhvSet(currPredictedBhvSet);
-	}
 
+		return stored;
+	}
 }
