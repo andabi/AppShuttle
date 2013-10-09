@@ -25,6 +25,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.TypedValue;
 import android.widget.RemoteViews;
 
 public class NotiViewService extends Service {
@@ -45,10 +46,6 @@ public class NotiViewService extends Service {
 		super.onStartCommand(intent, flags, startId);
 		
 		updateNotiView(predictAndGetBhv());
-		
-//		View notiLayout = layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
-//		ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-//		ImageView iconSlot = (ImageView) notiLayout.findViewById(viewIdList.get(i));
 		
 		return START_NOT_STICKY;
 	}
@@ -88,53 +85,67 @@ public class NotiViewService extends Service {
 	}
 
 	private RemoteViews createNotiRemoteViews(List<PredictedBhvInfo> predictedBhvInfoList) {
-		RemoteViews notiView = new RemoteViews(getPackageName(), R.layout.noti);
-		//clean
-		notiView.removeAllViews(R.id.noti_container);
+		RemoteViews notiRemoteView = new RemoteViews(getPackageName(), R.layout.noti);
 
-		RemoteViews notiIconView = new RemoteViews(getPackageName(), R.layout.noti_icon);
-		notiIconView.setOnClickPendingIntent(R.id.icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
-		notiView.addView(R.id.noti_container, notiIconView);
-//		LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//		LinearLayout notiViewLayout = (LinearLayout)layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
+		//clean
+		notiRemoteView.removeAllViews(R.id.noti_elem_container);
 		
+		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
+
+//		View notiView = ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(notiRemoteView.getLayoutId(), null);
+//		int notiViewWidth = getNotiViewWidth();
+//		int notiElemWidth = notiView.findViewById(R.id.noti_elem_container).getHeight(); //height:width=1:1
+
+//		int sumNotiElemWidth = 0;
+		int maxNumElem = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_elem", 5);
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
+			
+//			sumNotiElemWidth += notiElemWidth;
+//			if(notiElemContainerWidth - sumNotiElemWidth < notiElemWidth)
+//				break;
+			
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 			BhvType bhvType = predictedBhv.getBhvType();
 			String bhvName = predictedBhv.getBhvName();
 			
-			RemoteViews notiElemView = new RemoteViews(getPackageName(), R.layout.noti_element);
+			Intent launchIntent = null;
+			RemoteViews notiElemRemoteView = new RemoteViews(getPackageName(), R.layout.noti_element);
 			if(bhvType == BhvType.APP){
-				Intent launchIntent = _packageManager.getLaunchIntentForPackage(bhvName);
+				launchIntent = _packageManager.getLaunchIntentForPackage(bhvName);
 				if(launchIntent == null){
 					continue;
 				} else {
 					try {
 						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
-						notiElemView.setImageViewBitmap(R.id.noti_elem_image, iconDrawable.getBitmap());
+						notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_image, iconDrawable.getBitmap());
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
 					} catch (NullPointerException e) {
 						e.printStackTrace();
 					}
-					notiElemView.setOnClickPendingIntent(R.id.noti_elem_image, PendingIntent.getActivity(this, 0, launchIntent, 0));
 				}
 			} else if (bhvType == BhvType.CALL){
 				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
-				notiElemView.setImageViewBitmap(R.id.noti_elem_image, callContactIcon);
+				notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_image, callContactIcon);
 
-				Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
-				notiElemView.setOnClickPendingIntent(R.id.noti_elem_image, PendingIntent.getActivity(this, 0, callIntent, 0));
-				notiElemView.setTextViewText(R.id.noti_elem_text, 
+				launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, 
 						(String) predictedBhv.getMeta("cachedName"));
+				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, TypedValue.COMPLEX_UNIT_SP, 12);
 			} else {
 				continue;
 			}
 			
-			notiView.addView(R.id.noti_container, notiElemView);
+			if(launchIntent != null)
+				notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(this, 0, launchIntent, 0));
+			
+			notiRemoteView.addView(R.id.noti_elem_container, notiElemRemoteView);
+			
+			if(--maxNumElem <=0 )
+				break;
 		}
 
-		return notiView;
+		return notiRemoteView;
 	}
 	
 	private boolean storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
@@ -157,3 +168,18 @@ public class NotiViewService extends Service {
 		return stored;
 	}
 }
+
+//View notiLayout = layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
+//ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+//ImageView iconSlot = (ImageView) notiLayout.findViewById(viewIdList.get(i));
+//LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//LinearLayout notiViewLayout = (LinearLayout)layoutInflater.inflate(notiRemoteViews.getLayoutId(), null);
+
+//private int getNotiViewWidth() {
+//WindowManager wm = (WindowManager) AppShuttleApplication.getContext().getSystemService(Context.WINDOW_SERVICE);
+//Display display = wm.getDefaultDisplay();
+//Point size = new Point();
+//display.getSize(size);
+//return size.x;
+//}
+

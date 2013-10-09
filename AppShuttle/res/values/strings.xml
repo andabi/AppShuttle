@@ -8,5 +8,6 @@
     <string name="report">Report</string>
     <string name="report_success_msg">Email was sent successfully</string>
     <string name="report_failure_msg">Email was not sent</string>
+    <string name="app_icon">AppShuttle icon</string>
 
 </resources>

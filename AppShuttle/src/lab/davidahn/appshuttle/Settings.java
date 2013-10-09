@@ -80,7 +80,7 @@ public class Settings {
 		editor.putInt("matcher.loc.distance_tolerance", 100);
 
 		//view
-		editor.putInt("viewer.noti.num_slot", 4);
+		editor.putInt("viewer.noti.max_num_elem", 5);
 
 		editor.commit();
 	}
