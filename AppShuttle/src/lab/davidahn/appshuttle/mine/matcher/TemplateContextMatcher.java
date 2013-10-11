@@ -12,6 +12,7 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
+import android.util.Log;
 
 public abstract class TemplateContextMatcher {
 	protected MatcherType _matcherType;
@@ -86,6 +87,9 @@ public abstract class TemplateContextMatcher {
 		matchedCxt.setRelatedCxt(relatedCxt);
 		matchedCxt.setLikelihood(likelihood);
 		matchedCxt.setInverseEntropy(inverseEntropy);
+		
+		Log.d("matchedCxt: matcher type", matchedCxt.getMatcherType().toString());
+		
 		return matchedCxt;
 	}
 	

@@ -5,7 +5,6 @@ import java.util.Date;
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,7 +38,7 @@ public class PredictedBhvInfoDao {
 			_matchedResultDao.storeMatchedResult(matchedRes);
 		}
 		
-		Log.i("stored predicted bhv", predictedBhvInfo.toString());
+//		Log.i("stored predicted bhv", predictedBhvInfo.toString());
 	}
 	
 	public void deletePredictedBhvInfo(Date timeDate){

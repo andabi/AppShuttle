@@ -1,7 +1,5 @@
 package lab.davidahn.appshuttle;
 
-import com.bugsense.trace.BugSenseHandler;
-
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -12,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.bugsense.trace.BugSenseHandler;
 
 public class AppShuttleMainActivity extends Activity {
 	private Button btnStart;

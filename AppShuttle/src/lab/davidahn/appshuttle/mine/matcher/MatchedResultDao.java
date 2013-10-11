@@ -5,7 +5,6 @@ import java.util.Date;
 import lab.davidahn.appshuttle.DBHelper;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class MatchedResultDao {
 	private static MatchedResultDao matchedResultDao = new MatchedResultDao();
@@ -32,7 +31,7 @@ public class MatchedResultDao {
 		row.put("inverse_entropy", mCxt.getInverseEntropy());
 		_db.insert("matched_result", null, row);
 
-		Log.i("stored matched result", mCxt.toString());
+//		Log.i("stored matched result", mCxt.toString());
 	}
 	
 	public void deleteMatchedResult(Date timeDate){

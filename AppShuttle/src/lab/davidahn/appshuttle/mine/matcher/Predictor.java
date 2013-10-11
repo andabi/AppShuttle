@@ -49,8 +49,8 @@ public class Predictor {
 		if(MatcherType.WEAK_TIME.enabled()){
 			cxtMatcherList.add(new WeakTimeContextMatcher(
 					new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
-					, _preferenceSettings.getLong("matcher.weak_time.duration", 6 * AlarmManager.INTERVAL_DAY)
-					, _preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.7f)
+					, _preferenceSettings.getLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY)
+					, _preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.5f)
 					, _preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f)
 					, _preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
 					, AlarmManager.INTERVAL_DAY
