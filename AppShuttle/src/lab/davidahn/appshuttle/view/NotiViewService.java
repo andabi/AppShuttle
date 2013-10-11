@@ -34,6 +34,8 @@ public class NotiViewService extends Service {
 	private NotificationManager _notificationManager;
 	private PackageManager _packageManager;
 //	private LayoutInflater layoutInflater;
+	
+	private Set<UserBhv> _recentPredictedBhvSet;
 
 	public void onCreate(){
 		super.onCreate();
@@ -131,7 +133,7 @@ public class NotiViewService extends Service {
 				launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
 				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, 
 						(String) predictedBhv.getMeta("cachedName"));
-				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, TypedValue.COMPLEX_UNIT_SP, 12);
+				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, TypedValue.COMPLEX_UNIT_SP, 10);
 			} else {
 				continue;
 			}
@@ -149,7 +151,9 @@ public class NotiViewService extends Service {
 	}
 	
 	private boolean storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
-		Set<UserBhv> lastPredictedBhvSet = AppShuttleApplication.getContext().getRecentPredictedBhvSet();
+//		Set<UserBhv> lastPredictedBhvSet = AppShuttleApplication.getContext().getRecentPredictedBhvSet();
+		Set<UserBhv> lastPredictedBhvSet = _recentPredictedBhvSet;
+		
 		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
 		boolean stored = false;
 
@@ -163,8 +167,9 @@ public class NotiViewService extends Service {
 			currPredictedBhvSet.add(predictedBhv);
 		}
 
-		AppShuttleApplication.getContext().setRecentPredictedBhvSet(currPredictedBhvSet);
-
+//		AppShuttleApplication.getContext().setRecentPredictedBhvSet(currPredictedBhvSet);
+		_recentPredictedBhvSet = currPredictedBhvSet;
+		
 		return stored;
 	}
 }

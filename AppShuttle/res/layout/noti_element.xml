@@ -6,6 +6,7 @@
     android:gravity="center"
     android:clickable="true"
     android:layout_margin="5dip"
+    android:layout_weight="1"
         >
     <ImageView
         android:id="@+id/noti_elem_image"

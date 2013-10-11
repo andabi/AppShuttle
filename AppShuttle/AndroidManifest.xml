@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="lab.davidahn.appshuttle.AppShuttleService" />
+        <service android:name="lab.davidahn.appshuttle.AppShuttleMainService" />
         <service android:name="lab.davidahn.appshuttle.collect.CollectionService" />
         <service android:name="lab.davidahn.appshuttle.context.CompactionService" />
         <service android:name="lab.davidahn.appshuttle.context.bhv.UnregisterBhvService" />

@@ -17,7 +17,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 
-public class AppShuttleService extends Service {
+public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
 	private PendingIntent collectingCxtOperation;
 	private PendingIntent reportingCxtOperation;
@@ -29,7 +29,7 @@ public class AppShuttleService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		Settings.preferenceSettings();
+		AppShuttleSettings.preferenceSettings();
 //		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 
@@ -101,11 +101,11 @@ public class AppShuttleService extends Service {
 		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(notiViewReceiver);
 		
-		stopService(new Intent(AppShuttleService.this, CollectionService.class));
-		stopService(new Intent(AppShuttleService.this, CompactionService.class));
-		stopService(new Intent(AppShuttleService.this, UnregisterBhvService.class));
-		stopService(new Intent(AppShuttleService.this, ReportingCxtService.class));
-		stopService(new Intent(AppShuttleService.this, NotiViewService.class));
+		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
+		stopService(new Intent(AppShuttleMainService.this, CompactionService.class));
+		stopService(new Intent(AppShuttleMainService.this, UnregisterBhvService.class));
+		stopService(new Intent(AppShuttleMainService.this, ReportingCxtService.class));
+		stopService(new Intent(AppShuttleMainService.this, NotiViewService.class));
 	}
 	
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {

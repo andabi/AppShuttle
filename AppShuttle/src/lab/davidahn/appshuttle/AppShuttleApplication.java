@@ -1,9 +1,6 @@
 package lab.davidahn.appshuttle;
 
-import java.util.Set;
-
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,8 +11,7 @@ public class AppShuttleApplication extends Application {
 	
 	private long _launchTime;
 	private SnapshotUserCxt _currUserCxt;
-	private Set<UserBhv> _recentPredictedBhvSet;
-//	private Set<UserBhv> _recentPredictedBhvSetForView;
+//	private Set<UserBhv> _recentPredictedBhvSet;
 	
 	
 	public AppShuttleApplication(){
@@ -42,17 +38,10 @@ public class AppShuttleApplication extends Application {
 	public void setCurrUserCxt(SnapshotUserCxt currUserCxt) {
 		_currUserCxt = currUserCxt;
 	}
-	public Set<UserBhv> getRecentPredictedBhvSet() {
-		return _recentPredictedBhvSet;
-	}
-	public void setRecentPredictedBhvSet(Set<UserBhv> recentPredictedBhvSet) {
-		_recentPredictedBhvSet = recentPredictedBhvSet;
-	}
-//	public Set<UserBhv> getRecentPredictedBhvSetForView() {
-//		return _recentPredictedBhvSetForView;
+//	public Set<UserBhv> getRecentPredictedBhvSet() {
+//		return _recentPredictedBhvSet;
 //	}
-//	public void setRecentPredictedBhvSetForView(
-//			Set<UserBhv> recentPredictedBhvSetForView) {
-//		_recentPredictedBhvSetForView = recentPredictedBhvSetForView;
+//	public void setRecentPredictedBhvSet(Set<UserBhv> recentPredictedBhvSet) {
+//		_recentPredictedBhvSet = recentPredictedBhvSet;
 //	}
 }

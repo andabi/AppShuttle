@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.DBHelper;
+import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,7 +21,7 @@ public class UserBhvDao {
 	
 	private static UserBhvDao userBhvDao = new UserBhvDao();
 	private UserBhvDao() {
-		_db = DBHelper.getInstance().getWritableDatabase();
+		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 	}
 	public static UserBhvDao getInstance() {
 		return userBhvDao;

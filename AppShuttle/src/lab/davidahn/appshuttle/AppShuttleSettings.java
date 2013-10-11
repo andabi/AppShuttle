@@ -4,7 +4,7 @@ import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
 
-public class Settings {
+public class AppShuttleSettings {
 	public static void preferenceSettings() {
 //		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
@@ -80,7 +80,7 @@ public class Settings {
 		editor.putInt("matcher.loc.distance_tolerance", 100);
 
 		//view
-		editor.putInt("viewer.noti.max_num_elem", 5);
+		editor.putInt("viewer.noti.max_num_elem", 7);
 
 		editor.commit();
 	}

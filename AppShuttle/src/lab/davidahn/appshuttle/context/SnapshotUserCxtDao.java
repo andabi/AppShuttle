@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.DBHelper;
+import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
@@ -33,7 +33,7 @@ public class SnapshotUserCxtDao {
 	private static SnapshotUserCxtDao userCxtDao = new SnapshotUserCxtDao();
 
 	private SnapshotUserCxtDao() {
-		_db = DBHelper.getInstance().getWritableDatabase();
+		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 	}
 
 	public static SnapshotUserCxtDao getInstance() {

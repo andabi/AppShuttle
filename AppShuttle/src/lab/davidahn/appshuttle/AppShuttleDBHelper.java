@@ -4,17 +4,17 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DBHelper extends SQLiteOpenHelper {
+public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getSharedPreferences(
 			"AppShuttle", Context.MODE_PRIVATE).getString("database.name", 
 					new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
 
-	private static DBHelper dbHelper = new DBHelper(AppShuttleApplication.getContext());
-	public static DBHelper getInstance() {
+	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
+	public static AppShuttleDBHelper getInstance() {
 		return dbHelper;
 	}
 
-	private DBHelper(Context cxt) {
+	private AppShuttleDBHelper(Context cxt) {
 		super(cxt, DB_NAME, null, 30);
 	}
 

@@ -1,30 +1,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dip"
-    android:gravity="center"
     android:baselineAligned="false"
-	>
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip" >
+
     <ImageView
-       android:id="@+id/noti_icon"
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:layout_weight="0"
-       android:gravity="center"
-       android:paddingTop="10dip"
-       android:paddingBottom="10dip"
-       android:src="@drawable/appshuttle"
-       android:contentDescription="@string/app_icon"
-       />
-	<LinearLayout
-	    android:id="@+id/noti_elem_container"
-	  	android:orientation="horizontal"
-	    android:layout_width="0dip"
-	    android:layout_height="match_parent"
-	    android:layout_weight="1"
-	    android:layout_marginLeft="10dip"
-	    android:gravity="left|center_vertical"
-	    >
-	</LinearLayout>	
+        android:id="@+id/noti_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:contentDescription="@string/app_icon"
+        android:gravity="center"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:src="@drawable/appshuttle" />
+
+    <TextView
+        android:layout_width="1dip"
+        android:layout_height="match_parent"
+        android:background="#80FFFFFF"
+        android:layout_marginTop="15dip"
+        android:layout_marginBottom="15dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip" />
+        
+    <LinearLayout
+        android:id="@+id/noti_elem_container"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
 </LinearLayout>

@@ -41,7 +41,7 @@ public class AppShuttleMainActivity extends Activity {
 	}
 
 	public void onStartClick(View v) {
-		if(startService(new Intent(this, AppShuttleService.class)) != null){
+		if(startService(new Intent(this, AppShuttleMainService.class)) != null){
 			btnStart.setEnabled(false);
 			btnStop.setEnabled(true);
 			btnReport.setEnabled(true);
@@ -50,7 +50,7 @@ public class AppShuttleMainActivity extends Activity {
 	}
 	
 	public void onStopClick(View v) {
-		if(stopService(new Intent(this, AppShuttleService.class))){			
+		if(stopService(new Intent(this, AppShuttleMainService.class))){			
 			btnStart.setEnabled(true);
 			btnStop.setEnabled(false);
 			btnReport.setEnabled(false);
@@ -65,7 +65,7 @@ public class AppShuttleMainActivity extends Activity {
 	private boolean isAppShuttleServiceRunning() {
 	    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-	        if (AppShuttleService.class.getName().equals(service.service.getClassName())) {
+	        if (AppShuttleMainService.class.getName().equals(service.service.getClassName())) {
 	            return true;
 	        }
 	    }

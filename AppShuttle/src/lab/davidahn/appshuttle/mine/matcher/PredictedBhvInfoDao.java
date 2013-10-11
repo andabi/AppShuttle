@@ -2,7 +2,7 @@ package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.Date;
 
-import lab.davidahn.appshuttle.DBHelper;
+import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -15,7 +15,7 @@ public class PredictedBhvInfoDao {
 
 	private static PredictedBhvInfoDao predictedBhvInfoDao = new PredictedBhvInfoDao();
 	private PredictedBhvInfoDao() {
-		_db = DBHelper.getInstance().getWritableDatabase();
+		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 		_matchedResultDao = MatchedResultDao.getInstance();
 	}
 	public static PredictedBhvInfoDao getInstance() {
