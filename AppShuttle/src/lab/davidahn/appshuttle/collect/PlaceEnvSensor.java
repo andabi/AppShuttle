@@ -50,7 +50,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			return _currUPlace;
 		}
 		
-		double currLocLongitude, currLocLatitude;
+		double currLocLatitude, currLocLongitude;
 		try {
 			currLocLatitude = currLoc.getLatitude();
 			currLocLongitude = currLoc.getLongitude();
@@ -89,8 +89,10 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			String placeName = sb.toString();
 			
 			UserLocValidity coordinatesValidity = addr.hasLongitude() && addr.hasLatitude() ? UserLocValidity.VALID : UserLocValidity.INVALID;
-			UserLoc coordinates = UserLoc.create(coordinatesValidity, addr.getLongitude(), addr.getLatitude());
+			UserLoc coordinates = UserLoc.create(coordinatesValidity, addr.getLatitude(), addr.getLongitude());
 			_currUPlace = UserPlace.create(placeName, coordinates);
+			
+			Log.d("place", _currUPlace.toString());
 			
 			return _currUPlace;
 		} catch (IOException e) {

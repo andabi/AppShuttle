@@ -78,9 +78,13 @@ public class LocEnvSensor extends BaseEnvSensor {
 	public UserLoc sense(){
 		_prevULoc = _currULoc;
 
-		UserLocValidity validity = (_lastKnownLoc == null) ? UserLocValidity.VALID : UserLocValidity.INVALID;
-		_currULoc =  UserLoc.create(validity, _lastKnownLoc.getLongitude(), _lastKnownLoc.getLatitude());
-//		Log.d("location", "sensing failure");
+		if(_lastKnownLoc == null) {
+			_currULoc =  UserLoc.create(UserLocValidity.INVALID, _lastKnownLoc.getLatitude(), _lastKnownLoc.getLongitude());
+			Log.d("location", "sensing failure");
+		} else {
+			_currULoc =  UserLoc.create(UserLocValidity.VALID, _lastKnownLoc.getLatitude(), _lastKnownLoc.getLongitude());
+			Log.d("location", _currULoc.toString());
+		}
 
 		return _currULoc;
 	}

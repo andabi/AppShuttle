@@ -30,14 +30,6 @@ public class CollectionService extends Service {
 	private TimeZone _currTimeZone;
 	private Map<EnvType, EnvSensor> _sensors;
     private List<BhvCollector> _collectors;
-	
-//	public CollectionService() {
-//		this("CollectionService");
-//	}
-//	
-//	public CollectionService(String name) {
-//		super(name);
-//	}
 
 	public void onCreate() {
 		super.onCreate();
@@ -175,8 +167,6 @@ public class CollectionService extends Service {
 	}
 
 	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
-//		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-//		SharedPreferences preferenceSettings = ((AppShuttleApplication)getApplicationContext()).getPreferenceSettings();
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
 
 		if(!preferenceSettings.getBoolean("collection.store_cxt.enabled", false))
