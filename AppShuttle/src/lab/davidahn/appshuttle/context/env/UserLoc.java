@@ -15,12 +15,17 @@ public class UserLoc extends UserEnv {
 //		_validity = Validity.VALID;
 	}
 	
-	public static UserLoc create(UserLocValidity validity, double latitude, double longitude) {
-		if (validity == UserLocValidity.VALID)
-			return new UserLoc(latitude, longitude);
-		else
-			return InvalidUserLoc.getInstance();
+//	public static UserLoc create(UserLocValidity validity, double latitude, double longitude) {
+//		if (validity == UserLocValidity.VALID)
+//			return new UserLoc(latitude, longitude);
+//		else
+//			return InvalidUserLoc.getInstance();
+//	}
+//	
+	public static UserLoc create(double latitude, double longitude) {
+		return new UserLoc(latitude, longitude);
 	}
+
 	
 //	public UserLoc(double longitude, double latitude, Validity validity) {
 //		longitude = longitude;

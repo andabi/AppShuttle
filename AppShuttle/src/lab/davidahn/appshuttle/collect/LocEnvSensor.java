@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
+import lab.davidahn.appshuttle.context.env.InvalidUserLoc;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
-import lab.davidahn.appshuttle.context.env.UserLoc.UserLocValidity;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -37,7 +37,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 		
 		_locationManager = (LocationManager) _appShuttleContext.getSystemService(Context.LOCATION_SERVICE);
 		
-		_prevULoc = _currULoc = null;
+		_prevULoc = _currULoc = InvalidUserLoc.getInstance();
 
 		Criteria crit = new Criteria();
 		crit.setAccuracy(Criteria.ACCURACY_FINE);
@@ -79,10 +79,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 		_prevULoc = _currULoc;
 
 		if(_lastKnownLoc == null) {
-			_currULoc =  UserLoc.create(UserLocValidity.INVALID, _lastKnownLoc.getLatitude(), _lastKnownLoc.getLongitude());
+			_currULoc =  InvalidUserLoc.getInstance();
 			Log.d("location", "sensing failure");
 		} else {
-			_currULoc =  UserLoc.create(UserLocValidity.VALID, _lastKnownLoc.getLatitude(), _lastKnownLoc.getLongitude());
+			_currULoc =  UserLoc.create(_lastKnownLoc.getLatitude(), _lastKnownLoc.getLongitude());
 			Log.d("location", _currULoc.toString());
 		}
 
@@ -90,8 +90,8 @@ public class LocEnvSensor extends BaseEnvSensor {
 	}
 	
 	public boolean isChanged(){
-		if(_prevULoc == null)
-			return false;
+//		if(_prevULoc == null)
+//			return false;
 		
 		if(!_currULoc.equals(_prevULoc)) {
 			Log.i("user env", "location moved");

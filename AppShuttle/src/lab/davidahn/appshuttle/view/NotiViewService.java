@@ -94,18 +94,8 @@ public class NotiViewService extends Service {
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
 
-//		View notiView = ((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(notiRemoteView.getLayoutId(), null);
-//		int notiViewWidth = getNotiViewWidth();
-//		int notiElemWidth = notiView.findViewById(R.id.noti_elem_container).getHeight(); //height:width=1:1
-
-//		int sumNotiElemWidth = 0;
 		int maxNumElem = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_elem", 5);
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
-			
-//			sumNotiElemWidth += notiElemWidth;
-//			if(notiElemContainerWidth - sumNotiElemWidth < notiElemWidth)
-//				break;
-			
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 			BhvType bhvType = predictedBhv.getBhvType();
 			String bhvName = predictedBhv.getBhvName();
@@ -151,7 +141,6 @@ public class NotiViewService extends Service {
 	}
 	
 	private boolean storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
-//		Set<UserBhv> lastPredictedBhvSet = AppShuttleApplication.getContext().getRecentPredictedBhvSet();
 		Set<UserBhv> lastPredictedBhvSet = _recentPredictedBhvSet;
 		
 		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
@@ -167,7 +156,6 @@ public class NotiViewService extends Service {
 			currPredictedBhvSet.add(predictedBhv);
 		}
 
-//		AppShuttleApplication.getContext().setRecentPredictedBhvSet(currPredictedBhvSet);
 		_recentPredictedBhvSet = currPredictedBhvSet;
 		
 		return stored;

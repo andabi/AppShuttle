@@ -8,9 +8,10 @@ import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
+import lab.davidahn.appshuttle.context.env.InvalidUserLoc;
+import lab.davidahn.appshuttle.context.env.InvalidUserPlace;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
-import lab.davidahn.appshuttle.context.env.UserLoc.UserLocValidity;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 import android.location.Address;
 import android.location.Geocoder;
@@ -25,7 +26,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 
     private PlaceEnvSensor(){
     	super();
-		_prevUPlace = _currUPlace = null;
+		_prevUPlace = _currUPlace = InvalidUserPlace.getInstance();
 	}
 	
 	public static PlaceEnvSensor getInstance(){
@@ -38,13 +39,13 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		LocEnvSensor _locEnvCollector = LocEnvSensor.getInstance();
 		UserLoc currLoc = _locEnvCollector.getCurrULoc();
 		
-		_currUPlace = UserPlace.create(null, currLoc);
+		_currUPlace = InvalidUserPlace.getInstance();
 		
 		if(!currLoc.isValid()) {
 			return _currUPlace;
 		}
 		
-		if(_prevUPlace != null && !_locEnvCollector.isChanged( /* && _prevUPlace.isValid() */ )){
+		if(!_locEnvCollector.isChanged() /* && _prevUPlace != null && _prevUPlace.isValid() */ ){
 			_currUPlace = _prevUPlace;
 			
 			return _currUPlace;
@@ -87,9 +88,11 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 				sb.append(" ").append(subLocality);
 			
 			String placeName = sb.toString();
-			
-			UserLocValidity coordinatesValidity = addr.hasLongitude() && addr.hasLatitude() ? UserLocValidity.VALID : UserLocValidity.INVALID;
-			UserLoc coordinates = UserLoc.create(coordinatesValidity, addr.getLatitude(), addr.getLongitude());
+
+			UserLoc coordinates = InvalidUserLoc.getInstance();
+			if(addr.hasLongitude() && addr.hasLatitude())
+				coordinates = UserLoc.create(addr.getLatitude(), addr.getLongitude());
+
 			_currUPlace = UserPlace.create(placeName, coordinates);
 			
 			Log.d("place", _currUPlace.toString());
@@ -101,8 +104,8 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	}
 	
 	public boolean isChanged(){
-		if(_prevUPlace == null)
-			return false;
+//		if(_prevUPlace == null)
+//			return false;
 		
 		if(!_currUPlace.equals(_prevUPlace)) {
 			Log.i("user env", "place moved");
