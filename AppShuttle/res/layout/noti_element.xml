@@ -1,21 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/noti_elem"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/notibar_predicted_bhv_area_width"
     android:layout_height="match_parent"
     android:layout_weight="0"
+    android:clickable="true"
     android:gravity="center"
-    android:clickable="true" >
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/noti_elem_image"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:scaleType="centerInside"
-        android:paddingLeft="6dp"
-	    android:paddingRight="6dp"
-        android:layout_weight="1" />
-    
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:scaleType="centerInside" />
+
     <TextView
         android:id="@+id/noti_elem_text"
         android:layout_width="match_parent"

@@ -27,7 +27,7 @@ public class InfoFragment extends Fragment implements OnClickListener{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.main, container, false);
+		View v = inflater.inflate(R.layout.info, container, false);
 		
 		btnStart = (Button) v.findViewById(R.id.startBtn);
 		btnStop = (Button) v.findViewById(R.id.stopBtn);

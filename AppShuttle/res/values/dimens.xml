@@ -3,5 +3,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="notibar_icon_area_width">48dp</dimen>
+    <dimen name="notibar_predicted_bhv_area_width">52dp</dimen>
 
 </resources>

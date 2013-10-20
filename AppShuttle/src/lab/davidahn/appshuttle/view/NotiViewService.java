@@ -17,6 +17,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -25,7 +26,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.RemoteViews;
 
 public class NotiViewService extends Service {
@@ -94,8 +99,11 @@ public class NotiViewService extends Service {
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
 
-		int maxNumElem = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_elem", 5);
+		int numElem = getNumElem();
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
+			if(numElem-- <=0 )
+				break;
+
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 			BhvType bhvType = predictedBhv.getBhvType();
 			String bhvName = predictedBhv.getBhvName();
@@ -132,14 +140,20 @@ public class NotiViewService extends Service {
 				notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(this, 0, launchIntent, 0));
 			
 			notiRemoteView.addView(R.id.noti_elem_container, notiElemRemoteView);
-			
-			if(--maxNumElem <=0 )
-				break;
 		}
 
 		return notiRemoteView;
 	}
 	
+	private int getNumElem() {
+		int maxNumElem = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_elem", 8);
+		int NotibarIconAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_icon_area_width) / getResources().getDisplayMetrics().density));
+		int NotibarPredictedBhvAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_predicted_bhv_area_width) / getResources().getDisplayMetrics().density));
+		Log.d("noti", Integer.toString(NotibarIconAreaWidth));
+		Log.d("noti", Integer.toString(NotibarPredictedBhvAreaWidth));
+		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarPredictedBhvAreaWidth);
+	}
+
 	private boolean storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
 		Set<UserBhv> lastPredictedBhvSet = _recentPredictedBhvSet;
 		
@@ -159,6 +173,15 @@ public class NotiViewService extends Service {
 		_recentPredictedBhvSet = currPredictedBhvSet;
 		
 		return stored;
+	}
+	
+	private int getNotibarWidth(){
+		WindowManager wm = (WindowManager) AppShuttleApplication.getContext().getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+	    DisplayMetrics outMetrics = new DisplayMetrics ();
+	    display.getMetrics(outMetrics);
+	    float density  = getResources().getDisplayMetrics().density;
+	    return (int)(outMetrics.widthPixels / density);
 	}
 }
 
