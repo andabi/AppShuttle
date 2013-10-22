@@ -27,7 +27,7 @@ public class Predictor {
 	}
 	
 	public List<PredictedBhvInfo> predict(int topN){
-		SnapshotUserCxt currUserCxt = AppShuttleApplication.getContext().getCurrUserCxt();
+		SnapshotUserCxt currUserCxt = AppShuttleApplication.currUserCxt;
 
 		if(currUserCxt == null)
 			return Collections.emptyList();
@@ -121,14 +121,14 @@ public class Predictor {
 	}
 	
 	private double computePredictionScore(EnumMap<MatcherType, MatchedResult> matchedResults){
-		double score = 0;
+		double PredictionScore = 0;
+		
 		for(MatcherType matcherType : matchedResults.keySet()){
-			int priority = matcherType.getPriority();
-			double likelihood = matchedResults.get(matcherType).getLikelihood();
-			double inverseEntropy = matchedResults.get(matcherType).getInverseEntropy();
-			score += Math.pow(10, priority) * (1 + inverseEntropy + 0.1 * (1 + likelihood));
+			double weight = Math.pow(10, matcherType.getPriority());
+			double score = weight * matchedResults.get(matcherType).getScore();;
+			PredictionScore += score;
 		}
-		return score;
+		return PredictionScore;
 	}
 }
 

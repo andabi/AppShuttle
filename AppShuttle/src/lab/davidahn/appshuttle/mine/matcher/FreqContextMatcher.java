@@ -53,6 +53,15 @@ public class FreqContextMatcher extends TemplateContextMatcher{
 		likelihood = 1.0 * numRelatedCxt / Integer.MAX_VALUE;
 		return likelihood;
 	}
+	
+	@Override
+	protected double computeScore(MatchedResult matchedResult) {
+		double likelihood = matchedResult.getLikelihood();
+		
+		double score = 1 + likelihood;
+		
+		return score;
+	}
 
 //	private int getNumTotalCxt(UserCxt uCxt){
 //		int numTotalCxt = 0;

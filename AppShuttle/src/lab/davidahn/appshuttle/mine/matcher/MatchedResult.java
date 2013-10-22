@@ -20,6 +20,7 @@ public class MatchedResult implements Comparable<MatchedResult> {
 	private int _numTotalCxt;
 	private int _numRelatedCxt;
 	private Map<MatcherCountUnit, Double> _relatedCxt;
+	private double _score;
 	
 	public MatchedResult(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnv){
 		_timeDate = time;
@@ -114,21 +115,37 @@ public class MatchedResult implements Comparable<MatchedResult> {
 	public void setMatcherType(MatcherType matcherType) {
 		_matcherType = matcherType;
 	}
+	
+	public double getScore() {
+		return _score;
+	}
+
+	public void setScore(double score) {
+		_score = score;
+	}
 
 	public int compareTo(MatchedResult matchedCxt){
-		if(_likelihood < matchedCxt._likelihood) return 1;
-		else if(_likelihood == matchedCxt._likelihood) return 0;
-		else return -1;
+		if(_score < matchedCxt._score) 
+			return 1;
+		else if(_score == matchedCxt._score) 
+			return 0;
+		else 
+			return -1;
 	}
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
+		msg.append("matcherType: ").append(_matcherType).append(", ");
+		msg.append("timeDate").append(_timeDate).append(", ");
+		msg.append("timeZone").append(_timeZone).append(", ");
 		msg.append(_userEnvs.toString()).append(", ");
 		msg.append(_uBhv.toString()).append(", ");
-		msg.append("condition: ").append(_matcherType).append(", ");
 		msg.append("likelihood: ").append(_likelihood).append(", ");
+		msg.append("inverseEntropy").append(_inverseEntropy).append(", ");
 		msg.append("numTotalCxt: ").append(_numTotalCxt).append(", ");
-		msg.append("relatedCxt: ").append(_relatedCxt);
+		msg.append("numRelatedCxt: ").append(_numRelatedCxt).append(", ");
+		msg.append("relatedCxt").append(_relatedCxt).append(", ");
+		msg.append("score").append(_score);		
 		return msg.toString();
 	}
 }

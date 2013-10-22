@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
+import static lab.davidahn.appshuttle.AppShuttleApplication.recentPredictedBhvSet;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,10 +15,10 @@ import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfoDao;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.annotation.SuppressLint;
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,22 +27,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.IBinder;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 
-public class NotiViewService extends Service {
+public class NotiViewService extends IntentService {
+	public NotiViewService() {
+		super("NotiViewService");
+	}
+	
+	public NotiViewService(String name) {
+		super(name);
+	}
+
 	private static final int NOTI_UPDATE = 1;
 	
 	private NotificationManager _notificationManager;
 	private PackageManager _packageManager;
 //	private LayoutInflater layoutInflater;
 	
-	private Set<UserBhv> _recentPredictedBhvSet;
+//	private Set<UserBhv> recentPredictedBhvSet;
 
 	public void onCreate(){
 		super.onCreate();
@@ -49,22 +57,13 @@ public class NotiViewService extends Service {
 //		layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public int onStartCommand(Intent intent, int flags, int startId){
-		super.onStartCommand(intent, flags, startId);
-		
+	@Override
+	public void onHandleIntent(Intent intent) {
 		updateNotiView(predictAndGetBhv());
-		
-		return START_NOT_STICKY;
 	}
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
-	
 	public void onDestroy() {
 		super.onDestroy();
-		_notificationManager.cancelAll();
 	}
 
 	private List<PredictedBhvInfo> predictAndGetBhv() {
@@ -85,7 +84,7 @@ public class NotiViewService extends Service {
 			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiView)
 			.setOngoing(true)
-			.setWhen(AppShuttleApplication.getContext().getLaunchTime())
+			.setWhen(AppShuttleApplication.launchTime)
 			.setPriority(Notification.PRIORITY_MAX)
 			.build();
 		_notificationManager.notify(NOTI_UPDATE, notiUpdate);
@@ -149,13 +148,11 @@ public class NotiViewService extends Service {
 		int maxNumElem = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_elem", 8);
 		int NotibarIconAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_icon_area_width) / getResources().getDisplayMetrics().density));
 		int NotibarPredictedBhvAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_predicted_bhv_area_width) / getResources().getDisplayMetrics().density));
-		Log.d("noti", Integer.toString(NotibarIconAreaWidth));
-		Log.d("noti", Integer.toString(NotibarPredictedBhvAreaWidth));
 		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarPredictedBhvAreaWidth);
 	}
 
 	private boolean storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
-		Set<UserBhv> lastPredictedBhvSet = _recentPredictedBhvSet;
+		Set<UserBhv> lastPredictedBhvSet = recentPredictedBhvSet;
 		
 		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
 		boolean stored = false;
@@ -170,7 +167,7 @@ public class NotiViewService extends Service {
 			currPredictedBhvSet.add(predictedBhv);
 		}
 
-		_recentPredictedBhvSet = currPredictedBhvSet;
+		recentPredictedBhvSet = currPredictedBhvSet;
 		
 		return stored;
 	}

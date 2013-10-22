@@ -8,6 +8,7 @@ import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.NotiViewService;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -106,6 +107,8 @@ public class AppShuttleMainService extends Service {
 		stopService(new Intent(AppShuttleMainService.this, UnregisterBhvService.class));
 		stopService(new Intent(AppShuttleMainService.this, ReportingCxtService.class));
 		stopService(new Intent(AppShuttleMainService.this, NotiViewService.class));
+		
+		((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();
 	}
 	
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
