@@ -45,7 +45,7 @@ public abstract class TemplateContextMatcher {
 		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			if(rfdUCxt.getEndTime().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
+			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
 				continue;
 			pureRfdUCxtList.add(rfdUCxt);
 		}

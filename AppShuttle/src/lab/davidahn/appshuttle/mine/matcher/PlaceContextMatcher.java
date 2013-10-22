@@ -33,7 +33,7 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 		UserPlace lastKnownUserPlace = null;
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(rfdUCxt.getTimeDate()
-					, rfdUCxt.getEndTime(), EnvType.PLACE)){
+					, rfdUCxt.getEndTimeDate(), EnvType.PLACE)){
 				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
 				if(lastKnownUserPlace == null) {
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());

@@ -24,7 +24,7 @@ public class DurationUserBhv {
 	public long getDuration() {
 		return _duration;
 	}
-	public Date getEndTime() {
+	public Date getEndTimeDate() {
 		return _endTimeDate;
 	}
 	public TimeZone getTimeZone() {

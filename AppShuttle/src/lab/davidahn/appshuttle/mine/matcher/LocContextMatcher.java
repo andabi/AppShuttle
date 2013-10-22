@@ -53,7 +53,7 @@ public class LocContextMatcher extends TemplateContextMatcher {
 
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(rfdUCxt.getTimeDate()
-					, rfdUCxt.getEndTime(), EnvType.LOCATION)){
+					, rfdUCxt.getEndTimeDate(), EnvType.LOCATION)){
 //				try {
 					UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 					long duration = durationUserEnv.getDuration();

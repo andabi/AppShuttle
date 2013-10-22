@@ -42,17 +42,17 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 				mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
-				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
+				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTimeDate());
 				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 			} else {
-				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTime().getTime()
+				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTimeDate().getTime()
 						< _acceptanceDelay){
-					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
+					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTimeDate());
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 					mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
-					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTime());
+					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTimeDate());
 					mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
 				}
 			}

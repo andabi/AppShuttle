@@ -1,10 +1,10 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 public enum MatcherType {
-	FREQUENCY(0, true),
+	FREQUENCY(0, false),
 	WEAK_TIME(1, true),
-	PLACE(1, true),
-	STRICT_TIME(2, true),
+	PLACE(1, false),
+	STRICT_TIME(2, false),
 	LOCATION(2, false);
 //	WEEKLY_TIME
 //	UNFAMILIER_PLACE

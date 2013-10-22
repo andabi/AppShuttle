@@ -29,7 +29,7 @@ public class DurationUserBhvDao {
 		ContentValues row = new ContentValues();
 		row.put("time", durationUserBhv.getTimeDate().getTime());
 		row.put("duration", durationUserBhv.getDuration());
-		row.put("end_time", durationUserBhv.getEndTime().getTime());
+		row.put("end_time", durationUserBhv.getEndTimeDate().getTime());
 		row.put("timezone", durationUserBhv.getTimeZone().getID());
 		row.put("bhv_type", durationUserBhv.getUserBhv().getBhvType().toString());
 		row.put("bhv_name", durationUserBhv.getUserBhv().getBhvName());

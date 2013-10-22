@@ -27,7 +27,7 @@ public class FreqContextMatcher extends TemplateContextMatcher{
 			if(prevRfdUCxt == null){
 				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
 			} else {
-				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTime().getTime()
+				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTimeDate().getTime()
 						< _acceptanceDelay){
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
