@@ -110,15 +110,7 @@ public abstract class TemplateContextMatcher {
 		return inverseEntropy;
 	}
 	
-	protected double computeScore(MatchedResult matchedResult) {
-		double likelihood = matchedResult.getLikelihood();
-		double inverseEntropy = matchedResult.getInverseEntropy();
-		
-		double score = (1 + inverseEntropy + 0.1 * (1 + likelihood));
-		
-		return score;
-	}
-
+	protected abstract double computeScore(MatchedResult matchedResult);
 	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
 	protected abstract double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
 	

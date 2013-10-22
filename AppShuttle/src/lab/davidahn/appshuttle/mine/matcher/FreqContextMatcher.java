@@ -60,6 +60,7 @@ public class FreqContextMatcher extends TemplateContextMatcher{
 		
 		double score = 1 + likelihood;
 		
+		assert(1 <= score && score <=2);
 		return score;
 	}
 

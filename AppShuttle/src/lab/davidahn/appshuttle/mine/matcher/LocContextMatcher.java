@@ -208,6 +208,15 @@ public class LocContextMatcher extends TemplateContextMatcher {
 		return inverseEntropy;
 	}
 	
+	protected double computeScore(MatchedResult matchedResult) {
+		double likelihood = matchedResult.getLikelihood();
+		double inverseEntropy = matchedResult.getInverseEntropy();
+		
+		double score = (1 + 0.5 * inverseEntropy + 0.1 * likelihood);
+		
+		return score;
+	}
+	
 //	private boolean moved(Date fromTime, Date toTime){
 //		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(cxt);
 //		if(changedUserEnvDao.retrieveChangedUserEnv(fromTime, toTime, EnvType.LOCATION).size() > 0){

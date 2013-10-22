@@ -165,6 +165,15 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 		return inverseEntropy;
 	}
 	
+	protected double computeScore(MatchedResult matchedResult) {
+		double likelihood = matchedResult.getLikelihood();
+		double inverseEntropy = matchedResult.getInverseEntropy();
+		
+		double score = (1 + 0.5 * inverseEntropy + 0.1 * likelihood);
+		
+		return score;
+	}
+	
 //	private boolean moved(Entry<Date, UserLoc> start, Entry<Date, UserLoc> end){
 //		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(cxt);
 //		

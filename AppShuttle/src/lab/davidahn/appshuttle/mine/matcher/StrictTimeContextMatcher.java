@@ -121,10 +121,11 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 	protected double computeScore(MatchedResult matchedResult) {
 		double likelihood = matchedResult.getLikelihood();
 		double inverseEntropy = matchedResult.getInverseEntropy();
-		double numRelatedCxt = matchedResult.getNumRelatedCxt();
+		double numRelatedCxt = 1.0 * matchedResult.getNumRelatedCxt();
 		
-		double score = (1 + inverseEntropy * numRelatedCxt + 0.1 * (1 + likelihood));
-		
+		double score = 1 + 0.5 * (inverseEntropy * (numRelatedCxt / _duration)) + 0.1 * likelihood;
+
+		assert(1 <= score && score <=2);
 		return score;
 	}
 }
