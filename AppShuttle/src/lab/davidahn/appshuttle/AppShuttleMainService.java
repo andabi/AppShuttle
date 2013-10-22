@@ -56,12 +56,12 @@ public class AppShuttleMainService extends Service {
 		if(preferenceSettings.getBoolean("service.compaction.enabled", true)){
 			Intent compactingCxtIntent = new Intent(this, CompactionService.class);
 			compactingCxtOperation = PendingIntent.getService(this, 0, compactingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), preferenceSettings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
 		}
 		if(preferenceSettings.getBoolean("service.report.enabled", false)){
 			Intent reportingCxtIntent = new Intent(this, ReportingCxtService.class);
 			reportingCxtOperation = PendingIntent.getService(this, 0, reportingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getReportingTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
 		}
 
 		if(preferenceSettings.getBoolean("service.view.enabled", true)){
@@ -71,8 +71,8 @@ public class AppShuttleMainService extends Service {
 		}
 	}
 	
-	public long getReportingTimeHour(int hourOfDay){
-		Calendar calendar = Calendar.getInstance();		
+	public long getExecuteTimeHour(int hourOfDay){
+		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
