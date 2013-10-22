@@ -73,7 +73,7 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 		long targetTime = ((Date) rfdUCxt.getProperty("time")).getTime();
 		long targetTimePeriodic = targetTime % _period;
 
-		if(Time.isBetween((currTimePeriodic - _tolerance) % _period, targetTimePeriodic, (currTimePeriodic + _tolerance) % _period)){
+		if(Time.isBetween((currTimePeriodic - _tolerance) % _period, targetTimePeriodic, (currTimePeriodic + _tolerance) % _period, _period)){
 			relatedness = 1;
 		} else {
 			relatedness = 0;
@@ -96,7 +96,7 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 			if(!uniqueTime.isEmpty()){
 				while(it.hasNext()){
 					Long uniqueTimeElem = it.next();
-					if(Time.isBetween((uniqueTimeElem - _tolerance) % _period, timePeriodic, (uniqueTimeElem + _tolerance) % _period)){
+					if(Time.isBetween((uniqueTimeElem - _tolerance) % _period, timePeriodic, (uniqueTimeElem + _tolerance) % _period, _period)){
 						unique = false;
 						break;
 					}

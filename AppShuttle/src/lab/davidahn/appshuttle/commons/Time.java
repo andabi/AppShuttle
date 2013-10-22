@@ -1,13 +1,12 @@
 package lab.davidahn.appshuttle.commons;
 
-import android.app.AlarmManager;
 
 public class Time {
-	public static boolean isBetween(long startTime, long time, long endTime) {
+	public static boolean isBetween(long startTime, long time, long endTime, long period) {
 		if(time < startTime) 
-			time+=AlarmManager.INTERVAL_DAY;
+			time+=period;
 		if(endTime < startTime) 
-			time+=AlarmManager.INTERVAL_DAY;
+			time+=period;
 		
 		if(startTime <= time && time < endTime)
 			return true;
@@ -15,8 +14,9 @@ public class Time {
 			return false;
 	}
 
-	public static long mean(long startTime, long endTime) {
-		if(endTime < startTime) endTime+=AlarmManager.INTERVAL_DAY;
-		return ((startTime + endTime) / 2) % AlarmManager.INTERVAL_DAY;
-	}
+//	public static long mean(long startTime, long endTime, long _period) {
+//		if(endTime < startTime) 
+//			endTime+=_period;
+//		return ((startTime + endTime) / 2) % _period;
+//	}
 }

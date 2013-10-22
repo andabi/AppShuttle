@@ -75,7 +75,7 @@ public class WeakTimeContextMatcher extends TemplateContextMatcher {
 		long start = (currTimePeriodic - _tolerance) % _period;
 		long end = (currTimePeriodic + _tolerance) % _period;
 				
-		if(Time.isBetween(start, targetTimePeriodic, end)){
+		if(Time.isBetween(start, targetTimePeriodic, end, _period)){
 			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
 			relatedness = 0;
@@ -98,7 +98,7 @@ public class WeakTimeContextMatcher extends TemplateContextMatcher {
 			if(!uniqueTime.isEmpty()){
 				while(it.hasNext()){
 					Long uniqueTimeElem = it.next();
-					if(Time.isBetween((uniqueTimeElem - _tolerance) % _period, timePeriodic, (uniqueTimeElem + _tolerance) % _period)){
+					if(Time.isBetween((uniqueTimeElem - _tolerance) % _period, timePeriodic, (uniqueTimeElem + _tolerance) % _period, _period)){
 						unique = false;
 						break;
 					}
