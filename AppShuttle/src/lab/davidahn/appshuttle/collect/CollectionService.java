@@ -55,7 +55,7 @@ public class CollectionService extends Service {
 		SnapshotUserCxt uCxt = CollectSnapshotUserContext();
 		CollectDurationUserContext(uCxt);
 
-		AppShuttleApplication.getContext().setCurrUserCxt(uCxt);
+		AppShuttleApplication.currUserCxt = uCxt;
 		
 		return START_NOT_STICKY;
 	}

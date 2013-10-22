@@ -116,4 +116,15 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 		
 		return inverseEntropy;
 	}
+	
+	@Override
+	protected double computeScore(MatchedResult matchedResult) {
+		double likelihood = matchedResult.getLikelihood();
+		double inverseEntropy = matchedResult.getInverseEntropy();
+		double numRelatedCxt = matchedResult.getNumRelatedCxt();
+		
+		double score = (1 + inverseEntropy * numRelatedCxt + 0.1 * (1 + likelihood));
+		
+		return score;
+	}
 }

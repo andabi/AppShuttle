@@ -30,7 +30,7 @@ public class CompactionService extends IntentService {
 
 	public void onCreate() {
 		super.onCreate();
-		_currUserCxt = AppShuttleApplication.getContext().getCurrUserCxt();
+		_currUserCxt = AppShuttleApplication.currUserCxt;
 	}
 	
 	public void onHandleIntent(Intent intent){

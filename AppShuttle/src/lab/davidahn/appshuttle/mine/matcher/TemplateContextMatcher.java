@@ -60,8 +60,7 @@ public abstract class TemplateContextMatcher {
 			return null;
 		}
 		
-		int numTotalCxt = 0;
-		int numRelatedCxt = 0;
+		int numTotalCxt = 0, numRelatedCxt = 0;
 		Map<MatcherCountUnit, Double> relatedCxt = new HashMap<MatcherCountUnit, Double>();
 		
 		for(MatcherCountUnit mergedRfdCxt : mergedRfdCxtList) {
@@ -88,6 +87,10 @@ public abstract class TemplateContextMatcher {
 		matchedCxt.setLikelihood(likelihood);
 		matchedCxt.setInverseEntropy(inverseEntropy);
 		
+		double score = computeScore(matchedCxt);
+		
+		matchedCxt.setScore(score);
+		
 		Log.d("matchedCxt: matcher type", matchedCxt.getMatcherType().toString());
 		
 		return matchedCxt;
@@ -105,6 +108,15 @@ public abstract class TemplateContextMatcher {
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		double inverseEntropy = Double.MIN_VALUE;
 		return inverseEntropy;
+	}
+	
+	protected double computeScore(MatchedResult matchedResult) {
+		double likelihood = matchedResult.getLikelihood();
+		double inverseEntropy = matchedResult.getInverseEntropy();
+		
+		double score = (1 + inverseEntropy + 0.1 * (1 + likelihood));
+		
+		return score;
 	}
 
 	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
