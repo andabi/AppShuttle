@@ -55,7 +55,7 @@ public class AppShuttleSettings {
 
 		editor.putLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
-		editor.putFloat("matcher.weak_time.min_inverse_entropy", 0.15f);
+		editor.putFloat("matcher.weak_time.min_inverse_entropy", 0.10f);
 		editor.putInt("matcher.weak_time.min_num_cxt", 3);
 		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
 		editor.putLong("matcher.weak_time.tolerance", preferenceSettings.getLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
