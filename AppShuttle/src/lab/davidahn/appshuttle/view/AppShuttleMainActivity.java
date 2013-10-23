@@ -1,7 +1,9 @@
-package lab.davidahn.appshuttle;
+package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 
+import lab.davidahn.appshuttle.AppShuttleMainService;
+import lab.davidahn.appshuttle.R;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -23,7 +25,7 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		BugSenseHandler.initAndStartSession(this, "a3573081");
+//		BugSenseHandler.initAndStartSession(this, "a3573081");
 
 		mViewPager = new ViewPager(this);
 		mViewPager.setId(R.id.pager);

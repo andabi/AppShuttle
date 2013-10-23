@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
+import static lab.davidahn.appshuttle.AppShuttleApplication.recentPredictedBhvInfoList;
 import static lab.davidahn.appshuttle.AppShuttleApplication.recentPredictedBhvSet;
 
 import java.util.HashSet;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.AppShuttleMainActivity;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
@@ -37,7 +37,6 @@ public class NotiViewService extends IntentService {
 	public NotiViewService() {
 		super("NotiViewService");
 	}
-	
 	public NotiViewService(String name) {
 		super(name);
 	}
@@ -59,21 +58,14 @@ public class NotiViewService extends IntentService {
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
-		updateNotiView(predictAndGetBhv());
-	}
-
-	public void onDestroy() {
-		super.onDestroy();
-	}
-
-	private List<PredictedBhvInfo> predictAndGetBhv() {
 		Predictor predictor = Predictor.getInstance();
 		List<PredictedBhvInfo> predictedBhvInfoList = predictor.predict(Integer.MAX_VALUE);
 
-		@SuppressWarnings("unused")
-		boolean stored = storeNewPredictedBhv(predictedBhvInfoList);
+		updateNotiView(predictedBhvInfoList);
 
-		return predictedBhvInfoList;
+		recentPredictedBhvInfoList = predictedBhvInfoList;
+		
+		storeNewPredictedBhv(predictedBhvInfoList);
 	}
 
 	@SuppressLint("NewApi")
@@ -151,25 +143,21 @@ public class NotiViewService extends IntentService {
 		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarPredictedBhvAreaWidth);
 	}
 
-	private boolean storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
+	private void storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
 		Set<UserBhv> lastPredictedBhvSet = recentPredictedBhvSet;
 		
 		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
-		boolean stored = false;
 
 		Set<UserBhv> currPredictedBhvSet = new HashSet<UserBhv>();
 		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
 			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
 				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
-				stored = true;
 			}
 			currPredictedBhvSet.add(predictedBhv);
 		}
 
 		recentPredictedBhvSet = currPredictedBhvSet;
-		
-		return stored;
 	}
 	
 	private int getNotibarWidth(){

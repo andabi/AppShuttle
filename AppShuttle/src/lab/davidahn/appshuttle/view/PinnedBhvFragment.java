@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle;
+package lab.davidahn.appshuttle.view;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class BlockedBhvFragment extends Fragment {
+public class PinnedBhvFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

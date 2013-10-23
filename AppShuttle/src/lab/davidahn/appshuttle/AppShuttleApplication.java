@@ -1,9 +1,11 @@
 package lab.davidahn.appshuttle;
 
+import java.util.List;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +17,7 @@ public class AppShuttleApplication extends Application {
 	public static long launchTime;
 	public static SnapshotUserCxt currUserCxt;
 	public static Set<UserBhv> recentPredictedBhvSet;
+	public static List<PredictedBhvInfo> recentPredictedBhvInfoList ;
 
 	public AppShuttleApplication(){}
 

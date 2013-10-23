@@ -9,5 +9,8 @@
     <string name="report_success_msg">Email was sent successfully</string>
     <string name="report_failure_msg">Email was not sent</string>
     <string name="app_icon">AppShuttle icon</string>
+    <string name="predict_place_msg">Place</string>
+    <string name="predict_time_msg">Time</string>
+    <string name="predict_freq_msg">Frequency</string>
 
 </resources>
