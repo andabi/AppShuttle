@@ -23,7 +23,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.util.Log;
 
 public class CollectionService extends Service {
 	private Date _currTimeDate;
@@ -87,7 +86,7 @@ public class CollectionService extends Service {
 
 			registerEachBhv(preExtractedDurationUserBhvList);
 		}
-		Log.d("collection", "pre collection");
+//		Log.d("collection", "pre collection");
 	}
 	
 	private SnapshotUserCxt CollectSnapshotUserContext() {
@@ -138,7 +137,7 @@ public class CollectionService extends Service {
 		postCollectDurationUserBhv();
 		postCollectDurationUserEnv();
 		
-		Log.d("collection", "post collection");
+//		Log.d("collection", "post collection");
 	}
 
 	private void postCollectDurationUserEnv() {

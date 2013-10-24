@@ -18,7 +18,7 @@ public class AppShuttleSettings {
 		editor.putLong("service.collection.period", 30000);
 		
 		editor.putBoolean("service.view.enabled", true);
-		editor.putLong("service.view.peroid", 300000);
+		editor.putLong("service.view.period", 300000);
 		
 		editor.putBoolean("service.report.enabled", false);
 		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);

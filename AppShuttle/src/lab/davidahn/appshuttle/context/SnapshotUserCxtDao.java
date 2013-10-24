@@ -21,7 +21,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,7 +51,7 @@ public class SnapshotUserCxtDao {
 			row.put("bhv_type", uBhv.getBhvType().toString());
 			row.put("bhv_name", uBhv.getBhvName());
 			_db.insert("snapshot_context", null, row);
-			Log.i("stored cxt", uCxt.toString());
+//			Log.i("stored cxt", uCxt.toString());
 		}
 	}
 	

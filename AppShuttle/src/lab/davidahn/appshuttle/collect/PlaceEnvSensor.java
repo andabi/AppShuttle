@@ -95,7 +95,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 
 			_currUPlace = UserPlace.create(placeName, coordinates);
 			
-			Log.d("place", _currUPlace.toString());
+			Log.i("place", _currUPlace.toString());
 			
 			return _currUPlace;
 		} catch (IOException e) {

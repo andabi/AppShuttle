@@ -80,10 +80,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 
 		if(_lastKnownLoc == null) {
 			_currULoc =  InvalidUserLoc.getInstance();
-			Log.d("location", "sensing failure");
+			Log.i("location", "sensing failure");
 		} else {
 			_currULoc =  UserLoc.create(_lastKnownLoc.getLatitude(), _lastKnownLoc.getLongitude());
-			Log.d("location", _currULoc.toString());
+			Log.i("location", _currULoc.toString());
 		}
 
 		return _currULoc;

@@ -1,18 +1,12 @@
 package lab.davidahn.appshuttle.view;
 
-import static lab.davidahn.appshuttle.AppShuttleApplication.recentPredictedBhvInfoList;
-import static lab.davidahn.appshuttle.AppShuttleApplication.recentPredictedBhvSet;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfoDao;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.annotation.SuppressLint;
 import android.app.IntentService;
@@ -33,15 +27,15 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 
-public class NotiViewService extends IntentService {
-	public NotiViewService() {
+public class UpdateService extends IntentService {
+	public UpdateService() {
 		super("NotiViewService");
 	}
-	public NotiViewService(String name) {
+	public UpdateService(String name) {
 		super(name);
 	}
 
-	private static final int NOTI_UPDATE = 1;
+	private static final int UPDATE_NOTI_VIEW = 1;
 	
 	private NotificationManager _notificationManager;
 	private PackageManager _packageManager;
@@ -63,23 +57,26 @@ public class NotiViewService extends IntentService {
 
 		updateNotiView(predictedBhvInfoList);
 
-		recentPredictedBhvInfoList = predictedBhvInfoList;
+		AppShuttleApplication.recentPredictedBhvInfoList = predictedBhvInfoList;
+//		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
+
+		//PredictedFragment update();
 		
-		storeNewPredictedBhv(predictedBhvInfoList);
+		predictor.storeNewPredictedBhv(predictedBhvInfoList);
 	}
 
 	@SuppressLint("NewApi")
 	private void updateNotiView(List<PredictedBhvInfo> predictedBhvInfoList) {
 		RemoteViews notiView = createNotiRemoteViews(predictedBhvInfoList);
 
-		Notification notiUpdate = new Notification.Builder(NotiViewService.this)
+		Notification notiUpdate = new Notification.Builder(UpdateService.this)
 			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiView)
 			.setOngoing(true)
 			.setWhen(AppShuttleApplication.launchTime)
 			.setPriority(Notification.PRIORITY_MAX)
 			.build();
-		_notificationManager.notify(NOTI_UPDATE, notiUpdate);
+		_notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
 	}
 
 	private RemoteViews createNotiRemoteViews(List<PredictedBhvInfo> predictedBhvInfoList) {
@@ -108,7 +105,7 @@ public class NotiViewService extends IntentService {
 				} else {
 					try {
 						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
-						notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_image, iconDrawable.getBitmap());
+						notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());
 					} catch (NameNotFoundException e) {
 						e.printStackTrace();
 					} catch (NullPointerException e) {
@@ -117,7 +114,7 @@ public class NotiViewService extends IntentService {
 				}
 			} else if (bhvType == BhvType.CALL){
 				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
-				notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_image, callContactIcon);
+				notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, callContactIcon);
 
 				launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
 				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, 
@@ -141,23 +138,6 @@ public class NotiViewService extends IntentService {
 		int NotibarIconAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_icon_area_width) / getResources().getDisplayMetrics().density));
 		int NotibarPredictedBhvAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_predicted_bhv_area_width) / getResources().getDisplayMetrics().density));
 		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarPredictedBhvAreaWidth);
-	}
-
-	private void storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
-		Set<UserBhv> lastPredictedBhvSet = recentPredictedBhvSet;
-		
-		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
-
-		Set<UserBhv> currPredictedBhvSet = new HashSet<UserBhv>();
-		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
-			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
-			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
-				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
-			}
-			currPredictedBhvSet.add(predictedBhv);
-		}
-
-		recentPredictedBhvSet = currPredictedBhvSet;
 	}
 	
 	private int getNotibarWidth(){

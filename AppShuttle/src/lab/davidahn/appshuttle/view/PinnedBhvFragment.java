@@ -16,7 +16,7 @@ public class PinnedBhvFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(android.R.layout.simple_list_item_1, container, false);
+		View v = inflater.inflate(android.R.layout.list_content, container, false);
 		return v;
 	}
 }

@@ -9,7 +9,6 @@ import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class DurationUserBhvDao {
 	private static DurationUserBhvDao rfdUserCxtDao = new DurationUserBhvDao();
@@ -35,7 +34,7 @@ public class DurationUserBhvDao {
 		row.put("bhv_name", durationUserBhv.getUserBhv().getBhvName());
 		_db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
-		Log.i("stored duration bhv", durationUserBhv.toString());
+//		Log.i("stored duration bhv", durationUserBhv.toString());
 	}
 
 	public List<DurationUserBhv> retrieve(long beginTime, long endTime) {
@@ -45,7 +44,7 @@ public class DurationUserBhvDao {
 				"SELECT * " +
 				"FROM history_user_bhv" +
 				"WHERE time >= " + beginTime + " " +
-					"AND end_time < " + endTime+";", null);
+					"AND time < " + endTime+";", null);
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while (cur.moveToNext()) {
 			Date timeDate = new Date(cur.getLong(0));
@@ -74,7 +73,7 @@ public class DurationUserBhvDao {
 				"DELETE " +
 				"FROM history_user_bhv " +
 				"WHERE time >= " + beginTime.getTime() + " " +
-					"AND end_time < " + endTime.getTime() +";");
+					"AND time < " + endTime.getTime() +";");
 	}
 	
 	public void deleteBefore(Date timeDate){
@@ -90,7 +89,7 @@ public class DurationUserBhvDao {
 				"SELECT * " +
 				"FROM history_user_bhv " +
 				"WHERE time >= " + beginTime.getTime() + " " +
-					"AND end_time < " + endTime.getTime() + " " +
+					"AND time < " + endTime.getTime() + " " +
 					"AND bhv_type = '"+uBhv.getBhvType()+"' " +
 					"AND bhv_name = '"+uBhv.getBhvName()+"';", null);
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();

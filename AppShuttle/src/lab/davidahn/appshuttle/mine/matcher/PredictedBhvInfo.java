@@ -1,7 +1,10 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -56,6 +59,18 @@ public class PredictedBhvInfo implements Comparable<PredictedBhvInfo> {
 
 	public double getScore() {
 		return _score;
+	}
+	
+	public String makeViewMessage(){
+		StringBuffer msg = new StringBuffer();
+		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(_matchedResults.keySet());
+		Collections.sort(matcherTypeList, new MyEnumComparator());
+		
+		for(MatcherType matcherType : matcherTypeList){
+			msg.append(matcherType.viewMsg).append(", ");
+		}
+		msg.delete(msg.length() - 2 , msg.length());
+		return msg.toString();
 	}
 	
 	public int compareTo(PredictedBhvInfo predictedBhv){

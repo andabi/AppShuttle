@@ -35,6 +35,14 @@ public class AppShuttleApplication extends Application {
 		return _preferenceSettings;
 	}
 
+//	public List<PredictedBhvInfo> getRecentPredictedBhvInfoList() {
+//		return _recentPredictedBhvInfoList;
+//	}
+//
+//	public void setRecentPredictedBhvInfoList(List<PredictedBhvInfo> recentPredictedBhvInfoList) {
+//		_recentPredictedBhvInfoList = recentPredictedBhvInfoList;
+//	}
+	
 //	public long getLaunchTime(){
 //		return _launchTime;
 //	}
