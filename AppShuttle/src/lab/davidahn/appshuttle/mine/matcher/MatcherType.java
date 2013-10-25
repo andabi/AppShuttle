@@ -1,7 +1,5 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
-import java.util.Comparator;
-
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 
@@ -15,9 +13,9 @@ public enum MatcherType {
 //	WEEKLY_TIME
 //	UNFAMILIER_PLACE
 	
-	int priority;
-	boolean enabled;
-	String viewMsg;
+	public int priority;
+	public boolean enabled;
+	public String viewMsg;
 	
 	MatcherType(int _priority, boolean _enabled, int viewMsgId){
 		priority = _priority;
@@ -37,17 +35,4 @@ public enum MatcherType {
 //		return viewMsg;
 //	}
 
-}
-
-class MyEnumComparator implements Comparator<MatcherType>
-{
-    public int compare(MatcherType mt1, MatcherType mt2)
-    {
-    	if(mt1.priority < mt2.priority)
-    		return 1;
-    	else if(mt1.priority == mt2.priority)
-    		return 0;
-    	else 
-    		return -1;
-    }
 }

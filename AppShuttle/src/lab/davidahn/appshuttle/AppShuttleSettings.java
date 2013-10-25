@@ -50,13 +50,13 @@ public class AppShuttleSettings {
 		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		
 		editor.putLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY);
-		editor.putInt("matcher.freq.min_num_cxt", 3);
+		editor.putInt("matcher.freq.min_num_cxt", 1);
 		editor.putLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 
 		editor.putLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.weak_time.min_likelihood", 0.5f);
 		editor.putFloat("matcher.weak_time.min_inverse_entropy", Float.MIN_VALUE);
-		editor.putInt("matcher.weak_time.min_num_cxt", 3);
+		editor.putInt("matcher.weak_time.min_num_cxt", 1);
 		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
 		editor.putLong("matcher.weak_time.tolerance", preferenceSettings.getLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
 		

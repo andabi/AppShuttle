@@ -5,7 +5,6 @@ import java.util.List;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.annotation.SuppressLint;
@@ -15,12 +14,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -38,36 +32,33 @@ public class UpdateService extends IntentService {
 	private static final int UPDATE_NOTI_VIEW = 1;
 	
 	private NotificationManager _notificationManager;
-	private PackageManager _packageManager;
 //	private LayoutInflater layoutInflater;
-	
-//	private Set<UserBhv> recentPredictedBhvSet;
 
 	public void onCreate(){
 		super.onCreate();
 		_notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		_packageManager = getPackageManager();
 //		layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 	}
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
 		Predictor predictor = Predictor.getInstance();
-		List<PredictedBhvInfo> predictedBhvInfoList = predictor.predict(Integer.MAX_VALUE);
-
-		updateNotiView(predictedBhvInfoList);
+		List<PredictedBhvInfo> predictedBhvInfoList = predictor.predict(getNumElem());
+		List<PredictedBhvInfoForView> predictedBhvInfoListForView = PredictedBhvInfoForView.getPredictedBhvInfoListForView(predictedBhvInfoList);
+		updateNotiView(predictedBhvInfoListForView);
 
 		AppShuttleApplication.recentPredictedBhvInfoList = predictedBhvInfoList;
 //		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
 
+		//TODO
 		//PredictedFragment update();
 		
 		predictor.storeNewPredictedBhv(predictedBhvInfoList);
 	}
 
 	@SuppressLint("NewApi")
-	private void updateNotiView(List<PredictedBhvInfo> predictedBhvInfoList) {
-		RemoteViews notiView = createNotiRemoteViews(predictedBhvInfoList);
+	private void updateNotiView(List<PredictedBhvInfoForView> predictedBhvInfoForViewList) {
+		RemoteViews notiView = createNotiRemoteViews(predictedBhvInfoForViewList);
 
 		Notification notiUpdate = new Notification.Builder(UpdateService.this)
 			.setSmallIcon(R.drawable.appshuttle)
@@ -79,7 +70,7 @@ public class UpdateService extends IntentService {
 		_notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
 	}
 
-	private RemoteViews createNotiRemoteViews(List<PredictedBhvInfo> predictedBhvInfoList) {
+	private RemoteViews createNotiRemoteViews(List<PredictedBhvInfoForView> predictedBhvInfoForViewList) {
 		RemoteViews notiRemoteView = new RemoteViews(getPackageName(), R.layout.noti);
 
 		//clean
@@ -87,45 +78,23 @@ public class UpdateService extends IntentService {
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(this, 0, new Intent(this, AppShuttleMainActivity.class), 0));
 
-		int numElem = getNumElem();
-		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
-			if(numElem-- <=0 )
-				break;
+		for(PredictedBhvInfoForView predictedBhvInfoForView : predictedBhvInfoForViewList) {
 
-			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
-			BhvType bhvType = predictedBhv.getBhvType();
-			String bhvName = predictedBhv.getBhvName();
-			
-			Intent launchIntent = null;
+			BhvType bhvType = predictedBhvInfoForView.getPredictedBhvInfo().getUserBhv().getBhvType();
 			RemoteViews notiElemRemoteView = new RemoteViews(getPackageName(), R.layout.noti_element);
-			if(bhvType == BhvType.APP){
-				launchIntent = _packageManager.getLaunchIntentForPackage(bhvName);
-				if(launchIntent == null){
-					continue;
-				} else {
-					try {
-						BitmapDrawable iconDrawable = (BitmapDrawable) _packageManager.getApplicationIcon(bhvName);
-						notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());
-					} catch (NameNotFoundException e) {
-						e.printStackTrace();
-					} catch (NullPointerException e) {
-						e.printStackTrace();
-					}
-				}
-			} else if (bhvType == BhvType.CALL){
-				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
-				notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, callContactIcon);
-
-				launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
-				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, 
-						(String) predictedBhv.getMeta("cachedName"));
-				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, TypedValue.COMPLEX_UNIT_SP, 10);
-			} else {
-				continue;
-			}
 			
-			if(launchIntent != null)
-				notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(this, 0, launchIntent, 0));
+			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(this, 0, predictedBhvInfoForView.getLaunchIntent(), 0));
+
+			BitmapDrawable iconDrawable = (BitmapDrawable)predictedBhvInfoForView.getIcon();
+			notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());
+			
+			if (bhvType == BhvType.CALL){
+//				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
+				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, predictedBhvInfoForView.getBhvNameText());
+				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, 
+						TypedValue.COMPLEX_UNIT_PX, 
+						getResources().getDimension(R.dimen.notibar_text_size));
+			}
 			
 			notiRemoteView.addView(R.id.noti_elem_container, notiElemRemoteView);
 		}
