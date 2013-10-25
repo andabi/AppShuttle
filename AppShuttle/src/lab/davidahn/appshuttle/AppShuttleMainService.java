@@ -1,13 +1,10 @@
 package lab.davidahn.appshuttle;
 
 import java.util.Calendar;
-import java.util.List;
 
 import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
-import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import lab.davidahn.appshuttle.view.UpdateService;
 import android.app.AlarmManager;
@@ -46,7 +43,7 @@ public class AppShuttleMainService extends Service {
 		registerReceiver(screenOffReceiver, filter);
 		
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
+		filter.addAction("lab.davidahn.appshuttle.UPDATE");
 		registerReceiver(updateReceiver, filter);
 
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -68,18 +65,18 @@ public class AppShuttleMainService extends Service {
 			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
 		}
 		
-		startUpdateBroadCastRepeating();
+		startRepeatingUpdateBroadCast();
 	}
 	
-	private void startUpdateBroadCastRepeating() {
+	private void startRepeatingUpdateBroadCast() {
 		if(preferenceSettings.getBoolean("service.view.enabled", true)){
-			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
+			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE");
 			notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
 			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.view.period", 300000), notiViewOperation);
 		}
 	}
 	
-	private void stopUpdateBroadCastRepeating() {
+	private void stopRepeatingUpdateBroadCast() {
 		alarmManager.cancel(notiViewOperation);
 	}
 
@@ -125,14 +122,14 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			startUpdateBroadCastRepeating();
+			startRepeatingUpdateBroadCast();
 		}
 	};
 	
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			stopUpdateBroadCastRepeating();
+			stopRepeatingUpdateBroadCast();
 		}
 	};
 

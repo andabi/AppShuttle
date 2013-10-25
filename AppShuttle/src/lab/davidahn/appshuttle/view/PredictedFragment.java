@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
+import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
@@ -18,10 +19,11 @@ import android.widget.TextView;
 
 public class PredictedFragment extends ListFragment {
 	private PredictedBhvInfoAdapter adapter;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		adapter = new PredictedBhvInfoAdapter(Collections.<BhvInfoForView> emptyList());
 	}
 
 	@Override
@@ -35,21 +37,20 @@ public class PredictedFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+		
 		setEmptyText("No results");
 
 		Predictor predictor = Predictor.getInstance();
 		List<PredictedBhvInfo> predictedBhvInfoList = predictor.getRecentPredictedBhvInfo(Integer.MAX_VALUE);
+		List<BhvInfoForView> predictedBhvInfoListForView = BhvInfoForView.convert(predictedBhvInfoList);
 		
+		adapter = new PredictedBhvInfoAdapter(
+				predictedBhvInfoListForView);
+		setListAdapter(adapter);
+
 		if (predictedBhvInfoList == null) {
 			setListShown(false);
 		} else {
-			List<PredictedBhvInfoForView> predictedBhvInfoListForView = 
-					PredictedBhvInfoForView.getPredictedBhvInfoListForView(predictedBhvInfoList);
-
-			adapter = new PredictedBhvInfoAdapter(
-					predictedBhvInfoListForView);
-			setListAdapter(adapter);
 			setListShown(true);
 		}
 	}
@@ -69,10 +70,10 @@ public class PredictedFragment extends ListFragment {
 		super.onDestroy();
 	}
 
-	public class PredictedBhvInfoAdapter extends ArrayAdapter<PredictedBhvInfoForView> {
-		private final List<PredictedBhvInfoForView> predictedBhvInfoListForView;
+	public class PredictedBhvInfoAdapter extends ArrayAdapter<BhvInfoForView> {
+		private final List<BhvInfoForView> predictedBhvInfoListForView;
 
-		public PredictedBhvInfoAdapter(List<PredictedBhvInfoForView> _predictedBhvInfoListForView) {
+		public PredictedBhvInfoAdapter(List<BhvInfoForView> _predictedBhvInfoListForView) {
 			super(getActivity(), R.layout.listview_item, _predictedBhvInfoListForView);
 			predictedBhvInfoListForView = _predictedBhvInfoListForView;
 		}
@@ -81,7 +82,7 @@ public class PredictedFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			PredictedBhvInfoForView predictedBhvInfoForView = predictedBhvInfoListForView.get(position);
+			BhvInfoForView predictedBhvInfoForView = predictedBhvInfoListForView.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
 			iconView.setImageDrawable(predictedBhvInfoForView.getIcon());
