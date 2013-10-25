@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -30,14 +29,15 @@ public class Predictor {
 		return predictor;
 	}
 	
-	public List<PredictedBhvInfo> predict(int topN){
+	public void predict(){
 		SnapshotUserCxt currUserCxt = AppShuttleApplication.currUserCxt;
 
 		if(currUserCxt == null)
-			return Collections.emptyList();
+			return ;
+//			return Collections.emptyList();
 
-		List<PredictedBhvInfo> res = new ArrayList<PredictedBhvInfo>();
-		PriorityQueue<PredictedBhvInfo> predicted = new PriorityQueue<PredictedBhvInfo>();
+		List<PredictedBhvInfo> predicted = new ArrayList<PredictedBhvInfo>();
+//		PriorityQueue<PredictedBhvInfo> predicted = new PriorityQueue<PredictedBhvInfo>();
 
 		List<TemplateContextMatcher> cxtMatcherList = new ArrayList<TemplateContextMatcher>();
 		if(MatcherType.FREQUENCY.enabled){
@@ -115,13 +115,22 @@ public class Predictor {
 					uBhv, matchedResultMap, score);
 			predicted.add(predictedBhv);
 		}
+		
+		Collections.sort(predicted);
 
-		for(int i=0;i<topN;i++){
-			if(predicted.isEmpty()) break;
-			res.add(predicted.remove());
-		}
-
-		return res;
+		AppShuttleApplication.recentPredictedBhvInfoList = predicted;
+//		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
+		
+//		return res;
+	}
+	
+	public List<PredictedBhvInfo> getRecentPredictedBhvInfo(int topN){
+		List<PredictedBhvInfo> bhvInfoList = AppShuttleApplication.recentPredictedBhvInfoList;
+		
+		if(bhvInfoList == null)
+			return null;
+		
+		return bhvInfoList.subList(0, Math.min(bhvInfoList.size(), topN));
 	}
 	
 	private double computePredictionScore(EnumMap<MatcherType, MatchedResult> matchedResults){

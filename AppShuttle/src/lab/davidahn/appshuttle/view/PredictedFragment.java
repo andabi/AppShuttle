@@ -2,8 +2,9 @@ package lab.davidahn.appshuttle.view;
 
 import java.util.List;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
+import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -37,11 +38,14 @@ public class PredictedFragment extends ListFragment {
 
 		setEmptyText("No results");
 
-		if (AppShuttleApplication.recentPredictedBhvInfoList == null) {
+		Predictor predictor = Predictor.getInstance();
+		List<PredictedBhvInfo> predictedBhvInfoList = predictor.getRecentPredictedBhvInfo(Integer.MAX_VALUE);
+		
+		if (predictedBhvInfoList == null) {
 			setListShown(false);
 		} else {
 			List<PredictedBhvInfoForView> predictedBhvInfoListForView = 
-					PredictedBhvInfoForView.getPredictedBhvInfoListForView(AppShuttleApplication.recentPredictedBhvInfoList);
+					PredictedBhvInfoForView.getPredictedBhvInfoListForView(predictedBhvInfoList);
 
 			adapter = new PredictedBhvInfoAdapter(
 					predictedBhvInfoListForView);

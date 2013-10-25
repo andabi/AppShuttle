@@ -43,12 +43,13 @@ public class UpdateService extends IntentService {
 	@Override
 	public void onHandleIntent(Intent intent) {
 		Predictor predictor = Predictor.getInstance();
-		List<PredictedBhvInfo> predictedBhvInfoList = predictor.predict(getNumElem());
-		List<PredictedBhvInfoForView> predictedBhvInfoListForView = PredictedBhvInfoForView.getPredictedBhvInfoListForView(predictedBhvInfoList);
-		updateNotiView(predictedBhvInfoListForView);
 
-		AppShuttleApplication.recentPredictedBhvInfoList = predictedBhvInfoList;
-//		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
+		predictor.predict();
+		
+		List<PredictedBhvInfo> predictedBhvInfoList = predictor.getRecentPredictedBhvInfo(getNumElem());
+		List<PredictedBhvInfoForView> predictedBhvInfoListForView = PredictedBhvInfoForView.getPredictedBhvInfoListForView(predictedBhvInfoList);
+		
+		updateNotiView(predictedBhvInfoListForView);
 
 		//TODO
 		//PredictedFragment update();
@@ -103,7 +104,7 @@ public class UpdateService extends IntentService {
 	}
 	
 	private int getNumElem() {
-		int maxNumElem = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_elem", 8);
+		int maxNumElem = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_elem", Integer.MAX_VALUE);
 		int NotibarIconAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_icon_area_width) / getResources().getDisplayMetrics().density));
 		int NotibarPredictedBhvAreaWidth = (int) ((getResources().getDimension(R.dimen.notibar_predicted_bhv_area_width) / getResources().getDisplayMetrics().density));
 		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarPredictedBhvAreaWidth);
