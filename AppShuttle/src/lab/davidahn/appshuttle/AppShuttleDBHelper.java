@@ -15,18 +15,22 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	private AppShuttleDBHelper(Context cxt) {
-		super(cxt, DB_NAME, null, 30);
+		super(cxt, DB_NAME, null, 35);
 	}
 
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE IF NOT EXISTS history_user_env ("
 				+ "time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, env_type TEXT, user_env TEXT, "
 				+ "PRIMARY KEY (time, timezone, env_type) " + ");");
+		db.execSQL("CREATE INDEX idx1_history_user_env on history_user_env (time)");
+		db.execSQL("CREATE INDEX idx2_history_user_env on history_user_env (time, end_time, env_type)");
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS history_user_bhv ("
 				+ "time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, bhv_type TEXT, bhv_name TEXT, "
-				+ "PRIMARY KEY (time, timezone, bhv_type, bhv_name) " + ");");
-
+				+ "PRIMARY KEY (time, timezone, bhv_type, bhv_name) " + ");");		
+		db.execSQL("CREATE INDEX idx1_history_user_bhv on history_user_bhv (time)");
+		db.execSQL("CREATE INDEX idx2_history_user_bhv on history_user_bhv (time, bhv_type, bhv_name)");
+		
 		db.execSQL("CREATE TABLE IF NOT EXISTS list_user_bhv ("
 				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, "
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
@@ -47,12 +51,20 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS history_user_env");
-		db.execSQL("DROP TABLE IF EXISTS history_user_bhv");
-		db.execSQL("DROP TABLE IF EXISTS list_user_bhv");
-		db.execSQL("DROP TABLE IF EXISTS matched_result");
-		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
+//		db.execSQL("CREATE INDEX idx1_history_user_env on history_user_env (time)");
+//		db.execSQL("CREATE INDEX idx2_history_user_env on history_user_env (time, end_time, env_type)");
+		
+//		db.execSQL("DROP INDEX idx1_history_user_bhv");
+//		db.execSQL("DROP INDEX idx2_history_user_bhv");
+//		db.execSQL("CREATE INDEX idx1_history_user_bhv on history_user_bhv (time)");
+//		db.execSQL("CREATE INDEX idx2_history_user_bhv on history_user_bhv (time, bhv_type, bhv_name)");
+		
+//		db.execSQL("DROP TABLE IF EXISTS history_user_env");
+//		db.execSQL("DROP TABLE IF EXISTS history_user_bhv");
+//		db.execSQL("DROP TABLE IF EXISTS list_user_bhv");
+//		db.execSQL("DROP TABLE IF EXISTS matched_result");
+//		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
 		// db.execSQL("DROP TABLE IF EXISTS snapshot_context");
-		onCreate(db);
+//		onCreate(db);
 	}
 }

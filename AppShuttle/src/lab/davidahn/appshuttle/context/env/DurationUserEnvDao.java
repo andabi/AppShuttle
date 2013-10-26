@@ -9,7 +9,6 @@ import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,7 +37,7 @@ public class DurationUserEnvDao {
 		row.put("user_env", gson.toJson(durationUserEnv.getUserEnv()));
 		_db.insert("history_user_env", null, row);
 		
-		Log.i("stored history_user_env", durationUserEnv.toString());
+//		Log.i("stored history_user_env", durationUserEnv.toString());
 	}
 	
 //	public <T extends UserEnv> List<DurationUserEnv> retrieve(Date fromTime, Date toTime, EnvType envType){
@@ -91,7 +90,7 @@ public class DurationUserEnvDao {
 		.setEnvType(envType)
 		.setUserEnv(userEnv)
 		.build();
-		Log.i("retrieved history_user_env", durationUserEnv.toString());
+//		Log.i("retrieved history_user_env", durationUserEnv.toString());
 		res = durationUserEnv;
 	}
 	cur.close();
@@ -119,7 +118,7 @@ public class DurationUserEnvDao {
 			.setEnvType(envType)
 			.setUserEnv(userEnv)
 			.build();
-			Log.i("retrieved history_user_env", durationUserEnv.toString());
+//			Log.i("retrieved history_user_env", durationUserEnv.toString());
 			res.add(durationUserEnv);
 		}
 		cur.close();
@@ -136,6 +135,6 @@ public class DurationUserEnvDao {
 		_db.execSQL("DELETE " +
 				"FROM history_user_env " + 
 				"WHERE time >= " + beginTime.getTime() + " " +
-					"AND end_time < " + endTime.getTime() + "';");
+					"AND time < " + endTime.getTime() + "';");
 	}
 }

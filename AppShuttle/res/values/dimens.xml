@@ -5,5 +5,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="notibar_icon_area_width">48dp</dimen>
     <dimen name="notibar_predicted_bhv_area_width">52dp</dimen>
+    <dimen name="notibar_text_size">10sp</dimen>
 
 </resources>

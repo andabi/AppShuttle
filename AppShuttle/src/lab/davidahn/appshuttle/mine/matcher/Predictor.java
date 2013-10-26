@@ -1,11 +1,14 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
+import static lab.davidahn.appshuttle.AppShuttleApplication.recentPredictedBhvSet;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -26,17 +29,18 @@ public class Predictor {
 		return predictor;
 	}
 	
-	public List<PredictedBhvInfo> predict(int topN){
+	public void predict(){
 		SnapshotUserCxt currUserCxt = AppShuttleApplication.currUserCxt;
 
 		if(currUserCxt == null)
-			return Collections.emptyList();
+			return ;
+//			return Collections.emptyList();
 
-		List<PredictedBhvInfo> res = new ArrayList<PredictedBhvInfo>();
-		PriorityQueue<PredictedBhvInfo> predicted = new PriorityQueue<PredictedBhvInfo>();
+		List<PredictedBhvInfo> predicted = new ArrayList<PredictedBhvInfo>();
+//		PriorityQueue<PredictedBhvInfo> predicted = new PriorityQueue<PredictedBhvInfo>();
 
 		List<TemplateContextMatcher> cxtMatcherList = new ArrayList<TemplateContextMatcher>();
-		if(MatcherType.FREQUENCY.enabled()){
+		if(MatcherType.FREQUENCY.enabled){
 			cxtMatcherList.add(new FreqContextMatcher(
 					currUserCxt.getTimeDate()
 					, _preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
@@ -46,7 +50,7 @@ public class Predictor {
 					, _preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
 					));
 		}
-		if(MatcherType.WEAK_TIME.enabled()){
+		if(MatcherType.WEAK_TIME.enabled){
 			cxtMatcherList.add(new WeakTimeContextMatcher(
 					new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
 					, _preferenceSettings.getLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY)
@@ -58,7 +62,7 @@ public class Predictor {
 					, _preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
 					));
 		}
-		if(MatcherType.STRICT_TIME.enabled()){
+		if(MatcherType.STRICT_TIME.enabled){
 			cxtMatcherList.add(new StrictTimeContextMatcher(
 					new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
 					, _preferenceSettings.getLong("matcher.strict_time.duration", 6 * AlarmManager.INTERVAL_DAY)
@@ -70,7 +74,7 @@ public class Predictor {
 					, _preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)
 					));
 		}
-		if(MatcherType.PLACE.enabled()){
+		if(MatcherType.PLACE.enabled){
 			cxtMatcherList.add(new PlaceContextMatcher(
 					currUserCxt.getTimeDate()
 					, _preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
@@ -80,7 +84,7 @@ public class Predictor {
 					, _preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
 					));
 		}
-		if(MatcherType.LOCATION.enabled()){
+		if(MatcherType.LOCATION.enabled){
 			cxtMatcherList.add(new LocContextMatcher(
 					currUserCxt.getTimeDate()
 					, _preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
@@ -111,24 +115,51 @@ public class Predictor {
 					uBhv, matchedResultMap, score);
 			predicted.add(predictedBhv);
 		}
+		
+		Collections.sort(predicted);
 
-		for(int i=0;i<topN;i++){
-			if(predicted.isEmpty()) break;
-			res.add(predicted.remove());
-		}
-
-		return res;
+		AppShuttleApplication.recentPredictedBhvInfoList = predicted;
+//		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
+		
+//		return res;
+	}
+	
+	public List<PredictedBhvInfo> getRecentPredictedBhvInfo(int topN){
+		List<PredictedBhvInfo> bhvInfoList = AppShuttleApplication.recentPredictedBhvInfoList;
+		
+		if(bhvInfoList == null)
+			return null;
+		
+		return bhvInfoList.subList(0, Math.min(bhvInfoList.size(), topN));
 	}
 	
 	private double computePredictionScore(EnumMap<MatcherType, MatchedResult> matchedResults){
 		double PredictionScore = 0;
 		
 		for(MatcherType matcherType : matchedResults.keySet()){
-			double weight = Math.pow(10, matcherType.getPriority());
+			double weight = Math.pow(10, matcherType.priority);
 			double score = weight * matchedResults.get(matcherType).getScore();;
 			PredictionScore += score;
 		}
 		return PredictionScore;
+	}
+	
+
+	public void storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
+		Set<UserBhv> lastPredictedBhvSet = recentPredictedBhvSet;
+		
+		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
+
+		Set<UserBhv> currPredictedBhvSet = new HashSet<UserBhv>();
+		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
+			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
+			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
+				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
+			}
+			currPredictedBhvSet.add(predictedBhv);
+		}
+
+		recentPredictedBhvSet = currPredictedBhvSet;
 	}
 }
 

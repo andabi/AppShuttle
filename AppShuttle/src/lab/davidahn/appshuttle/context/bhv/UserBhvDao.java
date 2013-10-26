@@ -10,7 +10,6 @@ import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,7 +36,7 @@ public class UserBhvDao {
 //		db.insert("user_bhv", null, row);
 		_db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
-		Log.i("stored user bhv", uBhv.toString());
+//		Log.i("stored user bhv", uBhv.toString());
 	}
 	
 	public List<UserBhv> retrieveUserBhv() {

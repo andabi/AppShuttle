@@ -1,5 +1,7 @@
-package lab.davidahn.appshuttle;
+package lab.davidahn.appshuttle.view;
 
+import lab.davidahn.appshuttle.AppShuttleMainService;
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;

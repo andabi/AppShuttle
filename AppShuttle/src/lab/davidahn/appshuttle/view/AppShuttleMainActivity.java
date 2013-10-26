@@ -1,14 +1,18 @@
-package lab.davidahn.appshuttle;
+package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 
+import lab.davidahn.appshuttle.AppShuttleMainService;
+import lab.davidahn.appshuttle.R;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -18,15 +22,27 @@ import com.bugsense.trace.BugSenseHandler;
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
-
+	
+	BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+    		mTabsAdapter.notifyDataSetChanged();
+        }
+    };
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		BugSenseHandler.initAndStartSession(this, "a3573081");
 
+		IntentFilter filter = new IntentFilter();
+		filter = new IntentFilter();
+		filter.addAction("lab.davidahn.appshuttle.REFRESH");
+		registerReceiver(refreshReceiver, filter);
+		
 		mViewPager = new ViewPager(this);
 		mViewPager.setId(R.id.pager);
+		
 		setContentView(mViewPager);
 
 		final ActionBar bar = getActionBar();
@@ -34,13 +50,15 @@ public class AppShuttleMainActivity extends Activity {
 		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
-		mTabsAdapter.addTab(bar.newTab().setText("Predic"),
-				PredictedFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setText("Pinned"),
+		Bundle bundle = new Bundle();
+		bundle.putString("tag", "predicted");
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_emoticons),
+				PredictedFragment.class, bundle);
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_star),
 				PinnedBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setText("Blocked"),
+		mTabsAdapter.addTab(bar.newTab().setIcon(android.R.drawable.ic_menu_delete),
 				BlockedBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setText("Info"),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
 				InfoFragment.class, null);
 
 		if (savedInstanceState != null) {
@@ -55,7 +73,12 @@ public class AppShuttleMainActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
 	}
-
+	
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(refreshReceiver);
+	}
+	
 	public static class TabsAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
 		private final Context mContext;
@@ -90,6 +113,29 @@ public class AppShuttleMainActivity extends Activity {
 			mActionBar.addTab(tab);
 			notifyDataSetChanged();
 		}
+		
+		@Override
+		public int getItemPosition(Object object) {
+			return POSITION_NONE;
+		}
+		
+//	  public void replace(int position, Fragment fragment) {
+//	      // Get currently active fragment.
+//	      Fragment old_fragment = getItem(position);
+//	      if (old_fragment == null) {
+//	        return;
+//	      }
+//
+//	      // Replace the fragment using transaction and in underlaying array list.
+//	      // NOTE .addToBackStack(null) doesn't work
+//	      startUpdate(mViewPager);
+//	      mFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//	        .remove(old_fragment).add(mViewPager.getId(), fragment)
+//	        .commit();
+//	      mFragments.set(position, fragment);
+//	      notifyDataSetChanged();
+//	      finishUpdate(mViewPager);
+//	    }
 
 		@Override
 		public int getCount() {

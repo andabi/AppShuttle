@@ -6,7 +6,7 @@ import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.report.ReportingCxtService;
-import lab.davidahn.appshuttle.view.NotiViewService;
+import lab.davidahn.appshuttle.view.UpdateService;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -43,8 +43,8 @@ public class AppShuttleMainService extends Service {
 		registerReceiver(screenOffReceiver, filter);
 		
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
-		registerReceiver(notiViewReceiver, filter);
+		filter.addAction("lab.davidahn.appshuttle.UPDATE");
+		registerReceiver(updateReceiver, filter);
 
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		
@@ -64,14 +64,22 @@ public class AppShuttleMainService extends Service {
 			reportingCxtOperation = PendingIntent.getService(this, 0, reportingCxtIntent, 0);
 			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
 		}
-
+		
+		startRepeatingUpdateBroadCast();
+	}
+	
+	private void startRepeatingUpdateBroadCast() {
 		if(preferenceSettings.getBoolean("service.view.enabled", true)){
-			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
+			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE");
 			notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.view.period", 30000), notiViewOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.view.period", 300000), notiViewOperation);
 		}
 	}
 	
+	private void stopRepeatingUpdateBroadCast() {
+		alarmManager.cancel(notiViewOperation);
+	}
+
 	public long getExecuteTimeHour(int hourOfDay){
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -100,13 +108,13 @@ public class AppShuttleMainService extends Service {
 		
 		unregisterReceiver(screenOnReceiver);
 		unregisterReceiver(screenOffReceiver);
-		unregisterReceiver(notiViewReceiver);
+		unregisterReceiver(updateReceiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleMainService.this, CompactionService.class));
 		stopService(new Intent(AppShuttleMainService.this, UnregisterBhvService.class));
 		stopService(new Intent(AppShuttleMainService.this, ReportingCxtService.class));
-		stopService(new Intent(AppShuttleMainService.this, NotiViewService.class));
+		stopService(new Intent(AppShuttleMainService.this, UpdateService.class));
 		
 		((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();
 	}
@@ -114,27 +122,21 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
-			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-			if(preferenceSettings.getBoolean("service.view.enabled", true)){
-				Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW");
-				PendingIntent notiViewOperation = PendingIntent.getBroadcast(context, 0, notiViewIntent, 0);
-				alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.view.period", 30000), notiViewOperation);
-			}
+			startRepeatingUpdateBroadCast();
 		}
 	};
 	
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			alarmManager.cancel(notiViewOperation);
+			stopRepeatingUpdateBroadCast();
 		}
 	};
 
-	BroadcastReceiver notiViewReceiver = new BroadcastReceiver(){
+	BroadcastReceiver updateReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			context.startService(new Intent(context, NotiViewService.class));
+			context.startService(new Intent(context, UpdateService.class));
 		}
 	};
 }
