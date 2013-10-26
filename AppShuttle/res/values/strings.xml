@@ -12,5 +12,7 @@
     <string name="predict_place_msg">Place</string>
     <string name="predict_time_msg">Time</string>
     <string name="predict_freq_msg">Frequency</string>
+    <string name="favorates">favorates</string>
+    <string name="blocked">blocked</string>
 
 </resources>

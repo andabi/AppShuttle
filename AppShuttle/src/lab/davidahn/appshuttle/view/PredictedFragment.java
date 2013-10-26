@@ -9,9 +9,16 @@ import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,7 +26,8 @@ import android.widget.TextView;
 
 public class PredictedFragment extends ListFragment {
 	private PredictedBhvInfoAdapter adapter;
-	
+	private ActionMode actionMode;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +61,17 @@ public class PredictedFragment extends ListFragment {
 		} else {
 			setListShown(true);
 		}
+		
+		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+	        @Override
+	        public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
+	    		if(actionMode == null) {
+	    			actionMode = getActivity().startActionMode(actionCallback);
+//	    			actionMode.setTitle("")
+	    		}
+	            return true;
+	        }
+	    });
 	}
 
 	@Override
@@ -96,4 +115,30 @@ public class PredictedFragment extends ListFragment {
 			return itemView;
 		}
 	}
+	
+	ActionMode.Callback actionCallback = new ActionMode.Callback() {
+		
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.predicted_bhv_action_mode, menu);
+			return true;
+		}
+		
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+		
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			actionMode = null;
+		}
+		
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			Log.d("test","ok");
+			return false;
+		}
+	};
 }
