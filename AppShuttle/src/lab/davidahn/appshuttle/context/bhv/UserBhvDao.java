@@ -92,8 +92,7 @@ public class UserBhvDao {
 	public void block(UserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
-				"SET blocked = 1 " +
-					"AND blocked_time = " + ((BlockedUserBhv)uBhv).getBlockedTime() + " " +
+				"SET blocked = 1, blocked_time = " + ((BlockedUserBhv)uBhv).getBlockedTime() + " " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}

@@ -35,7 +35,7 @@ public class UserBhvManager {
 	}
 	
 	public synchronized void registerBhv(UserBhv uBhv){
-		if(_usualBhvSet.contains(uBhv))
+		if(_usualBhvSet.contains(uBhv) || _blockedBhvSet.contains(uBhv))
 			return ;
 
 		_userBhvDao.storeUserBhv(uBhv);
@@ -44,7 +44,7 @@ public class UserBhvManager {
 	}
 	
 	public synchronized void unregisterBhv(UserBhv uBhv){
-		if(!_usualBhvSet.contains(uBhv))
+		if(!_usualBhvSet.contains(uBhv) && !_blockedBhvSet.contains(uBhv))
 			return ;
 
 		_userBhvDao.deleteUserBhv(uBhv);
