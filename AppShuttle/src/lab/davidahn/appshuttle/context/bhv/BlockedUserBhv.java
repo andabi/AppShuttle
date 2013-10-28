@@ -1,9 +1,19 @@
 package lab.davidahn.appshuttle.context.bhv;
 
+
 public class BlockedUserBhv implements UserBhv, Comparable<BlockedUserBhv> {
-	private BaseUserBhv _uBhv;
+	private UserBhv _uBhv;
 	private long _blockedTime;
 	
+	public BlockedUserBhv(UserBhv uBhv, long blockedTime){
+		_uBhv = uBhv;
+		_blockedTime = blockedTime;
+	}
+	
+	public UserBhv getUserBhv() {
+		return _uBhv;
+	}
+
 	@Override
 	public BhvType getBhvType() {
 		return _uBhv.getBhvType();
@@ -37,8 +47,14 @@ public class BlockedUserBhv implements UserBhv, Comparable<BlockedUserBhv> {
 	}
 	
 	@Override
-	public boolean equals(Object o){
-		return _uBhv.equals(o);
+	public boolean equals(Object o) {
+		if ((o instanceof UserBhv)
+				&& _uBhv.getBhvName().equals(
+						((UserBhv) o).getBhvName())
+				&& _uBhv.getBhvType() == ((UserBhv) o).getBhvType())
+			return true;
+		else
+			return false;
 	}
 	
 	@Override

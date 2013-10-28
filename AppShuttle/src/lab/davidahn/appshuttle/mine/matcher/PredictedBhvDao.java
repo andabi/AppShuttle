@@ -29,8 +29,8 @@ public class PredictedBhvDao {
 		row.put("time", predictedBhvInfo.getTime().getTime());
 		row.put("timezone", predictedBhvInfo.getTimeZone().getID());
 		row.put("user_envs", gson.toJson(predictedBhvInfo.getUserEnvMap()));
-		row.put("bhv_type", predictedBhvInfo.getBhvType().toString());
-		row.put("bhv_name", predictedBhvInfo.getBhvName());
+		row.put("bhv_type", predictedBhvInfo.getUserBhv().getBhvType().toString());
+		row.put("bhv_name", predictedBhvInfo.getUserBhv().getBhvName());
 		row.put("score", predictedBhvInfo.getScore());
 		_db.insert("predicted_bhv", null, row);
 

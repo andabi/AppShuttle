@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
 public interface BhvCollector {
 	public <T extends BaseUserBhv> List<T> collect();

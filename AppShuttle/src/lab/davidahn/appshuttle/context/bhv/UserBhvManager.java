@@ -11,39 +11,73 @@ import java.util.Set;
  */
 
 public class UserBhvManager {
-	private Set<BaseUserBhv> _bhvSet;
+	//usual = unblocked && unfavorated
+	private Set<UserBhv> _usualBhvSet;
+	private Set<UserBhv> _blockedBhvSet;
 	private UserBhvDao _userBhvDao;
 
 	private static UserBhvManager userBhvManager = new UserBhvManager();
 	private UserBhvManager() {
 		_userBhvDao = UserBhvDao.getInstance();
-		_bhvSet = new HashSet<BaseUserBhv>();
+		
+		_usualBhvSet = new HashSet<UserBhv>();
+		_usualBhvSet.addAll(_userBhvDao.retrieveUsualUserBhv());
 
-		_bhvSet.addAll(_userBhvDao.retrieveUserBhv());
+		_blockedBhvSet = new HashSet<UserBhv>();
+		_blockedBhvSet.addAll(_userBhvDao.retrieveBlockedUserBhv());
 	}
 	public synchronized static UserBhvManager getInstance() {
 		return userBhvManager;
 	}
 	
-	public Set<BaseUserBhv> getBhvSet(){
-		return Collections.unmodifiableSet(_bhvSet);
+	public Set<UserBhv> getUsualBhvSet(){
+		return Collections.unmodifiableSet(new HashSet<UserBhv>(_usualBhvSet));
 	}
 	
-	public synchronized void registerBhv(BaseUserBhv uBhv){
-		if(_bhvSet.contains(uBhv))
+	public synchronized void registerBhv(UserBhv uBhv){
+		if(_usualBhvSet.contains(uBhv))
 			return ;
 
 		_userBhvDao.storeUserBhv(uBhv);
 
-		_bhvSet.add(uBhv);
+		_usualBhvSet.add(uBhv);
 	}
 	
-	public synchronized void unregisterBhv(BaseUserBhv uBhv){
-		if(!_bhvSet.contains(uBhv))
+	public synchronized void unregisterBhv(UserBhv uBhv){
+		if(!_usualBhvSet.contains(uBhv))
 			return ;
 
 		_userBhvDao.deleteUserBhv(uBhv);
 
-		_bhvSet.remove(uBhv);
+		_usualBhvSet.remove(uBhv);
+	}
+	
+	public Set<UserBhv> getBlockedBhvSet(){
+		return Collections.unmodifiableSet(new HashSet<UserBhv>(_blockedBhvSet));
+	}
+	
+	public synchronized void block(UserBhv uBhv){
+		if(_blockedBhvSet.contains(uBhv) || !_usualBhvSet.contains(uBhv))
+			return ;
+
+		long currTime = System.currentTimeMillis();
+		BlockedUserBhv blockedUserBhv = new BlockedUserBhv(uBhv, currTime);
+		
+		_userBhvDao.block(blockedUserBhv);
+
+		_blockedBhvSet.add(blockedUserBhv);
+
+		_usualBhvSet.remove(uBhv);
+	}
+	
+	public synchronized void unblock(UserBhv uBhv){
+		if(!_blockedBhvSet.contains(uBhv) || _usualBhvSet.contains(uBhv))
+			return ;
+
+		_userBhvDao.unblock(uBhv);
+
+		_blockedBhvSet.remove(uBhv);
+		
+		_usualBhvSet.add(uBhv);
 	}
 }

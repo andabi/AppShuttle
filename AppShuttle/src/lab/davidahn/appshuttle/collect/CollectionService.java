@@ -11,9 +11,10 @@ import java.util.TimeZone;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.SnapshotUserCxtDao;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
@@ -160,8 +161,8 @@ public class CollectionService extends Service {
 	private void registerEachBhv(List<DurationUserBhv> durationUserBhvList) {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			BaseUserBhv uBhv = durationUserBhv.getUserBhv();
-			if(uBhv.isValid())
+			UserBhv uBhv = durationUserBhv.getUserBhv();
+			if(((BaseUserBhv)uBhv).isValid())
 				userBhvManager.registerBhv(uBhv);
 		}
 	}

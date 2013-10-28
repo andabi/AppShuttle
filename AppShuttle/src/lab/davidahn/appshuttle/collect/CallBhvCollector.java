@@ -9,10 +9,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.CallUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.database.Cursor;

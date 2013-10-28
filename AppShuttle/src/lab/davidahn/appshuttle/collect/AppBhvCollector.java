@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.ActivityManager.RunningTaskInfo;

@@ -5,21 +5,20 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
-	private final BaseUserBhv _uBhv;
+	private final UserBhv _uBhv;
 	private final Date _timeDate;
 	private final TimeZone _timeZone;
 	private final Map<EnvType, UserEnv> _uEnvs;
 	private final EnumMap<MatcherType, MatchedResult> _matchedResults;
 	private final double _score;
 	
-	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, BaseUserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
+	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
 		_timeDate = time;
 		_timeZone = timeZone;
 		_uEnvs = userEnvs;
@@ -69,7 +68,7 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 		return _uEnvs.get(envType);
 	}
 	
-	public BaseUserBhv getUserBhv() {
+	public UserBhv getUserBhv() {
 		return _uBhv;
 	}
 
@@ -86,8 +85,14 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	}
 	
 	@Override
-	public boolean equals(Object o){
-		return _uBhv.equals(o);
+	public boolean equals(Object o) {
+		if ((o instanceof UserBhv)
+				&& _uBhv.getBhvName().equals(
+						((UserBhv) o).getBhvName())
+				&& _uBhv.getBhvType() == ((UserBhv) o).getBhvType())
+			return true;
+		else
+			return false;
 	}
 	
 	@Override

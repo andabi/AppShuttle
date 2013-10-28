@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
-import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;

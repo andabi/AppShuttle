@@ -8,7 +8,7 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
@@ -93,7 +93,7 @@ public class Predictor {
 		
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
-		for(BaseUserBhv uBhv : userBhvManager.getBhvSet()){
+		for(UserBhv uBhv : userBhvManager.getUsualBhvSet()){
 			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 			for(TemplateContextMatcher cxtMatcher : cxtMatcherList){
 				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt, noiseTimeTolerance);
@@ -147,14 +147,15 @@ public class Predictor {
 		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
 
 //		Set<BaseUserBhv> currPredictedBhvSet = new HashSet<BaseUserBhv>();
-		for(PredictedBhv predictedBhvInfo : predictedBhvInfoList) {
+		for(PredictedBhv predictedBhv : predictedBhvInfoList) {
 //			BaseUserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 //			BaseUserBhv predictedBhv = predictedBhvInfo.getUserBhv();
 //			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
 //				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
 //			}
-			if(AppShuttleApplication.recentPredictedBhvList == null || !AppShuttleApplication.recentPredictedBhvList.contains(predictedBhvInfo)) {
-				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
+			if(AppShuttleApplication.recentPredictedBhvList == null || !AppShuttleApplication.recentPredictedBhvList.contains(predictedBhv)) {
+//				Log.d("test", AppShuttleApplication.recentPredictedBhvList.toString());
+				predictedBhvDao.storePredictedBhv(predictedBhv);
 			}
 //			currPredictedBhvSet.add(predictedBhv);
 		}

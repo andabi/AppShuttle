@@ -6,10 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.context.bhv.BlockedUserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 
 public class BlockedBhvForView extends BaseBhvForView {
 
-	public BlockedBhvForView(BlockedUserBhv blockedUserBhv) {
+	public BlockedBhvForView(UserBhv blockedUserBhv) {
 		super(blockedUserBhv);
 	}
 	
@@ -27,12 +28,12 @@ public class BlockedBhvForView extends BaseBhvForView {
 		return _viewMsg;
 	}
 	
-	public static List<BhvForView> convert(List<BlockedUserBhv> blockedBhvInfoList) {
+	public static List<BhvForView> convert(List<UserBhv> blockedBhvInfoList) {
 		if(blockedBhvInfoList == null)
 			return Collections.emptyList();
 		
 		List<BhvForView> res = new ArrayList<BhvForView>();
-		for(BlockedUserBhv info : blockedBhvInfoList){
+		for(UserBhv info : blockedBhvInfoList){
 			res.add(new BlockedBhvForView(info));
 		}
 		return res;

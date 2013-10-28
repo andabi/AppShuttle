@@ -71,9 +71,9 @@ public class BaseUserBhv implements UserBhv {
 	
 	@Override
 	public boolean equals(Object o){
-		if((o instanceof BaseUserBhv) 
-				&& _bhvName.equals(((BaseUserBhv)o)._bhvName) 
-				&& _bhvType == ((BaseUserBhv)o)._bhvType)
+		if((o instanceof UserBhv) 
+				&& _bhvName.equals(((UserBhv)o).getBhvName()) 
+				&& _bhvType == ((UserBhv)o).getBhvType())
 			return true;
 		else 
 			return false;

@@ -26,31 +26,35 @@ public class UserBhvDao {
 		return userBhvDao;
 	}
 
-	public void storeUserBhv(BaseUserBhv uBhv) {
+	public void storeUserBhv(UserBhv uBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		ContentValues row = new ContentValues();
 		row.put("bhv_type", uBhv.getBhvType().toString());
 		row.put("bhv_name", uBhv.getBhvName());
-		row.put("metas", gson.toJson(uBhv.getMetas()));
+		row.put("metas", gson.toJson(((BaseUserBhv)uBhv).getMetas()));
 //		db.insert("user_bhv", null, row);
 		_db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 //		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<BaseUserBhv> retrieveUserBhv() {
+	public List<UserBhv> retrieveUsualUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		Cursor cur = _db.rawQuery("SELECT * FROM list_user_bhv;", null);
-		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
+		Cursor cur = _db.rawQuery(
+				"SELECT * " +
+				"FROM list_user_bhv " +
+				"WHERE blocked = 0"
+				, null);
+		List<UserBhv> res = new ArrayList<UserBhv>();
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
 			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
-			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-			uBhv.setMetas(metas);
+			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			((BaseUserBhv)uBhv).setMetas(metas);
 			res.add(uBhv);
 		}
 		cur.close();
@@ -58,23 +62,27 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public List<BaseUserBhv> retrieveBlockedUserBhv() {
+	public List<UserBhv> retrieveBlockedUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
+//		int isBlockedInt = (isBlocked) ? 1 : 0;
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
-				"FROM list_user_bhv" +
+				"FROM list_user_bhv " +
 				"WHERE blocked = 1"
 				, null);
-		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
+		List<UserBhv> res = new ArrayList<UserBhv>();
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
 			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
-			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-			uBhv.setMetas(metas);
-			res.add(uBhv);
+			long blocked_time = cur.getLong(4);
+			
+			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			((BaseUserBhv)uBhv).setMetas(metas);
+			BlockedUserBhv blockedUBhv = new BlockedUserBhv(uBhv, blocked_time);
+			res.add(blockedUBhv);
 		}
 		cur.close();
 //		Log.i("retrieved userBhv", res.toString());
@@ -83,21 +91,22 @@ public class UserBhvDao {
 	
 	public void block(UserBhv uBhv) {
 		_db.execSQL("" +
-				"UPDATE list_user_bhv" +
-				"SET block = 1" +
+				"UPDATE list_user_bhv " +
+				"SET blocked = 1 " +
+					"AND blocked_time = " + ((BlockedUserBhv)uBhv).getBlockedTime() + " " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
 	public void unblock(UserBhv uBhv) {
 		_db.execSQL("" +
-				"UPDATE " +
-				"SET block = 0" +
+				"UPDATE list_user_bhv " +
+				"SET blocked = 0 " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void deleteUserBhv(BaseUserBhv uBhv) {
+	public void deleteUserBhv(UserBhv uBhv) {
 		_db.execSQL("" +
 				"DELETE " +
 				"FROM list_user_bhv " +

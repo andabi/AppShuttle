@@ -17,8 +17,6 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.bugsense.trace.BugSenseHandler;
-
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
@@ -33,7 +31,7 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		BugSenseHandler.initAndStartSession(this, "a3573081");
+//		BugSenseHandler.initAndStartSession(this, "a3573081");
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
@@ -55,7 +53,7 @@ public class AppShuttleMainActivity extends Activity {
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_emoticons),
 				PredictedFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_star),
-				PinnedBhvFragment.class, null);
+				FavorateBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(android.R.drawable.ic_menu_delete),
 				BlockedBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),

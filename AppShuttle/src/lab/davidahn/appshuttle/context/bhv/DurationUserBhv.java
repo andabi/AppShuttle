@@ -8,7 +8,7 @@ public class DurationUserBhv {
 	private final long _duration;
 	private final Date _endTimeDate;
 	private final TimeZone _timeZone;
-	private final BaseUserBhv _uBhv;
+	private final UserBhv _uBhv;
 
 	private DurationUserBhv(Builder builder){
 		_timeDate = builder._timeDate;
@@ -30,7 +30,7 @@ public class DurationUserBhv {
 	public TimeZone getTimeZone() {
 		return _timeZone;
 	}
-	public BaseUserBhv getUserBhv() {
+	public UserBhv getUserBhv() {
 		return _uBhv;
 	}
 
@@ -49,7 +49,7 @@ public class DurationUserBhv {
 		private long _duration = 0;
 		private Date _endTimeDate = null;
 		private TimeZone _timeZone = null;
-		private BaseUserBhv _uBhv = null;
+		private UserBhv _uBhv = null;
 
 		public Builder(){}
 		
@@ -83,7 +83,7 @@ public class DurationUserBhv {
 			return this;
 		}
 
-		public Builder setBhv(BaseUserBhv bhv) {
+		public Builder setBhv(UserBhv bhv) {
 			_uBhv = bhv;
 			return this;
 		}

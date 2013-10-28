@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import android.content.SharedPreferences;
 
 public class BaseBhvCollector implements BhvCollector {

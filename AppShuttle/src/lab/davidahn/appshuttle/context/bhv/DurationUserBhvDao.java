@@ -83,7 +83,7 @@ public class DurationUserBhvDao {
 				"WHERE time < " + timeDate.getTime() +";");
 	}
 	
-	public List<DurationUserBhv> retrieveByBhv(Date beginTime, Date endTime, BaseUserBhv uBhv) {
+	public List<DurationUserBhv> retrieveByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +

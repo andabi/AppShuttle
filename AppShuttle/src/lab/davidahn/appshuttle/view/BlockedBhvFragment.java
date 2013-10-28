@@ -1,12 +1,14 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.BlockedUserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -25,11 +27,12 @@ import android.widget.TextView;
 public class BlockedBhvFragment extends ListFragment {
 	private BlockedBhvInfoAdapter adapter;
 	private ActionMode actionMode;
-
+	private int actionModePosition;
+	private List<BhvForView> blockedBhvInfoForViewList;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		adapter = new BlockedBhvInfoAdapter(Collections.<BhvForView> emptyList());
 	}
 
 	@Override
@@ -46,25 +49,24 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		setEmptyText("No results");
 
-		//TODO
-		List<BlockedUserBhv> blockedBhvInfoList = null;
+		UserBhvManager uBhvManager = UserBhvManager.getInstance();
+		List<UserBhv> blockedBhvInfoList = new ArrayList<UserBhv>(uBhvManager.getBlockedBhvSet());
+		blockedBhvInfoForViewList = BlockedBhvForView.convert(blockedBhvInfoList);
 		
-		List<BhvForView> blockedBhvInfoListForView = BlockedBhvForView.convert(blockedBhvInfoList);
-		
-		adapter = new BlockedBhvInfoAdapter(
-				blockedBhvInfoListForView);
+		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
 
-		if (blockedBhvInfoList == null) {
-			setListShown(false);
-		} else {
-			setListShown(true);
-		}
+//		if (blockedBhvInfoList == null) {
+//			setListShown(false);
+//		} else {
+		setListShown(true);
+//		}
 		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 	        @Override
 	        public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
 	    		if(actionMode == null) {
+	    			actionModePosition = position;
 	    			actionMode = getActivity().startActionMode(actionCallback);
 //	    			actionMode.setTitle("")
 	    		}
@@ -89,18 +91,16 @@ public class BlockedBhvFragment extends ListFragment {
 	}
 
 	public class BlockedBhvInfoAdapter extends ArrayAdapter<BhvForView> {
-		private final List<BhvForView> blockedBhvInfoListForView;
 
-		public BlockedBhvInfoAdapter(List<BhvForView> _blockedBhvInfoListForView) {
-			super(getActivity(), R.layout.listview_item, _blockedBhvInfoListForView);
-			blockedBhvInfoListForView = _blockedBhvInfoListForView;
+		public BlockedBhvInfoAdapter() {
+			super(getActivity(), R.layout.listview_item, blockedBhvInfoForViewList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BhvForView bhvInfoForView = blockedBhvInfoListForView.get(position);
+			BhvForView bhvInfoForView = blockedBhvInfoForViewList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
 			iconView.setImageDrawable(bhvInfoForView.getIcon());
@@ -136,7 +136,18 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			return false;
+			if(blockedBhvInfoForViewList.size() < actionModePosition + 1)
+				return false;
+			
+			UserBhvManager uBhvManager = UserBhvManager.getInstance();
+			uBhvManager.unblock((blockedBhvInfoForViewList.get(actionModePosition).getUserBhv()));
+			
+			getActivity().startService(new Intent(getActivity(), UpdateService.class));
+			
+			if(actionMode != null)
+				actionMode.finish();
+			
+			return true;
 		}
 	};
 }

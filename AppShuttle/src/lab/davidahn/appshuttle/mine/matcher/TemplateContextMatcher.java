@@ -9,7 +9,7 @@ import java.util.Map;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
@@ -33,7 +33,7 @@ public abstract class TemplateContextMatcher {
 		_minNumCxt = minNumCxt;
 	}
 
-	public MatchedResult matchAndGetResult(BaseUserBhv uBhv, SnapshotUserCxt currUCxt, long noiseTimeTolerance){
+	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt, long noiseTimeTolerance){
 		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
 
 		Map<EnvType, UserEnv> uEnvs = currUCxt.getUserEnvs();
