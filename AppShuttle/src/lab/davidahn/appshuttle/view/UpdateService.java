@@ -2,7 +2,7 @@ package lab.davidahn.appshuttle.view;
 
 import java.util.List;
 
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.IntentService;
 import android.content.Intent;
@@ -25,13 +25,13 @@ public class UpdateService extends IntentService {
 		Predictor predictor = Predictor.getInstance();
 		predictor.predict();
 		
-		Notifier notifier = new Notifier();
-		List<PredictedBhvInfo> predictedBhvInfoList = predictor.getRecentPredictedBhvInfo(notifier.getNumElem());
-		notifier.updateNotiView(BhvInfoForView.convert(predictedBhvInfoList));
+		NotiBarNotifier notifier = new NotiBarNotifier();
+		List<PredictedBhv> predictedBhvList = predictor.getRecentPredictedBhv(notifier.getNumElem());
+		notifier.updateNotiView(PredictedBhvForView.convert(predictedBhvList));
 
 		Intent refreshIntent = new Intent().setAction("lab.davidahn.appshuttle.REFRESH");
 		sendBroadcast(refreshIntent);
 		
-		predictor.storeNewPredictedBhv(predictedBhvInfoList);
+		predictor.storeNewPredictedBhv(predictedBhvList);
 	}
 }

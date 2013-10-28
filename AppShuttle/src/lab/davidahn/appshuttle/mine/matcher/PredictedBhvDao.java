@@ -9,28 +9,28 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class PredictedBhvInfoDao {
+public class PredictedBhvDao {
 	private SQLiteDatabase _db;
 	private MatchedResultDao _matchedResultDao;
 
-	private static PredictedBhvInfoDao predictedBhvInfoDao = new PredictedBhvInfoDao();
-	private PredictedBhvInfoDao() {
+	private static PredictedBhvDao predictedBhvInfoDao = new PredictedBhvDao();
+	private PredictedBhvDao() {
 		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 		_matchedResultDao = MatchedResultDao.getInstance();
 	}
-	public static PredictedBhvInfoDao getInstance() {
+	public static PredictedBhvDao getInstance() {
 		return predictedBhvInfoDao;
 	}
 
-	public void storePredictedBhv(PredictedBhvInfo predictedBhvInfo) {
+	public void storePredictedBhv(PredictedBhv predictedBhvInfo) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
 		row.put("time", predictedBhvInfo.getTime().getTime());
 		row.put("timezone", predictedBhvInfo.getTimeZone().getID());
 		row.put("user_envs", gson.toJson(predictedBhvInfo.getUserEnvMap()));
-		row.put("bhv_type", predictedBhvInfo.getUserBhv().getBhvType().toString());
-		row.put("bhv_name", predictedBhvInfo.getUserBhv().getBhvName());
+		row.put("bhv_type", predictedBhvInfo.getBhvType().toString());
+		row.put("bhv_name", predictedBhvInfo.getBhvName());
 		row.put("score", predictedBhvInfo.getScore());
 		_db.insert("predicted_bhv", null, row);
 

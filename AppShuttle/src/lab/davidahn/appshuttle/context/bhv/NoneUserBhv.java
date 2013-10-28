@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.context.bhv;
 
-public class NoneUserBhv extends UserBhv {
+public class NoneUserBhv extends BaseUserBhv {
 	
 	public NoneUserBhv(BhvType bhvType, String bhvName) {
 		super(bhvType, bhvName);

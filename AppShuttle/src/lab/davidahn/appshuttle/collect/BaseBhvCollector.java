@@ -7,7 +7,7 @@ import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import android.content.SharedPreferences;
 
 public class BaseBhvCollector implements BhvCollector {
@@ -20,7 +20,7 @@ public class BaseBhvCollector implements BhvCollector {
 //		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 
-	public List<UserBhv> collect() {
+	public List<BaseUserBhv> collect() {
 		return Collections.emptyList();
 	}
 	
@@ -28,7 +28,7 @@ public class BaseBhvCollector implements BhvCollector {
 		return Collections.emptyList();
 	}
 
-	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<UserBhv> userBhvList) {
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<BaseUserBhv> userBhvList) {
 		return Collections.emptyList();
 	}
 	

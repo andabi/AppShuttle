@@ -4,12 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,13 +24,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class PredictedFragment extends ListFragment {
-	private PredictedBhvInfoAdapter adapter;
+	private PredictedBhvAdapter adapter;
 	private ActionMode actionMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		adapter = new PredictedBhvInfoAdapter(Collections.<BhvInfoForView> emptyList());
+		adapter = new PredictedBhvAdapter(Collections.<BhvForView> emptyList());
 	}
 
 	@Override
@@ -49,14 +48,14 @@ public class PredictedFragment extends ListFragment {
 		setEmptyText("No results");
 
 		Predictor predictor = Predictor.getInstance();
-		List<PredictedBhvInfo> predictedBhvInfoList = predictor.getRecentPredictedBhvInfo(Integer.MAX_VALUE);
-		List<BhvInfoForView> predictedBhvInfoListForView = BhvInfoForView.convert(predictedBhvInfoList);
+		List<PredictedBhv> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE);
+		List<BhvForView> predictedBhvListForView = PredictedBhvForView.convert(predictedBhvList);
 		
-		adapter = new PredictedBhvInfoAdapter(
-				predictedBhvInfoListForView);
+		adapter = new PredictedBhvAdapter(
+				predictedBhvListForView);
 		setListAdapter(adapter);
 
-		if (predictedBhvInfoList == null) {
+		if (predictedBhvList == null) {
 			setListShown(false);
 		} else {
 			setListShown(true);
@@ -89,28 +88,28 @@ public class PredictedFragment extends ListFragment {
 		super.onDestroy();
 	}
 
-	public class PredictedBhvInfoAdapter extends ArrayAdapter<BhvInfoForView> {
-		private final List<BhvInfoForView> predictedBhvInfoListForView;
+	public class PredictedBhvAdapter extends ArrayAdapter<BhvForView> {
+		private final List<BhvForView> predictedBhvListForView;
 
-		public PredictedBhvInfoAdapter(List<BhvInfoForView> _predictedBhvInfoListForView) {
-			super(getActivity(), R.layout.listview_item, _predictedBhvInfoListForView);
-			predictedBhvInfoListForView = _predictedBhvInfoListForView;
+		public PredictedBhvAdapter(List<BhvForView> _predictedBhvListForView) {
+			super(getActivity(), R.layout.listview_item, _predictedBhvListForView);
+			predictedBhvListForView = _predictedBhvListForView;
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BhvInfoForView predictedBhvInfoForView = predictedBhvInfoListForView.get(position);
+			BhvForView bhvForView = predictedBhvListForView.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
-			iconView.setImageDrawable(predictedBhvInfoForView.getIcon());
+			iconView.setImageDrawable(bhvForView.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
-			firstLineView.setText(predictedBhvInfoForView.getBhvNameText());
+			firstLineView.setText(bhvForView.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
-			secondLineView.setText(predictedBhvInfoForView.getViewMsg());
+			secondLineView.setText(bhvForView.getViewMsg());
 
 			return itemView;
 		}
@@ -137,7 +136,6 @@ public class PredictedFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			Log.d("test","ok");
 			return false;
 		}
 	};

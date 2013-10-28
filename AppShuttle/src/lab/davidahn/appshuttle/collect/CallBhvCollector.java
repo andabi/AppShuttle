@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.collect;
 
-import static lab.davidahn.appshuttle.context.bhv.UserBhv.create;
+import static lab.davidahn.appshuttle.context.bhv.BaseUserBhv.create;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,7 +12,7 @@ import java.util.TimeZone;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.CallUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -47,7 +47,7 @@ public class CallBhvCollector extends BaseBhvCollector {
 	}
 	
 	@Override
-	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<UserBhv> userBhvList) {
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<BaseUserBhv> userBhvList) {
 		if(_lastCallTimeDate == null)
 			return Collections.emptyList();
 		

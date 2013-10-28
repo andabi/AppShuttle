@@ -11,13 +11,13 @@ import java.util.Set;
  */
 
 public class UserBhvManager {
-	private Set<UserBhv> _bhvSet;
+	private Set<BaseUserBhv> _bhvSet;
 	private UserBhvDao _userBhvDao;
 
 	private static UserBhvManager userBhvManager = new UserBhvManager();
 	private UserBhvManager() {
 		_userBhvDao = UserBhvDao.getInstance();
-		_bhvSet = new HashSet<UserBhv>();
+		_bhvSet = new HashSet<BaseUserBhv>();
 
 		_bhvSet.addAll(_userBhvDao.retrieveUserBhv());
 	}
@@ -25,11 +25,11 @@ public class UserBhvManager {
 		return userBhvManager;
 	}
 	
-	public Set<UserBhv> getBhvSet(){
+	public Set<BaseUserBhv> getBhvSet(){
 		return Collections.unmodifiableSet(_bhvSet);
 	}
 	
-	public synchronized void registerBhv(UserBhv uBhv){
+	public synchronized void registerBhv(BaseUserBhv uBhv){
 		if(_bhvSet.contains(uBhv))
 			return ;
 
@@ -38,7 +38,7 @@ public class UserBhvManager {
 		_bhvSet.add(uBhv);
 	}
 	
-	public synchronized void unregisterBhv(UserBhv uBhv){
+	public synchronized void unregisterBhv(BaseUserBhv uBhv){
 		if(!_bhvSet.contains(uBhv))
 			return ;
 

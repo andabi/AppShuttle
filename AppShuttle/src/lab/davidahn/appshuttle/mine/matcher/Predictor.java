@@ -1,18 +1,14 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
-import static lab.davidahn.appshuttle.AppShuttleApplication.recentPredictedBhvSet;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
@@ -36,7 +32,7 @@ public class Predictor {
 			return ;
 //			return Collections.emptyList();
 
-		List<PredictedBhvInfo> predicted = new ArrayList<PredictedBhvInfo>();
+		List<PredictedBhv> predicted = new ArrayList<PredictedBhv>();
 //		PriorityQueue<PredictedBhvInfo> predicted = new PriorityQueue<PredictedBhvInfo>();
 
 		List<TemplateContextMatcher> cxtMatcherList = new ArrayList<TemplateContextMatcher>();
@@ -97,7 +93,7 @@ public class Predictor {
 		
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
-		for(UserBhv uBhv : userBhvManager.getBhvSet()){
+		for(BaseUserBhv uBhv : userBhvManager.getBhvSet()){
 			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 			for(TemplateContextMatcher cxtMatcher : cxtMatcherList){
 				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt, noiseTimeTolerance);
@@ -109,7 +105,7 @@ public class Predictor {
 			if(matchedResultMap.isEmpty()) 
 				continue;
 			double score = computePredictionScore(matchedResultMap);
-			PredictedBhvInfo predictedBhv = new PredictedBhvInfo(currUserCxt.getTimeDate(), 
+			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
 					uBhv, matchedResultMap, score);
@@ -118,14 +114,14 @@ public class Predictor {
 		
 		Collections.sort(predicted);
 
-		AppShuttleApplication.recentPredictedBhvInfoList = predicted;
+		AppShuttleApplication.recentPredictedBhvList = predicted;
 //		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
 		
 //		return res;
 	}
 	
-	public List<PredictedBhvInfo> getRecentPredictedBhvInfo(int topN){
-		List<PredictedBhvInfo> bhvInfoList = AppShuttleApplication.recentPredictedBhvInfoList;
+	public List<PredictedBhv> getRecentPredictedBhv(int topN){
+		List<PredictedBhv> bhvInfoList = AppShuttleApplication.recentPredictedBhvList;
 		
 		if(bhvInfoList == null)
 			return null;
@@ -145,21 +141,25 @@ public class Predictor {
 	}
 	
 
-	public void storeNewPredictedBhv(List<PredictedBhvInfo> predictedBhvInfoList) {
-		Set<UserBhv> lastPredictedBhvSet = recentPredictedBhvSet;
+	public void storeNewPredictedBhv(List<PredictedBhv> predictedBhvInfoList) {
+//		Set<BaseUserBhv> lastPredictedBhvSet = recentPredictedBhvSet;
 		
-		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
 
-		Set<UserBhv> currPredictedBhvSet = new HashSet<UserBhv>();
-		for(PredictedBhvInfo predictedBhvInfo : predictedBhvInfoList) {
-			UserBhv predictedBhv = predictedBhvInfo.getUserBhv();
-			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
+//		Set<BaseUserBhv> currPredictedBhvSet = new HashSet<BaseUserBhv>();
+		for(PredictedBhv predictedBhvInfo : predictedBhvInfoList) {
+//			BaseUserBhv predictedBhv = predictedBhvInfo.getUserBhv();
+//			BaseUserBhv predictedBhv = predictedBhvInfo.getUserBhv();
+//			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
+//				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
+//			}
+			if(AppShuttleApplication.recentPredictedBhvList == null || !AppShuttleApplication.recentPredictedBhvList.contains(predictedBhvInfo)) {
 				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
 			}
-			currPredictedBhvSet.add(predictedBhv);
+//			currPredictedBhvSet.add(predictedBhv);
 		}
 
-		recentPredictedBhvSet = currPredictedBhvSet;
+//		recentPredictedBhvSet = currPredictedBhvSet;
 	}
 }
 

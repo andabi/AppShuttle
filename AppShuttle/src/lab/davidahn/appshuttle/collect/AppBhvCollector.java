@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.collect;
 
-import static lab.davidahn.appshuttle.context.bhv.UserBhv.create;
+import static lab.davidahn.appshuttle.context.bhv.BaseUserBhv.create;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -36,7 +36,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 	private PowerManager _powerManager;
 	private KeyguardManager _keyguardManager;
 
-	private Map<UserBhv, DurationUserBhv.Builder> _durationUserBhvBuilderMap;
+	private Map<BaseUserBhv, DurationUserBhv.Builder> _durationUserBhvBuilderMap;
 
 	private static AppBhvCollector appBhvCollector = new AppBhvCollector();
 
@@ -47,15 +47,15 @@ public class AppBhvCollector extends BaseBhvCollector {
 		_powerManager = (PowerManager) _appShuttleContext.getSystemService(Context.POWER_SERVICE); 
 	    _keyguardManager = (KeyguardManager) _appShuttleContext.getSystemService(Context.KEYGUARD_SERVICE);
 	    
-		_durationUserBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
+		_durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
 	}
 	
 	public static AppBhvCollector getInstance(){
 		return appBhvCollector;
 	}
 	
-	public List<UserBhv> collect() {
-		List<UserBhv> res = new ArrayList<UserBhv>();
+	public List<BaseUserBhv> collect() {
+		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		
 		res.addAll(collectActivityBhv());
 		res.addAll(collectServiceBhv());
@@ -63,8 +63,8 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 	
-	private List<UserBhv> collectActivityBhv() {
-		List<UserBhv> res = new ArrayList<UserBhv>();
+	private List<BaseUserBhv> collectActivityBhv() {
+		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		
 	    if (!_powerManager.isScreenOn()) { //screen off
 	    	res.add(create(BhvType.NONE, "screen.off"));
@@ -81,19 +81,19 @@ public class AppBhvCollector extends BaseBhvCollector {
 	}
 
 	@Override
-	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<UserBhv> userBhvList) {
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<BaseUserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		long adjustment = _preferenceSettings.getLong("service.collection.period", 10000) / 2;
 
 		if(_durationUserBhvBuilderMap.isEmpty()) {
-			for(UserBhv uBhv : userBhvList){
+			for(BaseUserBhv uBhv : userBhvList){
 				_durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 				, new Date(currTime.getTime() + adjustment)
 				, currTimezone
 				, uBhv));
 			}
 		} else {
-			for(UserBhv uBhv : userBhvList){
+			for(BaseUserBhv uBhv : userBhvList){
 				if(_durationUserBhvBuilderMap.containsKey(uBhv)){
 					DurationUserBhv.Builder rfdUCxtBuilder = _durationUserBhvBuilderMap.get(uBhv);
 					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
@@ -104,7 +104,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 					, uBhv));
 				}
 			}
-			for(UserBhv uBhv : new HashSet<UserBhv>((_durationUserBhvBuilderMap.keySet()))){
+			for(BaseUserBhv uBhv : new HashSet<BaseUserBhv>((_durationUserBhvBuilderMap.keySet()))){
 				DurationUserBhv.Builder _durationUserBhvBuilder = _durationUserBhvBuilderMap.get(uBhv);
 				if(currTime.getTime() - _durationUserBhvBuilder.getEndTime().getTime() 
 						> _preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
@@ -121,7 +121,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 
 //		for(UserBhv ongoingBhv : new HashSet<UserBhv>(ongoingBhvBuilderMap.keySet())){
-		for(UserBhv uBhv : _durationUserBhvBuilderMap.keySet()){
+		for(BaseUserBhv uBhv : _durationUserBhvBuilderMap.keySet()){
 			DurationUserBhv.Builder durationUserBhvBuilder = _durationUserBhvBuilderMap.get(uBhv);
 			if(currTimeDate.getTime() - durationUserBhvBuilder.getEndTime().getTime() 
 					> _preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
@@ -130,12 +130,12 @@ public class AppBhvCollector extends BaseBhvCollector {
 			}
 		}
 		
-		_durationUserBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
+		_durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
 		
 		return res;
 	}
 	
-	private DurationUserBhv.Builder createDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, UserBhv bhv) {
+	private DurationUserBhv.Builder createDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, BaseUserBhv bhv) {
 		return new DurationUserBhv.Builder()
 		.setTime(time)
 		.setEndTime(endTime)
@@ -143,8 +143,8 @@ public class AppBhvCollector extends BaseBhvCollector {
 		.setBhv(bhv);
 	}
 	
-	private List<UserBhv> collectServiceBhv() {
-		List<UserBhv> res = new ArrayList<UserBhv>();
+	private List<BaseUserBhv> collectServiceBhv() {
+		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 //		for(String bhvName : applicationManager.getCurrentService()){
 //			uCxt.addUserBhv(new AppUserBhv("service", bhvName));
 //		}

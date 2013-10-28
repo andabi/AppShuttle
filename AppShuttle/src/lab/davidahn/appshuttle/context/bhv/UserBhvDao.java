@@ -26,7 +26,7 @@ public class UserBhvDao {
 		return userBhvDao;
 	}
 
-	public void storeUserBhv(UserBhv uBhv) {
+	public void storeUserBhv(BaseUserBhv uBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		ContentValues row = new ContentValues();
@@ -39,17 +39,17 @@ public class UserBhvDao {
 //		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<UserBhv> retrieveUserBhv() {
+	public List<BaseUserBhv> retrieveUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		Cursor cur = _db.rawQuery("SELECT * FROM list_user_bhv;", null);
-		List<UserBhv> res = new ArrayList<UserBhv>();
+		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
 			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
-			UserBhv uBhv = new UserBhv(bhvType, bhvName);
+			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			uBhv.setMetas(metas);
 			res.add(uBhv);
 		}
@@ -58,7 +58,46 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public void deleteUserBhv(UserBhv uBhv) {
+	public List<BaseUserBhv> retrieveBlockedUserBhv() {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
+		Cursor cur = _db.rawQuery(
+				"SELECT * " +
+				"FROM list_user_bhv" +
+				"WHERE blocked = 1"
+				, null);
+		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
+		while (cur.moveToNext()) {
+			BhvType bhvType= BhvType.valueOf(cur.getString(0));
+			String bhvName= cur.getString(1);
+			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
+			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
+			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			uBhv.setMetas(metas);
+			res.add(uBhv);
+		}
+		cur.close();
+//		Log.i("retrieved userBhv", res.toString());
+		return res;
+	}
+	
+	public void block(UserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE list_user_bhv" +
+				"SET block = 1" +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public void unblock(UserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE " +
+				"SET block = 0" +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public void deleteUserBhv(BaseUserBhv uBhv) {
 		_db.execSQL("" +
 				"DELETE " +
 				"FROM list_user_bhv " +

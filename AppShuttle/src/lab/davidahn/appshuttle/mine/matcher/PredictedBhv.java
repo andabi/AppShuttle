@@ -5,25 +5,52 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public class PredictedBhvInfo implements Comparable<PredictedBhvInfo> {
+public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
+	private final BaseUserBhv _uBhv;
 	private final Date _timeDate;
 	private final TimeZone _timeZone;
 	private final Map<EnvType, UserEnv> _uEnvs;
-	private final UserBhv _uBhv;
 	private final EnumMap<MatcherType, MatchedResult> _matchedResults;
 	private final double _score;
 	
-	public PredictedBhvInfo(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
+	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, BaseUserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
 		_timeDate = time;
 		_timeZone = timeZone;
 		_uEnvs = userEnvs;
 		_uBhv = uBhv;
 		_matchedResults = matchedResults;
 		_score = score;
+	}
+	
+	@Override
+	public BhvType getBhvType() {
+		return _uBhv.getBhvType();
+	}
+	@Override
+	public void setBhvType(BhvType bhvType) {
+		_uBhv.setBhvType(bhvType);
+	}
+	@Override
+	public String getBhvName() {
+		return _uBhv.getBhvName();
+	}
+	@Override
+	public void setBhvName(String bhvName) {
+		_uBhv.setBhvName(bhvName);
+	}
+	@Override
+	public Object getMeta(String key) {
+		return _uBhv.getMeta(key);
+	}
+	@Override
+	public void setMeta(String key, Object val){
+		_uBhv.setMeta(key, val);
 	}
 	
 	public Date getTime() {
@@ -42,7 +69,7 @@ public class PredictedBhvInfo implements Comparable<PredictedBhvInfo> {
 		return _uEnvs.get(envType);
 	}
 	
-	public UserBhv getUserBhv() {
+	public BaseUserBhv getUserBhv() {
 		return _uBhv;
 	}
 
@@ -58,7 +85,17 @@ public class PredictedBhvInfo implements Comparable<PredictedBhvInfo> {
 		return _score;
 	}
 	
-	public int compareTo(PredictedBhvInfo predictedBhv){
+	@Override
+	public boolean equals(Object o){
+		return _uBhv.equals(o);
+	}
+	
+	@Override
+	public int hashCode(){
+		return _uBhv.hashCode();
+	}
+	
+	public int compareTo(PredictedBhv predictedBhv){
 		if(_score < predictedBhv._score) return 1;
 		else if(_score == predictedBhv._score) return 0;
 		else return -1;

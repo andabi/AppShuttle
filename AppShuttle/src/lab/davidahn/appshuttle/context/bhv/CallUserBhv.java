@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle.context.bhv;
 
 
-public class CallUserBhv extends UserBhv {
+public class CallUserBhv extends BaseUserBhv {
 //	private String cachedName;
 	
 	public CallUserBhv(BhvType bhvType, String number/*, String cachedName*/) {

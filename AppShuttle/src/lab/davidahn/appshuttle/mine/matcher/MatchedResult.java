@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
@@ -14,7 +14,7 @@ public class MatchedResult implements Comparable<MatchedResult> {
 	private Date _timeDate;
 	private TimeZone _timeZone;
 	private Map<EnvType, UserEnv> _userEnvs;
-	private UserBhv _uBhv;
+	private BaseUserBhv _uBhv;
 	private double _likelihood;
 	private double _inverseEntropy;
 	private int _numTotalCxt;
@@ -67,7 +67,7 @@ public class MatchedResult implements Comparable<MatchedResult> {
 		_inverseEntropy = inverseEntropy;
 	}
 
-	public UserBhv getUserBhvs() {
+	public BaseUserBhv getUserBhvs() {
 		return _uBhv;
 	}
 	
@@ -75,7 +75,7 @@ public class MatchedResult implements Comparable<MatchedResult> {
 		return _userEnvs.get(envType);
 	}
 
-	public void setUserBhv(UserBhv bhvName) {
+	public void setUserBhv(BaseUserBhv bhvName) {
 		_uBhv = bhvName;
 	}
 

@@ -54,7 +54,7 @@ public class DurationUserBhvDao {
 //			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
 			BhvType bhvType= BhvType.valueOf(cur.getString(4));
 			String bhvName= cur.getString(5);
-			UserBhv uBhv = new UserBhv(bhvType, bhvName);
+			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
 				.setTime(timeDate)
 				.setDuration(duration)
@@ -83,7 +83,7 @@ public class DurationUserBhvDao {
 				"WHERE time < " + timeDate.getTime() +";");
 	}
 	
-	public List<DurationUserBhv> retrieveByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
+	public List<DurationUserBhv> retrieveByBhv(Date beginTime, Date endTime, BaseUserBhv uBhv) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +

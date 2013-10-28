@@ -5,7 +5,7 @@ import lab.davidahn.appshuttle.collect.AppBhvCollector;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-public class AppUserBhv extends UserBhv {
+public class AppUserBhv extends BaseUserBhv {
 	
 	public AppUserBhv(BhvType bhvType, String bhvName) {
 		super(bhvType, bhvName);

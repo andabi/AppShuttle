@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
@@ -15,18 +15,18 @@ public class SnapshotUserCxt {
 	private Date _time;
 	private TimeZone _timeZone;
 	private Map<EnvType, UserEnv> _userEnvs;
-	private List<UserBhv> _userBhvs;
+	private List<BaseUserBhv> _userBhvs;
 
 	public SnapshotUserCxt() {
 		_userEnvs = new HashMap<EnvType, UserEnv>();
-		_userBhvs = new ArrayList<UserBhv>();
+		_userBhvs = new ArrayList<BaseUserBhv>();
 	}
 	
 	public SnapshotUserCxt(Date time, TimeZone timeZone) {
 		_time = time;
 		_timeZone = timeZone;
 		_userEnvs = new HashMap<EnvType, UserEnv>();
-		_userBhvs = new ArrayList<UserBhv>();
+		_userBhvs = new ArrayList<BaseUserBhv>();
 	}
 	
 	public Date getTimeDate() {
@@ -55,13 +55,13 @@ public class SnapshotUserCxt {
 		_userEnvs = userEnvs;
 	}
 	
-	public List<UserBhv> getUserBhvs() {
+	public List<BaseUserBhv> getUserBhvs() {
 		return _userBhvs;
 	}
-	public void addUserBhv(UserBhv userBhv) {
+	public void addUserBhv(BaseUserBhv userBhv) {
 		_userBhvs.add(userBhv);
 	}
-	public void addUserBhvAll(List<UserBhv> userBhvList) {
+	public void addUserBhvAll(List<BaseUserBhv> userBhvList) {
 		_userBhvs.addAll(userBhvList);
 	}
 	

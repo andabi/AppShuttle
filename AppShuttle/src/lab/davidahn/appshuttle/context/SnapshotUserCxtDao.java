@@ -13,7 +13,7 @@ import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 import lab.davidahn.appshuttle.context.env.UserLoc;
@@ -42,7 +42,7 @@ public class SnapshotUserCxtDao {
 	public void storeCxt(SnapshotUserCxt uCxt) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
-		for(UserBhv uBhv : uCxt.getUserBhvs()){
+		for(BaseUserBhv uBhv : uCxt.getUserBhvs()){
 			ContentValues row = new ContentValues();
 			Map<EnvType, UserEnv> uEnvs = uCxt.getUserEnvs();
 			row.put("time", uCxt.getTimeDate().getTime());
@@ -71,7 +71,7 @@ public class SnapshotUserCxtDao {
 			Map<EnvType, UserEnv> uEnvs = gson.fromJson(cur.getString(2), userEnvsType);
 			BhvType bhvType= BhvType.valueOf(cur.getString(3));
 			String bhvName= cur.getString(4);
-			UserBhv uBhv = new UserBhv(bhvType, bhvName);
+			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 
 			if(uCxt == null) {
 				uCxt = new SnapshotUserCxt(time, timezone);

@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.report;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.R;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,7 +32,7 @@ public class ReportingCxtService extends IntentService {
 		Reporter reporter = new Reporter(handler);
 //		reporter.addAttach(contextManager.loadCxtAsCsvFile(getApplicationContext(), "context", sTime, eTime));
 //		reporter.addAttach(contextManager.loadRfdCxtAsCsvFile(getApplicationContext(), "refined_context", sTime, eTime));
-		reporter.addAttach(getDatabasePath(preferenceSettings.getString("database.name", new StringBuilder(getResources().getString(R.string.app_name)).append(".db").toString())));
+		reporter.addAttach(getDatabasePath(preferenceSettings.getString("database.name", "AppShuttle.db")));
 		reporter.report();
 	}
 }

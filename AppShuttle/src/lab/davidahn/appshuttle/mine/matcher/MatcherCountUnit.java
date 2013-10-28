@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 
 public class MatcherCountUnit {
-	private final UserBhv _uBhv;
+	private final BaseUserBhv _uBhv;
 	private final List<DurationUserBhv> _durationUserBhvList;
 	private final Map<String, Object> _properties;
 
@@ -19,7 +19,7 @@ public class MatcherCountUnit {
 		_properties = builder._properties;
 	}
 	
-	public UserBhv getUBhv() {
+	public BaseUserBhv getUBhv() {
 		return _uBhv;
 	}
 
@@ -43,11 +43,11 @@ public class MatcherCountUnit {
 	}
 	
 	public static class Builder {
-		private UserBhv _uBhv = null;
+		private BaseUserBhv _uBhv = null;
 		private List<DurationUserBhv> _durationUserBhvList = new ArrayList<DurationUserBhv>();
 		private Map<String, Object> _properties = new HashMap<String, Object>();
 
-		public Builder(UserBhv uBhv){
+		public Builder(BaseUserBhv uBhv){
 			_uBhv = uBhv;
 		}
 		

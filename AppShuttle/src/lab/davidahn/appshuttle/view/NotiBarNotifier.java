@@ -18,7 +18,7 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 
-public class Notifier {
+public class NotiBarNotifier {
 
 	private static final int UPDATE_NOTI_VIEW = 1;
 	
@@ -27,14 +27,14 @@ public class Notifier {
 
 	private AppShuttleApplication cxt = AppShuttleApplication.getContext();
 	
-	public Notifier(){
+	public NotiBarNotifier(){
 		_notificationManager = (NotificationManager)cxt.getSystemService(Context.NOTIFICATION_SERVICE);
 //		private NotificationManager _notificationManager;
 	}
 	
 	@SuppressLint("NewApi")
-	public void updateNotiView(List<BhvInfoForView> predictedBhvInfoForViewList) {
-		RemoteViews notiView = createNotiRemoteViews(predictedBhvInfoForViewList);
+	public void updateNotiView(List<BhvForView> bhvForViewList) {
+		RemoteViews notiView = createNotiRemoteViews(bhvForViewList);
 
 		Notification notiUpdate = new Notification.Builder(cxt)
 			.setSmallIcon(R.drawable.appshuttle)
@@ -46,7 +46,7 @@ public class Notifier {
 		_notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
 	}
 
-	private RemoteViews createNotiRemoteViews(List<BhvInfoForView> predictedBhvInfoForViewList) {
+	private RemoteViews createNotiRemoteViews(List<BhvForView> bhvForViewList) {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.noti);
 
 		//clean
@@ -54,19 +54,19 @@ public class Notifier {
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 
-		for(BhvInfoForView predictedBhvInfoForView : predictedBhvInfoForViewList) {
+		for(BhvForView bhvForView : bhvForViewList) {
 
-			BhvType bhvType = predictedBhvInfoForView.getPredictedBhvInfo().getUserBhv().getBhvType();
+			BhvType bhvType = bhvForView.getUserBhv().getBhvType();
 			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.noti_element);
 			
-			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(cxt, 0, predictedBhvInfoForView.getLaunchIntent(), 0));
+			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(cxt, 0, bhvForView.getLaunchIntent(), 0));
 
-			BitmapDrawable iconDrawable = (BitmapDrawable)predictedBhvInfoForView.getIcon();
+			BitmapDrawable iconDrawable = (BitmapDrawable)bhvForView.getIcon();
 			notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());
 			
 			if (bhvType == BhvType.CALL){
 //				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
-				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, predictedBhvInfoForView.getBhvNameText());
+				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, bhvForView.getBhvNameText());
 				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, 
 						TypedValue.COMPLEX_UNIT_PX, 
 						cxt.getResources().getDimension(R.dimen.notibar_text_size));
@@ -82,9 +82,9 @@ public class Notifier {
 		int maxNumElem = cxt.getPreferenceSettings().getInt("viewer.noti.max_num_elem", Integer.MAX_VALUE);
 		int NotibarIconAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_icon_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
-		int NotibarPredictedBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_predicted_bhv_area_width) / 
+		int NotibarBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_bhv_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
-		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarPredictedBhvAreaWidth);
+		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarBhvAreaWidth);
 	}
 	
 	public int getNotibarWidth(){

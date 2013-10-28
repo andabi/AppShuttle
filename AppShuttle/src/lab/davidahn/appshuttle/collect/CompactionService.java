@@ -7,11 +7,11 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.mine.matcher.MatchedResultDao;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfoDao;
+import lab.davidahn.appshuttle.mine.matcher.PredictedBhvDao;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.content.Intent;
@@ -63,7 +63,7 @@ public class CompactionService extends IntentService {
 	}
 	
 	private void compactPredictedBhv(Date expirationBoundTimeDate) {
-		PredictedBhvInfoDao predictedBhvDao = PredictedBhvInfoDao.getInstance();
+		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
 		predictedBhvDao.deletePredictedBhvInfo(expirationBoundTimeDate);
 	}
 
@@ -76,7 +76,7 @@ public class CompactionService extends IntentService {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		
-		for(UserBhv uBhv : userBhvManager.getBhvSet()){
+		for(BaseUserBhv uBhv : userBhvManager.getBhvSet()){
 			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTimeDate, _currUserCxt.getTimeDate(), uBhv);
 			if(!durationUserBhvList.isEmpty())
 				continue;

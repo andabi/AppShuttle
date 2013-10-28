@@ -5,9 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class AppShuttleDBHelper extends SQLiteOpenHelper {
-	private static final String DB_NAME = AppShuttleApplication.getContext().getSharedPreferences(
-			"AppShuttle", Context.MODE_PRIVATE).getString("database.name", 
-					new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
+	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferenceSettings().getString("database.name", "AppShuttle.db");
 
 	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
 	public static AppShuttleDBHelper getInstance() {
@@ -15,8 +13,22 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	private AppShuttleDBHelper(Context cxt) {
-		super(cxt, DB_NAME, null, 35);
+		super(cxt, DB_NAME, null, 36);
 	}
+	
+	private static final Patch[] patches = new Patch[]{
+		new Patch() {
+			public void apply(SQLiteDatabase db) {
+				
+			}
+			
+			public void revert(SQLiteDatabase db){
+				
+			}
+		}, new Patch() {
+			
+		}
+	};
 
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE IF NOT EXISTS history_user_env ("
@@ -32,7 +44,7 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE INDEX idx2_history_user_bhv on history_user_bhv (time, bhv_type, bhv_name)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS list_user_bhv ("
-				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, "
+				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER"
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS matched_result ("
@@ -51,6 +63,10 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//		db.execSQL("ALTER TABLE list_user_bhv "
+//				+ "ADD COLUMN blocked INTEGER DEFAULT 0"
+//				);
+		
 //		db.execSQL("CREATE INDEX idx1_history_user_env on history_user_env (time)");
 //		db.execSQL("CREATE INDEX idx2_history_user_env on history_user_env (time, end_time, env_type)");
 		
@@ -66,5 +82,10 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 //		db.execSQL("DROP TABLE IF EXISTS predicted_bhv");
 		// db.execSQL("DROP TABLE IF EXISTS snapshot_context");
 //		onCreate(db);
+	}
+	
+	private static class Patch {
+		public void apply(SQLiteDatabase db) {}
+		public void revert(SQLiteDatabase db) {}
 	}
 }

@@ -1,15 +1,9 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
-import lab.davidahn.appshuttle.mine.matcher.MatcherType;
-import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhvInfo;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -18,27 +12,31 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
-public class BhvInfoForView {
+public class BaseBhvForView implements BhvForView {
 
-	private PredictedBhvInfo _bhvInfo;
-	private Drawable _icon;
-	private String _bhvNameText;
-	private String _viewMsg;
-	private Intent _launchIntent;
+	protected UserBhv _uBhv;
+	protected Drawable _icon;
+	protected String _bhvNameText;
+	protected String _viewMsg;
+	protected Intent _launchIntent;
 
-	public BhvInfoForView(PredictedBhvInfo bhvInfo) {
-		_bhvInfo = bhvInfo;
+	public BaseBhvForView(UserBhv bhvInfo) {
+		_uBhv = bhvInfo;
+	}
+	
+	public UserBhv getUserBhv() {
+		return _uBhv;
 	}
 	
 	public Drawable getIcon() {
 		if(_icon == null) {
 			_icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_launcher);
 			
-			BhvType bhvType = _bhvInfo.getUserBhv().getBhvType();
+			BhvType bhvType = _uBhv.getBhvType();
 			switch(bhvType){
 				case APP:
 					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
-					String packageName = _bhvInfo.getUserBhv().getBhvName();
+					String packageName = _uBhv.getBhvName();
 					try {
 						_icon = (BitmapDrawable) packageManager.getApplicationIcon(packageName);
 					} catch (NameNotFoundException e) {}
@@ -55,18 +53,18 @@ public class BhvInfoForView {
 		if(_bhvNameText == null) {
 			_bhvNameText = "no name";
 			
-			BhvType bhvType = _bhvInfo.getUserBhv().getBhvType();
+			BhvType bhvType = _uBhv.getBhvType();
 			switch(bhvType){
 				case APP:
 					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
-					String packageName = _bhvInfo.getUserBhv().getBhvName();
+					String packageName = _uBhv.getBhvName();
 					try {
 						ApplicationInfo ai = packageManager.getApplicationInfo(packageName, 0);
 						_bhvNameText = (String) (ai != null ? packageManager.getApplicationLabel(ai) : "no name");
 					} catch (NameNotFoundException e) {}
 					break;
 				case CALL:
-					_bhvNameText = (String) _bhvInfo.getUserBhv().getMeta("cachedName");
+					_bhvNameText = (String) (_uBhv).getMeta("cachedName");
 				}
 		}
 		
@@ -74,18 +72,19 @@ public class BhvInfoForView {
 	}
 
 	public String getViewMsg() {
-		if(_viewMsg == null) {
-			List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(_bhvInfo.getMatchedResultMap().keySet());
-			Collections.sort(matcherTypeList, new MatcherTypeComparator());
-			
-			StringBuffer msg = new StringBuffer();
-			for (MatcherType matcherType : matcherTypeList) {
-				msg.append(matcherType.viewMsg).append(", ");
-			}
-			msg.delete(msg.length() - 2, msg.length());
-			_viewMsg = msg.toString();
-		}
-		
+		_viewMsg = "";
+//		if(_viewMsg == null) {
+//			List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(_bhvInfo.getMatchedResultMap().keySet());
+//			Collections.sort(matcherTypeList, new MatcherTypeComparator());
+//			
+//			StringBuffer msg = new StringBuffer();
+//			for (MatcherType matcherType : matcherTypeList) {
+//				msg.append(matcherType.viewMsg).append(", ");
+//			}
+//			msg.delete(msg.length() - 2, msg.length());
+//			_viewMsg = msg.toString();
+//		}
+//		
 		return _viewMsg;
 	}
 	
@@ -93,8 +92,8 @@ public class BhvInfoForView {
 		if(_launchIntent == null) {
 			_launchIntent = new Intent();
 			
-			BhvType bhvType = _bhvInfo.getUserBhv().getBhvType();
-			String bhvName = _bhvInfo.getUserBhv().getBhvName();
+			BhvType bhvType = _uBhv.getBhvType();
+			String bhvName = _uBhv.getBhvName();
 			switch(bhvType){
 				case APP:
 					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
@@ -108,18 +107,25 @@ public class BhvInfoForView {
 		return _launchIntent;
 	}
 	
-	public PredictedBhvInfo getPredictedBhvInfo() {
-		return _bhvInfo;
-	}
-	
-	public static List<BhvInfoForView> convert(List<PredictedBhvInfo> predictedBhvInfoList) {
-		if(predictedBhvInfoList == null)
-			return Collections.emptyList();
-		
-		List<BhvInfoForView> res = new ArrayList<BhvInfoForView>();
-		for(PredictedBhvInfo info : predictedBhvInfoList){
-			res.add(new BhvInfoForView(info));
-		}
-		return res;
-	}
+//	public static List<? extends BhvForView> convert(List<? extends UserBhv> bhvInfoList) {
+//		if(bhvInfoList == null)
+//			return Collections.emptyList();
+//		
+//		List<BhvForView> res = new ArrayList<BhvForView>();
+//		for(UserBhv info : bhvInfoList){
+//			res.add(new BaseBhvForView(info));
+//		}
+//		return res;
+//	}
+//	
+//	public static List<BaseBhvInfoForView> convert(List<UserBhv> bhvInfoList) {
+//		if(bhvInfoList == null)
+//			return Collections.emptyList();
+//		
+//		List<BaseBhvInfoForView> res = new ArrayList<BaseBhvInfoForView>();
+//		for(PredictedBhvInfo info : bhvInfoList){
+//			res.add(new BaseBhvInfoForView(info));
+//		}
+//		return res;
+//	}
 }

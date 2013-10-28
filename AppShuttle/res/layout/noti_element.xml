@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/noti_elem"
-    android:layout_width="@dimen/notibar_predicted_bhv_area_width"
+    android:layout_width="@dimen/notibar_bhv_area_width"
     android:layout_height="match_parent"
     android:layout_weight="0"
     android:clickable="true"

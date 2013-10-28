@@ -11,7 +11,8 @@ public class AppShuttleSettings {
 		SharedPreferences.Editor editor = preferenceSettings.edit();
 		
 		//general
-		editor.putString("database.name", new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
+//		editor.putString("database.name", new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
+		editor.putString("database.name", "AppShuttle.db");
 
 		//service
 		editor.putBoolean("service.collection.enabled", true);
@@ -36,6 +37,8 @@ public class AppShuttleSettings {
 		editor.putLong("collection.call.initial_history.period", 6 * AlarmManager.INTERVAL_DAY);
 		
 		editor.putBoolean("collection.store_cxt.enabled", false);
+		
+		//TODO history enable setting
 		
 		//context
 //		editor.putInt("context.bhv.duration_user_bhv.cache_size", 100);
