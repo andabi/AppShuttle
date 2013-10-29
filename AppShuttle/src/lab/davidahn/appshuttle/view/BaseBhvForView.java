@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle.view;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
+import lab.davidahn.appshuttle.context.bhv.CallUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -43,6 +44,10 @@ public class BaseBhvForView implements BhvForView {
 					break;
 				case CALL:
 					_icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+				case NONE:
+					;
+				default:
+					;
 			}
 		}
 		
@@ -64,7 +69,11 @@ public class BaseBhvForView implements BhvForView {
 					} catch (NameNotFoundException e) {}
 					break;
 				case CALL:
-					_bhvNameText = (String) (_uBhv).getMeta("cachedName");
+					_bhvNameText = (String) ((CallUserBhv)(_uBhv)).getMeta("cachedName");
+				case NONE:
+					;
+				default:
+					;
 				}
 		}
 		
@@ -101,6 +110,10 @@ public class BaseBhvForView implements BhvForView {
 					break;
 				case CALL:
 					_launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+				case NONE:
+					;
+				default:
+					;
 			}
 		}
 		

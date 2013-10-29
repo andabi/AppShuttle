@@ -62,7 +62,7 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public List<UserBhv> retrieveBlockedUserBhv() {
+	public List<BlockedUserBhv> retrieveBlockedUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 //		int isBlockedInt = (isBlocked) ? 1 : 0;
@@ -71,7 +71,7 @@ public class UserBhvDao {
 				"FROM list_user_bhv " +
 				"WHERE blocked = 1"
 				, null);
-		List<UserBhv> res = new ArrayList<UserBhv>();
+		List<BlockedUserBhv> res = new ArrayList<BlockedUserBhv>();
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);

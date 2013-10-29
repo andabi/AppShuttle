@@ -116,8 +116,6 @@ public class Predictor {
 
 		AppShuttleApplication.recentPredictedBhvList = predicted;
 //		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
-		
-//		return res;
 	}
 	
 	public List<PredictedBhv> getRecentPredictedBhv(int topN){

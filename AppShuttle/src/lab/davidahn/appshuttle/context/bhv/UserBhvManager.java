@@ -13,7 +13,7 @@ import java.util.Set;
 public class UserBhvManager {
 	//usual = unblocked && unfavorated
 	private Set<UserBhv> _usualBhvSet;
-	private Set<UserBhv> _blockedBhvSet;
+	private Set<BlockedUserBhv> _blockedBhvSet;
 	private UserBhvDao _userBhvDao;
 
 	private static UserBhvManager userBhvManager = new UserBhvManager();
@@ -23,7 +23,7 @@ public class UserBhvManager {
 		_usualBhvSet = new HashSet<UserBhv>();
 		_usualBhvSet.addAll(_userBhvDao.retrieveUsualUserBhv());
 
-		_blockedBhvSet = new HashSet<UserBhv>();
+		_blockedBhvSet = new HashSet<BlockedUserBhv>();
 		_blockedBhvSet.addAll(_userBhvDao.retrieveBlockedUserBhv());
 	}
 	public synchronized static UserBhvManager getInstance() {
@@ -52,8 +52,8 @@ public class UserBhvManager {
 		_usualBhvSet.remove(uBhv);
 	}
 	
-	public Set<UserBhv> getBlockedBhvSet(){
-		return Collections.unmodifiableSet(new HashSet<UserBhv>(_blockedBhvSet));
+	public Set<BlockedUserBhv> getBlockedBhvSet(){
+		return Collections.unmodifiableSet(new HashSet<BlockedUserBhv>(_blockedBhvSet));
 	}
 	
 	public synchronized void block(UserBhv uBhv){

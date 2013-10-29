@@ -2,14 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/favorates"
-        android:icon="@drawable/ic_menu_star"
+        android:id="@+id/unblock"
+        android:icon="@drawable/ic_menu_emoticons"
         android:showAsAction="always|withText"
-        android:title="@string/favorates"/>
-    <item
-        android:id="@+id/blocked"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:showAsAction="always|withText"
-        android:title="@string/blocked"/>
+        android:title="@string/block"/>
 
 </menu>

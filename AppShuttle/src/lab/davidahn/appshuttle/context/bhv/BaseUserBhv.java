@@ -78,7 +78,7 @@ public class BaseUserBhv implements UserBhv {
 		else 
 			return false;
 	}
-	
+
 	@Override
 	public int hashCode(){
 		return _bhvType.hashCode() ^ _bhvName.hashCode();

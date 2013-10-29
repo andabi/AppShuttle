@@ -1,10 +1,11 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.BlockedUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
@@ -50,17 +51,14 @@ public class BlockedBhvFragment extends ListFragment {
 		setEmptyText("No results");
 
 		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-		List<UserBhv> blockedBhvInfoList = new ArrayList<UserBhv>(uBhvManager.getBlockedBhvSet());
+		List<BlockedUserBhv> blockedBhvInfoList = new ArrayList<BlockedUserBhv>(uBhvManager.getBlockedBhvSet());
+		Collections.sort(blockedBhvInfoList);
 		blockedBhvInfoForViewList = BlockedBhvForView.convert(blockedBhvInfoList);
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
 
-//		if (blockedBhvInfoList == null) {
-//			setListShown(false);
-//		} else {
 		setListShown(true);
-//		}
 		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 	        @Override

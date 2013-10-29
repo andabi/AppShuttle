@@ -2,11 +2,11 @@ package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.context.bhv.BlockedUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import android.text.format.DateUtils;
 
 public class BlockedBhvForView extends BaseBhvForView {
 
@@ -17,24 +17,26 @@ public class BlockedBhvForView extends BaseBhvForView {
 	@Override
 	public String getViewMsg() {
 		if(_viewMsg == null) {
-			Date d = new Date(((BlockedUserBhv)_uBhv).getBlockedTime());
-
+			long blocked_time = ((BlockedUserBhv)_uBhv).getBlockedTime();
 			StringBuffer msg = new StringBuffer();
-			msg.append(d.toString());
-			
+			msg.append(DateUtils.getRelativeTimeSpanString(blocked_time, 
+					System.currentTimeMillis(), 
+					DateUtils.MINUTE_IN_MILLIS, 
+					0
+					));
 			_viewMsg = msg.toString();
 		}
 		
 		return _viewMsg;
 	}
 	
-	public static List<BhvForView> convert(List<UserBhv> blockedBhvInfoList) {
+	public static List<BhvForView> convert(List<BlockedUserBhv> blockedBhvInfoList) {
 		if(blockedBhvInfoList == null)
 			return Collections.emptyList();
 		
 		List<BhvForView> res = new ArrayList<BhvForView>();
-		for(UserBhv info : blockedBhvInfoList){
-			res.add(new BlockedBhvForView(info));
+		for(BlockedUserBhv blockedUBhv : blockedBhvInfoList){
+			res.add(new BlockedBhvForView(blockedUBhv));
 		}
 		return res;
 	}

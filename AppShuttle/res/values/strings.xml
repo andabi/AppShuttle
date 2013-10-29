@@ -13,6 +13,8 @@
     <string name="predict_time_msg">Time</string>
     <string name="predict_freq_msg">Frequency</string>
     <string name="favorates">favorates</string>
-    <string name="blocked">blocked</string>
-
+    <string name="unfavorates">unfavorates</string>
+    <string name="block">block</string>
+    <string name="unblock">unblock</string>
+    
 </resources>

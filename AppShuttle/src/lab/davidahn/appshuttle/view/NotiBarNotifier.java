@@ -41,13 +41,13 @@ public class NotiBarNotifier {
 			.setContent(notiView)
 			.setOngoing(true)
 			.setWhen(AppShuttleApplication.launchTime)
-			.setPriority(Notification.PRIORITY_MAX)
+			.setPriority(Notification.PRIORITY_HIGH)
 			.build();
 		_notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
 	}
 
 	private RemoteViews createNotiRemoteViews(List<BhvForView> bhvForViewList) {
-		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.noti);
+		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 
 		//clean
 		notiRemoteView.removeAllViews(R.id.noti_elem_container);
@@ -57,7 +57,7 @@ public class NotiBarNotifier {
 		for(BhvForView bhvForView : bhvForViewList) {
 
 			BhvType bhvType = bhvForView.getUserBhv().getBhvType();
-			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.noti_element);
+			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_element);
 			
 			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(cxt, 0, bhvForView.getLaunchIntent(), 0));
 
