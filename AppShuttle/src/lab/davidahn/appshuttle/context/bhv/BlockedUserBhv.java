@@ -30,14 +30,14 @@ public class BlockedUserBhv implements UserBhv, Comparable<BlockedUserBhv> {
 	public void setBhvName(String bhvName) {
 		_uBhv.setBhvName(bhvName);
 	}
-//	@Override
-//	public Object getMeta(String key) {
-//		return _uBhv.getMeta(key);
-//	}
-//	@Override
-//	public void setMeta(String key, Object val){
-//		_uBhv.setMeta(key, val);
-//	}
+	@Override
+	public Object getMeta(String key) {
+		return _uBhv.getMeta(key);
+	}
+	@Override
+	public void setMeta(String key, Object val){
+		_uBhv.setMeta(key, val);
+	}
 	
 	public long getBlockedTime() {
 		return _blockedTime;
