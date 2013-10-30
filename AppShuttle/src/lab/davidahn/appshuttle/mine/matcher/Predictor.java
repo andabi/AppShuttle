@@ -93,7 +93,7 @@ public class Predictor {
 		
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
-		for(UserBhv uBhv : userBhvManager.getUsualBhvSet()){
+		for(UserBhv uBhv : userBhvManager.getTotalBhvSet()){
 			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
 			for(TemplateContextMatcher cxtMatcher : cxtMatcherList){
 				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt, noiseTimeTolerance);

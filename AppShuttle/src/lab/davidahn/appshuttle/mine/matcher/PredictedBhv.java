@@ -43,14 +43,14 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	public void setBhvName(String bhvName) {
 		_uBhv.setBhvName(bhvName);
 	}
-//	@Override
-//	public Object getMeta(String key) {
-//		return _uBhv.getMeta(key);
-//	}
-//	@Override
-//	public void setMeta(String key, Object val){
-//		_uBhv.setMeta(key, val);
-//	}
+	@Override
+	public Object getMeta(String key) {
+		return _uBhv.getMeta(key);
+	}
+	@Override
+	public void setMeta(String key, Object val){
+		_uBhv.setMeta(key, val);
+	}
 	
 	public Date getTime() {
 		return _timeDate;

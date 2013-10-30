@@ -1,13 +1,13 @@
 package lab.davidahn.appshuttle.context.bhv;
 
 
-public class BlockedUserBhv implements UserBhv, Comparable<BlockedUserBhv> {
+public class FavoratesUserBhv implements UserBhv, Comparable<FavoratesUserBhv> {
 	private UserBhv _uBhv;
-	private long _blockedTime;
+	private long _setTime;
 	
-	public BlockedUserBhv(UserBhv uBhv, long blockedTime){
+	public FavoratesUserBhv(UserBhv uBhv, long setTime){
 		_uBhv = uBhv;
-		_blockedTime = blockedTime;
+		_setTime = setTime;
 	}
 	
 	public UserBhv getUserBhv() {
@@ -39,8 +39,8 @@ public class BlockedUserBhv implements UserBhv, Comparable<BlockedUserBhv> {
 		_uBhv.setMeta(key, val);
 	}
 	
-	public long getBlockedTime() {
-		return _blockedTime;
+	public long getSetTime() {
+		return _setTime;
 	}
 	
 	@Override
@@ -60,10 +60,10 @@ public class BlockedUserBhv implements UserBhv, Comparable<BlockedUserBhv> {
 	}
 	
 	@Override
-	public int compareTo(BlockedUserBhv uBhv) {
-		if(_blockedTime < uBhv._blockedTime)
+	public int compareTo(FavoratesUserBhv uBhv) {
+		if(_setTime > uBhv._setTime)
 			return 1;
-		else if(_blockedTime == uBhv._blockedTime)
+		else if(_setTime == uBhv._setTime)
 			return 0;
 		else
 			return -1;

@@ -39,22 +39,23 @@ public class UserBhvDao {
 //		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<UserBhv> retrieveUsualUserBhv() {
+	public List<BaseUserBhv> retrieveOrdinaryUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
 				"FROM list_user_bhv " +
-				"WHERE blocked = 0"
+				"WHERE blocked = 0 " +
+					"AND favorates = 0"
 				, null);
-		List<UserBhv> res = new ArrayList<UserBhv>();
+		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
 			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
-			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-			((BaseUserBhv)uBhv).setMetas(metas);
+			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			uBhv.setMetas(metas);
 			res.add(uBhv);
 		}
 		cur.close();
@@ -89,18 +90,60 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public void block(UserBhv uBhv) {
+	public void block(BlockedUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
-				"SET blocked = 1, blocked_time = " + ((BlockedUserBhv)uBhv).getBlockedTime() + " " +
+				"SET blocked = 1, blocked_time = " + uBhv.getBlockedTime() + " " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void unblock(UserBhv uBhv) {
+	public void unblock(BlockedUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET blocked = 0 " +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public List<FavoratesUserBhv> retrieveFavoratesUserBhv() {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
+		Cursor cur = _db.rawQuery(
+				"SELECT * " +
+				"FROM list_user_bhv " +
+				"WHERE favorates = 1"
+				, null);
+		List<FavoratesUserBhv> res = new ArrayList<FavoratesUserBhv>();
+		while (cur.moveToNext()) {
+			BhvType bhvType= BhvType.valueOf(cur.getString(0));
+			String bhvName= cur.getString(1);
+			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
+			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
+			long setTime = cur.getLong(6);
+			
+			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			((BaseUserBhv)uBhv).setMetas(metas);
+			FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, setTime);
+			res.add(favoratesUserBhv);
+		}
+		cur.close();
+//		Log.i("retrieved userBhv", res.toString());
+		return res;
+	}
+	
+	public void favorates(FavoratesUserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE list_user_bhv " +
+				"SET favorates = 1, favorates_time = " + uBhv.getSetTime() + " " +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public void unfavorates(FavoratesUserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE list_user_bhv " +
+				"SET favorates = 0 " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}

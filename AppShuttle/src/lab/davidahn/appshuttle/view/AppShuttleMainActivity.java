@@ -51,9 +51,9 @@ public class AppShuttleMainActivity extends Activity {
 		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_emoticons),
-				PredictedFragment.class, bundle);
+				OrdinaryBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_star),
-				FavorateBhvFragment.class, null);
+				FavoratesBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(android.R.drawable.ic_menu_delete),
 				BlockedBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),

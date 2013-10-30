@@ -1,11 +1,11 @@
 package lab.davidahn.appshuttle.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.context.bhv.FavoratesUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
-import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -23,12 +23,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class PredictedFragment extends ListFragment {
-	private PredictedBhvAdapter adapter;
+public class FavoratesBhvFragment extends ListFragment {
+	private FavoratesBhvInfoAdapter adapter;
 	private ActionMode actionMode;
-	private int actionModePosition;
-	private List<BhvForView> predictedBhvForViewList;
+	private List<BhvForView> favoratesBhvInfoForViewList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,28 +47,24 @@ public class PredictedFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText("No results");
+		setEmptyText(getResources().getString(R.string.favorates_fragment_empty_msg));
 
-		Predictor predictor = Predictor.getInstance();
-		List<PredictedBhv> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE);
-		predictedBhvForViewList = PredictedBhvForView.convert(predictedBhvList);
+		UserBhvManager uBhvManager = UserBhvManager.getInstance();
+		List<FavoratesUserBhv> favoratesBhvInfoList = new ArrayList<FavoratesUserBhv>(uBhvManager.getFavoratesBhvSet());
+		favoratesBhvInfoForViewList = FavoratesBhvForView.convert(favoratesBhvInfoList);
 		
-		adapter = new PredictedBhvAdapter();
+		adapter = new FavoratesBhvInfoAdapter();
 		setListAdapter(adapter);
 
-		if (predictedBhvList == null) {
-			setListShown(false);
-		} else {
-			setListShown(true);
-		}
+		setListShown(true);
 		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 	        @Override
 	        public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
 	    		if(actionMode == null) {
-	    			actionModePosition = position;
 	    			actionMode = getActivity().startActionMode(actionCallback);
-//	    			actionMode.setTitle("")
+	    			actionMode.setTag(position);
+//	    			actionMode.setTitle();
 	    		}
 	            return true;
 	        }
@@ -90,26 +86,26 @@ public class PredictedFragment extends ListFragment {
 		super.onDestroy();
 	}
 
-	public class PredictedBhvAdapter extends ArrayAdapter<BhvForView> {
+	public class FavoratesBhvInfoAdapter extends ArrayAdapter<BhvForView> {
 
-		public PredictedBhvAdapter() {
-			super(getActivity(), R.layout.listview_item, predictedBhvForViewList);
+		public FavoratesBhvInfoAdapter() {
+			super(getActivity(), R.layout.listview_item, favoratesBhvInfoForViewList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BhvForView bhvForView = predictedBhvForViewList.get(position);
+			BhvForView bhvInfoForView = favoratesBhvInfoForViewList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
-			iconView.setImageDrawable(bhvForView.getIcon());
+			iconView.setImageDrawable(bhvInfoForView.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
-			firstLineView.setText(bhvForView.getBhvNameText());
+			firstLineView.setText(bhvInfoForView.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
-			secondLineView.setText(bhvForView.getViewMsg());
+			secondLineView.setText(bhvInfoForView.getViewMsg());
 
 			return itemView;
 		}
@@ -120,7 +116,7 @@ public class PredictedFragment extends ListFragment {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.predicted_bhv_action_mode, menu);
+			inflater.inflate(R.menu.favorates_bhv_action_mode, menu);
 			return true;
 		}
 		
@@ -136,17 +132,29 @@ public class PredictedFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			if(predictedBhvForViewList.size() < actionModePosition + 1)
-				return false;
+			int position = (Integer)mode.getTag();
 
+			if(favoratesBhvInfoForViewList.size() < position + 1)
+				return false;
+			
+			String actionMsg = "";
 			UserBhvManager uBhvManager = UserBhvManager.getInstance();
-			uBhvManager.block((predictedBhvForViewList.get(actionModePosition).getUserBhv()));
+
+			switch(item.getItemId()) {
+			case R.id.unfavorates:
+				uBhvManager.unfavorates((FavoratesUserBhv)(favoratesBhvInfoForViewList.get(position).getUserBhv()));
+				actionMsg = getResources().getString(R.string.unfavorates);
+				break;
+			default:
+				;
+			}
 			
 			getActivity().startService(new Intent(getActivity(), UpdateService.class));
+			Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT).show();
 			
 			if(actionMode != null)
 				actionMode.finish();
-
+			
 			return true;
 		}
 	};

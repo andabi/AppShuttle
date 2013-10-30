@@ -3,14 +3,17 @@ package lab.davidahn.appshuttle.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.mine.matcher.MatcherType;
 import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
 import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
 
-public class PredictedBhvForView extends BaseBhvForView {
+public class OrdinaryBhvForView extends BaseBhvForView {
 
-	public PredictedBhvForView(PredictedBhv bhvInfo) {
+	public OrdinaryBhvForView(PredictedBhv bhvInfo) {
 		super(bhvInfo);
 	}
 	
@@ -30,13 +33,15 @@ public class PredictedBhvForView extends BaseBhvForView {
 		return _viewMsg;
 	}
 	
-	public static List<BhvForView> convert(List<PredictedBhv> predictedBhvInfoList) {
+	public static List<BhvForView> extractViewList(List<PredictedBhv> predictedBhvInfoList) {
 		if(predictedBhvInfoList == null)
 			return Collections.emptyList();
 		
 		List<BhvForView> res = new ArrayList<BhvForView>();
-		for(PredictedBhv info : predictedBhvInfoList){
-			res.add(new PredictedBhvForView(info));
+		Set<BaseUserBhv> OrdinaryUserBhvSet = UserBhvManager.getInstance().getOrdinaryBhvSet();
+		for(PredictedBhv predictedBhv : predictedBhvInfoList){
+			if(OrdinaryUserBhvSet.contains(predictedBhv))
+				res.add(new OrdinaryBhvForView(predictedBhv));
 		}
 		return res;
 	}

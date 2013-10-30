@@ -3,7 +3,6 @@ package lab.davidahn.appshuttle.view;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
-import lab.davidahn.appshuttle.context.bhv.CallUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -69,9 +68,10 @@ public class BaseBhvForView implements BhvForView {
 					} catch (NameNotFoundException e) {}
 					break;
 				case CALL:
-					_bhvNameText = (String) ((CallUserBhv)(_uBhv)).getMeta("cachedName");
+					_bhvNameText = (String) (_uBhv).getMeta("cachedName");
+					break;
 				case NONE:
-					;
+					break;
 				default:
 					;
 				}
@@ -110,8 +110,9 @@ public class BaseBhvForView implements BhvForView {
 					break;
 				case CALL:
 					_launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+					break;
 				case NONE:
-					;
+					break;
 				default:
 					;
 			}
