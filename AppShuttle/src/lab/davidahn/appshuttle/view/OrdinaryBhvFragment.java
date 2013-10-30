@@ -3,8 +3,9 @@ package lab.davidahn.appshuttle.view;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.context.bhv.OrdinaryUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
+import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
@@ -23,12 +24,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class PredictedFragment extends ListFragment {
+public class OrdinaryBhvFragment extends ListFragment {
 	private PredictedBhvAdapter adapter;
 	private ActionMode actionMode;
-	private int actionModePosition;
-	private List<BhvForView> predictedBhvForViewList;
+	private List<OrdinaryUserBhv> predictedOrdinaryBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,11 @@ public class PredictedFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText("No results");
+		setEmptyText(getResources().getString(R.string.predicted_fragment_empty_msg));
 
 		Predictor predictor = Predictor.getInstance();
-		List<PredictedBhv> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE);
-		predictedBhvForViewList = PredictedBhvForView.convert(predictedBhvList);
+		List<PredictionInfo> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE);
+		predictedOrdinaryBhvList = OrdinaryUserBhv.extractViewList(predictedBhvList);
 		
 		adapter = new PredictedBhvAdapter();
 		setListAdapter(adapter);
@@ -66,8 +67,8 @@ public class PredictedFragment extends ListFragment {
 	        @Override
 	        public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
 	    		if(actionMode == null) {
-	    			actionModePosition = position;
 	    			actionMode = getActivity().startActionMode(actionCallback);
+	    			actionMode.setTag(position);
 //	    			actionMode.setTitle("")
 	    		}
 	            return true;
@@ -90,26 +91,26 @@ public class PredictedFragment extends ListFragment {
 		super.onDestroy();
 	}
 
-	public class PredictedBhvAdapter extends ArrayAdapter<BhvForView> {
+	public class PredictedBhvAdapter extends ArrayAdapter<OrdinaryUserBhv> {
 
 		public PredictedBhvAdapter() {
-			super(getActivity(), R.layout.listview_item, predictedBhvForViewList);
+			super(getActivity(), R.layout.listview_item, predictedOrdinaryBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BhvForView bhvForView = predictedBhvForViewList.get(position);
+			OrdinaryUserBhv ordinaryBhv = predictedOrdinaryBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
-			iconView.setImageDrawable(bhvForView.getIcon());
+			iconView.setImageDrawable(ordinaryBhv.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
-			firstLineView.setText(bhvForView.getBhvNameText());
+			firstLineView.setText(ordinaryBhv.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
-			secondLineView.setText(bhvForView.getViewMsg());
+			secondLineView.setText(ordinaryBhv.getViewMsg());
 
 			return itemView;
 		}
@@ -136,17 +137,34 @@ public class PredictedFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			if(predictedBhvForViewList.size() < actionModePosition + 1)
+			int position = (Integer)actionMode.getTag();
+
+			if(predictedOrdinaryBhvList.size() < position + 1)
 				return false;
 
 			UserBhvManager uBhvManager = UserBhvManager.getInstance();
-			uBhvManager.block((predictedBhvForViewList.get(actionModePosition).getUserBhv()));
+			String actionMsg = "";
 			
+			switch(item.getItemId()) {
+			case R.id.favorate:	
+				uBhvManager.favorates((OrdinaryUserBhv)(predictedOrdinaryBhvList.get(position)));
+				actionMsg = getResources().getString(R.string.favorates);
+				break;
+			case R.id.block:
+				uBhvManager.block((OrdinaryUserBhv)(predictedOrdinaryBhvList.get(position)));
+				actionMsg = getResources().getString(R.string.block);
+				break;
+			default:
+				;
+			}
+
 			getActivity().startService(new Intent(getActivity(), UpdateService.class));
-			
+
+			Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT).show();
+
 			if(actionMode != null)
 				actionMode.finish();
-
+			
 			return true;
 		}
 	};

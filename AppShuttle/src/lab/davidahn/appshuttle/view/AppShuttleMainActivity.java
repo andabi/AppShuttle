@@ -2,6 +2,7 @@ package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.R;
 import android.app.ActionBar;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import com.bugsense.trace.BugSenseHandler;
+
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
@@ -31,7 +34,8 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		BugSenseHandler.initAndStartSession(this, "a3573081");
+		if(!AppShuttleApplication.getContext().getPreferenceSettings().getBoolean("mode.debug", false))
+			BugSenseHandler.initAndStartSession(this, "a3573081");
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
@@ -51,9 +55,9 @@ public class AppShuttleMainActivity extends Activity {
 		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_emoticons),
-				PredictedFragment.class, bundle);
+				OrdinaryBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_star),
-				FavorateBhvFragment.class, null);
+				FavoratesBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(android.R.drawable.ic_menu_delete),
 				BlockedBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),

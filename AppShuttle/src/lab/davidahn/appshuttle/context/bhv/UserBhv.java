@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.context.bhv;
 
-
 public interface UserBhv {
 	public BhvType getBhvType();
 	public void setBhvType(BhvType bhvType);

@@ -28,7 +28,7 @@ public class UnregisterBhvService extends IntentService {
 		super.onDestroy();
 	}
 
-	private void unregisterBhv(BaseUserBhv uBhv) {
+	private void unregisterBhv(UserBhv uBhv) {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		userBhvManager.unregisterBhv(uBhv);
 	}

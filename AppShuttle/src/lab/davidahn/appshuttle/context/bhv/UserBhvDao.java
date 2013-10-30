@@ -26,36 +26,39 @@ public class UserBhvDao {
 		return userBhvDao;
 	}
 
-	public void storeUserBhv(UserBhv uBhv) {
+	public void storeUserBhv(OrdinaryUserBhv uBhv) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		ContentValues row = new ContentValues();
 		row.put("bhv_type", uBhv.getBhvType().toString());
 		row.put("bhv_name", uBhv.getBhvName());
-		row.put("metas", gson.toJson(((BaseUserBhv)uBhv).getMetas()));
+		row.put("metas", gson.toJson(((BaseUserBhv)uBhv.getUserBhv()).getMetas()));
 //		db.insert("user_bhv", null, row);
 		_db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 //		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<UserBhv> retrieveUsualUserBhv() {
+	public List<OrdinaryUserBhv> retrieveOrdinaryUserBhv() {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
 				"FROM list_user_bhv " +
-				"WHERE blocked = 0"
+				"WHERE blocked = 0 " +
+					"AND favorates = 0"
 				, null);
-		List<UserBhv> res = new ArrayList<UserBhv>();
+		List<OrdinaryUserBhv> res = new ArrayList<OrdinaryUserBhv>();
 		while (cur.moveToNext()) {
 			BhvType bhvType= BhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
 			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
-			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-			((BaseUserBhv)uBhv).setMetas(metas);
-			res.add(uBhv);
+
+			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			uBhv.setMetas(metas);
+			OrdinaryUserBhv ordinaryUBhv = new OrdinaryUserBhv(uBhv);
+			res.add(ordinaryUBhv);
 		}
 		cur.close();
 //		Log.i("retrieved userBhv", res.toString());
@@ -79,8 +82,8 @@ public class UserBhvDao {
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
 			long blocked_time = cur.getLong(4);
 			
-			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-			((BaseUserBhv)uBhv).setMetas(metas);
+			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			uBhv.setMetas(metas);
 			BlockedUserBhv blockedUBhv = new BlockedUserBhv(uBhv, blocked_time);
 			res.add(blockedUBhv);
 		}
@@ -89,18 +92,60 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public void block(UserBhv uBhv) {
+	public void block(BlockedUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
-				"SET blocked = 1, blocked_time = " + ((BlockedUserBhv)uBhv).getBlockedTime() + " " +
+				"SET blocked = 1, blocked_time = " + uBhv.getBlockedTime() + " " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void unblock(UserBhv uBhv) {
+	public void unblock(BlockedUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET blocked = 0 " +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public List<FavoratesUserBhv> retrieveFavoratesUserBhv() {
+		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+
+		Cursor cur = _db.rawQuery(
+				"SELECT * " +
+				"FROM list_user_bhv " +
+				"WHERE favorates = 1"
+				, null);
+		List<FavoratesUserBhv> res = new ArrayList<FavoratesUserBhv>();
+		while (cur.moveToNext()) {
+			BhvType bhvType= BhvType.valueOf(cur.getString(0));
+			String bhvName= cur.getString(1);
+			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
+			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
+			long setTime = cur.getLong(6);
+			
+			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			((BaseUserBhv)uBhv).setMetas(metas);
+			FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, setTime);
+			res.add(favoratesUserBhv);
+		}
+		cur.close();
+//		Log.i("retrieved userBhv", res.toString());
+		return res;
+	}
+	
+	public void favorates(FavoratesUserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE list_user_bhv " +
+				"SET favorates = 1, favorates_time = " + uBhv.getSetTime() + " " +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public void unfavorates(FavoratesUserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE list_user_bhv " +
+				"SET favorates = 0 " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}

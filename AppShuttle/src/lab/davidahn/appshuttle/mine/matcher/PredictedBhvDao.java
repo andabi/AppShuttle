@@ -22,7 +22,7 @@ public class PredictedBhvDao {
 		return predictedBhvInfoDao;
 	}
 
-	public void storePredictedBhv(PredictedBhv predictedBhvInfo) {
+	public void storePredictedBhv(PredictionInfo predictedBhvInfo) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();

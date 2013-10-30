@@ -1,7 +1,16 @@
 package lab.davidahn.appshuttle.context.bhv;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.mine.matcher.MatcherType;
+import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
+import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
+import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import lab.davidahn.appshuttle.view.Viewable;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -10,21 +19,18 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.format.DateUtils;
 
 
-public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUserBhv> {
+public class OrdinaryUserBhv implements UserBhv, Viewable {
 	private UserBhv _uBhv;
-	private long _blockedTime;
 	
 	protected Drawable _icon;
 	protected String _bhvNameText;
 	protected String _viewMsg;
 	protected Intent _launchIntent;
 	
-	public BlockedUserBhv(UserBhv uBhv, long blockedTime){
+	public OrdinaryUserBhv(UserBhv uBhv){
 		_uBhv = uBhv;
-		_blockedTime = blockedTime;
 	}
 	
 	public UserBhv getUserBhv() {
@@ -55,11 +61,7 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 	public void setMeta(String key, Object val){
 		_uBhv.setMeta(key, val);
 	}
-	
-	public long getBlockedTime() {
-		return _blockedTime;
-	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if ((o instanceof UserBhv)
@@ -76,16 +78,6 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 		return _uBhv.hashCode();
 	}
 	
-	@Override
-	public int compareTo(BlockedUserBhv uBhv) {
-		if(_blockedTime < uBhv._blockedTime)
-			return 1;
-		else if(_blockedTime == uBhv._blockedTime)
-			return 0;
-		else
-			return -1;
-	}
-
 	public Drawable getIcon() {
 		_icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_launcher);
 		
@@ -134,22 +126,29 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 		return _bhvNameText;
 	}
 
-	@Override
 	public String getViewMsg() {
-//		long blockedTime = ((BlockedUserBhv)_uBhv).getBlockedTime();
 		StringBuffer msg = new StringBuffer();
 		_viewMsg = msg.toString();
+
+		Predictor predictor = Predictor.getInstance();
+		PredictionInfo predictedBhv = predictor.getPredictedBhv(_uBhv);
 		
-		msg.append(DateUtils.getRelativeTimeSpanString(_blockedTime, 
-				System.currentTimeMillis(), 
-				DateUtils.MINUTE_IN_MILLIS, 
-				0
-				));
+		if(predictedBhv == null) {
+			return _viewMsg;
+		}
+		
+		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(predictedBhv.getMatchedResultMap().keySet());
+		Collections.sort(matcherTypeList, new MatcherTypeComparator());
+		
+		for (MatcherType matcherType : matcherTypeList) {
+			msg.append(matcherType.viewMsg).append(", ");
+		}
+		msg.delete(msg.length() - 2, msg.length());
 		_viewMsg = msg.toString();
 		
 		return _viewMsg;
 	}
-
+	
 	public Intent getLaunchIntent() {
 		_launchIntent = new Intent();
 		
@@ -172,19 +171,18 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 		return _launchIntent;
 	}
 	
-//	public static List<BlockedUserBhv> extractViewList(List<PredictionInfo> predictedBhvInfoList) {
-//		if(predictedBhvInfoList == null)
-//			return Collections.emptyList();
-//		
-//		List<BlockedUserBhv> res = new ArrayList<BlockedUserBhv>();
-//		Set<BlockedUserBhv> blockedUserBhvSet = UserBhvManager.getInstance().getBlockedBhvSet();
-//		for(BlockedUserBhv blockedUserBhv : blockedUserBhvSet){
-//			res.add(blockedUserBhv);
-//		}
-////		for(PredictedBhv predictedBhv : predictedBhvInfoList){
-////			if(blockedUserBhvSet.contains(predictedBhv))
-////				res.add(predictedBhv);
-////		}
-//		return res;
-//	}
+	public static List<OrdinaryUserBhv> extractViewList(List<PredictionInfo> predictedBhvInfoList) {
+		if(predictedBhvInfoList == null)
+			return Collections.emptyList();
+		
+		List<OrdinaryUserBhv> res = new ArrayList<OrdinaryUserBhv>();
+		
+		Set<OrdinaryUserBhv> ordinaryUserBhvSet = UserBhvManager.getInstance().getOrdinaryBhvSet();
+		for(OrdinaryUserBhv ordinaryUserBhv : ordinaryUserBhvSet){
+			if(predictedBhvInfoList.contains(ordinaryUserBhv))
+				res.add(ordinaryUserBhv);
+		}
+		
+		return res;
+	}
 }

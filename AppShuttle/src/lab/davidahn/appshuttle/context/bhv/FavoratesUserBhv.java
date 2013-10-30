@@ -1,7 +1,15 @@
 package lab.davidahn.appshuttle.context.bhv;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.mine.matcher.MatcherType;
+import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
+import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
+import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import lab.davidahn.appshuttle.view.Viewable;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -10,21 +18,20 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.format.DateUtils;
 
 
-public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUserBhv> {
+public class FavoratesUserBhv implements UserBhv, Viewable, Comparable<FavoratesUserBhv> {
 	private UserBhv _uBhv;
-	private long _blockedTime;
+	private long _setTime;
 	
 	protected Drawable _icon;
 	protected String _bhvNameText;
 	protected String _viewMsg;
 	protected Intent _launchIntent;
 	
-	public BlockedUserBhv(UserBhv uBhv, long blockedTime){
+	public FavoratesUserBhv(UserBhv uBhv, long setTime){
 		_uBhv = uBhv;
-		_blockedTime = blockedTime;
+		_setTime = setTime;
 	}
 	
 	public UserBhv getUserBhv() {
@@ -56,16 +63,16 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 		_uBhv.setMeta(key, val);
 	}
 	
-	public long getBlockedTime() {
-		return _blockedTime;
+	public long getSetTime() {
+		return _setTime;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if ((o instanceof UserBhv)
-				&& getBhvName().equals(
+				&& _uBhv.getBhvName().equals(
 						((UserBhv) o).getBhvName())
-				&& getBhvType() == ((UserBhv) o).getBhvType())
+				&& _uBhv.getBhvType() == ((UserBhv) o).getBhvType())
 			return true;
 		else
 			return false;
@@ -77,15 +84,15 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 	}
 	
 	@Override
-	public int compareTo(BlockedUserBhv uBhv) {
-		if(_blockedTime < uBhv._blockedTime)
+	public int compareTo(FavoratesUserBhv uBhv) {
+		if(_setTime > uBhv._setTime)
 			return 1;
-		else if(_blockedTime == uBhv._blockedTime)
+		else if(_setTime == uBhv._setTime)
 			return 0;
 		else
 			return -1;
 	}
-
+	
 	public Drawable getIcon() {
 		_icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_launcher);
 		
@@ -134,22 +141,47 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 		return _bhvNameText;
 	}
 
-	@Override
 	public String getViewMsg() {
-//		long blockedTime = ((BlockedUserBhv)_uBhv).getBlockedTime();
 		StringBuffer msg = new StringBuffer();
 		_viewMsg = msg.toString();
+
+		Predictor predictor = Predictor.getInstance();
+		PredictionInfo predictedBhv = predictor.getPredictedBhv(_uBhv);
 		
-		msg.append(DateUtils.getRelativeTimeSpanString(_blockedTime, 
-				System.currentTimeMillis(), 
-				DateUtils.MINUTE_IN_MILLIS, 
-				0
-				));
+		if(predictedBhv == null) {
+			return _viewMsg;
+		}
+		
+		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(predictedBhv.getMatchedResultMap().keySet());
+		Collections.sort(matcherTypeList, new MatcherTypeComparator());
+		
+		for (MatcherType matcherType : matcherTypeList) {
+			msg.append(matcherType.viewMsg).append(", ");
+		}
+		msg.delete(msg.length() - 2, msg.length());
 		_viewMsg = msg.toString();
 		
 		return _viewMsg;
 	}
-
+	
+//	@Override
+//	public String getViewMsg() {
+//		if(_viewMsg == null) {
+////			long blockedTime = ((BlockedUserBhv)_uBhv).getBlockedTime();
+//			StringBuffer msg = new StringBuffer();
+//			_viewMsg = msg.toString();
+//			
+//			msg.append(DateUtils.getRelativeTimeSpanString(_setTime, 
+//					System.currentTimeMillis(), 
+//					DateUtils.MINUTE_IN_MILLIS, 
+//					0
+//					));
+//			_viewMsg = msg.toString();
+//		}
+//		
+//		return _viewMsg;
+//	}
+	
 	public Intent getLaunchIntent() {
 		_launchIntent = new Intent();
 		
@@ -172,13 +204,13 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 		return _launchIntent;
 	}
 	
-//	public static List<BlockedUserBhv> extractViewList(List<PredictionInfo> predictedBhvInfoList) {
+//	public static List<FavoratesUserBhv> extractViewList(List<PredictionInfo> predictedBhvInfoList) {
 //		if(predictedBhvInfoList == null)
 //			return Collections.emptyList();
 //		
-//		List<BlockedUserBhv> res = new ArrayList<BlockedUserBhv>();
-//		Set<BlockedUserBhv> blockedUserBhvSet = UserBhvManager.getInstance().getBlockedBhvSet();
-//		for(BlockedUserBhv blockedUserBhv : blockedUserBhvSet){
+//		List<FavoratesUserBhv> res = new ArrayList<FavoratesUserBhv>();
+//		Set<FavoratesUserBhv> favoratesUserBhvSet = UserBhvManager.getInstance().getFavoratesBhvSet();
+//		for(FavoratesUserBhv blockedUserBhv : favoratesUserBhvSet){
 //			res.add(blockedUserBhv);
 //		}
 ////		for(PredictedBhv predictedBhv : predictedBhvInfoList){

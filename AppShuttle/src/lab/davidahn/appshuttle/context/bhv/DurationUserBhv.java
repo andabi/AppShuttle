@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle.context.bhv;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class DurationUserBhv {
+public class DurationUserBhv implements UserBhv {
 	private final Date _timeDate;
 	private final long _duration;
 	private final Date _endTimeDate;
@@ -17,7 +17,31 @@ public class DurationUserBhv {
 		_timeZone = builder._timeZone;
 		_uBhv = builder._uBhv;
 	}
-	
+	@Override
+	public BhvType getBhvType() {
+		return _uBhv.getBhvType();
+	}
+	@Override
+	public void setBhvType(BhvType bhvType) {
+		_uBhv.setBhvType(bhvType);
+	}
+	@Override
+	public String getBhvName() {
+		return _uBhv.getBhvName();
+	}
+	@Override
+	public void setBhvName(String bhvName) {
+		_uBhv.setBhvName(bhvName);
+	}
+	@Override
+	public Object getMeta(String key) {
+		return _uBhv.getMeta(key);
+	}
+	@Override
+	public void setMeta(String key, Object val){
+		_uBhv.setMeta(key, val);
+	}
+
 	public Date getTimeDate() {
 		return _timeDate;
 	}
@@ -83,8 +107,8 @@ public class DurationUserBhv {
 			return this;
 		}
 
-		public Builder setBhv(UserBhv bhv) {
-			_uBhv = bhv;
+		public Builder setBhv(UserBhv uBhv) {
+			_uBhv = uBhv;
 			return this;
 		}
 	}
