@@ -14,6 +14,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.utils.MapUtils;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class Predictor {
 	private SharedPreferences _preferenceSettings;
@@ -127,6 +128,8 @@ public class Predictor {
 		
 		if(predictedBhvMap == null)
 			return null;
+		
+		Log.d("test", predictedBhvMap.keySet().toString());
 		
 		List<PredictionInfo> predictedBhvList = new ArrayList<PredictionInfo>(predictedBhvMap.values());
 		

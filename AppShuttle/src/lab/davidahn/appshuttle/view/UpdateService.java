@@ -27,9 +27,9 @@ public class UpdateService extends IntentService {
 		predictor.predict();
 		
 		NotiBarNotifier notifier = new NotiBarNotifier();
-		List<PredictionInfo> predictedBhvList = predictor.getRecentPredictedBhv(notifier.getNumElem());
+		List<PredictionInfo> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE/*notifier.getNumElem()*/);
 		notifier.updateNotiView(OrdinaryUserBhv.extractViewList(predictedBhvList));
-
+		
 		Intent refreshIntent = new Intent().setAction("lab.davidahn.appshuttle.REFRESH");
 		sendBroadcast(refreshIntent);
 		
