@@ -2,7 +2,8 @@ package lab.davidahn.appshuttle.view;
 
 import java.util.List;
 
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
+import lab.davidahn.appshuttle.context.bhv.OrdinaryUserBhv;
+import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.IntentService;
 import android.content.Intent;
@@ -26,8 +27,8 @@ public class UpdateService extends IntentService {
 		predictor.predict();
 		
 		NotiBarNotifier notifier = new NotiBarNotifier();
-		List<PredictedBhv> predictedBhvList = predictor.getRecentPredictedBhv(notifier.getNumElem());
-		notifier.updateNotiView(OrdinaryBhvForView.extractViewList(predictedBhvList));
+		List<PredictionInfo> predictedBhvList = predictor.getRecentPredictedBhv(notifier.getNumElem());
+		notifier.updateNotiView(OrdinaryUserBhv.extractViewList(predictedBhvList));
 
 		Intent refreshIntent = new Intent().setAction("lab.davidahn.appshuttle.REFRESH");
 		sendBroadcast(refreshIntent);

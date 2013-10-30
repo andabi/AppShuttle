@@ -5,6 +5,7 @@ import java.util.List;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -33,8 +34,8 @@ public class NotiBarNotifier {
 	}
 	
 	@SuppressLint("NewApi")
-	public void updateNotiView(List<BhvForView> bhvForViewList) {
-		RemoteViews notiView = createNotiRemoteViews(bhvForViewList);
+	public <T extends UserBhv & Viewable> void updateNotiView(List<T> viewableUserBhv) {
+		RemoteViews notiView = createNotiRemoteViews(viewableUserBhv);
 
 		Notification notiUpdate = new Notification.Builder(cxt)
 			.setSmallIcon(R.drawable.appshuttle)
@@ -46,7 +47,7 @@ public class NotiBarNotifier {
 		_notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
 	}
 
-	private RemoteViews createNotiRemoteViews(List<BhvForView> bhvForViewList) {
+	private <T extends UserBhv & Viewable> RemoteViews createNotiRemoteViews(List<T> viewableUserBhvList) {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 
 		//clean
@@ -54,19 +55,19 @@ public class NotiBarNotifier {
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 
-		for(BhvForView bhvForView : bhvForViewList) {
+		for(T viewableUserBhv : viewableUserBhvList) {
 
-			BhvType bhvType = bhvForView.getUserBhv().getBhvType();
+			BhvType bhvType = viewableUserBhv.getBhvType();
 			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_element);
 			
-			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(cxt, 0, bhvForView.getLaunchIntent(), 0));
+			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(cxt, 0, viewableUserBhv.getLaunchIntent(), 0));
 
-			BitmapDrawable iconDrawable = (BitmapDrawable)bhvForView.getIcon();
+			BitmapDrawable iconDrawable = (BitmapDrawable)viewableUserBhv.getIcon();
 			notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());
 			
 			if (bhvType == BhvType.CALL){
 //				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
-				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, bhvForView.getBhvNameText());
+				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, viewableUserBhv.getBhvNameText());
 				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, 
 						TypedValue.COMPLEX_UNIT_PX, 
 						cxt.getResources().getDimension(R.dimen.notibar_text_size));

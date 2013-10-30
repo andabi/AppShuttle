@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
@@ -28,7 +29,7 @@ import android.widget.Toast;
 public class FavoratesBhvFragment extends ListFragment {
 	private FavoratesBhvInfoAdapter adapter;
 	private ActionMode actionMode;
-	private List<BhvForView> favoratesBhvInfoForViewList;
+	private List<FavoratesUserBhv> favoratesBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,8 @@ public class FavoratesBhvFragment extends ListFragment {
 		setEmptyText(getResources().getString(R.string.favorates_fragment_empty_msg));
 
 		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-		List<FavoratesUserBhv> favoratesBhvInfoList = new ArrayList<FavoratesUserBhv>(uBhvManager.getFavoratesBhvSet());
-		favoratesBhvInfoForViewList = FavoratesBhvForView.convert(favoratesBhvInfoList);
+		favoratesBhvList = new ArrayList<FavoratesUserBhv>(uBhvManager.getFavoratesBhvSet());
+		Collections.sort(favoratesBhvList);
 		
 		adapter = new FavoratesBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -86,26 +87,26 @@ public class FavoratesBhvFragment extends ListFragment {
 		super.onDestroy();
 	}
 
-	public class FavoratesBhvInfoAdapter extends ArrayAdapter<BhvForView> {
+	public class FavoratesBhvInfoAdapter extends ArrayAdapter<FavoratesUserBhv> {
 
 		public FavoratesBhvInfoAdapter() {
-			super(getActivity(), R.layout.listview_item, favoratesBhvInfoForViewList);
+			super(getActivity(), R.layout.listview_item, favoratesBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BhvForView bhvInfoForView = favoratesBhvInfoForViewList.get(position);
+			FavoratesUserBhv favoratesUserBhv = favoratesBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
-			iconView.setImageDrawable(bhvInfoForView.getIcon());
+			iconView.setImageDrawable(favoratesUserBhv.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
-			firstLineView.setText(bhvInfoForView.getBhvNameText());
+			firstLineView.setText(favoratesUserBhv.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
-			secondLineView.setText(bhvInfoForView.getViewMsg());
+			secondLineView.setText(favoratesUserBhv.getViewMsg());
 
 			return itemView;
 		}
@@ -134,7 +135,7 @@ public class FavoratesBhvFragment extends ListFragment {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			int position = (Integer)mode.getTag();
 
-			if(favoratesBhvInfoForViewList.size() < position + 1)
+			if(favoratesBhvList.size() < position + 1)
 				return false;
 			
 			String actionMsg = "";
@@ -142,7 +143,7 @@ public class FavoratesBhvFragment extends ListFragment {
 
 			switch(item.getItemId()) {
 			case R.id.unfavorates:
-				uBhvManager.unfavorates((FavoratesUserBhv)(favoratesBhvInfoForViewList.get(position).getUserBhv()));
+				uBhvManager.unfavorates((FavoratesUserBhv)(favoratesBhvList.get(position)));
 				actionMsg = getResources().getString(R.string.unfavorates);
 				break;
 			default:

@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class UserBhvManager {
 	private Set<UserBhv> _totalBhvSet;
-	private Set<BaseUserBhv> _ordinaryBhvSet;	//ordinary -> unfavorates && unblocked
+	private Set<OrdinaryUserBhv> _ordinaryBhvSet;	//ordinary -> unfavorates && unblocked
 	private Set<FavoratesUserBhv> _favoratesBhvSet;
 	private Set<BlockedUserBhv> _blockedBhvSet;
 	private UserBhvDao _userBhvDao;
@@ -21,7 +21,7 @@ public class UserBhvManager {
 	private UserBhvManager() {
 		_userBhvDao = UserBhvDao.getInstance();
 		
-		_ordinaryBhvSet = new HashSet<BaseUserBhv>();
+		_ordinaryBhvSet = new HashSet<OrdinaryUserBhv>();
 		_ordinaryBhvSet.addAll(_userBhvDao.retrieveOrdinaryUserBhv());
 
 		_favoratesBhvSet = new HashSet<FavoratesUserBhv>();
@@ -43,8 +43,8 @@ public class UserBhvManager {
 		return Collections.unmodifiableSet(new HashSet<UserBhv>(_totalBhvSet));
 	}
 	
-	public Set<BaseUserBhv> getOrdinaryBhvSet(){
-		return Collections.unmodifiableSet(new HashSet<BaseUserBhv>(_ordinaryBhvSet));
+	public Set<OrdinaryUserBhv> getOrdinaryBhvSet(){
+		return Collections.unmodifiableSet(new HashSet<OrdinaryUserBhv>(_ordinaryBhvSet));
 	}
 	
 	public Set<BlockedUserBhv> getBlockedBhvSet(){
@@ -53,21 +53,23 @@ public class UserBhvManager {
 	public Set<FavoratesUserBhv> getFavoratesBhvSet(){
 		return Collections.unmodifiableSet(new HashSet<FavoratesUserBhv>(_favoratesBhvSet));
 	}
-	public synchronized void registerBhv(BaseUserBhv uBhv){
+	public synchronized void registerBhv(UserBhv uBhv){
 		if(_totalBhvSet.contains(uBhv))
 			return ;
 //		if(_ordinaryBhvSet.contains(uBhv) || 
 //				_blockedBhvSet.contains(uBhv) || 
 //				_favoratesBhvSet.contains(uBhv))
 //			return ;
+		OrdinaryUserBhv ordinaryUserBhv = new OrdinaryUserBhv(uBhv);
 
-		_userBhvDao.storeUserBhv(uBhv);
+		_userBhvDao.storeUserBhv(ordinaryUserBhv);
 
-		_totalBhvSet.add(uBhv);
-		_ordinaryBhvSet.add(uBhv);
+		_totalBhvSet.add(ordinaryUserBhv);
+		
+		_ordinaryBhvSet.add(ordinaryUserBhv);
 	}
 	
-	public synchronized void unregisterBhv(BaseUserBhv uBhv){
+	public synchronized void unregisterBhv(UserBhv uBhv){
 		if(!_totalBhvSet.contains(uBhv))
 			return ;
 //		if(!_ordinaryBhvSet.contains(uBhv) && 
@@ -77,11 +79,24 @@ public class UserBhvManager {
 
 		_userBhvDao.deleteUserBhv(uBhv);
 
-		_ordinaryBhvSet.remove(uBhv);
 		_totalBhvSet.remove(uBhv);
+		
+		if(_ordinaryBhvSet.contains(uBhv)) {
+			_ordinaryBhvSet.remove(uBhv);
+			return;
+		}
+		
+		if(_favoratesBhvSet.contains(uBhv)) {
+			_favoratesBhvSet.remove(uBhv);
+			return;
+		}
+		if(_blockedBhvSet.contains(uBhv)) {
+			_blockedBhvSet.remove(uBhv);
+			return;
+		}
 	}
 	
-	public synchronized void block(UserBhv uBhv){
+	public synchronized void block(OrdinaryUserBhv uBhv){
 		if(_blockedBhvSet.contains(uBhv) || 
 				!_ordinaryBhvSet.contains(uBhv))
 			return ;
@@ -105,11 +120,11 @@ public class UserBhvManager {
 
 		_blockedBhvSet.remove(uBhv);
 		
-		_ordinaryBhvSet.add((BaseUserBhv)uBhv.getUserBhv());
+		_ordinaryBhvSet.add(new OrdinaryUserBhv(uBhv.getUserBhv()));
 	}
 	
 	
-	public synchronized void favorates(UserBhv uBhv){
+	public synchronized void favorates(OrdinaryUserBhv uBhv){
 		if(_favoratesBhvSet.contains(uBhv) || 
 				!_ordinaryBhvSet.contains(uBhv))
 			return ;
@@ -133,6 +148,6 @@ public class UserBhvManager {
 
 		_favoratesBhvSet.remove(uBhv);
 		
-		_ordinaryBhvSet.add((BaseUserBhv)uBhv.getUserBhv());
+		_ordinaryBhvSet.add(new OrdinaryUserBhv(uBhv.getUserBhv()));
 	}
 }

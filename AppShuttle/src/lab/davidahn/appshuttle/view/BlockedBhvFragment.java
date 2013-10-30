@@ -1,12 +1,12 @@
 package lab.davidahn.appshuttle.view;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BlockedUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.mine.matcher.PredictedBhv;
-import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +29,7 @@ import android.widget.Toast;
 public class BlockedBhvFragment extends ListFragment {
 	private BlockedBhvInfoAdapter adapter;
 	private ActionMode actionMode;
-	private List<BhvForView> blockedBhvInfoForViewList;
+	private List<BlockedUserBhv> blockedBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,12 +50,13 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.blocked_fragment_empty_msg));
 
-		Predictor predictor = Predictor.getInstance();
-		List<PredictedBhv> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE);
-		blockedBhvInfoForViewList = BlockedBhvForView.extractViewList(predictedBhvList);
-//		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-//		List<BlockedUserBhv> blockedBhvInfoList = new ArrayList<BlockedUserBhv>(uBhvManager.getBlockedBhvSet());
-//		blockedBhvInfoForViewList = BlockedBhvForView.extractViewList(blockedBhvInfoList);
+//		Predictor predictor = Predictor.getInstance();
+//		List<PredictionInfo> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE);
+//		blockedBhvList = BlockedUserBhv.extractViewList(predictedBhvList);
+		UserBhvManager uBhvManager = UserBhvManager.getInstance();
+		blockedBhvList = new ArrayList<BlockedUserBhv>(uBhvManager.getBlockedBhvSet());
+		Collections.sort(blockedBhvList);
+//		blockedBhvList = BlockedUserBhv.extractViewList(blockedBhvInfoList);
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -90,26 +91,26 @@ public class BlockedBhvFragment extends ListFragment {
 		super.onDestroy();
 	}
 
-	public class BlockedBhvInfoAdapter extends ArrayAdapter<BhvForView> {
+	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedUserBhv> {
 
 		public BlockedBhvInfoAdapter() {
-			super(getActivity(), R.layout.listview_item, blockedBhvInfoForViewList);
+			super(getActivity(), R.layout.listview_item, blockedBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BhvForView bhvInfoForView = blockedBhvInfoForViewList.get(position);
+			BlockedUserBhv blockedUserBhv = blockedBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
-			iconView.setImageDrawable(bhvInfoForView.getIcon());
+			iconView.setImageDrawable(blockedUserBhv.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
-			firstLineView.setText(bhvInfoForView.getBhvNameText());
+			firstLineView.setText(blockedUserBhv.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
-			secondLineView.setText(bhvInfoForView.getViewMsg());
+			secondLineView.setText(blockedUserBhv.getViewMsg());
 
 			return itemView;
 		}
@@ -138,7 +139,7 @@ public class BlockedBhvFragment extends ListFragment {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			int position = (Integer)mode.getTag();
 
-			if(blockedBhvInfoForViewList.size() < position + 1)
+			if(blockedBhvList.size() < position + 1)
 				return false;
 			
 			String actionMsg = "";
@@ -146,7 +147,7 @@ public class BlockedBhvFragment extends ListFragment {
 
 			switch(item.getItemId()) {
 			case R.id.unblock:
-				uBhvManager.unblock((BlockedUserBhv)(blockedBhvInfoForViewList.get(position).getUserBhv()));
+				uBhvManager.unblock((BlockedUserBhv)(blockedBhvList.get(position)));
 				actionMsg = getResources().getString(R.string.unblock);
 				break;
 			default:

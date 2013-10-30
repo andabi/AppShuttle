@@ -12,6 +12,8 @@ public class AppShuttleSettings {
 		
 		//general
 //		editor.putString("database.name", new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
+		editor.putBoolean("mode.debug", false);
+		
 		editor.putString("database.name", "AppShuttle.db");
 
 		//service

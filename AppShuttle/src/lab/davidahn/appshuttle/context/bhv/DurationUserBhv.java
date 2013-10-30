@@ -41,7 +41,7 @@ public class DurationUserBhv implements UserBhv {
 	public void setMeta(String key, Object val){
 		_uBhv.setMeta(key, val);
 	}
-	
+
 	public Date getTimeDate() {
 		return _timeDate;
 	}

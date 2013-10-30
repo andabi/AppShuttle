@@ -29,18 +29,22 @@ public class BaseUserBhv implements UserBhv {
 		}
 	}
 
+	@Override
 	public BhvType getBhvType() {
 		return _bhvType;
 	}
 	
+	@Override
 	public void setBhvType(BhvType bhvType) {
 		_bhvType = bhvType;
 	}
 	
+	@Override
 	public String getBhvName() {
 		return _bhvName;
 	}
-
+	
+	@Override
 	public void setBhvName(String bhvName) {
 		_bhvName = bhvName;
 	}
@@ -53,10 +57,12 @@ public class BaseUserBhv implements UserBhv {
 		_metas = metas;
 	}
 
+	@Override
 	public Object getMeta(String key) {
 		return _metas.get(key);
 	}
 	
+	@Override
 	public void setMeta(String key, Object val){
 		_metas.put(key, val);
 	}
