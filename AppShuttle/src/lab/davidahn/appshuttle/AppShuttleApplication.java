@@ -16,7 +16,7 @@ public class AppShuttleApplication extends Application {
 	public static long launchTime;
 	public static SnapshotUserCxt currUserCxt;
 //	public static Set<BaseUserBhv> recentPredictedBhvSet;
-	public static Map<UserBhv, PredictionInfo> recentPredictedBhvMap ;
+	public static Map<UserBhv, PredictionInfo> recentPredictionInfoMap ;
 
 	public AppShuttleApplication(){}
 

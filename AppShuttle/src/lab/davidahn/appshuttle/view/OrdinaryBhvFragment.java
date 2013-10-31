@@ -5,8 +5,6 @@ import java.util.List;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.OrdinaryUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
-import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -50,13 +48,12 @@ public class OrdinaryBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.predicted_fragment_empty_msg));
 
-		List<PredictionInfo> predictedBhvList = Predictor.getInstance().getRecentPredictedBhv(Integer.MAX_VALUE);
-		predictedOrdinaryBhvList = OrdinaryUserBhv.extractViewList(predictedBhvList);
+		predictedOrdinaryBhvList = OrdinaryUserBhv.getExtractedViewListSorted(Integer.MAX_VALUE);
 		
 		adapter = new PredictedBhvAdapter();
 		setListAdapter(adapter);
 
-		if (predictedBhvList == null) {
+		if (predictedOrdinaryBhvList.isEmpty()) {
 			setListShown(false);
 		} else {
 			setListShown(true);

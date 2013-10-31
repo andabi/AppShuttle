@@ -11,10 +11,8 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.utils.MapUtils;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class Predictor {
 	private SharedPreferences _preferenceSettings;
@@ -117,27 +115,33 @@ public class Predictor {
 			predicted.put(uBhv, predictedBhv);
 		}
 		
-		MapUtils.sortByValue(predicted);
-
-		AppShuttleApplication.recentPredictedBhvMap = predicted;
+		if(_preferenceSettings.getBoolean("predictor.store", false))
+			storeNewPredictedBhv(predicted);
+		
+		AppShuttleApplication.recentPredictionInfoMap = predicted;
 //		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
 	}
 	
-	public List<PredictionInfo> getRecentPredictedBhv(int topN){
-		Map<UserBhv, PredictionInfo> predictedBhvMap = AppShuttleApplication.recentPredictedBhvMap;
-		
-		if(predictedBhvMap == null)
-			return null;
-		
-		Log.d("test", predictedBhvMap.keySet().toString());
-		
-		List<PredictionInfo> predictedBhvList = new ArrayList<PredictionInfo>(predictedBhvMap.values());
-		
-		return predictedBhvList.subList(0, Math.min(predictedBhvList.size(), topN));
+	public Map<UserBhv, PredictionInfo> getRecentPredictionInfoMap(){
+		return AppShuttleApplication.recentPredictionInfoMap;
 	}
 	
-	public PredictionInfo getPredictedBhv(UserBhv uBhv){
-		Map<UserBhv, PredictionInfo> predictedBhvMap = AppShuttleApplication.recentPredictedBhvMap;
+//	public List<PredictionInfo> getRecentPredictedBhv(int topN){
+//		Map<UserBhv, PredictionInfo> predictedBhvMap = AppShuttleApplication.recentPredictedBhvMap;
+//		
+//		if(predictedBhvMap == null)
+//			return null;
+//		
+//		Log.d("test", predictedBhvMap.keySet().toString());
+//		
+//		List<PredictionInfo> predictedBhvList = new ArrayList<PredictionInfo>(predictedBhvMap.values());
+//		Collections.sort(predictedBhvList);
+//		
+//		return predictedBhvList.subList(0, Math.min(predictedBhvList.size(), topN));
+//	}
+//	
+	public PredictionInfo getPredictionInfo(UserBhv uBhv){
+		Map<UserBhv, PredictionInfo> predictedBhvMap = AppShuttleApplication.recentPredictionInfoMap;
 		
 		if(predictedBhvMap == null)
 			return null;
@@ -157,26 +161,14 @@ public class Predictor {
 	}
 	
 
-	public void storeNewPredictedBhv(List<PredictionInfo> predictedBhvInfoList) {
-//		Set<BaseUserBhv> lastPredictedBhvSet = recentPredictedBhvSet;
-		
+	public void storeNewPredictedBhv(Map<UserBhv, PredictionInfo> predicted) {
 		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
 
-//		Set<BaseUserBhv> currPredictedBhvSet = new HashSet<BaseUserBhv>();
-		for(PredictionInfo predictedBhv : predictedBhvInfoList) {
-//			BaseUserBhv predictedBhv = predictedBhvInfo.getUserBhv();
-//			BaseUserBhv predictedBhv = predictedBhvInfo.getUserBhv();
-//			if(lastPredictedBhvSet == null || !lastPredictedBhvSet.contains(predictedBhv)) {
-//				predictedBhvDao.storePredictedBhv(predictedBhvInfo);
-//			}
-			if(AppShuttleApplication.recentPredictedBhvMap == null || !AppShuttleApplication.recentPredictedBhvMap.containsValue(predictedBhv)) {
-//				Log.d("test", AppShuttleApplication.recentPredictedBhvList.toString());
-				predictedBhvDao.storePredictedBhv(predictedBhv);
+		for(UserBhv uBhv : predicted.keySet()) {
+			if(AppShuttleApplication.recentPredictionInfoMap == null || !AppShuttleApplication.recentPredictionInfoMap.containsKey(uBhv)) {
+				predictedBhvDao.storePredictedBhv(predicted.get(uBhv));
 			}
-//			currPredictedBhvSet.add(predictedBhv);
 		}
-
-//		recentPredictedBhvSet = currPredictedBhvSet;
 	}
 }
 

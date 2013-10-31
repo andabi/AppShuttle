@@ -5,12 +5,11 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public class PredictionInfo implements UserBhv, Comparable<PredictionInfo> {
+public class PredictionInfo implements Comparable<PredictionInfo> {
 	private final UserBhv _uBhv;
 	private final Date _timeDate;
 	private final TimeZone _timeZone;
@@ -32,30 +31,30 @@ public class PredictionInfo implements UserBhv, Comparable<PredictionInfo> {
 		_score = score;
 	}
 	
-	@Override
-	public BhvType getBhvType() {
-		return _uBhv.getBhvType();
-	}
-	@Override
-	public void setBhvType(BhvType bhvType) {
-		_uBhv.setBhvType(bhvType);
-	}
-	@Override
-	public String getBhvName() {
-		return _uBhv.getBhvName();
-	}
-	@Override
-	public void setBhvName(String bhvName) {
-		_uBhv.setBhvName(bhvName);
-	}
-	@Override
-	public Object getMeta(String key) {
-		return _uBhv.getMeta(key);
-	}
-	@Override
-	public void setMeta(String key, Object val){
-		_uBhv.setMeta(key, val);
-	}
+//	@Override
+//	public BhvType getBhvType() {
+//		return _uBhv.getBhvType();
+//	}
+//	@Override
+//	public void setBhvType(BhvType bhvType) {
+//		_uBhv.setBhvType(bhvType);
+//	}
+//	@Override
+//	public String getBhvName() {
+//		return _uBhv.getBhvName();
+//	}
+//	@Override
+//	public void setBhvName(String bhvName) {
+//		_uBhv.setBhvName(bhvName);
+//	}
+//	@Override
+//	public Object getMeta(String key) {
+//		return _uBhv.getMeta(key);
+//	}
+//	@Override
+//	public void setMeta(String key, Object val){
+//		_uBhv.setMeta(key, val);
+//	}
 	
 	public Date getTime() {
 		return _timeDate;
@@ -105,10 +104,14 @@ public class PredictionInfo implements UserBhv, Comparable<PredictionInfo> {
 		return _uBhv.hashCode();
 	}
 	
+	@Override
 	public int compareTo(PredictionInfo predictedBhv){
-		if(_score < predictedBhv._score) return 1;
-		else if(_score == predictedBhv._score) return 0;
-		else return -1;
+		if(_score < predictedBhv._score) 
+			return 1;
+		else if(_score == predictedBhv._score) 
+			return 0;
+		else 
+			return -1;
 	}
 	
 	public String toString(){

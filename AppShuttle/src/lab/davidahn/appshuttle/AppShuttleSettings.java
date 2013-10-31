@@ -12,7 +12,7 @@ public class AppShuttleSettings {
 		
 		//general
 //		editor.putString("database.name", new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
-		editor.putBoolean("mode.debug", false);
+		editor.putBoolean("mode.debug", true);
 		
 		editor.putString("database.name", "AppShuttle.db");
 
@@ -52,6 +52,8 @@ public class AppShuttleSettings {
 		editor.putString("email.receiver.addr", "andabi412@gmail.com");
 		
 		//matcher
+		editor.putBoolean("predictor.store", true);
+		
 		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		
 		editor.putLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY);
