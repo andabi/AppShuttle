@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
@@ -12,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,8 +51,7 @@ public class FavoratesBhvFragment extends ListFragment {
 		setEmptyText(getResources().getString(R.string.favorates_fragment_empty_msg));
 
 		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-		favoratesBhvList = new ArrayList<FavoratesUserBhv>(uBhvManager.getFavoratesBhvSet());
-		Collections.sort(favoratesBhvList);
+		favoratesBhvList = new ArrayList<FavoratesUserBhv>(uBhvManager.getFavoratesBhvSetSorted());
 		
 		adapter = new FavoratesBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -144,14 +143,17 @@ public class FavoratesBhvFragment extends ListFragment {
 			switch(item.getItemId()) {
 			case R.id.unfavorates:
 				uBhvManager.unfavorates((FavoratesUserBhv)(favoratesBhvList.get(position)));
-				actionMsg = getResources().getString(R.string.unfavorates);
+				actionMsg = getResources().getString(R.string.action_msg_unfavorates);
 				break;
 			default:
 				;
 			}
 			
 			getActivity().startService(new Intent(getActivity(), UpdateService.class));
-			Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT).show();
+			
+			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
 			
 			if(actionMode != null)
 				actionMode.finish();

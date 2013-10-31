@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
@@ -12,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,13 +50,8 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.blocked_fragment_empty_msg));
 
-//		Predictor predictor = Predictor.getInstance();
-//		List<PredictionInfo> predictedBhvList = predictor.getRecentPredictedBhv(Integer.MAX_VALUE);
-//		blockedBhvList = BlockedUserBhv.extractViewList(predictedBhvList);
 		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-		blockedBhvList = new ArrayList<BlockedUserBhv>(uBhvManager.getBlockedBhvSet());
-		Collections.sort(blockedBhvList);
-//		blockedBhvList = BlockedUserBhv.extractViewList(blockedBhvInfoList);
+		blockedBhvList = new ArrayList<BlockedUserBhv>(uBhvManager.getBlockedBhvSetSorted());
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -148,14 +143,17 @@ public class BlockedBhvFragment extends ListFragment {
 			switch(item.getItemId()) {
 			case R.id.unblock:
 				uBhvManager.unblock((BlockedUserBhv)(blockedBhvList.get(position)));
-				actionMsg = getResources().getString(R.string.unblock);
+				actionMsg = getResources().getString(R.string.action_msg_unblock);
 				break;
 			default:
 				;
 			}
 			
 			getActivity().startService(new Intent(getActivity(), UpdateService.class));
-			Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT).show();
+			
+			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
 			
 			if(actionMode != null)
 				actionMode.finish();

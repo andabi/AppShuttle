@@ -33,7 +33,7 @@ public class UpdateService extends IntentService {
 		NotiBarNotifier notifier = new NotiBarNotifier();
 		
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
-		viewableUserBhvList.addAll(UserBhvManager.getInstance().getFavoratesBhvSet());
+		viewableUserBhvList.addAll(UserBhvManager.getInstance().getFavoratesBhvSetSorted());
 		viewableUserBhvList.addAll(OrdinaryUserBhv.getExtractedViewListSorted(notifier.getNumElem()));
 		
 		notifier.updateNotiView(viewableUserBhvList);

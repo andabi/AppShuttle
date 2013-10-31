@@ -16,7 +16,11 @@
     <string name="unfavorates">unfavorates</string>
     <string name="block">block</string>
     <string name="unblock">unblock</string>
-    <string name="blocked_fragment_empty_msg">No results yet. Long click to block app.</string>
-    <string name="favorates_fragment_empty_msg">No results yet. Long click to make app favorates.</string>
-    <string name="predicted_fragment_empty_msg">No results yet. Keep using this until results show. </string>
+    <string name="blocked_fragment_empty_msg">No results. Long click to block app.</string>
+    <string name="favorates_fragment_empty_msg">No results. Long click to make app favorates.</string>
+    <string name="predicted_fragment_empty_msg">No results. Keep using it until the results show. </string>
+    <string name="action_msg_favorates">move to favorates!</string>
+    <string name="action_msg_unfavorates">return</string>
+    <string name="action_msg_block">blocked!</string>
+    <string name="action_msg_unblock">unblocked</string>
 </resources>

@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle.context.bhv;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 
@@ -47,11 +48,11 @@ public class UserBhvManager {
 		return Collections.unmodifiableSet(new HashSet<OrdinaryUserBhv>(_ordinaryBhvSet));
 	}
 	
-	public Set<BlockedUserBhv> getBlockedBhvSet(){
-		return Collections.unmodifiableSet(new HashSet<BlockedUserBhv>(_blockedBhvSet));
+	public Set<BlockedUserBhv> getBlockedBhvSetSorted(){
+		return Collections.unmodifiableSet(new TreeSet<BlockedUserBhv>(_blockedBhvSet));
 	}
-	public Set<FavoratesUserBhv> getFavoratesBhvSet(){
-		return Collections.unmodifiableSet(new HashSet<FavoratesUserBhv>(_favoratesBhvSet));
+	public Set<FavoratesUserBhv> getFavoratesBhvSetSorted(){
+		return Collections.unmodifiableSet(new TreeSet<FavoratesUserBhv>(_favoratesBhvSet));
 	}
 	public synchronized void registerBhv(UserBhv uBhv){
 		if(_totalBhvSet.contains(uBhv))

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,12 +49,13 @@ public class OrdinaryBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.predicted_fragment_empty_msg));
 
+		
 		predictedOrdinaryBhvList = OrdinaryUserBhv.getExtractedViewListSorted(Integer.MAX_VALUE);
 		
 		adapter = new PredictedBhvAdapter();
 		setListAdapter(adapter);
 
-		if (predictedOrdinaryBhvList.isEmpty()) {
+		if (predictedOrdinaryBhvList == null) {
 			setListShown(false);
 		} else {
 			setListShown(true);
@@ -144,11 +146,11 @@ public class OrdinaryBhvFragment extends ListFragment {
 			switch(item.getItemId()) {
 			case R.id.favorate:	
 				uBhvManager.favorates((OrdinaryUserBhv)(predictedOrdinaryBhvList.get(position)));
-				actionMsg = getResources().getString(R.string.favorates);
+				actionMsg = getResources().getString(R.string.action_msg_favorates);
 				break;
 			case R.id.block:
 				uBhvManager.block((OrdinaryUserBhv)(predictedOrdinaryBhvList.get(position)));
-				actionMsg = getResources().getString(R.string.block);
+				actionMsg = getResources().getString(R.string.action_msg_block);
 				break;
 			default:
 				;
@@ -156,7 +158,9 @@ public class OrdinaryBhvFragment extends ListFragment {
 
 			getActivity().startService(new Intent(getActivity(), UpdateService.class));
 
-			Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT).show();
+			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
 
 			if(actionMode != null)
 				actionMode.finish();
