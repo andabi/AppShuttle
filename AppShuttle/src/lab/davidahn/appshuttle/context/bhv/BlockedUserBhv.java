@@ -55,7 +55,6 @@ public class BlockedUserBhv implements UserBhv, Viewable, Comparable<BlockedUser
 	public void setMeta(String key, Object val){
 		_uBhv.setMeta(key, val);
 	}
-
 	
 	public long getBlockedTime() {
 		return _blockedTime;
