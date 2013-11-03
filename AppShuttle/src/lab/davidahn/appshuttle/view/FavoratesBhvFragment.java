@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.FavoratesUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.ListFragment;
 import android.content.Context;

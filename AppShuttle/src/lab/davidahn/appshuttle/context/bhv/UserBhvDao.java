@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
+import lab.davidahn.appshuttle.view.BlockedUserBhv;
+import lab.davidahn.appshuttle.view.FavoratesUserBhv;
+import lab.davidahn.appshuttle.view.OrdinaryUserBhv;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.context.bhv;
+package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.mine.matcher.MatcherType;
 import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
 import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
-import lab.davidahn.appshuttle.view.ViewableUserBhv;
 
 
 public class OrdinaryUserBhv extends ViewableUserBhv implements Comparable<OrdinaryUserBhv> {
@@ -80,5 +82,10 @@ public class OrdinaryUserBhv extends ViewableUserBhv implements Comparable<Ordin
 			extractViewListSorted();
 		
 		return extractedViewListSorted.subList(0, Math.min(extractedViewListSorted.size(), topN));
+	}
+	
+	@Override
+	public int getNotibarContainerId() {
+		return R.id.noti_ordinary_container;
 	}
 }

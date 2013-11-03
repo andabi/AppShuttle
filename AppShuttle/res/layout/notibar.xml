@@ -3,13 +3,13 @@
     android:layout_height="64dp"
     android:baselineAligned="false"
     android:gravity="center"
-    android:orientation="horizontal"
-		>
+    android:orientation="horizontal" >
+
     <LinearLayout
         android:layout_width="@dimen/notibar_icon_area_width"
         android:layout_height="match_parent"
-        android:layout_weight="0"
         android:layout_gravity="center"
+        android:layout_weight="0"
         android:gravity="center"
         android:orientation="horizontal" >
 
@@ -35,11 +35,21 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/noti_elem_container"
+        android:id="@+id/noti_ordinary_container"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_weight="1"
         android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/noti_favorates_container"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_weight="0"
         android:gravity="left|center_vertical"
         android:orientation="horizontal" >
     </LinearLayout>

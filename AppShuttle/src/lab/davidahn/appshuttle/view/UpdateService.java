@@ -3,7 +3,6 @@ package lab.davidahn.appshuttle.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import lab.davidahn.appshuttle.context.bhv.OrdinaryUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.IntentService;

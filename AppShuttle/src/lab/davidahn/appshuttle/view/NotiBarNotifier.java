@@ -51,7 +51,8 @@ public class NotiBarNotifier {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 
 		//clean
-		notiRemoteView.removeAllViews(R.id.noti_elem_container);
+		notiRemoteView.removeAllViews(R.id.noti_ordinary_container);
+		notiRemoteView.removeAllViews(R.id.noti_favorates_container);
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 
@@ -73,7 +74,7 @@ public class NotiBarNotifier {
 						cxt.getResources().getDimension(R.dimen.notibar_text_size));
 			}
 			
-			notiRemoteView.addView(R.id.noti_elem_container, notiElemRemoteView);
+			notiRemoteView.addView(viewableUserBhv.getNotibarContainerId(), notiElemRemoteView);
 		}
 
 		return notiRemoteView;

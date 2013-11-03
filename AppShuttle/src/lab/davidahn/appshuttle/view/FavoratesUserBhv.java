@@ -1,14 +1,15 @@
-package lab.davidahn.appshuttle.context.bhv;
+package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.mine.matcher.MatcherType;
 import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
 import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
-import lab.davidahn.appshuttle.view.ViewableUserBhv;
 
 
 public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<FavoratesUserBhv> {
@@ -55,5 +56,10 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		_viewMsg = msg.toString();
 		
 		return _viewMsg;
+	}
+	
+	@Override
+	public int getNotibarContainerId() {
+		return R.id.noti_favorates_container;
 	}
 }
