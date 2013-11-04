@@ -44,7 +44,7 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE INDEX idx2_history_user_bhv on history_user_bhv (time, bhv_type, bhv_name)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS list_user_bhv ("
-				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER, blocked_time INTEGER, favorates INTEGER, favorates_time INTEGER"
+				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER, blocked_time INTEGER, favorates INTEGER, favorates_time INTEGER, "
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS matched_result ("
