@@ -85,7 +85,7 @@ public class OrdinaryUserBhv extends ViewableUserBhv implements Comparable<Ordin
 	}
 	
 	@Override
-	public int getNotibarContainerId() {
+	public Integer getNotibarContainerId() {
 		return R.id.noti_ordinary_container;
 	}
 }

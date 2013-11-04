@@ -41,9 +41,4 @@ public class BlockedUserBhv extends ViewableUserBhv implements Comparable<Blocke
 		
 		return _viewMsg;
 	}
-	
-	@Override
-	public int getNotibarContainerId() {
-		return 0;
-	}
 }

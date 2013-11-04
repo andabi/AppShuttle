@@ -59,7 +59,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 	}
 	
 	@Override
-	public int getNotibarContainerId() {
+	public Integer getNotibarContainerId() {
 		return R.id.noti_favorates_container;
 	}
 }

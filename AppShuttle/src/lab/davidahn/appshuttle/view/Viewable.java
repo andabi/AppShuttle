@@ -9,5 +9,5 @@ public interface Viewable {
 	public String getBhvNameText();
 	public String getViewMsg();
 	public Intent getLaunchIntent();
-	public int getNotibarContainerId();
+	public Integer getNotibarContainerId();
 }

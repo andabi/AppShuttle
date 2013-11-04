@@ -74,14 +74,18 @@ public class NotiBarNotifier {
 						cxt.getResources().getDimension(R.dimen.notibar_text_size));
 			}
 			
-			notiRemoteView.addView(viewableUserBhv.getNotibarContainerId(), notiElemRemoteView);
+			Integer notibarContainerId = viewableUserBhv.getNotibarContainerId();
+			if(notibarContainerId == null)
+				continue;
+			
+			notiRemoteView.addView(notibarContainerId, notiElemRemoteView);
 		}
 
 		return notiRemoteView;
 	}
 	
 	public int getNumElem() {
-		int maxNumElem = cxt.getPreferenceSettings().getInt("viewer.noti.max_num_elem", Integer.MAX_VALUE);
+		int maxNumElem = cxt.getPreferenceSettings().getInt("viewer.noti.max_num_ordinary", 8);
 		int NotibarIconAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_icon_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
 		int NotibarBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_bhv_area_width) / 

@@ -154,7 +154,7 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 	}
 
 	@Override
-	public int getNotibarContainerId() {
-		return 0;
+	public Integer getNotibarContainerId() {
+		return null;
 	}
 }
