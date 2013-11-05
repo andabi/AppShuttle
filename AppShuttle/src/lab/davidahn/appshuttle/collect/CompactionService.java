@@ -38,7 +38,7 @@ public class CompactionService extends IntentService {
 
 		long expirationDuration = preferenceSettings.getLong("service.compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
 		Date expirationBoundTimeDate = new Date(_currUserCxt.getTimeDate().getTime() - expirationDuration);
-
+		
 		compactHistoryUserBhv(expirationBoundTimeDate);
 		compactHistoryUserEnv(expirationBoundTimeDate);
 		

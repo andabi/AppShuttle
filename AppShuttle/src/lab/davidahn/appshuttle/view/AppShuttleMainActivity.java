@@ -60,8 +60,8 @@ public class AppShuttleMainActivity extends Activity {
 				FavoratesBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(android.R.drawable.ic_menu_delete),
 				BlockedBhvFragment.class, null);
-//		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
-//				InfoFragment.class, null);
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
+				InfoFragment.class, null);
 
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
