@@ -40,7 +40,7 @@
         android:layout_height="48dp"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:gravity="left|center_vertical"
+        android:gravity="right|center_vertical"
         android:orientation="horizontal" >
     </LinearLayout>
 
