@@ -87,8 +87,9 @@ public class AppShuttleSettings {
 		editor.putInt("matcher.loc.distance_tolerance", 100);
 
 		//view
-		editor.putInt("viewer.noti.max_num_elem", Integer.MAX_VALUE);
-
+		editor.putInt("viewer.noti.max_num_ordinary", 8);
+		editor.putInt("viewer.noti.max_num_favorates", 3);
+		
 		editor.commit();
 	}
 }

@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import lab.davidahn.appshuttle.view.BlockedUserBhv;
+import lab.davidahn.appshuttle.view.FavoratesUserBhv;
+import lab.davidahn.appshuttle.view.OrdinaryUserBhv;
+
 /**
  * 
  * @author andabi

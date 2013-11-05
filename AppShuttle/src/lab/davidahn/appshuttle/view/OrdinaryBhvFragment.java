@@ -3,7 +3,6 @@ package lab.davidahn.appshuttle.view;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.OrdinaryUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import android.app.ListFragment;
 import android.content.Context;

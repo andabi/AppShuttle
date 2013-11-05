@@ -51,7 +51,8 @@ public class NotiBarNotifier {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 
 		//clean
-		notiRemoteView.removeAllViews(R.id.noti_elem_container);
+		notiRemoteView.removeAllViews(R.id.noti_ordinary_container);
+		notiRemoteView.removeAllViews(R.id.noti_favorates_container);
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 
@@ -73,14 +74,18 @@ public class NotiBarNotifier {
 						cxt.getResources().getDimension(R.dimen.notibar_text_size));
 			}
 			
-			notiRemoteView.addView(R.id.noti_elem_container, notiElemRemoteView);
+			Integer notibarContainerId = viewableUserBhv.getNotibarContainerId();
+			if(notibarContainerId == null)
+				continue;
+			
+			notiRemoteView.addView(notibarContainerId, notiElemRemoteView);
 		}
 
 		return notiRemoteView;
 	}
 	
 	public int getNumElem() {
-		int maxNumElem = cxt.getPreferenceSettings().getInt("viewer.noti.max_num_elem", Integer.MAX_VALUE);
+		int maxNumElem = cxt.getPreferenceSettings().getInt("viewer.noti.max_num_ordinary", 8);
 		int NotibarIconAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_icon_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
 		int NotibarBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_bhv_area_width) / 

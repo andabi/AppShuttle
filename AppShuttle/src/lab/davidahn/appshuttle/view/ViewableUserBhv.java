@@ -152,4 +152,9 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		
 		return _launchIntent;
 	}
+
+	@Override
+	public Integer getNotibarContainerId() {
+		return null;
+	}
 }
