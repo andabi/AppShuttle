@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/unfavorates"
+        android:icon="@drawable/ic_menu_emoticons"
+        android:showAsAction="always|withText"
+        android:title="@string/unfavorates"/>
+    
+    <item
+	    android:id="@+id/favorates_notify"
+	    android:showAsAction="always|withText"
+	    android:icon="@drawable/ic_audio_alarm"
+	    android:title="@string/favorates_notify"/>
+
+</menu>
