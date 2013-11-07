@@ -31,7 +31,7 @@ public class UserBhvManager {
 
 		_favoratesBhvSet = new HashSet<FavoratesUserBhv>();
 		_favoratesBhvSet.addAll(_userBhvDao.retrieveFavoratesUserBhv());
-
+		
 		_blockedBhvSet = new HashSet<BlockedUserBhv>();
 		_blockedBhvSet.addAll(_userBhvDao.retrieveBlockedUserBhv());
 		
@@ -110,9 +110,7 @@ public class UserBhvManager {
 		BlockedUserBhv blockedUserBhv = new BlockedUserBhv(uBhv, currTime);
 		
 		_userBhvDao.block(blockedUserBhv);
-
 		_blockedBhvSet.add(blockedUserBhv);
-
 		_ordinaryBhvSet.remove(uBhv);
 	}
 	
@@ -122,9 +120,7 @@ public class UserBhvManager {
 			return ;
 
 		_userBhvDao.unblock(uBhv);
-
 		_blockedBhvSet.remove(uBhv);
-		
 		_ordinaryBhvSet.add(new OrdinaryUserBhv(uBhv.getUserBhv()));
 	}
 	
@@ -138,9 +134,7 @@ public class UserBhvManager {
 		FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, currTime);
 		
 		_userBhvDao.favorates(favoratesUserBhv);
-
 		_favoratesBhvSet.add(favoratesUserBhv);
-
 		_ordinaryBhvSet.remove(uBhv);
 	}
 	
@@ -149,10 +143,9 @@ public class UserBhvManager {
 				_ordinaryBhvSet.contains(uBhv))
 			return ;
 
+		uBhv.setNotNotifiable();
 		_userBhvDao.unfavorates(uBhv);
-
 		_favoratesBhvSet.remove(uBhv);
-		
 		_ordinaryBhvSet.add(new OrdinaryUserBhv(uBhv.getUserBhv()));
 	}
 }

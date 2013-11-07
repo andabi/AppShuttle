@@ -23,4 +23,10 @@
     <string name="action_msg_unfavorates">return</string>
     <string name="action_msg_block">blocked!</string>
     <string name="action_msg_unblock">unblocked</string>
+    <string name="favorates_notify">notify</string>
+    <string name="favorates_not_notify">not notify</string>
+    <string name="action_msg_favorates_notifiable">making notifiable</string>
+    <string name="action_msg_favorates_not_notifiable">making not notifiable</string>
+    <string name="action_msg_favorates_notifiable_failure">limited</string>
+    
 </resources>

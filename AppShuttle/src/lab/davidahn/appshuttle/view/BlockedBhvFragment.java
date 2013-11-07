@@ -115,7 +115,7 @@ public class BlockedBhvFragment extends ListFragment {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.blocked_bhv_action_mode, menu);
+			inflater.inflate(R.menu.blocked_actionmode, menu);
 			return true;
 		}
 		

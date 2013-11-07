@@ -126,10 +126,13 @@ public class UserBhvDao {
 			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
 			long setTime = cur.getLong(6);
+			boolean isNotifiable = (cur.getInt(7) == 1) ? true : false;
 			
 			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			((BaseUserBhv)uBhv).setMetas(metas);
 			FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, setTime);
+			if(isNotifiable)
+				favoratesUserBhv.trySetNotifiable();
 			res.add(favoratesUserBhv);
 		}
 		cur.close();
@@ -138,9 +141,10 @@ public class UserBhvDao {
 	}
 	
 	public void favorates(FavoratesUserBhv uBhv) {
+		int notifiable = (uBhv.isNotifiable()) ? 1 : 0;
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
-				"SET favorates = 1, favorates_time = " + uBhv.getSetTime() + " " +
+				"SET favorates = 1, favorates_time = " + uBhv.getSetTime() + " , is_notifiable = " + notifiable + " " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
@@ -148,7 +152,7 @@ public class UserBhvDao {
 	public void unfavorates(FavoratesUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
-				"SET favorates = 0 " +
+				"SET favorates = 0, is_notifiable = 0 " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}

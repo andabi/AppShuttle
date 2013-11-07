@@ -3,7 +3,6 @@ package lab.davidahn.appshuttle.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.IntentService;
@@ -35,12 +34,16 @@ public class UpdateService extends IntentService {
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
 		
 		int numElem = notifier.getNumElem();
-		List<FavoratesUserBhv> favoratesBhvList = new ArrayList<FavoratesUserBhv>(UserBhvManager.getInstance().getFavoratesBhvSetSorted());
-		int numFavoratesElem = Math.min(favoratesBhvList.size(), 
-				Math.min(numElem, AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_favorates", 3)));
+		List<FavoratesUserBhv> notifiableFavoratesBhvList = new ArrayList<FavoratesUserBhv>();
+		for(FavoratesUserBhv uBhv : UserBhvManager.getInstance().getFavoratesBhvSetSorted()) {
+			if(uBhv.isNotifiable())
+				notifiableFavoratesBhvList.add(uBhv);
+		}
+		
+		int numFavoratesElem = Math.min(notifiableFavoratesBhvList.size(), numElem);
 		int numOrdinaryElem = numElem - numFavoratesElem;
 		
-		viewableUserBhvList.addAll(favoratesBhvList.subList(0, numFavoratesElem));
+		viewableUserBhvList.addAll(notifiableFavoratesBhvList.subList(0, numFavoratesElem));
 		viewableUserBhvList.addAll(OrdinaryUserBhv.getExtractedViewListSorted(numOrdinaryElem));
 		
 		notifier.updateNotiView(viewableUserBhvList);

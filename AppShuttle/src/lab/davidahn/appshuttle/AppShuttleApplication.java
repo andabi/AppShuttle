@@ -17,6 +17,7 @@ public class AppShuttleApplication extends Application {
 	public static SnapshotUserCxt currUserCxt;
 //	public static Set<BaseUserBhv> recentPredictedBhvSet;
 	public static Map<UserBhv, PredictionInfo> recentPredictionInfoMap ;
+	public static int currNumFavoratesNotifiable;
 
 	public AppShuttleApplication(){}
 

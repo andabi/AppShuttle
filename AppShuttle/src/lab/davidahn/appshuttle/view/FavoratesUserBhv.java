@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.mine.matcher.MatcherType;
@@ -14,16 +15,52 @@ import lab.davidahn.appshuttle.mine.matcher.Predictor;
 
 public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<FavoratesUserBhv> {
 	private long _setTime;
+	private boolean _isNotifiable;
 	
 	public FavoratesUserBhv(UserBhv uBhv, long setTime){
 		super(uBhv);
 		_setTime = setTime;
+		_isNotifiable = false;
+		
+		trySetNotifiable();
 	}
+	
+//	public FavoratesUserBhv(UserBhv uBhv, long setTime, boolean isNotifiable){
+//		super(uBhv);
+//		_setTime = setTime;
+//		_isNotifiable = isNotifiable;
+//	}
 
 	public long getSetTime() {
 		return _setTime;
 	}
 	
+	public synchronized boolean isNotifiable() {
+		return _isNotifiable;
+	}
+
+	public synchronized boolean trySetNotifiable() {
+		if(_isNotifiable)
+			return true;
+		
+		int notiMaxNumFavorates = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_favorates", 3);
+		if(AppShuttleApplication.currNumFavoratesNotifiable < notiMaxNumFavorates) {
+			_isNotifiable = true;
+			AppShuttleApplication.currNumFavoratesNotifiable++;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public synchronized void setNotNotifiable() {
+		if(!_isNotifiable)
+			return ;
+		
+		_isNotifiable = false;
+		AppShuttleApplication.currNumFavoratesNotifiable--;
+	}
+
 	@Override
 	public int compareTo(FavoratesUserBhv uBhv) {
 		if(_setTime > uBhv._setTime)

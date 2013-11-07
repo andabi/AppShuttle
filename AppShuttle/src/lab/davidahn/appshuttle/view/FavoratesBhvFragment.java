@@ -105,7 +105,11 @@ public class FavoratesBhvFragment extends ListFragment {
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
 			secondLineView.setText(favoratesUserBhv.getViewMsg());
-
+			
+			ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_item_image_rightside);
+			if(favoratesUserBhv.isNotifiable())
+				rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_audio_alarm));
+			
 			return itemView;
 		}
 	}
@@ -114,8 +118,14 @@ public class FavoratesBhvFragment extends ListFragment {
 		
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//			int pos = (Integer)mode.getTag();
+
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.favorates_bhv_action_mode, menu);
+//			if(favoratesBhvList.get(pos).isNotifiable())
+				inflater.inflate(R.menu.favorates_notifiable_actionmode, menu);
+//			else
+//				inflater.inflate(R.menu.favorates_not_notifiable_actionmode, menu);
+			
 			return true;
 		}
 		
@@ -131,18 +141,38 @@ public class FavoratesBhvFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			int position = (Integer)mode.getTag();
+			int pos = (Integer)mode.getTag();
 
-			if(favoratesBhvList.size() < position + 1)
+			if(favoratesBhvList.size() < pos + 1)
 				return false;
 			
 			String actionMsg = "";
 			UserBhvManager uBhvManager = UserBhvManager.getInstance();
 
+			FavoratesUserBhv favoratesUBhv = favoratesBhvList.get(pos);
 			switch(item.getItemId()) {
 			case R.id.unfavorates:
-				uBhvManager.unfavorates((FavoratesUserBhv)(favoratesBhvList.get(position)));
+				uBhvManager.unfavorates(favoratesUBhv);
 				actionMsg = getResources().getString(R.string.action_msg_unfavorates);
+				break;
+			case R.id.favorates_not_notify:
+				
+				if(!favoratesUBhv.isNotifiable())
+					return true;
+				
+				favoratesUBhv.setNotNotifiable();
+				actionMsg = getResources().getString(R.string.action_msg_favorates_not_notifiable);
+				break;
+			case R.id.favorates_notify:
+				
+				if(favoratesUBhv.isNotifiable())
+					return true;
+
+				boolean isSuccess = favoratesUBhv.trySetNotifiable();
+				if(isSuccess)
+					actionMsg = getResources().getString(R.string.action_msg_favorates_notifiable);
+				else
+					actionMsg = getResources().getString(R.string.action_msg_favorates_notifiable_failure);
 				break;
 			default:
 				;

@@ -118,7 +118,7 @@ public class OrdinaryBhvFragment extends ListFragment {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.predicted_bhv_action_mode, menu);
+			inflater.inflate(R.menu.predicted_actionmode, menu);
 			return true;
 		}
 		
