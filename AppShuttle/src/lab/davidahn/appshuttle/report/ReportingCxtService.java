@@ -19,7 +19,7 @@ public class ReportingCxtService extends IntentService {
 	
 	public void onCreate(){
 		super.onCreate();
-		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
+		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		handler = new Handler();
 //		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 //		SharedPreferences preferenceSettings = ((AppShuttleApplication)getApplicationContext()).getPreferenceSettings();

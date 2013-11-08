@@ -16,7 +16,7 @@ public class BaseBhvCollector implements BhvCollector {
 
 	public BaseBhvCollector(){
 		_appShuttleContext = AppShuttleApplication.getContext();
-		_preferenceSettings = _appShuttleContext.getPreferenceSettings();
+		_preferenceSettings = _appShuttleContext.getPreferences();
 //		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 

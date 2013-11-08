@@ -6,16 +6,14 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
-	private SharedPreferences _preferenceSettings;
 	
 	public static long launchTime;
 	public static SnapshotUserCxt currUserCxt;
-//	public static Set<BaseUserBhv> recentPredictedBhvSet;
 	public static Map<UserBhv, PredictionInfo> recentPredictionInfoMap ;
 	public static int currNumFavoratesNotifiable;
 
@@ -24,15 +22,14 @@ public class AppShuttleApplication extends Application {
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();
-		_preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 	}
 	
 	public static AppShuttleApplication getContext(){
 		return instance;
 	}
 	
-	public SharedPreferences getPreferenceSettings(){
-		return _preferenceSettings;
+	public SharedPreferences getPreferences(){
+		return PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
 //	public List<PredictedBhvInfo> getRecentPredictedBhvInfoList() {

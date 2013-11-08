@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 
 
 public class AppShuttleSettings {
-	public static void preferenceSettings() {
+	public static void setDefaultPreferences() {
 //		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
-		SharedPreferences.Editor editor = preferenceSettings.edit();
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		SharedPreferences.Editor editor = pref.edit();
 		
 		//general
 //		editor.putString("database.name", new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
@@ -20,15 +20,14 @@ public class AppShuttleSettings {
 		editor.putBoolean("service.collection.enabled", true);
 		editor.putLong("service.collection.period", 30000);
 		
-		editor.putBoolean("service.view.enabled", true);
-		editor.putLong("service.view.period", 300000);
-		
 		editor.putBoolean("service.report.enabled", false);
 		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
 		
 		editor.putBoolean("service.compaction.enabled", true);
 		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
 		editor.putLong("service.compaction.expiration", 35 * AlarmManager.INTERVAL_DAY);
+
+		editor.putLong("service.update.period", 300000);
 
 		//collection
 		editor.putLong("collection.location.tolerance.time", 300000);
@@ -65,14 +64,14 @@ public class AppShuttleSettings {
 		editor.putFloat("matcher.weak_time.min_inverse_entropy", Float.MIN_VALUE);
 		editor.putInt("matcher.weak_time.min_num_cxt", 3);
 		editor.putLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
-		editor.putLong("matcher.weak_time.tolerance", preferenceSettings.getLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
+		editor.putLong("matcher.weak_time.tolerance", pref.getLong("matcher.weak_time.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
 		
 		editor.putLong("matcher.strict_time.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.strict_time.min_likelihood", 0.5f);
 		editor.putFloat("matcher.strict_time.min_inverse_entropy", Float.MIN_VALUE);
 		editor.putInt("matcher.strict_time.min_num_cxt", 3);
 		editor.putLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
-		editor.putLong("matcher.strict_time.tolerance", preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
+		editor.putLong("matcher.strict_time.tolerance", pref.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
 		
 		editor.putLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.place.min_likelihood", 0.7f);
@@ -87,6 +86,7 @@ public class AppShuttleSettings {
 		editor.putInt("matcher.loc.distance_tolerance", 100);
 
 		//view
+//		editor.putBoolean("noti.view.enabled", true);
 		editor.putInt("viewer.noti.max_num_ordinary", 8);
 		editor.putInt("viewer.noti.max_num_favorates", 8);
 		

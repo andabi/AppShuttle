@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
+import lab.davidahn.appshuttle.AppShuttleSettings;
 import lab.davidahn.appshuttle.R;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -15,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
@@ -34,8 +36,11 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if(!AppShuttleApplication.getContext().getPreferenceSettings().getBoolean("mode.debug", false))
+		if(!AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
+
+		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+		AppShuttleSettings.setDefaultPreferences();
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
@@ -61,7 +66,7 @@ public class AppShuttleMainActivity extends Activity {
 		mTabsAdapter.addTab(bar.newTab().setIcon(android.R.drawable.ic_menu_delete),
 				BlockedBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
-				InfoFragment.class, null);
+				SettingsFragment.class, null);
 
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));

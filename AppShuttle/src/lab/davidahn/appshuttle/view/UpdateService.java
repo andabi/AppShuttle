@@ -1,11 +1,10 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 public class UpdateService extends IntentService {
 	public UpdateService() {
@@ -27,19 +26,13 @@ public class UpdateService extends IntentService {
 		
 		OrdinaryUserBhv.extractViewListSorted();
 
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
 		NotiBarNotifier notifier = new NotiBarNotifier();
-		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
+		if(pref.getBoolean("noti.view.enabled", true))
+			notifier.updateNotibar();
+		else
+			notifier.hideNotibar();
 		
-		int numElem = notifier.getNumElem();
-		List<FavoratesUserBhv> notifiableFavoratesBhvList = FavoratesUserBhv.getNotifiableFavoratesBhvList();
-		int numFavoratesElem = Math.min(notifiableFavoratesBhvList.size(), numElem);
-		int numOrdinaryElem = numElem - numFavoratesElem;
-		
-		viewableUserBhvList.addAll(notifiableFavoratesBhvList.subList(0, numFavoratesElem));
-		viewableUserBhvList.addAll(OrdinaryUserBhv.getExtractedViewListSorted(numOrdinaryElem));
-		
-		notifier.updateNotiView(viewableUserBhvList);
-
 		Intent refreshIntent = new Intent().setAction("lab.davidahn.appshuttle.REFRESH");
 		sendBroadcast(refreshIntent);
 	}

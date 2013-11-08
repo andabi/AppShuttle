@@ -34,7 +34,7 @@ public class CompactionService extends IntentService {
 	}
 	
 	public void onHandleIntent(Intent intent){
-		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 
 		long expirationDuration = preferenceSettings.getLong("service.compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
 		Date expirationBoundTimeDate = new Date(_currUserCxt.getTimeDate().getTime() - expirationDuration);

@@ -44,7 +44,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		if(_isNotifiable)
 			return true;
 		
-		int notiMaxNumFavorates = AppShuttleApplication.getContext().getPreferenceSettings().getInt("viewer.noti.max_num_favorates", 3);
+		int notiMaxNumFavorates = AppShuttleApplication.getContext().getPreferences().getInt("viewer.noti.max_num_favorates", 3);
 		if(AppShuttleApplication.currNumFavoratesNotifiable < notiMaxNumFavorates) {
 			_isNotifiable = true;
 			AppShuttleApplication.currNumFavoratesNotifiable++;

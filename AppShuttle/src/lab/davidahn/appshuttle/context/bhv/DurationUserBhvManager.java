@@ -22,7 +22,7 @@ public class DurationUserBhvManager {
 	private static DurationUserBhvManager durationUserBhvManager = new DurationUserBhvManager();
 	private DurationUserBhvManager() {
 //		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		_preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
+		_preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 
 		_durationUserBhvDao = DurationUserBhvDao.getInstance();
 		_cacheSize = _preferenceSettings.getInt("context.bhv.duration_user_bhv.cache_size", 100);

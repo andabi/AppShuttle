@@ -16,7 +16,7 @@ public abstract class BaseEnvSensor implements EnvSensor {
 
 	public BaseEnvSensor(){
 		_appShuttleContext = AppShuttleApplication.getContext();
-		_preferenceSettings = _appShuttleContext.getPreferenceSettings();
+		_preferenceSettings = _appShuttleContext.getPreferences();
 //		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 	

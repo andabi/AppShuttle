@@ -25,7 +25,7 @@ public class Reporter {
 
 	public Reporter(Handler handler){
 		_appShuttleContext = AppShuttleApplication.getContext();
-		_preferenceSettings = _appShuttleContext.getPreferenceSettings();
+		_preferenceSettings = _appShuttleContext.getPreferences();
 		_handler = handler;
 		_accountManager = AccountManager.get(_appShuttleContext);
 	}

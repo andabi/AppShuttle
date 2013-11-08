@@ -20,7 +20,7 @@ public class Predictor {
 	private static Predictor predictor = new Predictor();
 	private Predictor(){
 //		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		_preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
+		_preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 	}
 	public static Predictor getInstance() {
 		return predictor;

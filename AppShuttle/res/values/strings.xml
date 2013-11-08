@@ -28,5 +28,7 @@
     <string name="action_msg_favorates_notifiable">making notifiable</string>
     <string name="action_msg_favorates_not_notifiable">making not notifiable</string>
     <string name="action_msg_favorates_notifiable_failure">limited</string>
+    <string name="noti_view_enabled">Visible on notification bar</string>
+    <string name="noti_view_enabled_summ">make the apps visible on notification bar</string>
     
 </resources>

@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -33,8 +34,26 @@ public class NotiBarNotifier {
 //		private NotificationManager _notificationManager;
 	}
 	
+	public void updateNotibar() {
+		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
+		
+		int numElem = getNumElem();
+		List<FavoratesUserBhv> notifiableFavoratesBhvList = FavoratesUserBhv.getNotifiableFavoratesBhvList();
+		int numFavoratesElem = Math.min(notifiableFavoratesBhvList.size(), numElem);
+		int numOrdinaryElem = numElem - numFavoratesElem;
+		
+		viewableUserBhvList.addAll(notifiableFavoratesBhvList.subList(0, numFavoratesElem));
+		viewableUserBhvList.addAll(OrdinaryUserBhv.getExtractedViewListSorted(numOrdinaryElem));
+		
+		updateNotiView(viewableUserBhvList);
+	}
+	
+	public void hideNotibar() {
+		_notificationManager.cancel(UPDATE_NOTI_VIEW);
+	}
+	
 	@SuppressLint("NewApi")
-	public <T extends UserBhv & Viewable> void updateNotiView(List<T> viewableUserBhv) {
+	private <T extends UserBhv & Viewable> void updateNotiView(List<T> viewableUserBhv) {
 		RemoteViews notiView = createNotiRemoteViews(viewableUserBhv);
 
 		Notification notiUpdate = new Notification.Builder(cxt)
@@ -85,7 +104,7 @@ public class NotiBarNotifier {
 	}
 	
 	public int getNumElem() {
-		int maxNumElem = cxt.getPreferenceSettings().getInt("viewer.noti.max_num_ordinary", 8);
+		int maxNumElem = cxt.getPreferences().getInt("viewer.noti.max_num_ordinary", 8);
 		int NotibarIconAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_icon_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
 		int NotibarBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_bhv_area_width) / 

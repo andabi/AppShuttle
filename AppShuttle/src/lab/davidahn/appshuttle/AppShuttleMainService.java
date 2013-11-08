@@ -30,9 +30,8 @@ public class AppShuttleMainService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		AppShuttleSettings.preferenceSettings();
 //		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
-		preferenceSettings = AppShuttleApplication.getContext().getPreferenceSettings();
+		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
@@ -69,11 +68,10 @@ public class AppShuttleMainService extends Service {
 	}
 	
 	private void startRepeatingUpdateBroadCast() {
-		if(preferenceSettings.getBoolean("service.view.enabled", true)){
-			Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE");
-			notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.view.period", 300000), notiViewOperation);
-		}
+//		if(preferenceSettings.getBoolean("service.view.enabled", true)){
+		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE");
+		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.update.period", 300000), notiViewOperation);
 	}
 	
 	private void stopRepeatingUpdateBroadCast() {
