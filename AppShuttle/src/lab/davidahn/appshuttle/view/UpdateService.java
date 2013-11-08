@@ -16,11 +16,11 @@ public class UpdateService extends IntentService {
 
 	public void onCreate(){
 		super.onCreate();
-//		layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 	}
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
+
 		Predictor predictor = Predictor.getInstance();
 		predictor.predict();
 		
@@ -33,7 +33,7 @@ public class UpdateService extends IntentService {
 		else
 			notifier.hideNotibar();
 		
-		Intent refreshIntent = new Intent().setAction("lab.davidahn.appshuttle.REFRESH");
-		sendBroadcast(refreshIntent);
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
 	}
 }

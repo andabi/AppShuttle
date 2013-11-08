@@ -19,6 +19,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.bugsense.trace.BugSenseHandler;
 
@@ -29,6 +33,20 @@ public class AppShuttleMainActivity extends Activity {
 	BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
     		mTabsAdapter.notifyDataSetChanged();
+        }
+    };
+    
+	BroadcastReceiver progressVisibleReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+    		ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
+			progress.setVisibility(View.VISIBLE);
+        }
+    };
+    
+	BroadcastReceiver progressInvisibleReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+    		ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
+    		progress.setVisibility(View.INVISIBLE);
         }
     };
     
@@ -47,6 +65,14 @@ public class AppShuttleMainActivity extends Activity {
 		filter.addAction("lab.davidahn.appshuttle.REFRESH");
 		registerReceiver(refreshReceiver, filter);
 		
+		filter = new IntentFilter();
+		filter.addAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE");
+		registerReceiver(progressVisibleReceiver, filter);
+
+		filter = new IntentFilter();
+		filter.addAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE");
+		registerReceiver(progressInvisibleReceiver, filter);
+
 		mViewPager = new ViewPager(this);
 		mViewPager.setId(R.id.pager);
 		
@@ -57,7 +83,7 @@ public class AppShuttleMainActivity extends Activity {
 		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
-		Bundle bundle = new Bundle();
+		Bundle bundle = new Bundle(); 
 		bundle.putString("tag", "predicted");
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_emoticons),
 				OrdinaryBhvFragment.class, bundle);
@@ -81,9 +107,22 @@ public class AppShuttleMainActivity extends Activity {
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
 	}
 	
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(refreshReceiver);
+		unregisterReceiver(progressVisibleReceiver);
+		unregisterReceiver(progressInvisibleReceiver);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.actionbarmenu, menu);
+		
+		return true;
 	}
 	
 	public static class TabsAdapter extends FragmentPagerAdapter implements

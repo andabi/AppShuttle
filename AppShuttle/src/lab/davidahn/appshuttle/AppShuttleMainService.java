@@ -30,7 +30,6 @@ public class AppShuttleMainService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-//		preferenceSettings = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 
 		IntentFilter filter = new IntentFilter();
@@ -68,7 +67,6 @@ public class AppShuttleMainService extends Service {
 	}
 	
 	private void startRepeatingUpdateBroadCast() {
-//		if(preferenceSettings.getBoolean("service.view.enabled", true)){
 		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE");
 		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
 		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.update.period", 300000), notiViewOperation);
@@ -134,6 +132,7 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver updateReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
 			context.startService(new Intent(context, UpdateService.class));
 		}
 	};
