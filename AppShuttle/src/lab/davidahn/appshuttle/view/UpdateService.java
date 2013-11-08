@@ -3,7 +3,6 @@ package lab.davidahn.appshuttle.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 import android.app.IntentService;
 import android.content.Intent;
@@ -24,22 +23,15 @@ public class UpdateService extends IntentService {
 	@Override
 	public void onHandleIntent(Intent intent) {
 		Predictor predictor = Predictor.getInstance();
-		
 		predictor.predict();
 		
 		OrdinaryUserBhv.extractViewListSorted();
 
 		NotiBarNotifier notifier = new NotiBarNotifier();
-		
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
 		
 		int numElem = notifier.getNumElem();
-		List<FavoratesUserBhv> notifiableFavoratesBhvList = new ArrayList<FavoratesUserBhv>();
-		for(FavoratesUserBhv uBhv : UserBhvManager.getInstance().getFavoratesBhvSetSorted()) {
-			if(uBhv.isNotifiable())
-				notifiableFavoratesBhvList.add(uBhv);
-		}
-		
+		List<FavoratesUserBhv> notifiableFavoratesBhvList = FavoratesUserBhv.getNotifiableFavoratesBhvList();
 		int numFavoratesElem = Math.min(notifiableFavoratesBhvList.size(), numElem);
 		int numOrdinaryElem = numElem - numFavoratesElem;
 		

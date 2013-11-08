@@ -28,7 +28,7 @@ public class AppShuttleSettings {
 		
 		editor.putBoolean("service.compaction.enabled", true);
 		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
-		editor.putLong("service.compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("service.compaction.expiration", 35 * AlarmManager.INTERVAL_DAY);
 
 		//collection
 		editor.putLong("collection.location.tolerance.time", 300000);
@@ -88,7 +88,7 @@ public class AppShuttleSettings {
 
 		//view
 		editor.putInt("viewer.noti.max_num_ordinary", 8);
-		editor.putInt("viewer.noti.max_num_favorates", 6);
+		editor.putInt("viewer.noti.max_num_favorates", 8);
 		
 		editor.commit();
 	}

@@ -160,7 +160,7 @@ public class FavoratesBhvFragment extends ListFragment {
 				if(!favoratesUBhv.isNotifiable())
 					return true;
 				
-				favoratesUBhv.setNotNotifiable();
+				FavoratesUserBhv.setNotNotifiable(favoratesUBhv);
 				actionMsg = getResources().getString(R.string.action_msg_favorates_not_notifiable);
 				break;
 			case R.id.favorates_notify:
@@ -168,7 +168,7 @@ public class FavoratesBhvFragment extends ListFragment {
 				if(favoratesUBhv.isNotifiable())
 					return true;
 
-				boolean isSuccess = favoratesUBhv.trySetNotifiable();
+				boolean isSuccess = FavoratesUserBhv.trySetNotifiable(favoratesUBhv);
 				if(isSuccess)
 					actionMsg = getResources().getString(R.string.action_msg_favorates_notifiable);
 				else

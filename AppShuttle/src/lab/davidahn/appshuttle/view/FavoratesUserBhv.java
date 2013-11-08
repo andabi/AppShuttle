@@ -7,6 +7,7 @@ import java.util.List;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.mine.matcher.MatcherType;
 import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
 import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
@@ -35,11 +36,11 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		return _setTime;
 	}
 	
-	public synchronized boolean isNotifiable() {
+	public boolean isNotifiable() {
 		return _isNotifiable;
 	}
 
-	public synchronized boolean trySetNotifiable() {
+	private boolean trySetNotifiable() {
 		if(_isNotifiable)
 			return true;
 		
@@ -53,7 +54,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		}
 	}
 	
-	public synchronized void setNotNotifiable() {
+	private void setNotNotifiable() {
 		if(!_isNotifiable)
 			return ;
 		
@@ -98,5 +99,22 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 	@Override
 	public Integer getNotibarContainerId() {
 		return R.id.noti_favorates_container;
+	}
+	
+	public static List<FavoratesUserBhv> getNotifiableFavoratesBhvList() {
+		List<FavoratesUserBhv> res = new ArrayList<FavoratesUserBhv>();
+		for(FavoratesUserBhv uBhv : UserBhvManager.getInstance().getFavoratesBhvSetSorted()) {
+			if(uBhv.isNotifiable())
+				res.add(uBhv);
+		}
+		return res;
+	}
+	
+	public synchronized static boolean trySetNotifiable(FavoratesUserBhv favoratesUserBhv) {
+		return favoratesUserBhv.trySetNotifiable();
+	}
+	
+	public synchronized static void setNotNotifiable(FavoratesUserBhv favoratesUserBhv) {
+		favoratesUserBhv.setNotNotifiable();
 	}
 }
