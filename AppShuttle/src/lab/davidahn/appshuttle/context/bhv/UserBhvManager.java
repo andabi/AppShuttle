@@ -143,7 +143,7 @@ public class UserBhvManager {
 				_ordinaryBhvSet.contains(uBhv))
 			return ;
 
-		uBhv.setNotNotifiable();
+		FavoratesUserBhv.setNotNotifiable(uBhv);
 		_userBhvDao.unfavorates(uBhv);
 		_favoratesBhvSet.remove(uBhv);
 		_ordinaryBhvSet.add(new OrdinaryUserBhv(uBhv.getUserBhv()));

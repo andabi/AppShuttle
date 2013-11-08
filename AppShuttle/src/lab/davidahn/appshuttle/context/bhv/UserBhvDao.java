@@ -132,7 +132,7 @@ public class UserBhvDao {
 			((BaseUserBhv)uBhv).setMetas(metas);
 			FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, setTime);
 			if(isNotifiable)
-				favoratesUserBhv.trySetNotifiable();
+				FavoratesUserBhv.trySetNotifiable(favoratesUserBhv);
 			res.add(favoratesUserBhv);
 		}
 		cur.close();

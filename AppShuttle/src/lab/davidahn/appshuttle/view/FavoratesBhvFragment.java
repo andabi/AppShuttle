@@ -108,7 +108,7 @@ public class FavoratesBhvFragment extends ListFragment {
 			
 			ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_item_image_rightside);
 			if(favoratesUserBhv.isNotifiable())
-				rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_audio_alarm));
+				rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_alarms));
 			
 			return itemView;
 		}
