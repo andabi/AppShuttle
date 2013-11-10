@@ -6,29 +6,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferences().getString("database.name", "AppShuttle.db");
-
+	private static final int DB_VERSION = 40;
+	
 	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
 	public static AppShuttleDBHelper getInstance() {
 		return dbHelper;
 	}
 
 	private AppShuttleDBHelper(Context cxt) {
-		super(cxt, DB_NAME, null, 40);
+		super(cxt, DB_NAME, null, DB_VERSION);
 	}
-	
-	private static final Patch[] patches = new Patch[]{
-		new Patch() {
-			public void apply(SQLiteDatabase db) {
-				
-			}
-			
-			public void revert(SQLiteDatabase db){
-				
-			}
-		}, new Patch() {
-			
-		}
-	};
 
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE IF NOT EXISTS history_user_env ("
@@ -63,23 +50,26 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("ALTER TABLE list_user_bhv "
-		+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
-		);
+		switch(oldVersion) {
+			case 38:
+				db.execSQL("ALTER TABLE list_user_bhv "
+						+ "ADD COLUMN blocked INTEGER DEFAULT 0"
+						);
+				db.execSQL("ALTER TABLE list_user_bhv "
+						+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
+						);
+				db.execSQL("ALTER TABLE list_user_bhv "
+						+ "ADD COLUMN favorates INTEGER DEFAULT 0"
+						);
+				db.execSQL("ALTER TABLE list_user_bhv "
+						+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
+						);
+			case 39:
+				db.execSQL("ALTER TABLE list_user_bhv "
+						+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
+						);
+		}
 
-//		db.execSQL("ALTER TABLE list_user_bhv "
-//				+ "ADD COLUMN blocked INTEGER DEFAULT 0"
-//				);
-//		db.execSQL("ALTER TABLE list_user_bhv "
-//				+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
-//				);
-//		db.execSQL("ALTER TABLE list_user_bhv "
-//				+ "ADD COLUMN favorates INTEGER DEFAULT 0"
-//				);
-//		db.execSQL("ALTER TABLE list_user_bhv "
-//				+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
-//				);
-//		
 //		db.execSQL("CREATE INDEX idx1_history_user_env on history_user_env (time)");
 //		db.execSQL("CREATE INDEX idx2_history_user_env on history_user_env (time, end_time, env_type)");
 		
@@ -97,8 +87,23 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 //		onCreate(db);
 	}
 	
-	private static class Patch {
-		public void apply(SQLiteDatabase db) {}
-		public void revert(SQLiteDatabase db) {}
-	}
+	
+//	private static final Patch[] patches = new Patch[]{
+//		new Patch() {
+//			public void apply(SQLiteDatabase db) {
+//				
+//			}
+//			
+//			public void revert(SQLiteDatabase db){
+//				
+//			}
+//		}, new Patch() {
+//			
+//		}
+//	};
+	
+//	private static class Patch {
+//		public void apply(SQLiteDatabase db) {}
+//		public void revert(SQLiteDatabase db) {}
+//	}
 }
