@@ -12,7 +12,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.layout.preferences);
+		addPreferencesFromResource(R.xml.preferences);
 	    getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 
