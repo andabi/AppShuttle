@@ -31,7 +31,7 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE INDEX idx2_history_user_bhv on history_user_bhv (time, bhv_type, bhv_name)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS list_user_bhv ("
-				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER, blocked_time INTEGER, favorates INTEGER, favorates_time INTEGER, is_notifiable INTEGER "
+				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER, blocked_time INTEGER, favorates INTEGER, favorates_time INTEGER, is_notifiable INTEGER, "
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS matched_result ("
@@ -50,24 +50,25 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		switch(oldVersion) {
-			case 38:
-				db.execSQL("ALTER TABLE list_user_bhv "
-						+ "ADD COLUMN blocked INTEGER DEFAULT 0"
-						);
-				db.execSQL("ALTER TABLE list_user_bhv "
-						+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
-						);
-				db.execSQL("ALTER TABLE list_user_bhv "
-						+ "ADD COLUMN favorates INTEGER DEFAULT 0"
-						);
-				db.execSQL("ALTER TABLE list_user_bhv "
-						+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
-						);
-			case 39:
-				db.execSQL("ALTER TABLE list_user_bhv "
-						+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
-						);
+		if(oldVersion <= 38) {
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN blocked INTEGER DEFAULT 0"
+					);
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
+					);
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN favorates INTEGER DEFAULT 0"
+					);
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
+					);
+		}
+		
+		if(oldVersion <= 39) {
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
+					);
 		}
 
 //		db.execSQL("CREATE INDEX idx1_history_user_env on history_user_env (time)");
