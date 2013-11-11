@@ -21,7 +21,7 @@ import lab.davidahn.appshuttle.context.env.UserLoc;
  * @author andabi
  *
  */
-public class LocContextMatcher extends TemplateContextMatcher {
+public class LocContextMatcher extends BaseMatcher {
 	int _toleranceInMeter;
 
 	public LocContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
@@ -208,7 +208,7 @@ public class LocContextMatcher extends TemplateContextMatcher {
 		return inverseEntropy;
 	}
 	
-	protected double computeScore(MatchedResult matchedResult) {
+	protected double computeScore(MatcherResult matchedResult) {
 		double likelihood = matchedResult.getLikelihood();
 		double inverseEntropy = matchedResult.getInverseEntropy();
 		

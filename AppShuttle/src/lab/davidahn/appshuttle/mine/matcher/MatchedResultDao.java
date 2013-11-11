@@ -18,7 +18,7 @@ public class MatchedResultDao {
 		return matchedResultDao;
 	}
 
-	public void storeMatchedResult(MatchedResult mCxt) {
+	public void storeMatchedResult(MatcherResult mCxt) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();

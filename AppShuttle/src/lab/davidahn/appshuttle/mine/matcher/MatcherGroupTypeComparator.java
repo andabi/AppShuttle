@@ -2,9 +2,9 @@ package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.Comparator;
 
-public class MatcherTypeComparator implements Comparator<MatcherType>
+public class MatcherGroupTypeComparator implements Comparator<MatcherGroupType>
 {
-	public int compare(MatcherType mt1, MatcherType mt2)
+	public int compare(MatcherGroupType mt1, MatcherGroupType mt2)
 	{
 		if(mt1.priority < mt2.priority)
 			return 1;

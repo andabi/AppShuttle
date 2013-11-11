@@ -9,9 +9,12 @@
     <string name="report_success_msg">Email was sent successfully</string>
     <string name="report_failure_msg">Email was not sent</string>
     <string name="app_icon">AppShuttle icon</string>
+    <string name="predict_freq_recent_msg">Frequency</string>
+    <string name="predict_recent_msg">recent</string>
+    <string name="predict_time_daily_msg">Time</string>
+    <string name="predict_time_daily_weekday_msg">Time, weekday</string>
     <string name="predict_place_msg">Place</string>
-    <string name="predict_time_msg">Time</string>
-    <string name="predict_freq_msg">Frequency</string>
+    <string name="predict_location_msg">Location</string>
     <string name="favorates">favorates</string>
     <string name="unfavorates">unfavorates</string>
     <string name="block">block</string>

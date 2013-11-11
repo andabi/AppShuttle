@@ -11,70 +11,72 @@ import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
-public class StrictTimeContextMatcher extends TemplateContextMatcher {
+import org.apache.commons.math3.distribution.NormalDistribution;
+
+public class TimeDailyContextMatcher extends BaseMatcher {
 	protected long _period;
 	protected long _tolerance;
 	protected long _acceptanceDelay;
-	
-	public StrictTimeContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+
+	public TimeDailyContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+		//TODO if tolerance is longer than 24h
 		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_period = period;
 		_tolerance = tolerance;
 		_acceptanceDelay = acceptanceDelay;
-		_matcherType = MatcherType.STRICT_TIME;
+		_matcherType = MatcherType.TIME_DAILY;
 	}
 
-//	protected List<RfdUserCxt> retrieveCxt(UserEnv uEnv){
-//		//TODO if tolerance is longer than 24h
-//		long time = uEnv.getTime().getTime();
-//		long validEndTime = time - period;
-//		List<RfdUserCxt> res = contextManager.retrieveRfdCxt(validEndTime - 3*AlarmManager.INTERVAL_DAY, validEndTime);
-//		return res;
-//	}
-	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
-		DurationUserBhv prevRfdUCxt = null;
-		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			if(prevRfdUCxt == null){
-				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-				mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
-				mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTimeDate());
-				mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
+		DurationUserBhv prevDurationUserBhv = null;
+		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			if(prevDurationUserBhv == null){
+				matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+				matcherCountUnitBuilder.setProperty("time", durationUserBhv.getTimeDate());
+				matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
+				matcherCountUnitBuilder.setProperty("timeZone", durationUserBhv.getTimeZone());
 			} else {
-				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTimeDate().getTime()
+				if(durationUserBhv.getTimeDate().getTime() - prevDurationUserBhv.getEndTimeDate().getTime()
 						< _acceptanceDelay){
-					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTimeDate());
+					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
 				} else {
-					res.add(mergedRfdUCxtBuilder.build());
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-					mergedRfdUCxtBuilder.setProperty("time", rfdUCxt.getTimeDate());
-					mergedRfdUCxtBuilder.setProperty("endTime", rfdUCxt.getEndTimeDate());
-					mergedRfdUCxtBuilder.setProperty("timeZone", rfdUCxt.getTimeZone());
+					res.add(matcherCountUnitBuilder.build());
+					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					matcherCountUnitBuilder.setProperty("time", durationUserBhv.getTimeDate());
+					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
+					matcherCountUnitBuilder.setProperty("timeZone", durationUserBhv.getTimeZone());
 				}
 			}
-			prevRfdUCxt = rfdUCxt;
+			prevDurationUserBhv = durationUserBhv;
 		}
 		
-		if(mergedRfdUCxtBuilder != null)
-			res.add(mergedRfdUCxtBuilder.build());
+		if(matcherCountUnitBuilder != null)
+			res.add(matcherCountUnitBuilder.build());
 		return res;
 	}
 	
 	@Override
-	protected double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
+	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		double relatedness = 0;
 		
 		long currTime = uCxt.getTimeDate().getTime();
 		long currTimePeriodic = currTime % _period;
-		long targetTime = ((Date) rfdUCxt.getProperty("time")).getTime();
+		long targetTime = ((Date) unit.getProperty("time")).getTime();
 		long targetTimePeriodic = targetTime % _period;
+		
+		long mean = currTimePeriodic;
+		long std = _tolerance / 2;
+		NormalDistribution nd = new NormalDistribution(mean, std);
 
-		if(Time.isBetween((currTimePeriodic - _tolerance) % _period, targetTimePeriodic, (currTimePeriodic + _tolerance) % _period, _period)){
-			relatedness = 1;
+		long start = (currTimePeriodic - _tolerance) % _period;
+		long end = (currTimePeriodic + _tolerance) % _period;
+				
+		if(Time.isBetween(start, targetTimePeriodic, end, _period)){
+			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
 			relatedness = 0;
 		}
@@ -118,7 +120,7 @@ public class StrictTimeContextMatcher extends TemplateContextMatcher {
 	}
 	
 	@Override
-	protected double computeScore(MatchedResult matchedResult) {
+	protected double computeScore(MatcherResult matchedResult) {
 		double likelihood = matchedResult.getLikelihood();
 		double inverseEntropy = matchedResult.getInverseEntropy();
 		double numRelatedCxt = 1.0 * matchedResult.getNumRelatedCxt();

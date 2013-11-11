@@ -15,7 +15,7 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 
-public class PlaceContextMatcher extends TemplateContextMatcher {
+public class PlaceContextMatcher extends BaseMatcher {
 	int _toleranceInMeter;
 
 	public PlaceContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
@@ -165,7 +165,7 @@ public class PlaceContextMatcher extends TemplateContextMatcher {
 		return inverseEntropy;
 	}
 	
-	protected double computeScore(MatchedResult matchedResult) {
+	protected double computeScore(MatcherResult matchedResult) {
 		double likelihood = matchedResult.getLikelihood();
 		double inverseEntropy = matchedResult.getInverseEntropy();
 		

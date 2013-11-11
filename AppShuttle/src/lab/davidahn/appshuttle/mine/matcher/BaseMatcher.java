@@ -13,7 +13,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public abstract class TemplateContextMatcher {
+public abstract class BaseMatcher implements Matcher {
 	protected MatcherType _matcherType;
 	protected double _minLikelihood;
 	protected double _minInverseEntropy;
@@ -21,11 +21,7 @@ public abstract class TemplateContextMatcher {
 	protected Date _time;
 	protected long _duration;
 	
-	protected MatcherType getMatcherType(){
-		return _matcherType;
-	}
-
-	public TemplateContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
+	public BaseMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
 		_time = time;
 		_duration = duration;
 		_minLikelihood = minLikelihood;
@@ -33,7 +29,13 @@ public abstract class TemplateContextMatcher {
 		_minNumCxt = minNumCxt;
 	}
 
-	public MatchedResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt, long noiseTimeTolerance){
+	@Override
+	public MatcherType getMatcherType(){
+		return _matcherType;
+	}
+	
+	@Override
+	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt/*, long noiseTimeTolerance*/){
 		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
 
 		Map<EnvType, UserEnv> uEnvs = currUCxt.getUserEnvs();
@@ -44,8 +46,8 @@ public abstract class TemplateContextMatcher {
 		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
-				continue;
+//			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
+//				continue;
 			pureRfdUCxtList.add(rfdUCxt);
 		}
 		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList, currUCxt);
@@ -77,7 +79,7 @@ public abstract class TemplateContextMatcher {
 		if(likelihood < _minLikelihood)
 			return null;
 		
-		MatchedResult matchedCxt = new MatchedResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), uEnvs);
+		MatcherResult matchedCxt = new MatcherResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), uEnvs);
 		matchedCxt.setUserBhv(uBhv);
 		matchedCxt.setMatcherType(getMatcherType());
 		matchedCxt.setNumTotalCxt(numTotalCxt);
@@ -109,8 +111,10 @@ public abstract class TemplateContextMatcher {
 		return inverseEntropy;
 	}
 	
-	protected abstract double computeScore(MatchedResult matchedResult);
+	protected abstract double computeScore(MatcherResult matchedResult);
+	
 	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
+	
 	protected abstract double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
 	
 //			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)

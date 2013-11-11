@@ -15,10 +15,10 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	private final Date _timeDate;
 	private final TimeZone _timeZone;
 	private final Map<EnvType, UserEnv> _uEnvs;
-	private final EnumMap<MatcherType, MatchedResult> _matchedResults;
+	private final EnumMap<MatcherGroupType, MatcherResult> _matchedResults;
 	private final double _score;
 	
-	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherType, MatchedResult> matchedResults, double score){
+	public PredictedBhv(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherGroupType, MatcherResult> matchedResults, double score){
 		_timeDate = time;
 		_timeZone = timeZone;
 		_uEnvs = userEnvs;
@@ -72,11 +72,11 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 		return _uBhv;
 	}
 
-	public Map<MatcherType, MatchedResult> getMatchedResultMap() {
+	public Map<MatcherGroupType, MatcherResult> getMatchedResultMap() {
 		return _matchedResults;
 	}
 	
-	public MatchedResult getMatchedResult(MatcherType matcherType) {
+	public MatcherResult getMatchedResult(MatcherGroupType matcherType) {
 		return _matchedResults.get(matcherType);
 	}
 

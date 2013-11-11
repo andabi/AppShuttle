@@ -22,20 +22,22 @@ public class PredictedBhvDao {
 		return predictedBhvInfoDao;
 	}
 
-	public void storePredictedBhv(PredictionInfo predictedBhvInfo) {
+	public void storePredictedBhv(PredictionInfo predictionInfo) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
-		row.put("time", predictedBhvInfo.getTime().getTime());
-		row.put("timezone", predictedBhvInfo.getTimeZone().getID());
-		row.put("user_envs", gson.toJson(predictedBhvInfo.getUserEnvMap()));
-		row.put("bhv_type", predictedBhvInfo.getUserBhv().getBhvType().toString());
-		row.put("bhv_name", predictedBhvInfo.getUserBhv().getBhvName());
-		row.put("score", predictedBhvInfo.getScore());
+		row.put("time", predictionInfo.getTime().getTime());
+		row.put("timezone", predictionInfo.getTimeZone().getID());
+		row.put("user_envs", gson.toJson(predictionInfo.getUserEnvMap()));
+		row.put("bhv_type", predictionInfo.getUserBhv().getBhvType().toString());
+		row.put("bhv_name", predictionInfo.getUserBhv().getBhvName());
+		row.put("score", predictionInfo.getScore());
 		_db.insert("predicted_bhv", null, row);
-
-		for(MatchedResult matchedRes : predictedBhvInfo.getMatchedResultMap().values()) {
-			_matchedResultDao.storeMatchedResult(matchedRes);
+		
+		for(MatcherGroupResult matcherGroupResult : predictionInfo.getMatcherGroupResultMap().values()) {
+			for(MatcherResult matchedResult : matcherGroupResult.getMatcherResultMap().values()) {
+				_matchedResultDao.storeMatchedResult(matchedResult);
+			}
 		}
 		
 //		Log.i("stored predicted bhv", predictedBhvInfo.toString());

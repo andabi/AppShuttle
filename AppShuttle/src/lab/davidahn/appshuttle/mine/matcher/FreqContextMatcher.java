@@ -8,12 +8,12 @@ import java.util.Map;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
-public class FreqContextMatcher extends TemplateContextMatcher{
+public class FreqContextMatcher extends BaseMatcher{
 	long _acceptanceDelay;
 	
 	public FreqContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
 		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
-		_matcherType = MatcherType.FREQUENCY;
+		_matcherType = MatcherType.FREQUENCY_RECENT;
 		_acceptanceDelay = acceptanceDelay;
 	}
 	
@@ -55,7 +55,7 @@ public class FreqContextMatcher extends TemplateContextMatcher{
 	}
 	
 	@Override
-	protected double computeScore(MatchedResult matchedResult) {
+	protected double computeScore(MatcherResult matchedResult) {
 		double likelihood = matchedResult.getLikelihood();
 		
 		double score = 1 + likelihood;

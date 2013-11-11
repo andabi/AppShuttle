@@ -31,87 +31,73 @@ public class Predictor {
 
 		if(currUserCxt == null)
 			return ;
-//			return Collections.emptyList();
 
 		Map<UserBhv, PredictionInfo> predicted = new HashMap<UserBhv, PredictionInfo>();
-//		PriorityQueue<PredictedBhvInfo> predicted = new PriorityQueue<PredictedBhvInfo>();
 
-		List<TemplateContextMatcher> cxtMatcherList = new ArrayList<TemplateContextMatcher>();
-		if(MatcherType.FREQUENCY.enabled){
-			cxtMatcherList.add(new FreqContextMatcher(
-					currUserCxt.getTimeDate()
-					, _preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
-					, 0.0
-					, 0.0
-					, _preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
-					, _preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
-					));
-		}
-		if(MatcherType.WEAK_TIME.enabled){
-			cxtMatcherList.add(new WeakTimeContextMatcher(
-					new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
-					, _preferenceSettings.getLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY)
-					, _preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.5f)
-					, _preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f)
-					, _preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
-					, AlarmManager.INTERVAL_DAY
-					, _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)
-					, _preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
-					));
-		}
-		if(MatcherType.STRICT_TIME.enabled){
-			cxtMatcherList.add(new StrictTimeContextMatcher(
-					new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6))
-					, _preferenceSettings.getLong("matcher.strict_time.duration", 6 * AlarmManager.INTERVAL_DAY)
-					, _preferenceSettings.getFloat("matcher.strict_time.min_likelihood", 0.3f)
-					, _preferenceSettings.getFloat("matcher.strict_time.min_inverse_entropy", 0.2f)
-					, _preferenceSettings.getInt("matcher.strict_time.min_num_cxt", 3)
-					, AlarmManager.INTERVAL_DAY
-					, _preferenceSettings.getLong("matcher.strict_time.tolerance", AlarmManager.INTERVAL_HOUR / 6)
-					, _preferenceSettings.getLong("matcher.strict_time.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3)
-					));
-		}
-		if(MatcherType.PLACE.enabled){
-			cxtMatcherList.add(new PlaceContextMatcher(
-					currUserCxt.getTimeDate()
-					, _preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
-					, _preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
-					, _preferenceSettings.getFloat("matcher.place.min_inverse_entropy", 0.3f)
-					, _preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
-					, _preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
-					));
-		}
-		if(MatcherType.LOCATION.enabled){
-			cxtMatcherList.add(new LocContextMatcher(
-					currUserCxt.getTimeDate()
-					, _preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
-					, _preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
-					, _preferenceSettings.getFloat("matcher.loc.min_inverse_entropy", 0.2f)
-					, _preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
-					, _preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
-					));
-		}
+		MatcherGroup freqMatcherGroup = new FreqMatcherGroup(MatcherGroupType.FREQUENCY, MatcherGroupType.FREQUENCY.priority);
+		MatcherGroup timeMatcherGroup = new TimeMatcherGroup(MatcherGroupType.TIME, MatcherGroupType.TIME.priority);
+		MatcherGroup locMatcherGroup = new LocMatcherGroup(MatcherGroupType.LOCATION, MatcherGroupType.LOCATION.priority);
+		
+		freqMatcherGroup.addMatcher(new FreqContextMatcher(
+				currUserCxt.getTimeDate()
+				, _preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY)
+				, 0.0
+				, 0.0
+				, _preferenceSettings.getInt("matcher.freq.min_num_cxt", 3)
+				, _preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
+				));
+		timeMatcherGroup.addMatcher(new TimeDailyContextMatcher(
+				new Date(currUserCxt.getTimeDate().getTime() - _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
+				, _preferenceSettings.getLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY)
+				, _preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.5f)
+				, _preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f)
+				, _preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3)
+				, AlarmManager.INTERVAL_DAY
+				, _preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6)
+				, _preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
+				));
+		locMatcherGroup.addMatcher(new PlaceContextMatcher(
+				currUserCxt.getTimeDate()
+				, _preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY)
+				, _preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f)
+				, _preferenceSettings.getFloat("matcher.place.min_inverse_entropy", 0.3f)
+				, _preferenceSettings.getInt("matcher.place.min_num_cxt", 3)
+				, _preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
+				));
+//			cxtMatcherList.add(new LocContextMatcher(
+//					currUserCxt.getTimeDate()
+//					, _preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
+//					, _preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
+//					, _preferenceSettings.getFloat("matcher.loc.min_inverse_entropy", 0.2f)
+//					, _preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
+//					, _preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
+//					));
+		
+		List<MatcherGroup> matcherGroupList = new ArrayList<MatcherGroup>();
+		matcherGroupList.add(freqMatcherGroup);
+		matcherGroupList.add(timeMatcherGroup);
+		matcherGroupList.add(locMatcherGroup);
 		
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+//		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		for(UserBhv uBhv : userBhvManager.getTotalBhvSet()){
-			EnumMap<MatcherType, MatchedResult> matchedResultMap = new EnumMap<MatcherType, MatchedResult>(MatcherType.class);
-			for(TemplateContextMatcher cxtMatcher : cxtMatcherList){
-				MatchedResult matchedResult = cxtMatcher.matchAndGetResult(uBhv, currUserCxt, noiseTimeTolerance);
-				if(matchedResult == null)
+			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
+			for(MatcherGroup matcherGroup : matcherGroupList){
+				MatcherGroupResult matcherGroupResult = matcherGroup.matchAndGetResult(uBhv, currUserCxt/*, noiseTimeTolerance*/);
+				if(matcherGroupResult == null)
 					continue;
-				matchedResultMap.put(cxtMatcher.getMatcherType(), matchedResult);
+				matcherGroupMap.put(matcherGroup.getMatcherGroupType(), matcherGroupResult);
 			}
 
-			if(matchedResultMap.isEmpty()) {
+			if(matcherGroupMap.isEmpty()) {
 				continue;
 			}
 			
-			double score = computePredictionScore(matchedResultMap);
+			double score = computePredictionScore(matcherGroupMap);
 			PredictionInfo predictedBhv = new PredictionInfo(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
-					uBhv, matchedResultMap, score);
+					uBhv, matcherGroupMap, score);
 			predicted.put(uBhv, predictedBhv);
 		}
 		
@@ -149,12 +135,12 @@ public class Predictor {
 		return predictedBhvMap.get(uBhv);
 	}
 	
-	private double computePredictionScore(EnumMap<MatcherType, MatchedResult> matchedResults){
+	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matchedResults){
 		double PredictionScore = 0;
 		
-		for(MatcherType matcherType : matchedResults.keySet()){
+		for(MatcherGroupType matcherType : matchedResults.keySet()){
 			double weight = Math.pow(10, matcherType.priority);
-			double score = weight * matchedResults.get(matcherType).getScore();;
+			double score = weight * matchedResults.get(matcherType).getScore();
 			PredictionScore += score;
 		}
 		return PredictionScore;

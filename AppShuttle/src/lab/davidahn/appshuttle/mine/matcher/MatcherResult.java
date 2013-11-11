@@ -9,7 +9,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public class MatchedResult implements Comparable<MatchedResult> {
+public class MatcherResult implements Comparable<MatcherResult> {
 	private MatcherType _matcherType;
 	private Date _timeDate;
 	private TimeZone _timeZone;
@@ -22,7 +22,7 @@ public class MatchedResult implements Comparable<MatchedResult> {
 	private Map<MatcherCountUnit, Double> _relatedCxt;
 	private double _score;
 	
-	public MatchedResult(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnv){
+	public MatcherResult(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnv){
 		_timeDate = time;
 		_timeZone = timeZone;
 		_userEnvs = userEnv;
@@ -124,7 +124,7 @@ public class MatchedResult implements Comparable<MatchedResult> {
 		_score = score;
 	}
 
-	public int compareTo(MatchedResult matchedCxt){
+	public int compareTo(MatcherResult matchedCxt){
 		if(_score < matchedCxt._score) 
 			return 1;
 		else if(_score == matchedCxt._score) 

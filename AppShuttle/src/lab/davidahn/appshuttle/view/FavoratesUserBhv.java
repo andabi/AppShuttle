@@ -3,13 +3,15 @@ package lab.davidahn.appshuttle.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.mine.matcher.MatcherType;
-import lab.davidahn.appshuttle.mine.matcher.MatcherTypeComparator;
+import lab.davidahn.appshuttle.mine.matcher.MatcherGroupResult;
+import lab.davidahn.appshuttle.mine.matcher.MatcherGroupType;
+import lab.davidahn.appshuttle.mine.matcher.MatcherGroupTypeComparator;
 import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
 import lab.davidahn.appshuttle.mine.matcher.Predictor;
 
@@ -78,17 +80,18 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		_viewMsg = msg.toString();
 
 		Predictor predictor = Predictor.getInstance();
-		PredictionInfo predictedBhv = predictor.getPredictionInfo(_uBhv);
+		PredictionInfo predictionInfo = predictor.getPredictionInfo(_uBhv);
 		
-		if(predictedBhv == null) {
+		if(predictionInfo == null) {
 			return _viewMsg;
 		}
 		
-		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(predictedBhv.getMatchedResultMap().keySet());
-		Collections.sort(matcherTypeList, new MatcherTypeComparator());
+		Map<MatcherGroupType, MatcherGroupResult> macherGroupResults = predictionInfo.getMatcherGroupResultMap();
+		List<MatcherGroupType> matcherGroupTypeList = new ArrayList<MatcherGroupType>(macherGroupResults.keySet());
+		Collections.sort(matcherGroupTypeList, new MatcherGroupTypeComparator());
 		
-		for (MatcherType matcherType : matcherTypeList) {
-			msg.append(matcherType.viewMsg).append(", ");
+		for (MatcherGroupType matcherGroupType : matcherGroupTypeList) {
+			msg.append(macherGroupResults.get(matcherGroupType).getViewMsg()).append(", ");
 		}
 		msg.delete(msg.length() - 2, msg.length());
 		_viewMsg = msg.toString();

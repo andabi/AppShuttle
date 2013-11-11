@@ -3,36 +3,29 @@ package lab.davidahn.appshuttle.mine.matcher;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 
-//TODO make it two-level
 public enum MatcherType {
-	FREQUENCY(0, true, R.string.predict_freq_msg),
-	WEAK_TIME(1, true, R.string.predict_time_msg),
-	PLACE(1, true, R.string.predict_place_msg),
-	STRICT_TIME(2, false, R.string.predict_time_msg),
-	LOCATION(2, false, R.string.predict_place_msg);
-//	WEEKLY_TIME
+	//frequency
+	FREQUENCY_RECENT(0, R.string.predict_freq_recent_msg),
+	RECENT(1, R.string.predict_recent_msg),
+
+	//time
+	TIME_DAILY(0, R.string.predict_time_daily_msg),
+	TIME_DAILY_WEEKDAY(1, R.string.predict_time_daily_weekday_msg),
+	
+	//location
+	PLACE(0, R.string.predict_place_msg),
+	LOCATION(1, R.string.predict_location_msg);
 //	UNFAMILIER_PLACE
+
+	//move
+//	SLOWLY_MOVE
+//	FASTLY_MOVE
 	
 	public int priority;
-	public boolean enabled;
 	public String viewMsg;
 	
-	MatcherType(int _priority, boolean _enabled, int viewMsgId){
+	MatcherType(int _priority, int viewMsgId){
 		priority = _priority;
-		enabled = _enabled;
 		viewMsg = AppShuttleApplication.getContext().getString(viewMsgId);
 	}
-
-//	public int getPriority() {
-//		return priority;
-//	}
-//	
-//	public boolean enabled() {
-//		return enabled;
-//	}
-//	
-//	public String getViewMsg(){
-//		return viewMsg;
-//	}
-
 }

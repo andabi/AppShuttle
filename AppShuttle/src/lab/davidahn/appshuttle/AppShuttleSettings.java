@@ -53,7 +53,7 @@ public class AppShuttleSettings {
 		//matcher
 		editor.putBoolean("predictor.store", true);
 		
-		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+//		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		
 		editor.putLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY);
 		editor.putInt("matcher.freq.min_num_cxt", 3);
