@@ -9,11 +9,11 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.mine.matcher.MatcherGroupResult;
-import lab.davidahn.appshuttle.mine.matcher.MatcherGroupType;
-import lab.davidahn.appshuttle.mine.matcher.MatcherGroupTypeComparator;
-import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
-import lab.davidahn.appshuttle.mine.matcher.Predictor;
+import lab.davidahn.appshuttle.predict.PredictionInfo;
+import lab.davidahn.appshuttle.predict.Predictor;
+import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
+import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
+import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
 
 
 public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<FavoratesUserBhv> {

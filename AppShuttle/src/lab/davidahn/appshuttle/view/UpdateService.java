@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.mine.matcher.Predictor;
+import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;

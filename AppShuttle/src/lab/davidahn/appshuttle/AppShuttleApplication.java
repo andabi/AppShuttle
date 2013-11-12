@@ -4,7 +4,7 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.mine.matcher.PredictionInfo;
+import lab.davidahn.appshuttle.predict.PredictionInfo;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
