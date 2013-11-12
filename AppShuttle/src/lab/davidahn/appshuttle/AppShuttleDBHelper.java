@@ -71,26 +71,26 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 					);
 		}
 		
-		db.execSQL("UPDATE list_user_bhv " + 
-				"SET blocked=0 " +
-				"WHERE blocked IS NULL"
-				);
-		db.execSQL("UPDATE list_user_bhv " + 
-				"SET blocked_time=0 " +
-				"WHERE blocked_time IS NULL"
-				);
-		db.execSQL("UPDATE list_user_bhv " + 
-				"SET favorates=0 " +
-				"WHERE favorates IS NULL"
-				);
-		db.execSQL("UPDATE list_user_bhv " + 
-				"SET favorates_time=0 " +
-				"WHERE favorates_time IS NULL"
-				);
-		db.execSQL("UPDATE list_user_bhv " + 
-				"SET is_notifiable=0 " +
-				"WHERE is_notifiable IS NULL"
-				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET blocked=0 " +
+//				"WHERE blocked IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET blocked_time=0 " +
+//				"WHERE blocked_time IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET favorates=0 " +
+//				"WHERE favorates IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET favorates_time=0 " +
+//				"WHERE favorates_time IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET is_notifiable=0 " +
+//				"WHERE is_notifiable IS NULL"
+//				);
 
 //		db.execSQL("CREATE INDEX idx1_history_user_env on history_user_env (time)");
 //		db.execSQL("CREATE INDEX idx2_history_user_env on history_user_env (time, end_time, env_type)");
