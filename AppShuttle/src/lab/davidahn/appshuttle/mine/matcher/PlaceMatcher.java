@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,13 +14,17 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 
-public class PlaceContextMatcher extends BaseMatcher {
+public class PlaceMatcher extends BaseMatcher {
 	int _toleranceInMeter;
 
-	public PlaceContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
-		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+	public PlaceMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
+		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_toleranceInMeter = toleranceInMeter;
-		_matcherType = MatcherType.PLACE;
+	}
+	
+	@Override
+	public MatcherType getMatcherType(){
+		return MatcherType.PLACE;
 	}
 	
 	@Override

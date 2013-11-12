@@ -4,9 +4,9 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 
 public enum MatcherType {
-	//frequency
-	FREQUENCY_RECENT(0, R.string.predict_freq_recent_msg),
-	RECENT(1, R.string.predict_recent_msg),
+	//recent
+	FREQUENTLY_RECENT(0, R.string.predict_frequently_recent_msg),
+	INSTANTALY_RECENT(1, R.string.predict_instantly_recent_msg),
 
 	//time
 	TIME_DAILY(0, R.string.predict_time_daily_msg),

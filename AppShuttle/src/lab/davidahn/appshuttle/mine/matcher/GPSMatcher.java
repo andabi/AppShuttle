@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -21,28 +20,19 @@ import lab.davidahn.appshuttle.context.env.UserLoc;
  * @author andabi
  *
  */
-public class LocContextMatcher extends BaseMatcher {
+public class LocMatcher extends BaseMatcher {
 	int _toleranceInMeter;
-
-	public LocContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
-		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+	
+	public LocMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
+		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_toleranceInMeter = toleranceInMeter;
-		_matcherType = MatcherType.LOCATION;
 	}
 	
-//	@Override
-//	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
-//		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-//
-//		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-//		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-//			mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
-//			mergedRfdUCxtBuilder.addRfdUserCxtList(rfdUCxt);
-//			res.add(mergedRfdUCxtBuilder.build());
-//		}
-//		return res;
-//	}
-	
+	@Override
+	public MatcherType getMatcherType(){
+		return MatcherType.LOCATION;
+	}
+
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
@@ -87,6 +77,21 @@ public class LocContextMatcher extends BaseMatcher {
 //		}
 		return res;
 	}
+	
+	
+//	@Override
+//	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList) {
+//		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+//
+//		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
+//		for(DurationUserBhv rfdUCxt : rfdUCxtList){
+//			mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getBhv());
+//			mergedRfdUCxtBuilder.addRfdUserCxtList(rfdUCxt);
+//			res.add(mergedRfdUCxtBuilder.build());
+//		}
+//		return res;
+//	}
+		
 	
 //		@Override
 //		protected List<MatcherCountUnit> mergeCxtByCountUnit(List<RfdUserCxt> rfdUCxtList) {

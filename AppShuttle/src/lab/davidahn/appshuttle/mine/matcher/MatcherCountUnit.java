@@ -23,7 +23,7 @@ public class MatcherCountUnit {
 		return _uBhv;
 	}
 
-	public List<DurationUserBhv> getRfdUserCxtList() {
+	public List<DurationUserBhv> getDurationUserBhvList() {
 		return _durationUserBhvList;
 	}
 
@@ -59,8 +59,8 @@ public class MatcherCountUnit {
 			_properties.put(key, val);
 		}
 		
-		public void addRfdUserCxtList(DurationUserBhv rfdUserCxt){
-			_durationUserBhvList.add(rfdUserCxt);
+		public void addRelatedDurationUserBhv(DurationUserBhv durationUserBhv){
+			_durationUserBhvList.add(durationUserBhv);
 		}	
 	}
 }

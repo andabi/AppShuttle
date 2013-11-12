@@ -4,11 +4,11 @@ import java.util.Comparator;
 
 public class MatcherGroupTypeComparator implements Comparator<MatcherGroupType>
 {
-	public int compare(MatcherGroupType mt1, MatcherGroupType mt2)
+	public int compare(MatcherGroupType mgt1, MatcherGroupType mgt2)
 	{
-		if(mt1.priority < mt2.priority)
+		if(mgt1.priority < mgt2.priority)
 			return 1;
-		else if(mt1.priority == mt2.priority)
+		else if(mgt1.priority == mgt2.priority)
 			return 0;
 		else 
 			return -1;

@@ -124,10 +124,15 @@ public class MatcherResult implements Comparable<MatcherResult> {
 		_score = score;
 	}
 
-	public int compareTo(MatcherResult matchedCxt){
-		if(_score < matchedCxt._score) 
+	public int compareTo(MatcherResult matcherResult){
+		MatcherTypeComparator comparator = new MatcherTypeComparator();
+		int comp = comparator.compare(_matcherType, matcherResult._matcherType);		
+		if(comp != 0)
+			return comp;
+		
+		if(_score < matcherResult._score) 
 			return 1;
-		else if(_score == matchedCxt._score) 
+		else if(_score == matcherResult._score) 
 			return 0;
 		else 
 			return -1;

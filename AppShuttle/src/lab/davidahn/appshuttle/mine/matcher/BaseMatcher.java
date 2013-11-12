@@ -10,19 +10,16 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public abstract class BaseMatcher implements Matcher {
-	protected MatcherType _matcherType;
+//	protected MatcherType _matcherType;
 	protected double _minLikelihood;
 	protected double _minInverseEntropy;
 	protected int _minNumCxt;
-	protected Date _time;
+//	protected Date _time;
 	protected long _duration;
 	
-	public BaseMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
-		_time = time;
+	public BaseMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
 		_duration = duration;
 		_minLikelihood = minLikelihood;
 		_minInverseEntropy = minInverseEntropy;
@@ -30,27 +27,11 @@ public abstract class BaseMatcher implements Matcher {
 	}
 
 	@Override
-	public MatcherType getMatcherType(){
-		return _matcherType;
-	}
+	public abstract MatcherType getMatcherType();
 	
 	@Override
 	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt/*, long noiseTimeTolerance*/){
-		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
-
-		Map<EnvType, UserEnv> uEnvs = currUCxt.getUserEnvs();
-		
-		Date toTime = _time;
-		Date fromTime = new Date(toTime.getTime() - _duration);
-		
-		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
-		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
-		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-//			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
-//				continue;
-			pureRfdUCxtList.add(rfdUCxt);
-		}
-		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(pureRfdUCxtList, currUCxt);
+		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
 		
 		if(mergedRfdCxtList.isEmpty()){
 			return null;
@@ -79,7 +60,7 @@ public abstract class BaseMatcher implements Matcher {
 		if(likelihood < _minLikelihood)
 			return null;
 		
-		MatcherResult matchedCxt = new MatcherResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), uEnvs);
+		MatcherResult matchedCxt = new MatcherResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), currUCxt.getUserEnvs());
 		matchedCxt.setUserBhv(uBhv);
 		matchedCxt.setMatcherType(getMatcherType());
 		matchedCxt.setNumTotalCxt(numTotalCxt);
@@ -97,6 +78,22 @@ public abstract class BaseMatcher implements Matcher {
 		return matchedCxt;
 	}
 	
+	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
+		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
+
+		Date toTime = currUCxt.getTimeDate();
+		Date fromTime = new Date(toTime.getTime() - _duration);
+		
+		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
+		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
+		for(DurationUserBhv rfdUCxt : rfdUCxtList){
+//			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
+//				continue;
+			pureRfdUCxtList.add(rfdUCxt);
+		}
+		return pureRfdUCxtList;
+	}
+
 	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
 		for(double relatedness : relatedCxtMap.values()){

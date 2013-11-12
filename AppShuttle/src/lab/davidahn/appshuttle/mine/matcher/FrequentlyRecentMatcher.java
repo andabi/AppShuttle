@@ -1,40 +1,44 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
-public class FreqContextMatcher extends BaseMatcher{
+public class FrequentlyRecentMatcher extends BaseMatcher{
 	long _acceptanceDelay;
 	
-	public FreqContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
-		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
-		_matcherType = MatcherType.FREQUENCY_RECENT;
+	public FrequentlyRecentMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
+		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_acceptanceDelay = acceptanceDelay;
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
+	public MatcherType getMatcherType(){
+		return MatcherType.FREQUENTLY_RECENT;
+	}
+	
+	@Override
+	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		DurationUserBhv prevRfdUCxt = null;
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		for(DurationUserBhv rfdUCxt : rfdUCxtList){
+		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			if(prevRfdUCxt == null){
-				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
+				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 			} else {
-				if(rfdUCxt.getTimeDate().getTime() - prevRfdUCxt.getEndTimeDate().getTime()
+				if(durationUserBhv.getTimeDate().getTime() - prevRfdUCxt.getEndTimeDate().getTime()
 						< _acceptanceDelay){
 				} else {
 					res.add(mergedRfdUCxtBuilder.build());
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
+					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 				}
 			}
-			prevRfdUCxt = rfdUCxt;
+			mergedRfdUCxtBuilder.addRelatedDurationUserBhv(durationUserBhv);
+			prevRfdUCxt = durationUserBhv;
 		}
 		
 		if(mergedRfdUCxtBuilder != null)

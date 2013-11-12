@@ -10,6 +10,6 @@ public interface MatcherGroup {
 
 	public MatcherGroupResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt);
 
-	public void addMatcher(Matcher matcher);
+	public void registerMatcher(Matcher matcher);
 	
 }

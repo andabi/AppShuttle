@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -30,27 +31,48 @@ public abstract class BaseMatcherGroup implements MatcherGroup {
 	
 	@Override
 	public MatcherGroupResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt){
-
-		MatcherGroupResult matcherGroupResult = new MatcherGroupResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), currUCxt.getUserEnvs());
-		matcherGroupResult.setMatcherGroupType(matcherGroupType);
-		matcherGroupResult.setTargetUserBhv(uBhv);
+		
+		if(matchers.isEmpty())
+			return null;
 
 		List<MatcherResult> matcherResults = new ArrayList<MatcherResult>();
 		for(Matcher matcher : matchers.values()) {
-			matcherResults.add(matcher.matchAndGetResult(uBhv, currUCxt));
+			MatcherResult matcherResult = matcher.matchAndGetResult(uBhv, currUCxt);
+			if(matcherResult != null)
+				matcherResults.add(matcherResult);
 		}
 		
+		if(matcherResults.isEmpty())
+			return null;
+		
+		MatcherGroupResult matcherGroupResult = new MatcherGroupResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), currUCxt.getUserEnvs());
+		matcherGroupResult.setMatcherGroupType(matcherGroupType);
+		matcherGroupResult.setTargetUserBhv(uBhv);
+		for(MatcherResult matcherResult : matcherResults)
+			matcherGroupResult.addMatcherResult(matcherResult);
 		matcherGroupResult.setScore(computeScore(matcherResults));
 		matcherGroupResult.setViewMsg(extractViewMsg(matcherResults));
 		
 		return matcherGroupResult;
 	}
 
-	public void addMatcher(Matcher matcher) {
+	public void registerMatcher(Matcher matcher) {
 		matchers.put(matcher.getMatcherType(), matcher);
 	}
 
-	protected abstract String extractViewMsg(List<MatcherResult>  matcherResults);
-	
-	protected abstract double computeScore(List<MatcherResult>  matcherResults);
+	protected String extractViewMsg(List<MatcherResult> matcherResults) {
+		
+		assert(!matcherResults.isEmpty());
+		
+		Collections.sort(matcherResults);
+		return matcherResults.get(0).getMatcherType().viewMsg;
+	}
+
+	protected double computeScore(List<MatcherResult> matcherResults) {
+		
+		assert(!matcherResults.isEmpty());
+		
+		Collections.sort(matcherResults);
+		return matcherResults.get(0).getScore();
+	}
 }

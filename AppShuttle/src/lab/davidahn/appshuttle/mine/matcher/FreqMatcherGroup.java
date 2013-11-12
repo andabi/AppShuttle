@@ -1,22 +1,19 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
-import java.util.List;
 
 public class FreqMatcherGroup extends BaseMatcherGroup implements MatcherGroup {
 	
-	public FreqMatcherGroup(MatcherGroupType matcherGroupType, int priority) {
-		super(matcherGroupType, priority);
+	public FreqMatcherGroup() {
+		super(MatcherGroupType.FREQUENCY, MatcherGroupType.FREQUENCY.priority);
 	}
 	
-	@Override
-	protected String extractViewMsg(List<MatcherResult> matcherResults) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected double computeScore(List<MatcherResult> matcherResults) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	@Override
+//	protected String extractViewMsg(List<MatcherResult> matcherResults) {
+//		return null;
+//	}
+//
+//	@Override
+//	protected double computeScore(List<MatcherResult> matcherResults) {
+//		return 0;
+//	}
 }

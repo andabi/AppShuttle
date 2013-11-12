@@ -10,23 +10,51 @@ import java.util.Set;
 import lab.davidahn.appshuttle.commons.Time;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.context.bhv.UserBhv;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-public class TimeDailyContextMatcher extends BaseMatcher {
+import android.app.AlarmManager;
+
+public class TimeDailyMatcher extends BaseMatcher {
 	protected long _period;
 	protected long _tolerance;
 	protected long _acceptanceDelay;
 
-	public TimeDailyContextMatcher(Date time, long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
-		//TODO if tolerance is longer than 24h
-		super(time, duration, minLikelihood, minInverseEntropy, minNumCxt);
+	public TimeDailyMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
+		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_period = period;
+		
+		if(tolerance > AlarmManager.INTERVAL_DAY)
+			throw new IllegalArgumentException("tolerance should not exceed 24 hours");
+		
 		_tolerance = tolerance;
 		_acceptanceDelay = acceptanceDelay;
-		_matcherType = MatcherType.TIME_DAILY;
 	}
+	
+	@Override
+	public MatcherType getMatcherType(){
+		return MatcherType.TIME_DAILY;
+	}
+	
+	@Override
+	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
+		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
 
+		Date toTime = new Date(currUCxt.getTimeDate().getTime() - _tolerance);
+		Date fromTime = new Date(toTime.getTime() - _duration);
+		
+		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
+		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
+		for(DurationUserBhv rfdUCxt : rfdUCxtList){
+//			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
+//				continue;
+			pureRfdUCxtList.add(rfdUCxt);
+		}
+		return pureRfdUCxtList;
+	}
+	
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();

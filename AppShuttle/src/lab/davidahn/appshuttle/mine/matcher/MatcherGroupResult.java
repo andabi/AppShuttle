@@ -9,7 +9,7 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
-public class MatcherGroupResult /*implements Comparable<MatcherGroupResult>*/ {
+public class MatcherGroupResult implements Comparable<MatcherGroupResult> {
 	private MatcherGroupType _matcherGroupType;
 	private Date _timeDate;
 	private TimeZone _timeZone;
@@ -94,19 +94,20 @@ public class MatcherGroupResult /*implements Comparable<MatcherGroupResult>*/ {
 		return matcherResults;
 	}
 
-//	public int compareTo(MatcherGroupResult matcherGroupResult){
-////		if(priority < matcherGroupResult.priority)
-////			return 1;
-////		else if(priority > matcherGroupResult.priority) 
-////			return -1;
-////		
-//		if(_score < matcherGroupResult._score) 
-//			return 1;
-//		else if(_score == matcherGroupResult._score) 
-//			return 0;
-//		else 
-//			return -1;
-//	}
+	@Override
+	public int compareTo(MatcherGroupResult matcherGroupResult){
+		MatcherGroupTypeComparator comparator = new MatcherGroupTypeComparator();
+		int comp = comparator.compare(_matcherGroupType, matcherGroupResult._matcherGroupType);		
+		if(comp != 0)
+			return comp;
+		
+		if(_score < matcherGroupResult._score) 
+			return 1;
+		else if(_score == matcherGroupResult._score) 
+			return 0;
+		else 
+			return -1;
+	}
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();

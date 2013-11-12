@@ -9,8 +9,8 @@
     <string name="report_success_msg">전송 완료</string>
     <string name="report_failure_msg">전송 실패</string>
     <string name="app_icon">앱셔틀 아이콘</string>
-    <string name="predict_freq_recent_msg">최근 자주 사용</string>
-    <string name="predict_recent_msg">최근 사용</string>
+    <string name="predict_frequently_recent_msg">최근 자주 사용</string>
+    <string name="predict_instantly_recent_msg">최근 사용</string>
     <string name="predict_time_daily_msg">현재 시간대에 주로 사용</string>
     <string name="predict_time_daily_weekday_msg">평일 현재 시간대에 주로 사용</string>
     <string name="predict_place_msg">현재 장소에서 주로 사용</string>
