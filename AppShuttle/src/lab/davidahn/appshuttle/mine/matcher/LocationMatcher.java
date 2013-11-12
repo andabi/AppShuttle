@@ -12,42 +12,51 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserPlace;
+import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
+import lab.davidahn.appshuttle.context.env.UserLoc;
 
-public class PlaceMatcher extends PositionMatcher {
-
-	public PlaceMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
+/**
+ * K-NN based algorithm
+ * @author andabi
+ *
+ */
+public class LocationMatcher extends PositionMatcher {
+	
+	public LocationMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
 		super(duration, minLikelihood, minInverseEntropy, minNumCxt, toleranceInMeter);
 	}
 	
 	@Override
 	public MatcherType getMatcherType(){
-		return MatcherType.PLACE;
+		return MatcherType.LOCATION;
 	}
-	
+
 	@Override
 	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
 		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		UserPlace lastKnownUserPlace = null;
-		
+		UserLoc lastKnownUserLoc = null;
+
 		for(DurationUserBhv rfdUCxt : rfdUCxtList){
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(rfdUCxt.getTimeDate()
-					, rfdUCxt.getEndTimeDate(), EnvType.PLACE)){
-				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
-				if(lastKnownUserPlace == null) {
+					, rfdUCxt.getEndTimeDate(), EnvType.LOCATION)){
+				UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
+				long duration = durationUserEnv.getDuration();
+				if(lastKnownUserLoc == null) {
 					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-					mergedRfdUCxtBuilder.setProperty("place", userPlace);
+					mergedRfdUCxtBuilder.setProperty("loc", userLoc);
+					mergedRfdUCxtBuilder.setProperty("duration", duration);
 				} else {
-						if(!userPlace.equals(lastKnownUserPlace)){
-							res.add(mergedRfdUCxtBuilder.build());
-							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-							mergedRfdUCxtBuilder.setProperty("place", userPlace);
-						}
+					if(!userLoc.equals(lastKnownUserLoc)){
+						res.add(mergedRfdUCxtBuilder.build());
+						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
+						mergedRfdUCxtBuilder.setProperty("loc", userLoc);
+						mergedRfdUCxtBuilder.setProperty("duration", duration);
+					}
 				}
-				lastKnownUserPlace = userPlace;
+				lastKnownUserLoc = userLoc;
 			}
 		}
 		if(mergedRfdUCxtBuilder != null)
@@ -58,23 +67,29 @@ public class PlaceMatcher extends PositionMatcher {
 	
 	@Override
 	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
-		UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
-		if(uPlace.equals((UserPlace) unit.getProperty("place")))
-			return 1;
-		else
-			return 0;
+		return 1;
 	}
 	
 	@Override
 	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
-		double likelihood = 0;
-		for(double relatedness : relatedCxtMap.values()){
-			likelihood+=relatedness;
+		long totalSpentTime = 0, validSpentTime = 0;
+		
+		for(MatcherCountUnit unit : relatedCxtMap.keySet()){
+			UserLoc userLoc = ((UserLoc) unit.getProperty("loc"));
+			long duration = ((Long) unit.getProperty("duration"));
+			totalSpentTime += duration;
+			try{
+				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), _toleranceInMeter)){
+					validSpentTime += duration;
+				}
+			} catch (InvalidUserEnvException e) {
+				;
+			}
 		}
-		if(numRelatedCxt > 0)
-			likelihood /= numRelatedCxt;
-		else
-			likelihood = 0;
+		
+		double likelihood = 0;
+		if(totalSpentTime > 0)
+			likelihood = 1.0 * validSpentTime / totalSpentTime;
 		return likelihood;
 	}
 	
@@ -83,25 +98,29 @@ public class PlaceMatcher extends PositionMatcher {
 		assert(matcherCountUnitList.size() >= _minNumCxt);
 		
 		double inverseEntropy = 0;
-		Set<UserPlace> uniquePlace = new HashSet<UserPlace>();
+		Set<UserLoc> uniqueLoc = new HashSet<UserLoc>();
 		
 		for(MatcherCountUnit unit : matcherCountUnitList){
-			UserPlace uPlace = ((UserPlace) unit.getProperty("place"));
-			Iterator<UserPlace> it = uniquePlace.iterator();
+			UserLoc uLoc = ((UserLoc) unit.getProperty("loc"));
+			Iterator<UserLoc> it = uniqueLoc.iterator();
 			boolean unique = true;
-			if(!uniquePlace.isEmpty()){
+			if(!uniqueLoc.isEmpty()){
 				while(it.hasNext()){
-					UserPlace uniquePlaceElem = it.next();
-					if(uPlace.equals(uniquePlaceElem)){
+					UserLoc uniqueLocElem = it.next();
+					try {
+						if(uLoc.proximity(uniqueLocElem, _toleranceInMeter)){
+							unique = false;
+							break;
+						}
+					} catch (InvalidUserEnvException e) {
 						unique = false;
-						break;
 					}
 				}
 			}
 			if(unique)
-				uniquePlace.add(uPlace);
+				uniqueLoc.add(uLoc);
 		}
-		int entropy = uniquePlace.size();
+		int entropy = uniqueLoc.size();
 		if(entropy > 0) {
 			inverseEntropy = 1.0 / entropy;
 		} else {

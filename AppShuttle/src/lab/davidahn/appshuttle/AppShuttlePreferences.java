@@ -4,7 +4,7 @@ import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
 
-public class AppShuttleSettings {
+public class AppShuttlePreferences {
 	public static void setDefaultPreferences() {
 //		preferenceSettings = cxt.getSharedPreferences(cxt.getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
@@ -59,7 +59,7 @@ public class AppShuttleSettings {
 		editor.putInt("matcher.recent.frequently.min_num_cxt", 3);
 		editor.putLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 		
-		editor.putLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3 * 2);
+		editor.putLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR);
 		editor.putInt("matcher.recent.instantly.min_num_cxt", 1);
 		editor.putLong("matcher.recent.instantly.acceptance_delay", 0);
 
@@ -77,17 +77,17 @@ public class AppShuttleSettings {
 //		editor.putLong("matcher.time.daily.strict.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
 //		editor.putLong("matcher.time.daily.strict.tolerance", pref.getLong("matcher.time.daily.strictacceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
 		
-		editor.putLong("matcher.loc.place.duration", 6 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.loc.place.min_likelihood", 0.7f);
-		editor.putFloat("matcher.loc.place.min_inverse_entropy", Float.MIN_VALUE);
-		editor.putInt("matcher.loc.place.min_num_cxt", 3);
-		editor.putInt("matcher.loc.place.distance_tolerance", 2000);
+		editor.putLong("matcher.position.place.duration", 6 * AlarmManager.INTERVAL_DAY);
+		editor.putFloat("matcher.position.place.min_likelihood", 0.7f);
+		editor.putFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE);
+		editor.putInt("matcher.position.place.min_num_cxt", 3);
+		editor.putInt("matcher.position.place.distance_tolerance", 2000);
 		
-//		editor.putLong("matcher.loc.gps.duration", 6 * AlarmManager.INTERVAL_DAY);
-//		editor.putFloat("matcher.loc.gps.min_likelihood", 0.7f);
-//		editor.putFloat("matcher.loc.gps.min_inverse_entropy", Float.MIN_VALUE);
-//		editor.putInt("matcher.loc.gps.min_num_cxt", 3);
-//		editor.putInt("matcher.loc.gps.distance_tolerance", 100);
+		editor.putLong("matcher.position.loc.duration", 6 * AlarmManager.INTERVAL_DAY);
+		editor.putFloat("matcher.position.loc.min_likelihood", 0.7f);
+		editor.putFloat("matcher.position.loc.min_inverse_entropy", Float.MIN_VALUE);
+		editor.putInt("matcher.position.loc.min_num_cxt", 3);
+		editor.putInt("matcher.position.loc.distance_tolerance", 100);
 
 		//view
 //		editor.putBoolean("noti.view.enabled", true);

@@ -1,9 +1,9 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 
-public class FreqMatcherGroup extends BaseMatcherGroup implements MatcherGroup {
+public class RecentMatcherGroup extends BaseMatcherGroup implements MatcherGroup {
 	
-	public FreqMatcherGroup() {
+	public RecentMatcherGroup() {
 		super(MatcherGroupType.FREQUENCY, MatcherGroupType.FREQUENCY.priority);
 	}
 	

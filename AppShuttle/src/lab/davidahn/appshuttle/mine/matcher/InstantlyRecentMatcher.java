@@ -8,12 +8,10 @@ import java.util.Map;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 
-public class InstantlyRecentMatcher extends BaseMatcher{
-	long _acceptanceDelay;
+public class InstantlyRecentMatcher extends RecentMatcher {
 	
 	public InstantlyRecentMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long acceptanceDelay) {
-		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
-		_acceptanceDelay = acceptanceDelay;
+		super(duration, minLikelihood, minInverseEntropy, minNumCxt, acceptanceDelay);
 	}
 	
 	@Override
@@ -21,37 +19,6 @@ public class InstantlyRecentMatcher extends BaseMatcher{
 		return MatcherType.INSTANTALY_RECENT;
 	}
 	
-	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
-		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-
-		DurationUserBhv prevRfdUCxt = null;
-		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
-		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			if(prevRfdUCxt == null){
-				mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-			} else {
-				if(durationUserBhv.getTimeDate().getTime() - prevRfdUCxt.getEndTimeDate().getTime()
-						< _acceptanceDelay){
-				} else {
-					res.add(mergedRfdUCxtBuilder.build());
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-				}
-			}
-			mergedRfdUCxtBuilder.addRelatedDurationUserBhv(durationUserBhv);
-			prevRfdUCxt = durationUserBhv;
-		}
-		
-		if(mergedRfdUCxtBuilder != null)
-			res.add(mergedRfdUCxtBuilder.build());
-		return res;
-	}
-	
-	@Override
-	protected double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt) {
-		return 1;
-	}
-
 	@Override
 	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
@@ -73,15 +40,5 @@ public class InstantlyRecentMatcher extends BaseMatcher{
 
 		likelihood = 1.0 * recentEndTime / Long.MAX_VALUE;
 		return likelihood;
-	}
-	
-	@Override
-	protected double computeScore(MatcherResult matchedResult) {
-		double likelihood = matchedResult.getLikelihood();
-		
-		double score = 1 + likelihood;
-		
-		assert(1 <= score && score <=2);
-		return score;
 	}
 }

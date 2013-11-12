@@ -12,11 +12,9 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 
 public abstract class BaseMatcher implements Matcher {
-//	protected MatcherType _matcherType;
 	protected double _minLikelihood;
 	protected double _minInverseEntropy;
 	protected int _minNumCxt;
-//	protected Date _time;
 	protected long _duration;
 	
 	public BaseMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
@@ -31,13 +29,13 @@ public abstract class BaseMatcher implements Matcher {
 	
 	@Override
 	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt/*, long noiseTimeTolerance*/){
-		List<MatcherCountUnit> mergedRfdCxtList = mergeCxtByCountUnit(getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
+		List<MatcherCountUnit> matcherCountUnitList = mergeCxtByCountUnit(getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
 		
-		if(mergedRfdCxtList.isEmpty()){
+		if(matcherCountUnitList.isEmpty()){
 			return null;
 		}
 		
-		double inverseEntropy = computeInverseEntropy(mergedRfdCxtList);
+		double inverseEntropy = computeInverseEntropy(matcherCountUnitList);
 		if(inverseEntropy < _minInverseEntropy){
 			return null;
 		}
@@ -45,7 +43,7 @@ public abstract class BaseMatcher implements Matcher {
 		int numTotalCxt = 0, numRelatedCxt = 0;
 		Map<MatcherCountUnit, Double> relatedCxt = new HashMap<MatcherCountUnit, Double>();
 		
-		for(MatcherCountUnit mergedRfdCxt : mergedRfdCxtList) {
+		for(MatcherCountUnit mergedRfdCxt : matcherCountUnitList) {
 			numTotalCxt++;
 			double relatedness = computeRelatedness(mergedRfdCxt, currUCxt);
 			if(relatedness > 0 ) {
@@ -108,12 +106,11 @@ public abstract class BaseMatcher implements Matcher {
 		return inverseEntropy;
 	}
 	
-	protected abstract double computeScore(MatcherResult matchedResult);
-	
 	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
 	
 	protected abstract double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
 	
+	protected abstract double computeScore(MatcherResult matchedResult);
 //			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)
 //				matchedCxt.setMatched(true);
 //			else

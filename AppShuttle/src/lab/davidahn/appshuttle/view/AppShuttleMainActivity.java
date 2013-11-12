@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
-import lab.davidahn.appshuttle.AppShuttleSettings;
+import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -58,7 +58,7 @@ public class AppShuttleMainActivity extends Activity {
 			BugSenseHandler.initAndStartSession(this, "a3573081");
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-		AppShuttleSettings.setDefaultPreferences();
+		AppShuttlePreferences.setDefaultPreferences();
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();

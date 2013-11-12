@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 
+
 public class TimeMatcherGroup extends BaseMatcherGroup implements MatcherGroup {
 	
 	public TimeMatcherGroup() {

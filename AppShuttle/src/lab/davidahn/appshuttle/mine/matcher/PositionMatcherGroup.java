@@ -1,10 +1,10 @@
 package lab.davidahn.appshuttle.mine.matcher;
 
 
-public class LocMatcherGroup extends BaseMatcherGroup implements MatcherGroup {
+public class PositionMatcherGroup extends BaseMatcherGroup implements MatcherGroup {
 	
-	public LocMatcherGroup() {
-		super(MatcherGroupType.LOCATION, MatcherGroupType.LOCATION.priority);
+	public PositionMatcherGroup() {
+		super(MatcherGroupType.POSITION, MatcherGroupType.POSITION.priority);
 	}
 	
 //	@Override
