@@ -2,14 +2,12 @@ package lab.davidahn.appshuttle.predict.matchergroup;
 
 public enum MatcherGroupType {
 	FREQUENCY(0),
-	TIME(1),
-	POSITION(1);
-
-	public int priority;
-//	public boolean enabled;
+	POSITION(1),
+	TIME(2);
 	
-	MatcherGroupType(int _priority/*, boolean _enabled*/){
+	public int priority;
+	
+	MatcherGroupType(int _priority){
 		priority = _priority;
-//		enabled = _enabled;
 	}
 }
