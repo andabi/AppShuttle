@@ -94,7 +94,7 @@ public class FrequentlyRecentMatcher extends BaseMatcher{
 //				if(ongoingBhvMap.containsKey(uBhv)){
 //					RfdUserCxt prevRfdUCxt = ongoingBhvMap.get(uBhv);
 //					if(rfdUCxt.getStartTime().getTime() - prevRfdUCxt.getEndTime().getTime()
-//							< settings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
+//							< settings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
 //						MergedRfdUserCxt mergedRfdUCxt = prevRfdUCxt;
 //						mergedRfdUCxt.setEndTime(rfdUCxt.getEndTime());
 //						mergedRfdUCxt.setLocs(rfdUCxt.getLocs());

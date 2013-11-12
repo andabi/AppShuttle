@@ -14,7 +14,7 @@ public enum MatcherType {
 	
 	//location
 	PLACE(0, R.string.predict_place_msg),
-	LOCATION(1, R.string.predict_location_msg);
+	GPS(1, R.string.predict_gps_msg);
 //	UNFAMILIER_PLACE
 
 	//move

@@ -20,17 +20,17 @@ import lab.davidahn.appshuttle.context.env.UserLoc;
  * @author andabi
  *
  */
-public class LocMatcher extends BaseMatcher {
+public class GPSMatcher extends BaseMatcher {
 	int _toleranceInMeter;
 	
-	public LocMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
+	public GPSMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
 		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
 		_toleranceInMeter = toleranceInMeter;
 	}
 	
 	@Override
 	public MatcherType getMatcherType(){
-		return MatcherType.LOCATION;
+		return MatcherType.GPS;
 	}
 
 	@Override

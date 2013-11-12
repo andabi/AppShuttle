@@ -39,18 +39,18 @@ public class Predictor {
 	private void registerFreqMatcherGroup() {
 		MatcherGroup recentMatcherGroup = new FreqMatcherGroup();
 		recentMatcherGroup.registerMatcher(new FrequentlyRecentMatcher(
-				_preferenceSettings.getLong("matcher.freq.duration", AlarmManager.INTERVAL_DAY),
+				_preferenceSettings.getLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY),
 				0.0,
 				0.0,
-				_preferenceSettings.getInt("matcher.freq.min_num_cxt", 3),
-				_preferenceSettings.getLong("matcher.freq.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
+				_preferenceSettings.getInt("matcher.recent.frequently.min_num_cxt", 3),
+				_preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
 				));
 		recentMatcherGroup.registerMatcher(new InstantlyRecentMatcher(
-				_preferenceSettings.getLong("matcher.recent.duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3 * 2),
+				_preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3 * 2),
 				0.0,
 				0.0,
-				_preferenceSettings.getInt("matcher.recent.min_num_cxt", 1),
-				_preferenceSettings.getLong("matcher.recent.acceptance_delay", 0)
+				_preferenceSettings.getInt("matcher.recent.instantly.min_num_cxt", 1),
+				_preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0)
 				));
 		registerMatcherGroup(recentMatcherGroup);
 	}
@@ -58,13 +58,13 @@ public class Predictor {
 	private void registerTimeMatcherGroup() {
 		MatcherGroup timeMatcherGroup = new TimeMatcherGroup();
 		timeMatcherGroup.registerMatcher(new TimeDailyMatcher(
-				_preferenceSettings.getLong("matcher.weak_time.duration", 5 * AlarmManager.INTERVAL_DAY),
-				_preferenceSettings.getFloat("matcher.weak_time.min_likelihood", 0.5f),
-				_preferenceSettings.getFloat("matcher.weak_time.min_inverse_entropy", 0.2f),
-				_preferenceSettings.getInt("matcher.weak_time.min_num_cxt", 3),
+				_preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY),
+				_preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f),
+				_preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f),
+				_preferenceSettings.getInt("matcher.time.daily.min_num_cxt", 3),
 				AlarmManager.INTERVAL_DAY,
-				_preferenceSettings.getLong("matcher.weak_time.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6),
-				_preferenceSettings.getLong("matcher.weak_time.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
+				_preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6),
+				_preferenceSettings.getLong("matcher.time.daily.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
 				));
 		registerMatcherGroup(timeMatcherGroup);
 	}
@@ -72,20 +72,20 @@ public class Predictor {
 	private void registerLocationMatcherGroup() {
 		MatcherGroup locMatcherGroup = new LocMatcherGroup();
 		locMatcherGroup.registerMatcher(new PlaceMatcher(
-				_preferenceSettings.getLong("matcher.place.duration", 6 * AlarmManager.INTERVAL_DAY),
-				_preferenceSettings.getFloat("matcher.place.min_likelihood", 0.7f),
-				_preferenceSettings.getFloat("matcher.place.min_inverse_entropy", 0.3f),
-				_preferenceSettings.getInt("matcher.place.min_num_cxt", 3),
-				_preferenceSettings.getInt("matcher.place.distance_tolerance", 2000)
+				_preferenceSettings.getLong("matcher.loc.place.duration", 6 * AlarmManager.INTERVAL_DAY),
+				_preferenceSettings.getFloat("matcher.loc.place.min_likelihood", 0.7f),
+				_preferenceSettings.getFloat("matcher.loc.place.min_inverse_entropy", 0.3f),
+				_preferenceSettings.getInt("matcher.loc.place.min_num_cxt", 3),
+				_preferenceSettings.getInt("matcher.loc.place.distance_tolerance", 2000)
 				));
 		registerMatcherGroup(locMatcherGroup);
 //		cxtMatcherList.add(new LocContextMatcher(
 //		currUserCxt.getTimeDate()
-//		, _preferenceSettings.getLong("matcher.loc.duration", AlarmManager.INTERVAL_HOUR / 6)
-//		, _preferenceSettings.getFloat("matcher.loc.min_likelihood", 0.5f)
-//		, _preferenceSettings.getFloat("matcher.loc.min_inverse_entropy", 0.2f)
-//		, _preferenceSettings.getInt("matcher.loc.min_num_cxt", 5)
-//		, _preferenceSettings.getInt("matcher.loc.distance_tolerance", 50)
+//		, _preferenceSettings.getLong("matcher.loc.gps.duration", AlarmManager.INTERVAL_HOUR / 6)
+//		, _preferenceSettings.getFloat("matcher.loc.gps.min_likelihood", 0.5f)
+//		, _preferenceSettings.getFloat("matcher.loc.gps.min_inverse_entropy", 0.2f)
+//		, _preferenceSettings.getInt("matcher.loc.gps.min_num_cxt", 5)
+//		, _preferenceSettings.getInt("matcher.loc.gps.distance_tolerance", 50)
 //		));
 	}
 	
@@ -192,7 +192,7 @@ public class Predictor {
 //, settings.getInt("matcher.loc.distance_tolerance", 2000));
 //ContextMatcher FreqCxtMatcher = new FreqContextMatcher(cxt
 //, Double.MIN_VALUE
-//, settings.getInt("matcher.freq.min_num_cxt", 3));
+//, settings.getInt("matcher.recent.frequently.min_num_cxt", 3));
 
 
 //List<MatchedCxt> locMatchhedCxtList;
