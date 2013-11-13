@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.IntentService;
 import android.content.Intent;
@@ -19,7 +20,7 @@ public class UpdateService extends IntentService {
 	@Override
 	public void onHandleIntent(Intent intent) {
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
-		Predictor.getInstance().predict();
+		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
 	}

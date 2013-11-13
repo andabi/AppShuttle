@@ -21,10 +21,10 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 	
 	@Override
 	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
-		double likelihood = 0;
-
 		if(numRelatedCxt <= 0 || relatedCxtMap.isEmpty())
-			return likelihood;
+			return 0;
+
+		double likelihood = 0;
 		
 		List<Long> durationUserBhvsEndTimeList = new ArrayList<Long>();
 		for(MatcherCountUnit unit : relatedCxtMap.keySet()){

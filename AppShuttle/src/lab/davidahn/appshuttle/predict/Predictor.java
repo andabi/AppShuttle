@@ -26,15 +26,12 @@ import android.content.SharedPreferences;
 
 public class Predictor {
 	private SharedPreferences preferenceSettings;
-
 	private List<MatcherGroup> matcherGroupList;
 
 	private static Predictor predictor = new Predictor();
 	private Predictor(){
 		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-		
 		matcherGroupList = new ArrayList<MatcherGroup>();
-
 		registerMatcherGroup();
 	}
 	public static Predictor getInstance() {
@@ -42,12 +39,12 @@ public class Predictor {
 	}
 	
 	private void registerMatcherGroup() {
-		registerFreqMatcherGroup();
+		registerRecentMatcherGroup();
 		registerTimeMatcherGroup();
-		registerLocationMatcherGroup();
+		registerPositionMatcherGroup();
 	}
 	
-	private void registerFreqMatcherGroup() {
+	private void registerRecentMatcherGroup() {
 		MatcherGroup recentMatcherGroup = new RecentMatcherGroup();
 		
 		recentMatcherGroup.registerMatcher(new FrequentlyRecentMatcher(
@@ -93,7 +90,7 @@ public class Predictor {
 		registerMatcherGroup(timeMatcherGroup);
 	}
 	
-	private void registerLocationMatcherGroup() {
+	private void registerPositionMatcherGroup() {
 		MatcherGroup locMatcherGroup = new PositionMatcherGroup();
 		
 		locMatcherGroup.registerMatcher(new PlaceMatcher(
@@ -118,16 +115,13 @@ public class Predictor {
 		matcherGroupList.add(matcherGroup);
 	}
 	
-	public void predict(){
-		SnapshotUserCxt currUserCxt = AppShuttleApplication.currUserCxt;
-		
+	public void predict(SnapshotUserCxt currUserCxt){
 		if(currUserCxt == null)
 			return ;
 
 		Map<UserBhv, PredictionInfo> predicted = new HashMap<UserBhv, PredictionInfo>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 //		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
-
 		for(UserBhv uBhv : userBhvManager.getTotalBhvSet()){
 			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
 			for(MatcherGroup matcherGroup : matcherGroupList){
@@ -141,11 +135,11 @@ public class Predictor {
 				continue;
 			}
 			
-			double score = computePredictionScore(matcherGroupMap);
 			PredictionInfo predictedBhv = new PredictionInfo(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
-					uBhv, matcherGroupMap, score);
+					uBhv, matcherGroupMap, computePredictionScore(matcherGroupMap));
+			
 			predicted.put(uBhv, predictedBhv);
 		}
 		
