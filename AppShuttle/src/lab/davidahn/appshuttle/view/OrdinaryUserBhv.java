@@ -18,7 +18,7 @@ import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
 
 public class OrdinaryUserBhv extends ViewableUserBhv implements Comparable<OrdinaryUserBhv> {
 
-	private static List<OrdinaryUserBhv> extractedViewListSorted;
+//	private static List<OrdinaryUserBhv> extractedViewListSorted;
 	
 	public OrdinaryUserBhv(UserBhv uBhv){
 		super(uBhv);
@@ -63,27 +63,21 @@ public class OrdinaryUserBhv extends ViewableUserBhv implements Comparable<Ordin
 		return _viewMsg;
 	}
 	
-	public static synchronized void extractViewListSorted() {
+	public static List<OrdinaryUserBhv> getPredictedSorted(int topN) {
 		Map<UserBhv, PredictionInfo> predictionInfoMap = Predictor.getInstance().getRecentPredictionInfoMap();
-		extractedViewListSorted = new ArrayList<OrdinaryUserBhv>();
 		
 		if(predictionInfoMap == null)
-			return;
-		
+			return Collections.emptyList();
+
 		Set<OrdinaryUserBhv> ordinaryUserBhvSet = UserBhvManager.getInstance().getOrdinaryBhvSet();
+		List<OrdinaryUserBhv> res = new ArrayList<OrdinaryUserBhv>();
 		for(OrdinaryUserBhv ordinaryUserBhv : ordinaryUserBhvSet){
 			if(predictionInfoMap.keySet().contains(ordinaryUserBhv))
-				extractedViewListSorted.add(ordinaryUserBhv);
+				res.add(ordinaryUserBhv);
 		}
 		
-		Collections.sort(extractedViewListSorted);
-	}
-
-	public static synchronized List<OrdinaryUserBhv> getExtractedViewListSorted(int topN) {
-		if(extractedViewListSorted == null)
-			extractViewListSorted();
-		
-		return extractedViewListSorted.subList(0, Math.min(extractedViewListSorted.size(), topN));
+		Collections.sort(res);
+		return res.subList(0, Math.min(res.size(), topN));
 	}
 	
 	@Override

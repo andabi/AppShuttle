@@ -148,8 +148,7 @@ public class BlockedBhvFragment extends ListFragment {
 				;
 			}
 			
-			getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
-			getActivity().startService(new Intent(getActivity(), UpdateService.class));
+			getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
 			
 			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
 			t.setGravity(Gravity.CENTER, 0, 0);

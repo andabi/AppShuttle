@@ -130,9 +130,10 @@ public class UserBhvDao {
 			
 			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			((BaseUserBhv)uBhv).setMetas(metas);
-			FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, setTime);
-			if(isNotifiable)
-				FavoratesUserBhv.trySetNotifiable(favoratesUserBhv);
+			FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, setTime, isNotifiable);
+//			if(isNotifiable)
+//				favoratesUserBhv.trySetNotifiable();
+//				FavoratesUserBhv.trySetNotifiable(favoratesUserBhv);
 			res.add(favoratesUserBhv);
 		}
 		cur.close();
@@ -153,6 +154,22 @@ public class UserBhvDao {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET favorates = 0, is_notifiable = 0 " +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public void updateNotifiable(FavoratesUserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE list_user_bhv " +
+				"SET is_notifiable = 1 " +
+				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
+						"AND bhv_name = '" + uBhv.getBhvName() +"';");
+	}
+	
+	public void updateNotNotifiable(FavoratesUserBhv uBhv) {
+		_db.execSQL("" +
+				"UPDATE list_user_bhv " +
+				"SET is_notifiable = 0 " +
 				"WHERE bhv_type = '" + uBhv.getBhvType() + "' " +
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
