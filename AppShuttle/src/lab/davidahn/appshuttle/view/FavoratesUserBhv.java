@@ -8,6 +8,7 @@ import java.util.Map;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.context.bhv.UserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import lab.davidahn.appshuttle.predict.Predictor;
@@ -24,15 +25,13 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		super(uBhv);
 		_setTime = setTime;
 		_isNotifiable = false;
-		
-		trySetNotifiable();
 	}
 	
-//	public FavoratesUserBhv(UserBhv uBhv, long setTime, boolean isNotifiable){
-//		super(uBhv);
-//		_setTime = setTime;
-//		_isNotifiable = isNotifiable;
-//	}
+	public FavoratesUserBhv(UserBhv uBhv, long setTime, boolean isNotifiable){
+		super(uBhv);
+		_setTime = setTime;
+		_isNotifiable = isNotifiable;
+	}
 
 	public long getSetTime() {
 		return _setTime;
@@ -42,7 +41,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		return _isNotifiable;
 	}
 
-	private boolean trySetNotifiable() {
+	public boolean trySetNotifiable() {
 		if(_isNotifiable)
 			return true;
 		
@@ -56,7 +55,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		}
 	}
 	
-	private void setNotNotifiable() {
+	public void setNotNotifiable() {
 		if(!_isNotifiable)
 			return ;
 		
@@ -114,10 +113,16 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 	}
 	
 	public synchronized static boolean trySetNotifiable(FavoratesUserBhv favoratesUserBhv) {
-		return favoratesUserBhv.trySetNotifiable();
+		if(favoratesUserBhv.trySetNotifiable()) {
+			UserBhvDao.getInstance().updateNotifiable(favoratesUserBhv);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public synchronized static void setNotNotifiable(FavoratesUserBhv favoratesUserBhv) {
 		favoratesUserBhv.setNotNotifiable();
+		UserBhvDao.getInstance().updateNotNotifiable(favoratesUserBhv);
 	}
 }

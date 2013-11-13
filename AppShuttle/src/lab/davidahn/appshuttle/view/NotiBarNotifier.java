@@ -43,7 +43,7 @@ public class NotiBarNotifier {
 		int numOrdinaryElem = numElem - numFavoratesElem;
 		
 		viewableUserBhvList.addAll(notifiableFavoratesBhvList.subList(0, numFavoratesElem));
-		viewableUserBhvList.addAll(OrdinaryUserBhv.getExtractedViewListSorted(numOrdinaryElem));
+		viewableUserBhvList.addAll(OrdinaryUserBhv.getPredictedSorted(numOrdinaryElem));
 		
 		updateNotiView(viewableUserBhvList);
 	}

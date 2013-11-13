@@ -49,7 +49,7 @@ public class AppShuttleMainActivity extends Activity {
     		progress.setVisibility(View.INVISIBLE);
         }
     };
-    
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,6 +105,12 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+//		startService(new Intent(this, UpdateService.class));
 	}
 	
 	@Override
@@ -165,24 +171,6 @@ public class AppShuttleMainActivity extends Activity {
 			return POSITION_NONE;
 		}
 		
-//	  public void replace(int position, Fragment fragment) {
-//	      // Get currently active fragment.
-//	      Fragment old_fragment = getItem(position);
-//	      if (old_fragment == null) {
-//	        return;
-//	      }
-//
-//	      // Replace the fragment using transaction and in underlaying array list.
-//	      // NOTE .addToBackStack(null) doesn't work
-//	      startUpdate(mViewPager);
-//	      mFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//	        .remove(old_fragment).add(mViewPager.getId(), fragment)
-//	        .commit();
-//	      mFragments.set(position, fragment);
-//	      notifyDataSetChanged();
-//	      finishUpdate(mViewPager);
-//	    }
-
 		@Override
 		public int getCount() {
 			return mTabs.size();

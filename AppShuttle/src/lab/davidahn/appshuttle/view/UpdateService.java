@@ -20,20 +20,19 @@ public class UpdateService extends IntentService {
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
 
 		Predictor predictor = Predictor.getInstance();
 		predictor.predict();
 		
-		OrdinaryUserBhv.extractViewListSorted();
-
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
 		NotiBarNotifier notifier = new NotiBarNotifier();
 		if(pref.getBoolean("noti.view.enabled", true))
 			notifier.updateNotibar();
 		else
 			notifier.hideNotibar();
-		
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
+
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
 	}
 }

@@ -47,9 +47,8 @@ public class OrdinaryBhvFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		setEmptyText(getResources().getString(R.string.predicted_fragment_empty_msg));
-
 		
-		predictedOrdinaryBhvList = OrdinaryUserBhv.getExtractedViewListSorted(Integer.MAX_VALUE);
+		predictedOrdinaryBhvList = OrdinaryUserBhv.getPredictedSorted(Integer.MAX_VALUE);
 		
 		adapter = new PredictedBhvAdapter();
 		setListAdapter(adapter);
@@ -155,8 +154,7 @@ public class OrdinaryBhvFragment extends ListFragment {
 				;
 			}
 
-			getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
-			getActivity().startService(new Intent(getActivity(), UpdateService.class));
+			getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
 
 			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
 			t.setGravity(Gravity.CENTER, 0, 0);

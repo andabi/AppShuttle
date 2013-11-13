@@ -132,7 +132,6 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver updateReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
 			context.startService(new Intent(context, UpdateService.class));
 		}
 	};
