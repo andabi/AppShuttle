@@ -111,7 +111,6 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		startService(new Intent(this, UpdateService.class));
 	}
 	
 	@Override

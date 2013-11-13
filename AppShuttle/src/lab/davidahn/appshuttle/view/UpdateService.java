@@ -20,7 +20,7 @@ public class UpdateService extends IntentService {
 	public void onHandleIntent(Intent intent) {
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
 		Predictor.getInstance().predict();
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
 	}
 }

@@ -136,4 +136,3 @@ public class AppShuttleMainService extends Service {
 		}
 	};
 }
-
