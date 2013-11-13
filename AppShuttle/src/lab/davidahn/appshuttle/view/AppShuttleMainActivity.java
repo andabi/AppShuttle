@@ -33,6 +33,7 @@ public class AppShuttleMainActivity extends Activity {
 	BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
     		mTabsAdapter.notifyDataSetChanged();
+    		NotiBarNotifier.getInstance().notification();
         }
     };
     

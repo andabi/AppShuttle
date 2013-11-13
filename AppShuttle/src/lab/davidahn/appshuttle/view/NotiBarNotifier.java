@@ -13,6 +13,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -28,10 +29,21 @@ public class NotiBarNotifier {
 //	private LayoutInflater layoutInflater;
 
 	private AppShuttleApplication cxt = AppShuttleApplication.getContext();
-	
-	public NotiBarNotifier(){
+
+	private static NotiBarNotifier notifier = new NotiBarNotifier();
+	private NotiBarNotifier(){
 		_notificationManager = (NotificationManager)cxt.getSystemService(Context.NOTIFICATION_SERVICE);
-//		private NotificationManager _notificationManager;
+	}
+	public static NotiBarNotifier getInstance(){
+		return notifier;
+	}
+	
+	public void notification() {
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		if(pref.getBoolean("noti.view.enabled", true))
+			updateNotibar();
+		else
+			hideNotibar();
 	}
 	
 	public void updateNotibar() {
