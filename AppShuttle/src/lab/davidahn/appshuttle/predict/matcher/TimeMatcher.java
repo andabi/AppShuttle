@@ -11,26 +11,29 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 import lab.davidahn.appshuttle.utils.Time;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-import android.app.AlarmManager;
+public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
+//	protected long period;
+//	protected long tolerance;
+//	protected long acceptanceDelay;
 
-public abstract class TimeMatcher extends BaseMatcher {
-	protected long _period;
-	protected long _tolerance;
-	protected long _acceptanceDelay;
-
-	public TimeMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
-		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
-		_period = period;
-		
-		if(tolerance > AlarmManager.INTERVAL_DAY)
-			throw new IllegalArgumentException("tolerance should not exceed 24 hours");
-		
-		_tolerance = tolerance;
-		_acceptanceDelay = acceptanceDelay;
+//	public TimeMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, long _period, long _tolerance, long _acceptanceDelay) {
+//		super(duration, minLikelihood, minInverseEntropy, minNumHistory);
+//		period = _period;
+//		
+//		if(tolerance > AlarmManager.INTERVAL_DAY)
+//			throw new IllegalArgumentException("tolerance should not exceed 24 hours");
+//		
+//		tolerance = _tolerance;
+//		acceptanceDelay = _acceptanceDelay;
+//	}
+	
+	public TimeMatcher(TimeMatcherConf conf){
+		super(conf);
 	}
 	
 	@Override
@@ -38,23 +41,23 @@ public abstract class TimeMatcher extends BaseMatcher {
 	
 	@Override
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
-		Date toTime = new Date(currUCxt.getTimeDate().getTime() - _tolerance);
-		Date fromTime = new Date(toTime.getTime() - _duration);
+		Date toTime = new Date(currUCxt.getTimeDate().getTime() - conf.getTolerance());
+		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
 		
-		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
-		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
-		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-//			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
+		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
+		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
+		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+//			if(durationUserBhv.getEndTimeDate().getTime() - durationUserBhv.getTimeDate().getTime()	< noiseTimeTolerance)
 //				continue;
-			pureRfdUCxtList.add(rfdUCxt);
+			pureDurationUserBhvList.add(durationUserBhv);
 		}
-		return pureRfdUCxtList;
+		return pureDurationUserBhvList;
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		DurationUserBhv prevDurationUserBhv = null;
@@ -67,7 +70,7 @@ public abstract class TimeMatcher extends BaseMatcher {
 				matcherCountUnitBuilder.setProperty("timeZone", durationUserBhv.getTimeZone());
 			} else {
 				if(durationUserBhv.getTimeDate().getTime() - prevDurationUserBhv.getEndTimeDate().getTime()
-						< _acceptanceDelay){
+						< conf.getAcceptanceDelay()){
 					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
 				} else {
 					res.add(matcherCountUnitBuilder.build());
@@ -90,18 +93,18 @@ public abstract class TimeMatcher extends BaseMatcher {
 		double relatedness = 0;
 		
 		long currTime = uCxt.getTimeDate().getTime();
-		long currTimePeriodic = currTime % _period;
+		long currTimePeriodic = currTime % conf.getPeriod();
 		long targetTime = ((Date) unit.getProperty("time")).getTime();
-		long targetTimePeriodic = targetTime % _period;
+		long targetTimePeriodic = targetTime % conf.getPeriod();
 		
 		long mean = currTimePeriodic;
-		long std = _tolerance / 2;
+		long std = conf.getTolerance() / 2;
 		NormalDistribution nd = new NormalDistribution(mean, std);
 
-		long start = (currTimePeriodic - _tolerance) % _period;
-		long end = (currTimePeriodic + _tolerance) % _period;
+		long start = (currTimePeriodic - conf.getTolerance()) % conf.getPeriod();
+		long end = (currTimePeriodic + conf.getTolerance()) % conf.getPeriod();
 				
-		if(Time.isBetween(start, targetTimePeriodic, end, _period)){
+		if(Time.isBetween(start, targetTimePeriodic, end, conf.getPeriod())){
 			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
 			relatedness = 0;
@@ -111,20 +114,20 @@ public abstract class TimeMatcher extends BaseMatcher {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= _minNumCxt);
+		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
 		
 		double inverseEntropy = 0;
 		Set<Long> uniqueTime = new HashSet<Long>();
 		
 		for(MatcherCountUnit unit : matcherCountUnitList){
 			long time = ((Date) unit.getProperty("time")).getTime();
-			long timePeriodic = time % _period;
+			long timePeriodic = time % conf.getPeriod();
 			Iterator<Long> it = uniqueTime.iterator();
 			boolean unique = true;
 			if(!uniqueTime.isEmpty()){
 				while(it.hasNext()){
 					Long uniqueTimeElem = it.next();
-					if(Time.isBetween((uniqueTimeElem - _tolerance) % _period, timePeriodic, (uniqueTimeElem + _tolerance) % _period, _period)){
+					if(Time.isBetween((uniqueTimeElem - conf.getTolerance()) % conf.getPeriod(), timePeriodic, (uniqueTimeElem + conf.getTolerance()) % conf.getPeriod(), conf.getPeriod())){
 						unique = false;
 						break;
 					}
@@ -146,12 +149,12 @@ public abstract class TimeMatcher extends BaseMatcher {
 	}
 	
 	@Override
-	protected double computeScore(MatcherResult matchedResult) {
-		double likelihood = matchedResult.getLikelihood();
-		double inverseEntropy = matchedResult.getInverseEntropy();
-		double numRelatedCxt = 1.0 * matchedResult.getNumRelatedCxt();
+	protected double computeScore(MatcherResult matcherResult) {
+		double likelihood = matcherResult.getLikelihood();
+		double inverseEntropy = matcherResult.getInverseEntropy();
+		double numRelatedHistory = 1.0 * matcherResult.getNumRelatedCxt();
 		
-		double score = 1 + 0.5 * (inverseEntropy * (numRelatedCxt / _duration)) + 0.1 * likelihood;
+		double score = 1 + 0.5 * (inverseEntropy * (numRelatedHistory / conf.getDuration())) + 0.1 * likelihood;
 
 		assert(1 <= score && score <=2);
 		return score;

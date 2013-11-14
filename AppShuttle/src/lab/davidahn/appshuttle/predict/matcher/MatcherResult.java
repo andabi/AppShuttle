@@ -10,129 +10,129 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
 
 public class MatcherResult implements Comparable<MatcherResult> {
-	private MatcherType _matcherType;
-	private Date _timeDate;
-	private TimeZone _timeZone;
-	private Map<EnvType, UserEnv> _userEnvs;
-	private UserBhv _uBhv;
-	private double _likelihood;
-	private double _inverseEntropy;
-	private int _numTotalCxt;
-	private int _numRelatedCxt;
-	private Map<MatcherCountUnit, Double> _relatedCxt;
-	private double _score;
+	private MatcherType matcherType;
+	private Date timeDate;
+	private TimeZone timeZone;
+	private Map<EnvType, UserEnv> userEnvs;
+	private UserBhv uBhv;
+	private double likelihood;
+	private double inverseEntropy;
+	private int numTotalHistory;
+	private int numRelatedHistory;
+	private Map<MatcherCountUnit, Double> relatedHistory;
+	private double score;
 	
-	public MatcherResult(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnv){
-		_timeDate = time;
-		_timeZone = timeZone;
-		_userEnvs = userEnv;
+	public MatcherResult(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
+		timeDate = _time;
+		timeZone = _timeZone;
+		userEnvs = _userEnv;
 	}
 	
 	public Date getTime() {
-		return _timeDate;
+		return timeDate;
 	}
 
 	public void setTime(Date time) {
-		_timeDate = time;
+		timeDate = time;
 	}
 
 	public TimeZone getTimeZone() {
-		return _timeZone;
+		return timeZone;
 	}
 
-	public void setTimeZone(TimeZone timeZone) {
-		_timeZone = timeZone;
+	public void setTimeZone(TimeZone _timeZone) {
+		timeZone = _timeZone;
 	}
 
 	public Map<EnvType, UserEnv> getUserEnv() {
-		return _userEnvs;
+		return userEnvs;
 	}
 	public void setUserEnv(Map<EnvType, UserEnv> userEnv) {
-		_userEnvs = userEnv;
+		userEnvs = userEnv;
 	}
 
 	public double getLikelihood() {
-		return _likelihood;
+		return likelihood;
 	}
 
-	public void setLikelihood(double likelihood) {
-		_likelihood = likelihood;
+	public void setLikelihood(double _likelihood) {
+		likelihood = _likelihood;
 	}
 	
 	public double getInverseEntropy() {
-		return _inverseEntropy;
+		return inverseEntropy;
 	}
 
-	public void setInverseEntropy(double inverseEntropy) {
-		_inverseEntropy = inverseEntropy;
+	public void setInverseEntropy(double _inverseEntropy) {
+		inverseEntropy = _inverseEntropy;
 	}
 
 	public UserBhv getUserBhvs() {
-		return _uBhv;
+		return uBhv;
 	}
 	
 	public UserEnv getUserEnv(EnvType envType) {
-		return _userEnvs.get(envType);
+		return userEnvs.get(envType);
 	}
 
 	public void setUserBhv(UserBhv bhvName) {
-		_uBhv = bhvName;
+		uBhv = bhvName;
 	}
 
 	public int getNumTotalCxt() {
-		return _numTotalCxt;
+		return numTotalHistory;
 	}
 
-	public void setNumTotalCxt(int numTotalCxt) {
-		_numTotalCxt = numTotalCxt;
+	public void setNumTotalHistory(int _numTotalHistory) {
+		numTotalHistory = _numTotalHistory;
 	}
 
 	public int getNumRelatedCxt() {
-		return _numRelatedCxt;
+		return numRelatedHistory;
 	}
 
-	public void setNumRelatedCxt(int numRelatedCxt) {
-		_numRelatedCxt = numRelatedCxt;
+	public void setNumRelatedHistory(int _numRelatedHistory) {
+		numRelatedHistory = _numRelatedHistory;
 	}
 	
 	public Map<MatcherCountUnit, Double> getRelatedCxt(){
-		return _relatedCxt;
+		return relatedHistory;
 	}
 	
-	public void setRelatedCxt(Map<MatcherCountUnit, Double> relatedCxt) {
-		_relatedCxt = relatedCxt;
+	public void setRelatedHistory(Map<MatcherCountUnit, Double> _relatedHistory) {
+		relatedHistory = _relatedHistory;
 	}
 
-	public void addRelatedCxt(MatcherCountUnit rfdUCxt, double relatedness) {
-		if(_relatedCxt == null) _relatedCxt = new HashMap<MatcherCountUnit, Double>();
-		_relatedCxt.put(rfdUCxt, relatedness);
+	public void addRelatedCxt(MatcherCountUnit durationUserBhv, double relatedness) {
+		if(relatedHistory == null) relatedHistory = new HashMap<MatcherCountUnit, Double>();
+		relatedHistory.put(durationUserBhv, relatedness);
 	}
 
 	public MatcherType getMatcherType() {
-		return _matcherType;
+		return matcherType;
 	}
 
-	public void setMatcherType(MatcherType matcherType) {
-		_matcherType = matcherType;
+	public void setMatcherType(MatcherType _matcherType) {
+		matcherType = _matcherType;
 	}
 	
 	public double getScore() {
-		return _score;
+		return score;
 	}
 
-	public void setScore(double score) {
-		_score = score;
+	public void setScore(double _score) {
+		score = _score;
 	}
 
 	public int compareTo(MatcherResult matcherResult){
 		MatcherTypeComparator comparator = new MatcherTypeComparator();
-		int comp = comparator.compare(_matcherType, matcherResult._matcherType);		
+		int comp = comparator.compare(matcherType, matcherResult.matcherType);		
 		if(comp != 0)
 			return comp;
 		
-		if(_score < matcherResult._score) 
+		if(score < matcherResult.score) 
 			return 1;
-		else if(_score == matcherResult._score) 
+		else if(score == matcherResult.score) 
 			return 0;
 		else 
 			return -1;
@@ -140,17 +140,17 @@ public class MatcherResult implements Comparable<MatcherResult> {
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("matcherType: ").append(_matcherType).append(", ");
-		msg.append("timeDate").append(_timeDate).append(", ");
-		msg.append("timeZone").append(_timeZone).append(", ");
-		msg.append(_userEnvs.toString()).append(", ");
-		msg.append(_uBhv.toString()).append(", ");
-		msg.append("likelihood: ").append(_likelihood).append(", ");
-		msg.append("inverseEntropy").append(_inverseEntropy).append(", ");
-		msg.append("numTotalCxt: ").append(_numTotalCxt).append(", ");
-		msg.append("numRelatedCxt: ").append(_numRelatedCxt).append(", ");
-		msg.append("relatedCxt").append(_relatedCxt).append(", ");
-		msg.append("score").append(_score);		
+		msg.append("matcherType: ").append(matcherType).append(", ");
+		msg.append("timeDate").append(timeDate).append(", ");
+		msg.append("timeZone").append(timeZone).append(", ");
+		msg.append(userEnvs.toString()).append(", ");
+		msg.append(uBhv.toString()).append(", ");
+		msg.append("likelihood: ").append(likelihood).append(", ");
+		msg.append("inverseEntropy").append(inverseEntropy).append(", ");
+		msg.append("numTotalHistory: ").append(numTotalHistory).append(", ");
+		msg.append("numRelatedHistory: ").append(numRelatedHistory).append(", ");
+		msg.append("relatedHistory").append(relatedHistory).append(", ");
+		msg.append("score").append(score);		
 		return msg.toString();
 	}
 }

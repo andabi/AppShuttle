@@ -14,6 +14,7 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.context.env.UserLoc;
+import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
 /**
  * K-NN based algorithm
@@ -22,8 +23,12 @@ import lab.davidahn.appshuttle.context.env.UserLoc;
  */
 public class LocationMatcher extends PositionMatcher {
 	
-	public LocationMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
-		super(duration, minLikelihood, minInverseEntropy, minNumCxt, toleranceInMeter);
+//	public LocationMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, int toleranceInMeter) {
+//		super(duration, minLikelihood, minInverseEntropy, minNumHistory, toleranceInMeter);
+//	}
+	
+	public LocationMatcher(PositionMatcherConf conf){
+		super(conf);
 	}
 	
 	@Override
@@ -32,35 +37,35 @@ public class LocationMatcher extends PositionMatcher {
 	}
 
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
+		MatcherCountUnit.Builder mergedDurationUserBhvBuilder = null;
 		UserLoc lastKnownUserLoc = null;
 
-		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(rfdUCxt.getTimeDate()
-					, rfdUCxt.getEndTimeDate(), EnvType.LOCATION)){
+		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
+					, durationUserBhv.getEndTimeDate(), EnvType.LOCATION)){
 				UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 				long duration = durationUserEnv.getDuration();
 				if(lastKnownUserLoc == null) {
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-					mergedRfdUCxtBuilder.setProperty("loc", userLoc);
-					mergedRfdUCxtBuilder.setProperty("duration", duration);
+					mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					mergedDurationUserBhvBuilder.setProperty("loc", userLoc);
+					mergedDurationUserBhvBuilder.setProperty("duration", duration);
 				} else {
 					if(!userLoc.equals(lastKnownUserLoc)){
-						res.add(mergedRfdUCxtBuilder.build());
-						mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-						mergedRfdUCxtBuilder.setProperty("loc", userLoc);
-						mergedRfdUCxtBuilder.setProperty("duration", duration);
+						res.add(mergedDurationUserBhvBuilder.build());
+						mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+						mergedDurationUserBhvBuilder.setProperty("loc", userLoc);
+						mergedDurationUserBhvBuilder.setProperty("duration", duration);
 					}
 				}
 				lastKnownUserLoc = userLoc;
 			}
 		}
-		if(mergedRfdUCxtBuilder != null)
-			res.add(mergedRfdUCxtBuilder.build());
+		if(mergedDurationUserBhvBuilder != null)
+			res.add(mergedDurationUserBhvBuilder.build());
 		
 		return res;
 	}
@@ -71,15 +76,15 @@ public class LocationMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double computeLikelihood(int numRelatedHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
 		long totalSpentTime = 0, validSpentTime = 0;
 		
-		for(MatcherCountUnit unit : relatedCxtMap.keySet()){
+		for(MatcherCountUnit unit : relatedHistoryMap.keySet()){
 			UserLoc userLoc = ((UserLoc) unit.getProperty("loc"));
 			long duration = ((Long) unit.getProperty("duration"));
 			totalSpentTime += duration;
 			try{
-				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), _toleranceInMeter)){
+				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), ((PositionMatcherConf)conf).getToleranceInMeter())){
 					validSpentTime += duration;
 				}
 			} catch (InvalidUserEnvException e) {
@@ -95,7 +100,7 @@ public class LocationMatcher extends PositionMatcher {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= _minNumCxt);
+		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
 		
 		double inverseEntropy = 0;
 		Set<UserLoc> uniqueLoc = new HashSet<UserLoc>();
@@ -108,7 +113,7 @@ public class LocationMatcher extends PositionMatcher {
 				while(it.hasNext()){
 					UserLoc uniqueLocElem = it.next();
 					try {
-						if(uLoc.proximity(uniqueLocElem, _toleranceInMeter)){
+						if(uLoc.proximity(uniqueLocElem, conf.getToleranceInMeter())){
 							unique = false;
 							break;
 						}

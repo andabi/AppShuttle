@@ -169,8 +169,9 @@ public class CollectionService extends Service {
 	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 
-		if(!preferenceSettings.getBoolean("collection.store_cxt.enabled", false))
+		if(!preferenceSettings.getBoolean("collection.store_snapshot_cxt.enabled", false))
 			return;
+		
 		SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance();
 		snapshotUserCxtDao.storeCxt(uCxt);
 	}

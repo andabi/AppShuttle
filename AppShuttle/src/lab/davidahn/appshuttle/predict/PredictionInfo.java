@@ -12,60 +12,60 @@ import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 
 public class PredictionInfo implements Comparable<PredictionInfo> {
-	private final UserBhv _uBhv;
-	private final Date _timeDate;
-	private final TimeZone _timeZone;
-	private final Map<EnvType, UserEnv> _uEnvs;
-	private final EnumMap<MatcherGroupType, MatcherGroupResult> _matcherGroupResults;
-	private final double _score;
+	private final UserBhv uBhv;
+	private final Date timeDate;
+	private final TimeZone timeZone;
+	private final Map<EnvType, UserEnv> uEnvs;
+	private final EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults;
+	private final double score;
 
-	public PredictionInfo(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnvs, UserBhv uBhv, EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults, double score){
-		_timeDate = time;
-		_timeZone = timeZone;
-		_uEnvs = userEnvs;
-		_uBhv = uBhv;
-		_matcherGroupResults = matcherGroupResults;
-		_score = score;
+	public PredictionInfo(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnvs, UserBhv _uBhv, EnumMap<MatcherGroupType, MatcherGroupResult> _matcherGroupResults, double _score){
+		timeDate = _time;
+		timeZone = _timeZone;
+		uEnvs = _userEnvs;
+		uBhv = _uBhv;
+		matcherGroupResults = _matcherGroupResults;
+		score = _score;
 	}
 
 	public Date getTime() {
-		return _timeDate;
+		return timeDate;
 	}
 
 	public TimeZone getTimeZone() {
-		return _timeZone;
+		return timeZone;
 	}
 
 	public Map<EnvType, UserEnv> getUserEnvMap() {
-		return _uEnvs;
+		return uEnvs;
 	}
 
 	public UserEnv getUserEnv(EnvType envType) {
-		return _uEnvs.get(envType);
+		return uEnvs.get(envType);
 	}
 	
 	public UserBhv getUserBhv() {
-		return _uBhv;
+		return uBhv;
 	}
 
 	public Map<MatcherGroupType, MatcherGroupResult> getMatcherGroupResultMap() {
-		return _matcherGroupResults;
+		return matcherGroupResults;
 	}
 	
 	public MatcherGroupResult getMatcherGroupResult(MatcherGroupType matcherGroupType) {
-		return _matcherGroupResults.get(matcherGroupType);
+		return matcherGroupResults.get(matcherGroupType);
 	}
 
 	public double getScore() {
-		return _score;
+		return score;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if ((o instanceof UserBhv)
-				&& _uBhv.getBhvName().equals(
+				&& uBhv.getBhvName().equals(
 						((UserBhv) o).getBhvName())
-				&& _uBhv.getBhvType() == ((UserBhv) o).getBhvType())
+				&& uBhv.getBhvType() == ((UserBhv) o).getBhvType())
 			return true;
 		else
 			return false;
@@ -73,25 +73,25 @@ public class PredictionInfo implements Comparable<PredictionInfo> {
 	
 	@Override
 	public int hashCode(){
-		return _uBhv.hashCode();
+		return uBhv.hashCode();
 	}
 	
 	@Override
-	public int compareTo(PredictionInfo predictedBhv){
-		if(_score < predictedBhv._score) 
+	public int compareTo(PredictionInfo predictionInfo){
+		if(score < predictionInfo.score) 
 			return 1;
-		else if(_score == predictedBhv._score) 
+		else if(score == predictionInfo.score) 
 			return 0;
 		else 
 			return -1;
 	}
-	
+
+	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("matched results: ").append(_matcherGroupResults.toString()).append(", ");
-		msg.append("predicted bhv: ").append(_uBhv.toString()).append(", ");
-		msg.append("score: ").append(_score);
+		msg.append("bhv: ").append(uBhv.toString()).append(", ");
+		msg.append("matcher group results: ").append(matcherGroupResults.toString()).append(", ");
+		msg.append("score: ").append(score);
 		return msg.toString();
 	}
-
 }

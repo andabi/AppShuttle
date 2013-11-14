@@ -25,14 +25,14 @@ public class NotiBarNotifier {
 
 	private static final int UPDATE_NOTI_VIEW = 1;
 	
-	private NotificationManager _notificationManager;
+	private NotificationManager notificationManager;
 //	private LayoutInflater layoutInflater;
 
 	private AppShuttleApplication cxt = AppShuttleApplication.getContext();
 
 	private static NotiBarNotifier notifier = new NotiBarNotifier();
 	private NotiBarNotifier(){
-		_notificationManager = (NotificationManager)cxt.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager = (NotificationManager)cxt.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 	public static NotiBarNotifier getInstance(){
 		return notifier;
@@ -61,7 +61,7 @@ public class NotiBarNotifier {
 	}
 	
 	public void hideNotibar() {
-		_notificationManager.cancel(UPDATE_NOTI_VIEW);
+		notificationManager.cancel(UPDATE_NOTI_VIEW);
 	}
 	
 	@SuppressLint("NewApi")
@@ -75,7 +75,7 @@ public class NotiBarNotifier {
 			.setWhen(AppShuttleApplication.launchTime)
 			.setPriority(Notification.PRIORITY_HIGH)
 			.build();
-		_notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
+		notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
 	}
 
 	private <T extends UserBhv & Viewable> RemoteViews createNotiRemoteViews(List<T> viewableUserBhvList) {

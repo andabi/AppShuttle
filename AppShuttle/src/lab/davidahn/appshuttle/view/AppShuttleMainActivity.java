@@ -32,8 +32,8 @@ public class AppShuttleMainActivity extends Activity {
 	
 	BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
+//        	NotiBarNotifier.getInstance().notification();
     		mTabsAdapter.notifyDataSetChanged();
-    		NotiBarNotifier.getInstance().notification();
         }
     };
     
@@ -63,7 +63,7 @@ public class AppShuttleMainActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.REFRESH");
+		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
 		registerReceiver(refreshReceiver, filter);
 		
 		filter = new IntentFilter();

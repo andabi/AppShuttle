@@ -13,11 +13,16 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserPlace;
+import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
 public class PlaceMatcher extends PositionMatcher {
 
-	public PlaceMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
-		super(duration, minLikelihood, minInverseEntropy, minNumCxt, toleranceInMeter);
+//	public PlaceMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, int toleranceInMeter) {
+//		super(duration, minLikelihood, minInverseEntropy, minNumHistory, toleranceInMeter);
+//	}
+
+	public PlaceMatcher(PositionMatcherConf conf){
+		super(conf);
 	}
 	
 	@Override
@@ -26,32 +31,32 @@ public class PlaceMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder mergedRfdUCxtBuilder = null;
+		MatcherCountUnit.Builder mergedDurationUserBhvBuilder = null;
 		UserPlace lastKnownUserPlace = null;
 		
-		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(rfdUCxt.getTimeDate()
-					, rfdUCxt.getEndTimeDate(), EnvType.PLACE)){
+		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
+					, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
 				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
 				if(lastKnownUserPlace == null) {
-					mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-					mergedRfdUCxtBuilder.setProperty("place", userPlace);
+					mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					mergedDurationUserBhvBuilder.setProperty("place", userPlace);
 				} else {
 						if(!userPlace.equals(lastKnownUserPlace)){
-							res.add(mergedRfdUCxtBuilder.build());
-							mergedRfdUCxtBuilder = new MatcherCountUnit.Builder(rfdUCxt.getUserBhv());
-							mergedRfdUCxtBuilder.setProperty("place", userPlace);
+							res.add(mergedDurationUserBhvBuilder.build());
+							mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+							mergedDurationUserBhvBuilder.setProperty("place", userPlace);
 						}
 				}
 				lastKnownUserPlace = userPlace;
 			}
 		}
-		if(mergedRfdUCxtBuilder != null)
-			res.add(mergedRfdUCxtBuilder.build());
+		if(mergedDurationUserBhvBuilder != null)
+			res.add(mergedDurationUserBhvBuilder.build());
 		
 		return res;
 	}
@@ -66,13 +71,13 @@ public class PlaceMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double computeLikelihood(int numRelatedHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
 		double likelihood = 0;
-		for(double relatedness : relatedCxtMap.values()){
+		for(double relatedness : relatedHistoryMap.values()){
 			likelihood+=relatedness;
 		}
-		if(numRelatedCxt > 0)
-			likelihood /= numRelatedCxt;
+		if(numRelatedHistory > 0)
+			likelihood /= numRelatedHistory;
 		else
 			likelihood = 0;
 		return likelihood;
@@ -80,7 +85,7 @@ public class PlaceMatcher extends PositionMatcher {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= _minNumCxt);
+		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
 		
 		double inverseEntropy = 0;
 		Set<UserPlace> uniquePlace = new HashSet<UserPlace>();

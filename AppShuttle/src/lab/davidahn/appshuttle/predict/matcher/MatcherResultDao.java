@@ -7,18 +7,18 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 public class MatcherResultDao {
-	private static MatcherResultDao matchedResultDao = new MatcherResultDao();
-	private SQLiteDatabase _db;
+	private static MatcherResultDao matcherResultDao = new MatcherResultDao();
+	private SQLiteDatabase db;
 
 	private MatcherResultDao() {
-		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 	}
 
 	public static MatcherResultDao getInstance() {
-		return matchedResultDao;
+		return matcherResultDao;
 	}
 
-	public void storeMatchedResult(MatcherResult mCxt) {
+	public void storeMatcherResult(MatcherResult mCxt) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
@@ -29,12 +29,12 @@ public class MatcherResultDao {
 		row.put("matcher_type", mCxt.getMatcherType().toString());
 		row.put("likelihood", mCxt.getLikelihood());
 		row.put("inverse_entropy", mCxt.getInverseEntropy());
-		_db.insert("matched_result", null, row);
+		db.insert("matched_result", null, row);
 
 //		Log.i("stored matched result", mCxt.toString());
 	}
 	
-	public void deleteMatchedResult(Date timeDate){
-		_db.execSQL("DELETE FROM matched_result WHERE time < " + timeDate.getTime() +";");
+	public void deleteMatcherResult(Date timeDate){
+		db.execSQL("DELETE FROM matched_result WHERE time < " + timeDate.getTime() +";");
 	}
 }

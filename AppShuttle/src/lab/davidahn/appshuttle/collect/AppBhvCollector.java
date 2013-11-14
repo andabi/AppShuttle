@@ -95,8 +95,8 @@ public class AppBhvCollector extends BaseBhvCollector {
 		} else {
 			for(BaseUserBhv uBhv : userBhvList){
 				if(_durationUserBhvBuilderMap.containsKey(uBhv)){
-					DurationUserBhv.Builder rfdUCxtBuilder = _durationUserBhvBuilderMap.get(uBhv);
-					rfdUCxtBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
+					DurationUserBhv.Builder durationUserBhvBuilder = _durationUserBhvBuilderMap.get(uBhv);
+					durationUserBhvBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
 				} else {
 					_durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
 					, new Date(currTime.getTime() + adjustment)

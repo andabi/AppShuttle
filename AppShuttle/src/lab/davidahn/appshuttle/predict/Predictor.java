@@ -15,6 +15,9 @@ import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.PlaceMatcher;
 import lab.davidahn.appshuttle.predict.matcher.TimeDailyMatcher;
 import lab.davidahn.appshuttle.predict.matcher.TimeDailyWeekdayMatcher;
+import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroup;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
@@ -25,12 +28,10 @@ import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
 public class Predictor {
-	private SharedPreferences preferenceSettings;
 	private List<MatcherGroup> matcherGroupList;
 
 	private static Predictor predictor = new Predictor();
 	private Predictor(){
-		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		matcherGroupList = new ArrayList<MatcherGroup>();
 		registerMatcherGroup();
 	}
@@ -45,68 +46,90 @@ public class Predictor {
 	}
 	
 	private void registerRecentMatcherGroup() {
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup recentMatcherGroup = new RecentMatcherGroup();
 		
 		recentMatcherGroup.registerMatcher(new FrequentlyRecentMatcher(
-				preferenceSettings.getLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY),
-				0.0,
-				0.0,
-				preferenceSettings.getInt("matcher.recent.frequently.min_num_cxt", 3),
-				preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)
+				new RecentMatcherConf.Builder()
+					.setDuration(preferenceSettings.getLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY))
+					.setMinLikelihood(0.0)
+					.setMinInverseEntropy(0.0)
+					.setMinNumHistory(preferenceSettings.getInt("matcher.recent.frequently.min_num_history", 3))
+					.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6))
+					.build()
 				));
 		recentMatcherGroup.registerMatcher(new InstantlyRecentMatcher(
-				preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3 * 2),
-				0.0,
-				0.0,
-				preferenceSettings.getInt("matcher.recent.instantly.min_num_cxt", 1),
-				preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0)
-				));
+			new RecentMatcherConf.Builder()
+				.setDuration(preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3 * 2))
+				.setMinLikelihood(0.0)
+				.setMinInverseEntropy(0.0)
+				.setMinNumHistory(preferenceSettings.getInt("matcher.recent.instantly.min_num_history", 1))
+				.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0))
+				.build()
+			));
+
 
 		registerMatcherGroup(recentMatcherGroup);
 	}
 	
 	private void registerTimeMatcherGroup() {
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup timeMatcherGroup = new TimeMatcherGroup();
 		
 		timeMatcherGroup.registerMatcher(new TimeDailyMatcher(
-				preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY),
-				preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f),
-				preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f),
-				preferenceSettings.getInt("matcher.time.daily.min_num_cxt", 3),
-				AlarmManager.INTERVAL_DAY,
-				preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6),
-				preferenceSettings.getLong("matcher.time.daily.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
+				new TimeMatcherConf.Builder()
+					.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
+					.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
+					.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
+					.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
+					.setPeriod(AlarmManager.INTERVAL_DAY)
+					.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
+					.setAcceptanceDelay(preferenceSettings.getLong("matcher.time.daily.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2))
+					.build()
 				));
+
 		timeMatcherGroup.registerMatcher(new TimeDailyWeekdayMatcher(
-				preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY),
-				preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f),
-				preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f),
-				preferenceSettings.getInt("matcher.time.daily.min_num_cxt", 3),
-				AlarmManager.INTERVAL_DAY,
-				preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6),
-				preferenceSettings.getLong("matcher.time.daily.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2)
-				));
+			new TimeMatcherConf.Builder()
+				.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
+				.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
+				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
+				.setPeriod(AlarmManager.INTERVAL_DAY)
+				.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
+				.setAcceptanceDelay(preferenceSettings.getLong("matcher.time.daily.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2))
+				.build()
+			));
 		
 		registerMatcherGroup(timeMatcherGroup);
+//		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
+		/*, noiseTimeTolerance*/
 	}
 	
 	private void registerPositionMatcherGroup() {
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup locMatcherGroup = new PositionMatcherGroup();
 		
 		locMatcherGroup.registerMatcher(new PlaceMatcher(
-				preferenceSettings.getLong("matcher.position.place.duration", 6 * AlarmManager.INTERVAL_DAY),
-				preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f),
-				preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", 0.3f),
-				preferenceSettings.getInt("matcher.position.place.min_num_cxt", 3),
-				preferenceSettings.getInt("matcher.position.place.distance_tolerance", 2000)
-				));
+			new PositionMatcherConf.Builder()
+				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 6 * AlarmManager.INTERVAL_DAY))
+				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
+				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", 0.3f))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
+				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.place.tolerance_in_meter", 2000))
+				.build()
+			)
+		);
+		
 //		locMatcherGroup.registerMatcher(new LocationMatcher(
-//				preferenceSettings.getLong("matcher.position.loc.duration", AlarmManager.INTERVAL_HOUR / 6),
-//				preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.5f),
-//				preferenceSettings.getFloat("matcher.position.loc.min_inverse_entropy", 0.2f),
-//				preferenceSettings.getInt("matcher.position.loc.min_num_cxt", 5),
-//				preferenceSettings.getInt("matcher.position.loc.distance_tolerance", 50)
-//				));
+//			new PositionMatcherConf.Builder()
+//				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", AlarmManager.INTERVAL_HOUR / 6))
+//				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.5f))
+//				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.loc.min_inverse_entropy", 0.2f))
+//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.loc.min_num_history", 5))
+//				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.loc.tolerance_in_meter", 50))
+//				.build()
+//			)
+//		);
 		
 		registerMatcherGroup(locMatcherGroup);
 	}
@@ -121,11 +144,10 @@ public class Predictor {
 
 		Map<UserBhv, PredictionInfo> predicted = new HashMap<UserBhv, PredictionInfo>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-//		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		for(UserBhv uBhv : userBhvManager.getTotalBhvSet()){
 			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
 			for(MatcherGroup matcherGroup : matcherGroupList){
-				MatcherGroupResult matcherGroupResult = matcherGroup.matchAndGetResult(uBhv, currUserCxt/*, noiseTimeTolerance*/);
+				MatcherGroupResult matcherGroupResult = matcherGroup.matchAndGetResult(uBhv, currUserCxt);
 				if(matcherGroupResult == null)
 					continue;
 				matcherGroupMap.put(matcherGroup.getMatcherGroupType(), matcherGroupResult);
@@ -135,66 +157,54 @@ public class Predictor {
 				continue;
 			}
 			
-			PredictionInfo predictedBhv = new PredictionInfo(currUserCxt.getTimeDate(), 
+			PredictionInfo predictionInfo = new PredictionInfo(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
 					uBhv, matcherGroupMap, computePredictionScore(matcherGroupMap));
 			
-			predicted.put(uBhv, predictedBhv);
+			predicted.put(uBhv, predictionInfo);
 		}
 		
-		if(preferenceSettings.getBoolean("predictor.store", false))
-			storeNewPredictedBhv(predicted);
+		storeNewPredictionInfo(predicted);
 		
 		AppShuttleApplication.recentPredictionInfoMap = predicted;
-//		AppShuttleApplication.getContext().setRecentPredictedBhvInfoList(predictedBhvInfoList);
 	}
 	
 	public Map<UserBhv, PredictionInfo> getRecentPredictionInfoMap(){
 		return AppShuttleApplication.recentPredictionInfoMap;
 	}
-	
-//	public List<PredictionInfo> getRecentPredictedBhv(int topN){
-//		Map<UserBhv, PredictionInfo> predictedBhvMap = AppShuttleApplication.recentPredictedBhvMap;
-//		
-//		if(predictedBhvMap == null)
-//			return null;
-//		
-//		Log.d("test", predictedBhvMap.keySet().toString());
-//		
-//		List<PredictionInfo> predictedBhvList = new ArrayList<PredictionInfo>(predictedBhvMap.values());
-//		Collections.sort(predictedBhvList);
-//		
-//		return predictedBhvList.subList(0, Math.min(predictedBhvList.size(), topN));
-//	}
-//	
+
 	public PredictionInfo getPredictionInfo(UserBhv uBhv){
-		Map<UserBhv, PredictionInfo> predictedBhvMap = AppShuttleApplication.recentPredictionInfoMap;
+		Map<UserBhv, PredictionInfo> predictionInfoMap = AppShuttleApplication.recentPredictionInfoMap;
 		
-		if(predictedBhvMap == null)
+		if(predictionInfoMap == null)
 			return null;
 		
-		return predictedBhvMap.get(uBhv);
+		return predictionInfoMap.get(uBhv);
 	}
 	
-	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matchedResults){
+	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults){
 		double PredictionScore = 0;
 		
-		for(MatcherGroupType matcherType : matchedResults.keySet()){
-			double weight = Math.pow(10, matcherType.priority);
-			double score = weight * matchedResults.get(matcherType).getScore();
+		for(MatcherGroupType matcherGroupType : matcherGroupResults.keySet()){
+			double weight = Math.pow(10, matcherGroupType.priority);
+			double score = weight * matcherGroupResults.get(matcherGroupType).getScore();
 			PredictionScore += score;
 		}
 		return PredictionScore;
 	}
 	
 
-	public void storeNewPredictedBhv(Map<UserBhv, PredictionInfo> predicted) {
-		PredictedBhvDao predictedBhvDao = PredictedBhvDao.getInstance();
-
-		for(UserBhv uBhv : predicted.keySet()) {
+	public void storeNewPredictionInfo(Map<UserBhv, PredictionInfo> predictionInfoMap) {
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
+		
+		if(!preferenceSettings.getBoolean("predictor.store", false))
+			return;
+		
+		PredictionInfoDao predictionInfoDao = PredictionInfoDao.getInstance();
+		for(UserBhv uBhv : predictionInfoMap.keySet()) {
 			if(AppShuttleApplication.recentPredictionInfoMap == null || !AppShuttleApplication.recentPredictionInfoMap.containsKey(uBhv)) {
-				predictedBhvDao.storePredictedBhv(predicted.get(uBhv));
+				predictionInfoDao.storePredictionInfo(predictionInfoMap.get(uBhv));
 			}
 		}
 	}
@@ -202,23 +212,23 @@ public class Predictor {
 
 //ContextMatcher timeCxtMatcher = new TimeContextMatcher(cxt
 //, settings.getFloat("matcher.time.min_likelihood", 0.7f)
-//, settings.getInt("matcher.time.min_num_cxt", 3)
+//, settings.getInt("matcher.time.min_num_history", 3)
 //, AlarmManager.INTERVAL_DAY
 //, settings.getLong("matcher.time.tolerance", AlarmManager.INTERVAL_HOUR / 6));
 //ContextMatcher locCxtMatcher = new LocContextMatcher(cxt
 //, settings.getFloat("matcher.loc.min_likelihood", 0.7f)
-//, settings.getInt("matcher.loc.min_num_cxt", 3)
-//, settings.getInt("matcher.loc.distance_tolerance", 2000));
+//, settings.getInt("matcher.loc.min_num_history", 3)
+//, settings.getInt("matcher.loc.tolerance_in_meter", 2000));
 //ContextMatcher FreqCxtMatcher = new FreqContextMatcher(cxt
 //, Double.MIN_VALUE
-//, settings.getInt("matcher.recent.frequently.min_num_cxt", 3));
+//, settings.getInt("matcher.recent.frequently.min_num_history", 3));
 
 
 //List<MatchedCxt> locMatchhedCxtList;
 //if(GlobalState.recentLocMatchedCxtList == null) 
 //	GlobalState.recentLocMatchedCxtList = new ArrayList<MatchedCxt>();
 //if(GlobalState.moved == true){
-//	ContextMatcher locCxtMatcher = new LocContextMatcher(cxt, 0, settings.getInt("location.distance_tolerance", 2000));
+//	ContextMatcher locCxtMatcher = new LocContextMatcher(cxt, 0, settings.getInt("location.tolerance_in_meter", 2000));
 //	locMatchedCxtList = locCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);
 //	GlobalState.recentLocMatchedCxtList = locMatchedCxtList;
 //	Log.i("location", "moved");

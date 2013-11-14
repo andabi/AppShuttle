@@ -10,156 +10,180 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.matcher.conf.BaseMatcherConf;
 
-public abstract class BaseMatcher implements Matcher {
-	protected double _minLikelihood;
-	protected double _minInverseEntropy;
-	protected int _minNumCxt;
-	protected long _duration;
+public abstract class BaseMatcher<T extends BaseMatcherConf> implements Matcher {
+//	protected long duration;
+//	protected int minNumHistory;
+//	protected double minLikelihood;
+//	protected double minInverseEntropy;
+	protected T conf;
 	
-	public BaseMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt) {
-		_duration = duration;
-		_minLikelihood = minLikelihood;
-		_minInverseEntropy = minInverseEntropy;
-		_minNumCxt = minNumCxt;
+//	public BaseMatcher(long _duration, double _minLikelihood, double _minInverseEntropy, int _minNumHistory) {
+//		duration = _duration;
+//		minNumHistory = _minNumHistory;
+//		minLikelihood = _minLikelihood;
+//		minInverseEntropy = _minInverseEntropy;
+//	}
+	
+	public BaseMatcher(T _conf) {
+		conf = _conf;
 	}
 
 	@Override
 	public abstract MatcherType getMatcherType();
-	
+
 	@Override
-	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt/*, long noiseTimeTolerance*/){
-		List<MatcherCountUnit> matcherCountUnitList = mergeCxtByCountUnit(getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
-		
-		if(matcherCountUnitList.isEmpty()){
+	public MatcherResult matchAndGetResult(UserBhv uBhv,
+			SnapshotUserCxt currUCxt) {
+		List<MatcherCountUnit> matcherCountUnitList = mergeHistoryByCountUnit(
+				getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
+
+		if (matcherCountUnitList.isEmpty()) {
 			return null;
 		}
-		
+
 		double inverseEntropy = computeInverseEntropy(matcherCountUnitList);
-		if(inverseEntropy < _minInverseEntropy){
+		if (inverseEntropy < conf.getMinInverseEntropy()) {
 			return null;
 		}
-		
-		int numTotalCxt = 0, numRelatedCxt = 0;
-		Map<MatcherCountUnit, Double> relatedCxt = new HashMap<MatcherCountUnit, Double>();
-		
-		for(MatcherCountUnit mergedRfdCxt : matcherCountUnitList) {
-			numTotalCxt++;
-			double relatedness = computeRelatedness(mergedRfdCxt, currUCxt);
-			if(relatedness > 0 ) {
-				numRelatedCxt++;
-				relatedCxt.put(mergedRfdCxt, relatedness);
+
+		int numTotalHistory = 0, numRelatedHistory = 0;
+		Map<MatcherCountUnit, Double> relatedHistory = new HashMap<MatcherCountUnit, Double>();
+
+		for (MatcherCountUnit unit : matcherCountUnitList) {
+			numTotalHistory++;
+			double relatedness = computeRelatedness(unit, currUCxt);
+			if (relatedness > 0) {
+				numRelatedHistory++;
+				relatedHistory.put(unit, relatedness);
 			}
 		}
-		if(numRelatedCxt < _minNumCxt)
+		if (numRelatedHistory < conf.getMinNumHistory())
 			return null;
-		
-		double likelihood = computeLikelihood(numRelatedCxt, relatedCxt, currUCxt);
-		if(likelihood < _minLikelihood)
+
+		double likelihood = computeLikelihood(numRelatedHistory,
+				relatedHistory, currUCxt);
+		if (likelihood < conf.getMinLikelihood())
 			return null;
-		
-		MatcherResult matchedCxt = new MatcherResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), currUCxt.getUserEnvs());
-		matchedCxt.setUserBhv(uBhv);
-		matchedCxt.setMatcherType(getMatcherType());
-		matchedCxt.setNumTotalCxt(numTotalCxt);
-		matchedCxt.setNumRelatedCxt(numRelatedCxt);
-		matchedCxt.setRelatedCxt(relatedCxt);
-		matchedCxt.setLikelihood(likelihood);
-		matchedCxt.setInverseEntropy(inverseEntropy);
-		
-		double score = computeScore(matchedCxt);
-		
-		matchedCxt.setScore(score);
-		
-//		Log.d("matchedCxt: matcher type", matchedCxt.getMatcherType().toString());
-		
-		return matchedCxt;
+
+		MatcherResult matcherResult = new MatcherResult(currUCxt.getTimeDate(),
+				currUCxt.getTimeZone(), currUCxt.getUserEnvs());
+		matcherResult.setUserBhv(uBhv);
+		matcherResult.setMatcherType(getMatcherType());
+		matcherResult.setNumTotalHistory(numTotalHistory);
+		matcherResult.setNumRelatedHistory(numRelatedHistory);
+		matcherResult.setRelatedHistory(relatedHistory);
+		matcherResult.setLikelihood(likelihood);
+		matcherResult.setInverseEntropy(inverseEntropy);
+		matcherResult.setScore(computeScore(matcherResult));
+
+		// Log.d("matchedCxt: matcher type",
+		// matchedCxt.getMatcherType().toString());
+
+		return matcherResult;
 	}
-	
-	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
+
+	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv,
+			SnapshotUserCxt currUCxt) {
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
 		Date toTime = currUCxt.getTimeDate();
-		Date fromTime = new Date(toTime.getTime() - _duration);
-		
-		List<DurationUserBhv> rfdUCxtList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
-		List<DurationUserBhv> pureRfdUCxtList = new ArrayList<DurationUserBhv>();
-		for(DurationUserBhv rfdUCxt : rfdUCxtList){
-//			if(rfdUCxt.getEndTimeDate().getTime() - rfdUCxt.getTimeDate().getTime()	< noiseTimeTolerance)
-//				continue;
-			pureRfdUCxtList.add(rfdUCxt);
+		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
+
+		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(
+				fromTime, toTime, uBhv);
+		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
+		for (DurationUserBhv durationUserBhv : durationUserBhvList) {
+			// if(durationUserBhv.getEndTimeDate().getTime() -
+			// durationUserBhv.getTimeDate().getTime() < noiseTimeTolerance)
+			// continue;
+			pureDurationUserBhvList.add(durationUserBhv);
 		}
-		return pureRfdUCxtList;
+		return pureDurationUserBhvList;
 	}
 
-	protected double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt){
+	protected double computeLikelihood(int numRelatedHistory,
+			Map<MatcherCountUnit, Double> relatedHistoryMap,
+			SnapshotUserCxt uCxt) {
 		double likelihood = 0;
-		for(double relatedness : relatedCxtMap.values()){
-			likelihood+=relatedness;
+		for (double relatedness : relatedHistoryMap.values()) {
+			likelihood += relatedness;
 		}
-		likelihood /= numRelatedCxt;
+		likelihood /= numRelatedHistory;
 		return likelihood;
 	}
-	
-	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+
+	protected double computeInverseEntropy(
+			List<MatcherCountUnit> matcherCountUnitList) {
 		double inverseEntropy = Double.MIN_VALUE;
 		return inverseEntropy;
 	}
-	
-	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
-	
-	protected abstract double computeRelatedness(MatcherCountUnit rfdUCxt, SnapshotUserCxt uCxt);
-	
-	protected abstract double computeScore(MatcherResult matchedResult);
-//			if(numRelatedCxt >= minNumCxt && likelihood >= minLikelihood)
-//				matchedCxt.setMatched(true);
-//			else
-//				matchedCxt.setMatched(false);
-	
-//		Map<UserBhv, Integer> numTotalCxtByBhv = new HashMap<UserBhv, Integer>();
-//		Map<UserBhv, Integer> numRelatedCxtByBhv = new HashMap<UserBhv, Integer>();
-//		Map<UserBhv, SparseArray<Double>> relatedCxtByBhv = new HashMap<UserBhv, SparseArray<Double>>();
 
-//		for(RfdUserCxt rfdUCxt : rfdUCxtList) {
-//			int contextId = rfdUCxt.getContextId();
-//			UserBhv userBhv = rfdUCxt.getBhv();
-//
-//			//numTotalCxtByBhv
-//			if(!numTotalCxtByBhv.containsKey(userBhv)) numTotalCxtByBhv.put(userBhv, 1);
-//			numTotalCxtByBhv.put(userBhv, numTotalCxtByBhv.get(userBhv) + 1);
-//			
-//			double relatedness = computeRelatedness(rfdUCxt, uEnv);			
-//			if(relatedness > 0 ) {
-//				//numRelatedCxtByBhv
-//				if(!numRelatedCxtByBhv.containsKey(userBhv)) numRelatedCxtByBhv.put(userBhv, 0);
-//				numRelatedCxtByBhv.put(userBhv, numRelatedCxtByBhv.get(userBhv) + 1);
-//				
-//				//relatedCxtByBhv
-//				if(!relatedCxtByBhv.containsKey(userBhv)) relatedCxtByBhv.put(userBhv, new SparseArray<Double>());
-//				SparseArray<Double> relatedCxtMap = relatedCxtByBhv.get(userBhv);
-//				relatedCxtMap.put(contextId, relatedness);
-//				relatedCxtByBhv.put(userBhv, relatedCxtMap);
-//			}
-//		}
+	protected abstract List<MatcherCountUnit> mergeHistoryByCountUnit(
+			List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt);
 
-//		for(UserBhv userBhv : relatedCxtByBhv.keySet()){
-//			int numRelatedCxt = numRelatedCxtByBhv.get(userBhv);
-//			
-//			if(numRelatedCxt < minNumCxt) continue;
-//			
-//			MatchedCxt matchedCxt = new MatchedCxt(uEnv);
-//			matchedCxt.setUserBhv(userBhv);
-//			matchedCxt.setCondition(conditionName());
-//			matchedCxt.setNumTotalCxt(numTotalCxtByBhv.get(userBhv));
-//			matchedCxt.setNumRelatedCxt(numRelatedCxtByBhv.get(userBhv));
-//			matchedCxt.setRelatedCxt(relatedCxtByBhv.get(userBhv));
-//			double likelihood = computeLikelihood(matchedCxt);
-//
-//			if(likelihood < minLikelihood) continue;
-//
-//			matchedCxt.setLikelihood(likelihood);
-//			
-//			res.add(matchedCxt);
-//		}
-//		return res;
+	protected abstract double computeRelatedness(MatcherCountUnit durationUserBhv,
+			SnapshotUserCxt uCxt);
+
+	protected abstract double computeScore(MatcherResult matcherResult);
+
+	// if(numRelatedHistory >= minNumHistory && likelihood >= minLikelihood)
+	// matchedCxt.setMatched(true);
+	// else
+	// matchedCxt.setMatched(false);
+
+	// Map<UserBhv, Integer> numTotalHistoryByBhv = new HashMap<UserBhv,
+	// Integer>();
+	// Map<UserBhv, Integer> numRelatedHistoryByBhv = new HashMap<UserBhv,
+	// Integer>();
+	// Map<UserBhv, SparseArray<Double>> relatedHistoryByBhv = new
+	// HashMap<UserBhv, SparseArray<Double>>();
+
+	// for(RfdUserCxt durationUserBhv : durationUserBhvList) {
+	// int contextId = durationUserBhv.getContextId();
+	// UserBhv userBhv = durationUserBhv.getBhv();
+	//
+	// //numTotalHistoryByBhv
+	// if(!numTotalHistoryByBhv.containsKey(userBhv))
+	// numTotalHistoryByBhv.put(userBhv, 1);
+	// numTotalHistoryByBhv.put(userBhv, numTotalHistoryByBhv.get(userBhv) + 1);
+	//
+	// double relatedness = computeRelatedness(durationUserBhv, uEnv);
+	// if(relatedness > 0 ) {
+	// //numRelatedHistoryByBhv
+	// if(!numRelatedHistoryByBhv.containsKey(userBhv))
+	// numRelatedHistoryByBhv.put(userBhv, 0);
+	// numRelatedHistoryByBhv.put(userBhv, numRelatedHistoryByBhv.get(userBhv) +
+	// 1);
+	//
+	// //relatedHistoryByBhv
+	// if(!relatedHistoryByBhv.containsKey(userBhv))
+	// relatedHistoryByBhv.put(userBhv, new SparseArray<Double>());
+	// SparseArray<Double> relatedHistoryMap = relatedHistoryByBhv.get(userBhv);
+	// relatedHistoryMap.put(contextId, relatedness);
+	// relatedHistoryByBhv.put(userBhv, relatedHistoryMap);
+	// }
+	// }
+
+	// for(UserBhv userBhv : relatedHistoryByBhv.keySet()){
+	// int numRelatedHistory = numRelatedHistoryByBhv.get(userBhv);
+	//
+	// if(numRelatedHistory < minNumHistory) continue;
+	//
+	// MatchedCxt matchedCxt = new MatchedCxt(uEnv);
+	// matchedCxt.setUserBhv(userBhv);
+	// matchedCxt.setCondition(conditionName());
+	// matchedCxt.setNumTotalCxt(numTotalHistoryByBhv.get(userBhv));
+	// matchedCxt.setNumRelatedCxt(numRelatedHistoryByBhv.get(userBhv));
+	// matchedCxt.setRelatedCxt(relatedHistoryByBhv.get(userBhv));
+	// double likelihood = computeLikelihood(matchedCxt);
+	//
+	// if(likelihood < minLikelihood) continue;
+	//
+	// matchedCxt.setLikelihood(likelihood);
+	//
+	// res.add(matchedCxt);
+	// }
+	// return res;
 }
