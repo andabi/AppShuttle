@@ -2,8 +2,6 @@ package lab.davidahn.appshuttle.predict.matcher.conf;
 
 import android.app.AlarmManager;
 
-
-
 public class RecentMatcherConf extends BaseMatcherConf{
 	private long acceptanceDelay;
 

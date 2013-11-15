@@ -12,9 +12,9 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 
 
-public class TimeDailyWeekdayMatcher extends TimeMatcher {
+public class DailyWeekdayTimeMatcher extends TimeMatcher {
 
-	public TimeDailyWeekdayMatcher(TimeMatcherConf conf){
+	public DailyWeekdayTimeMatcher(TimeMatcherConf conf){
 		super(conf);
 	}
 	

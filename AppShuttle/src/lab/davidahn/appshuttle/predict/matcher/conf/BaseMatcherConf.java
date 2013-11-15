@@ -40,11 +40,7 @@ public class BaseMatcherConf {
 		protected Builder(){}
 
 		public abstract B getThis();
-		
-//		public BaseMatcherConf build(){
-//			return new BaseMatcherConf(this);
-//		}
-		
+	
 		public B setDuration(long duration) {
 			this.duration = duration;
 			return getThis();

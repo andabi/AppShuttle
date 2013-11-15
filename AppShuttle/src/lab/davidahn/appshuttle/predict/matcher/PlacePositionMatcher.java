@@ -15,9 +15,9 @@ import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserPlace;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
-public class PlaceMatcher extends PositionMatcher {
+public class PlacePositionMatcher extends PositionMatcher {
 
-	public PlaceMatcher(PositionMatcherConf conf){
+	public PlacePositionMatcher(PositionMatcherConf conf){
 		super(conf);
 	}
 	

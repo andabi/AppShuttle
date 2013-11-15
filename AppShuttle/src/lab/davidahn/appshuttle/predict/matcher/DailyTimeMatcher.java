@@ -3,9 +3,9 @@ package lab.davidahn.appshuttle.predict.matcher;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 
 
-public class TimeDailyMatcher extends TimeMatcher {
+public class DailyTimeMatcher extends TimeMatcher {
 
-	public TimeDailyMatcher(TimeMatcherConf conf){
+	public DailyTimeMatcher(TimeMatcherConf conf){
 		super(conf);
 	}
 	

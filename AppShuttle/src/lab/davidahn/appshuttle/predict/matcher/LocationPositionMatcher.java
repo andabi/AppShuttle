@@ -21,9 +21,9 @@ import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
  * @author andabi
  *
  */
-public class LocationMatcher extends PositionMatcher {
+public class LocationPositionMatcher extends PositionMatcher {
 	
-	public LocationMatcher(PositionMatcherConf conf){
+	public LocationPositionMatcher(PositionMatcherConf conf){
 		super(conf);
 	}
 	
