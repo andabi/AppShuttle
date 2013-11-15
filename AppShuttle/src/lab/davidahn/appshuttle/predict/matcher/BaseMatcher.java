@@ -12,21 +12,10 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.BaseMatcherConf;
 
-public abstract class BaseMatcher<T extends BaseMatcherConf> implements Matcher {
-//	protected long duration;
-//	protected int minNumHistory;
-//	protected double minLikelihood;
-//	protected double minInverseEntropy;
-	protected T conf;
+public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher {
+	protected C conf;
 	
-//	public BaseMatcher(long _duration, double _minLikelihood, double _minInverseEntropy, int _minNumHistory) {
-//		duration = _duration;
-//		minNumHistory = _minNumHistory;
-//		minLikelihood = _minLikelihood;
-//		minInverseEntropy = _minInverseEntropy;
-//	}
-	
-	public BaseMatcher(T _conf) {
+	public BaseMatcher(C _conf) {
 		conf = _conf;
 	}
 

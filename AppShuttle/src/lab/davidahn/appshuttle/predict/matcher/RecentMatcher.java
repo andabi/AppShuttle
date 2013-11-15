@@ -9,17 +9,10 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 
 public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
-//	long acceptanceDelay;
-	
-//	public RecentMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, long _acceptanceDelay) {
-//		super(duration, minLikelihood, minInverseEntropy, minNumHistory);
-//		acceptanceDelay = _acceptanceDelay;
-//	}
 	
 	public RecentMatcher(RecentMatcherConf conf){
 		super(conf);
 	}
-
 	
 	@Override
 	public abstract MatcherType getMatcherType();

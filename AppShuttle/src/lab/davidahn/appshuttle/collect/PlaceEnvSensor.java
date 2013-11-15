@@ -125,7 +125,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		if(_durationUserEnvBuilder == null) {
 			_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
-			if(isChanged()){
+			if(isChanged()/* || LocEnvSensor.getInstance().isChanged()*/ || isAutoExtractionTime(currTimeDate, currTimeZone)){
 				res = _durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}

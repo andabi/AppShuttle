@@ -8,12 +8,6 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
 public abstract class PositionMatcher extends BaseMatcher<PositionMatcherConf> {
-//	int toleranceInMeter;
-
-//	public PositionMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, int _toleranceInMeter) {
-//		super(duration, minLikelihood, minInverseEntropy, minNumHistory);
-//		toleranceInMeter = _toleranceInMeter;
-//	}
 
 	public PositionMatcher(PositionMatcherConf conf){
 		super(conf);

@@ -17,10 +17,6 @@ import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
 public class PlaceMatcher extends PositionMatcher {
 
-//	public PlaceMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, int toleranceInMeter) {
-//		super(duration, minLikelihood, minInverseEntropy, minNumHistory, toleranceInMeter);
-//	}
-
 	public PlaceMatcher(PositionMatcherConf conf){
 		super(conf);
 	}

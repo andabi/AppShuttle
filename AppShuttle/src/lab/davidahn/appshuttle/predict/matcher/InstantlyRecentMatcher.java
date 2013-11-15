@@ -11,10 +11,6 @@ import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 
 public class InstantlyRecentMatcher extends RecentMatcher {
 	
-//	public InstantlyRecentMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, long acceptanceDelay) {
-//		super(duration, minLikelihood, minInverseEntropy, minNumHistory, acceptanceDelay);
-//	}
-
 	public InstantlyRecentMatcher(RecentMatcherConf conf){
 		super(conf);
 	}

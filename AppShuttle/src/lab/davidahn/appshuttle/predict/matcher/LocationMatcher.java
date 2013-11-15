@@ -23,10 +23,6 @@ import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
  */
 public class LocationMatcher extends PositionMatcher {
 	
-//	public LocationMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, int toleranceInMeter) {
-//		super(duration, minLikelihood, minInverseEntropy, minNumHistory, toleranceInMeter);
-//	}
-	
 	public LocationMatcher(PositionMatcherConf conf){
 		super(conf);
 	}

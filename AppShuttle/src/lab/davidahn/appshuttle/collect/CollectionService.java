@@ -23,6 +23,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 
 public class CollectionService extends Service {
 	private Date _currTimeDate;
@@ -30,6 +31,7 @@ public class CollectionService extends Service {
 	private Map<EnvType, EnvSensor> _sensors;
     private List<BhvCollector> _collectors;
 
+    @Override
 	public void onCreate() {
 		super.onCreate();
 		
@@ -44,6 +46,7 @@ public class CollectionService extends Service {
 		preCollectCollectDurationUserContext();
 	}
 	
+    @Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
 		
@@ -59,15 +62,22 @@ public class CollectionService extends Service {
 		return START_NOT_STICKY;
 	}
 	
+    @Override
 	public IBinder onBind(Intent intent){
 		return null;
 	}
 	
+	@Override
 	public void onDestroy() {
-		super.onDestroy();
-		
 		postCollectDurationUserContext();
+		super.onDestroy();
 	}
+	
+//	@Override
+//	public void onLowMemory(){
+//		postCollectDurationUserContext();
+//		super.onLowMemory();
+//	}
 	
 	private void preCollectCollectDurationUserContext() {
 		_currTimeDate = new Date(System.currentTimeMillis());
@@ -137,7 +147,7 @@ public class CollectionService extends Service {
 		postCollectDurationUserBhv();
 		postCollectDurationUserEnv();
 		
-//		Log.d("collection", "post collection");
+		Log.d("collection", "post collection");
 	}
 
 	private void postCollectDurationUserEnv() {

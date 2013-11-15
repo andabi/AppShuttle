@@ -8,7 +8,7 @@ public class BaseMatcherConf {
 	protected final double minLikelihood;
 	protected final double minInverseEntropy;
 
-	protected <T extends Builder<T>> BaseMatcherConf(Builder<T> builder) {
+	protected <B extends Builder<B>> BaseMatcherConf(Builder<B> builder) {
 		duration = builder.duration;
 		minNumHistory = builder.minNumHistory;
 		minLikelihood = builder.minLikelihood;
@@ -31,7 +31,7 @@ public class BaseMatcherConf {
 		return minInverseEntropy;
 	}
 
-	public static abstract class Builder<T extends Builder<T>>{
+	public static abstract class Builder<B extends Builder<B>>{
 		protected long duration = 5 * AlarmManager.INTERVAL_DAY;
 		protected int minNumHistory = 3;
 		protected double minLikelihood = 0;
@@ -39,28 +39,28 @@ public class BaseMatcherConf {
 	
 		protected Builder(){}
 
-		public abstract T getThis();
+		public abstract B getThis();
 		
 //		public BaseMatcherConf build(){
 //			return new BaseMatcherConf(this);
 //		}
 		
-		public T setDuration(long duration) {
+		public B setDuration(long duration) {
 			this.duration = duration;
 			return getThis();
 		}
 
-		public T setMinNumHistory(int minNumHistory) {
+		public B setMinNumHistory(int minNumHistory) {
 			this.minNumHistory = minNumHistory;
 			return getThis();
 		}
 
-		public T setMinLikelihood(double minLikelihood) {
+		public B setMinLikelihood(double minLikelihood) {
 			this.minLikelihood = minLikelihood;
 			return getThis();
 		}
 
-		public T setMinInverseEntropy(double minInverseEntropy) {
+		public B setMinInverseEntropy(double minInverseEntropy) {
 			this.minInverseEntropy = minInverseEntropy;
 			return getThis();
 		}

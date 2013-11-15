@@ -2,8 +2,6 @@ package lab.davidahn.appshuttle.predict.matcher.conf;
 
 import android.app.AlarmManager;
 
-
-
 public class TimeMatcherConf extends BaseMatcherConf{
 	private long period;
 	private long tolerance;
@@ -48,6 +46,9 @@ public class TimeMatcherConf extends BaseMatcherConf{
 		}
 
 		public Builder setTolerance(long tolerance) {
+			if(tolerance > AlarmManager.INTERVAL_DAY)
+				throw new IllegalArgumentException("tolerance should not exceed 24 hours");
+
 			this.tolerance = tolerance;
 			return getThis();
 		}

@@ -26,9 +26,11 @@ public class AppShuttlePreferences {
 		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
 		editor.putLong("service.compaction.expiration", 35 * AlarmManager.INTERVAL_DAY);
 
-		editor.putLong("service.predict.period", 300000);
+		editor.putLong("service.predict.period", 180000);
 
 		//collection
+		editor.putLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
+		
 		editor.putLong("collection.location.tolerance.time", 300000);
 		editor.putInt("collection.location.tolerance.distance", 500);
 		

@@ -14,10 +14,6 @@ import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 
 public class TimeDailyWeekdayMatcher extends TimeMatcher {
 
-//	public TimeDailyWeekdayMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, long period, long tolerance, long acceptanceDelay) {
-//		super(duration, minLikelihood, minInverseEntropy, minNumHistory, period, tolerance, acceptanceDelay);
-//	}
-	
 	public TimeDailyWeekdayMatcher(TimeMatcherConf conf){
 		super(conf);
 	}

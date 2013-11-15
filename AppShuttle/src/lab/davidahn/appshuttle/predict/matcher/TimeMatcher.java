@@ -17,21 +17,7 @@ import lab.davidahn.appshuttle.utils.Time;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
-//	protected long period;
-//	protected long tolerance;
-//	protected long acceptanceDelay;
 
-//	public TimeMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumHistory, long _period, long _tolerance, long _acceptanceDelay) {
-//		super(duration, minLikelihood, minInverseEntropy, minNumHistory);
-//		period = _period;
-//		
-//		if(tolerance > AlarmManager.INTERVAL_DAY)
-//			throw new IllegalArgumentException("tolerance should not exceed 24 hours");
-//		
-//		tolerance = _tolerance;
-//		acceptanceDelay = _acceptanceDelay;
-//	}
-	
 	public TimeMatcher(TimeMatcherConf conf){
 		super(conf);
 	}
