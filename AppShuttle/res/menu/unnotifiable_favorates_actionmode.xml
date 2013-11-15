@@ -12,11 +12,5 @@
 	    android:showAsAction="always|withText"
 	    android:icon="@drawable/ic_audio_alarm"
 	    android:title="@string/favorates_notify"/>
-    
-    <item
-	    android:id="@+id/favorates_not_notify"
-	    android:showAsAction="always|withText"
-	    android:icon="@drawable/ic_audio_alarm_mute"
-	    android:title="@string/favorates_not_notify"/>
 
 </menu>

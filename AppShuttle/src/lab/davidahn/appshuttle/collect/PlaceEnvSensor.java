@@ -45,7 +45,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			return _currUPlace;
 		}
 		
-		if(!_locEnvCollector.isChanged() /* && _prevUPlace != null && _prevUPlace.isValid() */ ){
+		if(!_locEnvCollector.isChanged() && _prevUPlace.isValid()){
 			_currUPlace = _prevUPlace;
 			
 			return _currUPlace;

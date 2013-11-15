@@ -99,13 +99,13 @@ public class OrdinaryBhvFragment extends ListFragment {
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
 			OrdinaryUserBhv ordinaryBhv = predictedOrdinaryBhvList.get(position);
 
-			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
+			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
 			iconView.setImageDrawable(ordinaryBhv.getIcon());
 
-			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
+			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
 			firstLineView.setText(ordinaryBhv.getBhvNameText());
 
-			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
+			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
 			secondLineView.setText(ordinaryBhv.getViewMsg());
 
 			return itemView;
@@ -133,38 +133,48 @@ public class OrdinaryBhvFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			int position = (Integer)actionMode.getTag();
+			int pos = (Integer)actionMode.getTag();
 
-			if(predictedOrdinaryBhvList.size() < position + 1)
+			if(predictedOrdinaryBhvList.size() < pos + 1)
 				return false;
 
-			UserBhvManager uBhvManager = UserBhvManager.getInstance();
-			String actionMsg = "";
+			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
+			doPostAction();
+			showToastMsg(actionMsg);
 			
-			switch(item.getItemId()) {
-			case R.id.favorate:	
-				uBhvManager.favorates((OrdinaryUserBhv)(predictedOrdinaryBhvList.get(position)));
-				actionMsg = getResources().getString(R.string.action_msg_favorates);
-				break;
-			case R.id.block:
-				uBhvManager.block((OrdinaryUserBhv)(predictedOrdinaryBhvList.get(position)));
-				actionMsg = getResources().getString(R.string.action_msg_block);
-				break;
-			default:
-				;
-			}
-
-			NotiBarNotifier.getInstance().notification();
-			getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
-
-			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
-			t.setGravity(Gravity.CENTER, 0, 0);
-			t.show();
-
 			if(actionMode != null)
 				actionMode.finish();
 			
 			return true;
 		}
 	};
+	
+	private String doActionAndGetMsg(int pos, int itemId) {
+		UserBhvManager uBhvManager = UserBhvManager.getInstance();
+		
+		switch(itemId) {
+		case R.id.favorate:	
+			uBhvManager.favorates((predictedOrdinaryBhvList.get(pos)));
+			return getResources().getString(R.string.action_msg_favorates);
+		case R.id.block:
+			uBhvManager.block((predictedOrdinaryBhvList.get(pos)));
+			return getResources().getString(R.string.action_msg_block);
+		default:
+			return null;
+		}
+	}
+
+	private void doPostAction() {
+		NotiBarNotifier.getInstance().notification();
+		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
+	}
+	
+	private void showToastMsg(String actionMsg){
+		if(actionMsg == null)
+			return ;
+		
+		Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
+	}
 }

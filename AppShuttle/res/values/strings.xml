@@ -27,9 +27,9 @@
     <string name="action_msg_block">blocked!</string>
     <string name="action_msg_unblock">unblocked</string>
     <string name="favorates_notify">notify</string>
-    <string name="favorates_not_notify">not notify</string>
+    <string name="favorates_unnotify">not notify</string>
     <string name="action_msg_favorates_notifiable">making notifiable</string>
-    <string name="action_msg_favorates_not_notifiable">making not notifiable</string>
+    <string name="action_msg_favorates_unnotifiable">making not notifiable</string>
     <string name="action_msg_favorates_notifiable_failure">limited</string>
     <string name="noti_view_enabled">Visible on notification bar</string>
     <string name="noti_view_enabled_summ">make the apps visible on notification bar</string>

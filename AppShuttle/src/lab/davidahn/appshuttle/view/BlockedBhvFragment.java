@@ -97,13 +97,13 @@ public class BlockedBhvFragment extends ListFragment {
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
 			BlockedUserBhv blockedUserBhv = blockedBhvList.get(position);
 
-			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
+			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
 			iconView.setImageDrawable(blockedUserBhv.getIcon());
 
-			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
+			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
 			firstLineView.setText(blockedUserBhv.getBhvNameText());
 
-			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
+			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
 			secondLineView.setText(blockedUserBhv.getViewMsg());
 
 			return itemView;
@@ -131,29 +131,14 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			int position = (Integer)mode.getTag();
+			int pos = (Integer)mode.getTag();
 
-			if(blockedBhvList.size() < position + 1)
+			if(blockedBhvList.size() < pos + 1)
 				return false;
 			
-			String actionMsg = "";
-			UserBhvManager uBhvManager = UserBhvManager.getInstance();
-
-			switch(item.getItemId()) {
-			case R.id.unblock:
-				uBhvManager.unblock((BlockedUserBhv)(blockedBhvList.get(position)));
-				actionMsg = getResources().getString(R.string.action_msg_unblock);
-				break;
-			default:
-				;
-			}
-			
-			NotiBarNotifier.getInstance().notification();
-			getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
-			
-			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
-			t.setGravity(Gravity.CENTER, 0, 0);
-			t.show();
+			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
+			doPostAction();
+			showToastMsg(actionMsg);
 			
 			if(actionMode != null)
 				actionMode.finish();
@@ -161,4 +146,31 @@ public class BlockedBhvFragment extends ListFragment {
 			return true;
 		}
 	};
+	
+	private String doActionAndGetMsg(int pos, int itemId) {
+		BlockedUserBhv blockedUserBhv = blockedBhvList.get(pos);
+		switch(itemId) {
+		case R.id.unblock:
+			UserBhvManager uBhvManager = UserBhvManager.getInstance();
+			uBhvManager.unblock(blockedUserBhv);
+			return getResources().getString(R.string.action_msg_unblock);
+		default:
+			return null;
+		}
+	}
+
+	private void doPostAction() {
+		NotiBarNotifier.getInstance().notification();
+		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
+	}
+	
+	private void showToastMsg(String actionMsg){
+		if(actionMsg == null)
+			return ;
+		
+		Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
+	}
+
 }
