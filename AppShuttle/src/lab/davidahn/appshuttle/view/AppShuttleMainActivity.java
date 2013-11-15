@@ -32,7 +32,6 @@ public class AppShuttleMainActivity extends Activity {
 	
 	BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-//        	NotiBarNotifier.getInstance().notification();
     		mTabsAdapter.notifyDataSetChanged();
         }
     };
@@ -94,8 +93,8 @@ public class AppShuttleMainActivity extends Activity {
 				BlockedBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
 				SettingsFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
-				InfoFragment.class, null);
+//		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
+//				InfoFragment.class, null);
 
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
