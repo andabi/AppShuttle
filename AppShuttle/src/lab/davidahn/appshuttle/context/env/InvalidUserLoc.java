@@ -22,10 +22,10 @@ public class InvalidUserLoc extends UserLoc {
 		throw new InvalidUserEnvException(EnvType.INVALID_LOCATION, this);
 	}
 	
-	@Override
-	public boolean isValid(){
-		return false;
-	}
+//	@Override
+//	public boolean isValid(){
+//		return false;
+//	}
 	
 //	@Override
 //	public boolean isSame(UserLoc uLoc) throws InvalidUserEnvException {

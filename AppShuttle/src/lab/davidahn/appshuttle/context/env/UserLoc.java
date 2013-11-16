@@ -100,8 +100,8 @@ public class UserLoc extends UserEnv {
 		return Double.valueOf(_latitude).hashCode() ^ Double.valueOf(_longitude).hashCode();
 	}
 	
-	public enum UserLocValidity{
-		VALID, 
-		INVALID
-	}
+//	public enum UserLocValidity{
+//		VALID, 
+//		INVALID
+//	}
 }

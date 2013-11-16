@@ -8,7 +8,10 @@ public enum EnvType {
 	INVALID_LOCATION(InvalidUserLoc.class),
 	
 	PLACE(UserPlace.class),
-	INVALID_PLACE(InvalidUserPlace.class);
+	INVALID_PLACE(InvalidUserPlace.class),
+	
+	SPEED(UserSpeed.class),
+	ZERO_SPEED(ZeroUserSpeed.class);
 	
 	private Class<? extends UserEnv> _clazz;
 	

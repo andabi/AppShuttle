@@ -17,10 +17,10 @@ public class InvalidUserPlace extends UserPlace {
 		throw new InvalidUserEnvException(EnvType.INVALID_PLACE, this);
 	}
 	
-	@Override
-	public boolean isValid(){
-		return false;
-	}
+//	@Override
+//	public boolean isValid(){
+//		return false;
+//	}
 	
 //	@Override
 //	public boolean isSame(UserPlace uPlace) throws InvalidUserEnvException {

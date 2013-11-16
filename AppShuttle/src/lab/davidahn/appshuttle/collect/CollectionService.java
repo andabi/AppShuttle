@@ -26,32 +26,40 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class CollectionService extends Service {
-	private Date _currTimeDate;
-	private TimeZone _currTimeZone;
-	private Map<EnvType, EnvSensor> _sensors;
-    private List<BhvCollector> _collectors;
+	private Date currTimeDate;
+	private TimeZone currTimeZone;
+	private Map<EnvType, EnvSensor> sensors;
+    private List<BhvCollector> collectors;
 
     @Override
 	public void onCreate() {
 		super.onCreate();
 		
-		_sensors = new HashMap<EnvType, EnvSensor>();
-		_sensors.put(EnvType.LOCATION, LocEnvSensor.getInstance());
-		_sensors.put(EnvType.PLACE, PlaceEnvSensor.getInstance());
-		
-		_collectors = new ArrayList<BhvCollector>();
-		_collectors.add(AppBhvCollector.getInstance());
-		_collectors.add(CallBhvCollector.getInstance());
+		registerSensors();
+		registerCollectors();
 
 		preCollectCollectDurationUserContext();
 	}
 	
-    @Override
+    private void registerSensors() {
+    	sensors = new HashMap<EnvType, EnvSensor>();
+    	sensors.put(EnvType.LOCATION, LocEnvSensor.getInstance());
+    	sensors.put(EnvType.PLACE, PlaceEnvSensor.getInstance());
+    	sensors.put(EnvType.SPEED, SpeedEnvSensor.getInstance());
+    }
+    
+    private void registerCollectors() {
+		collectors = new ArrayList<BhvCollector>();
+		collectors.add(AppBhvCollector.getInstance());
+		collectors.add(CallBhvCollector.getInstance());
+	}
+
+	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
 		
-		_currTimeDate = new Date(System.currentTimeMillis());
-		_currTimeZone = Calendar.getInstance().getTimeZone();
+		currTimeDate = new Date(System.currentTimeMillis());
+		currTimeZone = Calendar.getInstance().getTimeZone();
 		
 	
 		SnapshotUserCxt uCxt = CollectSnapshotUserContext();
@@ -80,18 +88,18 @@ public class CollectionService extends Service {
 //	}
 	
 	private void preCollectCollectDurationUserContext() {
-		_currTimeDate = new Date(System.currentTimeMillis());
-		_currTimeZone = Calendar.getInstance().getTimeZone();
+		currTimeDate = new Date(System.currentTimeMillis());
+		currTimeZone = Calendar.getInstance().getTimeZone();
 
-		for(EnvSensor sensor : _sensors.values()){
-			List<DurationUserEnv> preExtractedDurationUserEnvList = sensor.preExtractDurationUserEnv(_currTimeDate, _currTimeZone);
+		for(EnvSensor sensor : sensors.values()){
+			List<DurationUserEnv> preExtractedDurationUserEnvList = sensor.preExtractDurationUserEnv(currTimeDate, currTimeZone);
 			for(DurationUserEnv preExtractedDurationUserEnv : preExtractedDurationUserEnvList)
 				storeDurationUserEnv(preExtractedDurationUserEnv);
 		}
 		
-		for(BhvCollector collector : _collectors){
+		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> preExtractedDurationUserBhvList = 
-					collector.preExtractDurationUserBhv(_currTimeDate, _currTimeZone);
+					collector.preExtractDurationUserBhv(currTimeDate, currTimeZone);
 			storeDurationUserBhv(preExtractedDurationUserBhvList);
 
 			registerEachBhv(preExtractedDurationUserBhvList);
@@ -102,16 +110,16 @@ public class CollectionService extends Service {
 	private SnapshotUserCxt CollectSnapshotUserContext() {
 		SnapshotUserCxt uCxt = new SnapshotUserCxt();
 
-		uCxt.setTime(_currTimeDate);
-		uCxt.setTimeZone(_currTimeZone);
+		uCxt.setTime(currTimeDate);
+		uCxt.setTimeZone(currTimeZone);
 		
-		for(EnvType envType : _sensors.keySet()){
-			EnvSensor sensor = _sensors.get(envType);
+		for(EnvType envType : sensors.keySet()){
+			EnvSensor sensor = sensors.get(envType);
 			UserEnv uEnv = sensor.sense();
 			uCxt.addUserEnv(envType, uEnv);
 		}
 		
-		for(BhvCollector collector : _collectors){
+		for(BhvCollector collector : collectors){
 			List<BaseUserBhv> userBhvList = collector.collect();
 			uCxt.addUserBhvAll(userBhvList);
 		}
@@ -125,13 +133,13 @@ public class CollectionService extends Service {
 		Date currTimeDate = uCxt.getTimeDate();
 		TimeZone currTimeZone = uCxt.getTimeZone();
 		
-		for(EnvType envType : _sensors.keySet()){
-			EnvSensor sensor = _sensors.get(envType);
+		for(EnvType envType : sensors.keySet()){
+			EnvSensor sensor = sensors.get(envType);
 			DurationUserEnv durationUserEnv = sensor.extractDurationUserEnv(currTimeDate, currTimeZone, uCxt.getUserEnv(envType));
 			storeDurationUserEnv(durationUserEnv);
 		}
 		
-		for(BhvCollector collector : _collectors){
+		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> durationUserBhvList = 
 					collector.extractDurationUserBhv(currTimeDate, currTimeZone, uCxt.getUserBhvs());
 			storeDurationUserBhv(durationUserBhvList);
@@ -141,8 +149,8 @@ public class CollectionService extends Service {
 	}
 	
 	private void postCollectDurationUserContext() {
-		_currTimeDate = new Date(System.currentTimeMillis());
-		_currTimeZone = Calendar.getInstance().getTimeZone();
+		currTimeDate = new Date(System.currentTimeMillis());
+		currTimeZone = Calendar.getInstance().getTimeZone();
 
 		postCollectDurationUserBhv();
 		postCollectDurationUserEnv();
@@ -151,16 +159,16 @@ public class CollectionService extends Service {
 	}
 
 	private void postCollectDurationUserEnv() {
-		for(EnvSensor sensor : _sensors.values()){
-			DurationUserEnv postExtractedDurationUserEnv = sensor.postExtractDurationUserEnv(_currTimeDate, _currTimeZone);
+		for(EnvSensor sensor : sensors.values()){
+			DurationUserEnv postExtractedDurationUserEnv = sensor.postExtractDurationUserEnv(currTimeDate, currTimeZone);
 			storeDurationUserEnv(postExtractedDurationUserEnv);
 		}
 	}
 
 	private void postCollectDurationUserBhv() {
-		for(BhvCollector collector : _collectors){
+		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> postExtractedDurationUserBhvList = 
-					collector.postExtractDurationUserBhv(_currTimeDate, _currTimeZone);
+					collector.postExtractDurationUserBhv(currTimeDate, currTimeZone);
 			storeDurationUserBhv(postExtractedDurationUserBhvList);
 
 			registerEachBhv(postExtractedDurationUserBhvList);

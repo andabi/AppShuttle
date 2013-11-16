@@ -74,6 +74,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 	public UserLoc getCurrULoc() {
 		return _currULoc;
 	}
+	
+	public Location getLastKnownLoc(){
+		return _lastKnownLoc;
+	}
 
 	public UserLoc sense(){
 		_prevULoc = _currULoc;
