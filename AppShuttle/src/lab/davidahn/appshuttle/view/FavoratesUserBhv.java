@@ -26,7 +26,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 //		_setTime = setTime;
 //		_isNotifiable = false;
 //	}
-	
+
 	public FavoratesUserBhv(UserBhv uBhv, long setTime, boolean isNotifiable){
 		super(uBhv);
 		_setTime = setTime;

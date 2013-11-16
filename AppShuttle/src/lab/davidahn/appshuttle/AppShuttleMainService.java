@@ -69,7 +69,7 @@ public class AppShuttleMainService extends Service {
 	private void startRepeatingPredictBroadCast() {
 		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
 		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.predict.period", 300000), notiViewOperation);
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.predict.period", 180000), notiViewOperation);
 	}
 	
 	private void stopRepeatingPredictBroadCast() {
