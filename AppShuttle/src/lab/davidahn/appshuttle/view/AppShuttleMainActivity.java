@@ -33,7 +33,6 @@ public class AppShuttleMainActivity extends Activity {
 	BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
     		mTabsAdapter.notifyDataSetChanged();
-    		NotiBarNotifier.getInstance().notification();
         }
     };
     
@@ -63,7 +62,7 @@ public class AppShuttleMainActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.REFRESH");
+		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
 		registerReceiver(refreshReceiver, filter);
 		
 		filter = new IntentFilter();
@@ -94,6 +93,8 @@ public class AppShuttleMainActivity extends Activity {
 				BlockedBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
 				SettingsFragment.class, null);
+//		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
+//				InfoFragment.class, null);
 
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));

@@ -12,52 +12,52 @@ import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class MatcherGroupResult implements Comparable<MatcherGroupResult> {
-	private MatcherGroupType _matcherGroupType;
-	private Date _timeDate;
-	private TimeZone _timeZone;
-	private Map<EnvType, UserEnv> _userEnvs;
+	private MatcherGroupType matcherGroupType;
+	private Date timeDate;
+	private TimeZone timeZone;
+	private Map<EnvType, UserEnv> userEnvs;
 	private UserBhv targetUBhv;
 	private EnumMap<MatcherType, MatcherResult> matcherResults;
-	private double _score;
+	private double score;
 	private String viewMsg;
 	
-	public MatcherGroupResult(Date time, TimeZone timeZone, Map<EnvType, UserEnv> userEnv){
-		_timeDate = time;
-		_timeZone = timeZone;
-		_userEnvs = userEnv;
+	public MatcherGroupResult(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
+		timeDate = _time;
+		timeZone = _timeZone;
+		userEnvs = _userEnv;
 		matcherResults = new EnumMap<MatcherType, MatcherResult>(MatcherType.class);
 	}
 	
 	public Date getTime() {
-		return _timeDate;
+		return timeDate;
 	}
 
-//	public void setTime(Date time) {
-//		_timeDate = time;
-//	}
+	public void setTime(Date _time) {
+		timeDate = _time;
+	}
 
 	public TimeZone getTimeZone() {
-		return _timeZone;
+		return timeZone;
 	}
 
-//	public void setTimeZone(TimeZone timeZone) {
-//		_timeZone = timeZone;
-//	}
+	public void setTimeZone(TimeZone _timeZone) {
+		timeZone = _timeZone;
+	}
 
 	public Map<EnvType, UserEnv> getUserEnv() {
-		return _userEnvs;
+		return userEnvs;
 	}
 
-//	public void setUserEnv(Map<EnvType, UserEnv> userEnv) {
-//		_userEnvs = userEnv;
-//	}
+	public void setUserEnv(Map<EnvType, UserEnv> _userEnv) {
+		userEnvs = _userEnv;
+	}
 
 	public UserBhv getUserBhvs() {
 		return targetUBhv;
 	}
 	
 	public UserEnv getTargetUserEnv(EnvType envType) {
-		return _userEnvs.get(envType);
+		return userEnvs.get(envType);
 	}
 
 	public void setTargetUserBhv(UserBhv bhvName) {
@@ -65,19 +65,19 @@ public class MatcherGroupResult implements Comparable<MatcherGroupResult> {
 	}
 
 	public MatcherGroupType getMatcherGroupType() {
-		return _matcherGroupType;
+		return matcherGroupType;
 	}
 
-	public void setMatcherGroupType(MatcherGroupType matcherGroupType) {
-		_matcherGroupType = matcherGroupType;
+	public void setMatcherGroupType(MatcherGroupType _matcherGroupType) {
+		matcherGroupType = _matcherGroupType;
 	}
 	
 	public double getScore() {
-		return _score;
+		return score;
 	}
 
-	public void setScore(double score) {
-		_score = score;
+	public void setScore(double _score) {
+		score = _score;
 	}
 
 	public String getViewMsg() {
@@ -99,13 +99,13 @@ public class MatcherGroupResult implements Comparable<MatcherGroupResult> {
 	@Override
 	public int compareTo(MatcherGroupResult matcherGroupResult){
 		MatcherGroupTypeComparator comparator = new MatcherGroupTypeComparator();
-		int comp = comparator.compare(_matcherGroupType, matcherGroupResult._matcherGroupType);		
+		int comp = comparator.compare(matcherGroupType, matcherGroupResult.matcherGroupType);		
 		if(comp != 0)
 			return comp;
 		
-		if(_score < matcherGroupResult._score) 
+		if(score < matcherGroupResult.score) 
 			return 1;
-		else if(_score == matcherGroupResult._score) 
+		else if(score == matcherGroupResult.score) 
 			return 0;
 		else 
 			return -1;
@@ -113,13 +113,12 @@ public class MatcherGroupResult implements Comparable<MatcherGroupResult> {
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("matcherType: ").append(_matcherGroupType).append(", ");
-		msg.append("timeDate").append(_timeDate).append(", ");
-		msg.append("timeZone").append(_timeZone).append(", ");
-		msg.append(_userEnvs.toString()).append(", ");
-		msg.append(targetUBhv.toString()).append(", ");
-		msg.append("score").append(_score);		
+		msg.append("matcherType: ").append(matcherGroupType).append(", ");
+		msg.append("timeDate").append(timeDate).append(", ");
+		msg.append("timeZone").append(timeZone).append(", ");
+		msg.append("userEnvs").append(userEnvs.toString()).append(", ");
+		msg.append("targetUBhv").append(targetUBhv.toString()).append(", ");
+		msg.append("score").append(score);		
 		return msg.toString();
 	}
-
 }

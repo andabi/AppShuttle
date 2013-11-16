@@ -5,8 +5,8 @@ import java.util.Calendar;
 import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
-import lab.davidahn.appshuttle.report.ReportingCxtService;
-import lab.davidahn.appshuttle.view.UpdateService;
+import lab.davidahn.appshuttle.predict.PredictionService;
+import lab.davidahn.appshuttle.report.ReportService;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,10 +20,10 @@ import android.os.IBinder;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
-	private PendingIntent collectingCxtOperation;
-	private PendingIntent reportingCxtOperation;
+	private PendingIntent collectionOperation;
+	private PendingIntent reportOperation;
 	private PendingIntent notiViewOperation;
-	private PendingIntent compactingCxtOperation;
+	private PendingIntent compactionOperation;
 	private SharedPreferences preferenceSettings;
 	
 	@Override
@@ -41,38 +41,38 @@ public class AppShuttleMainService extends Service {
 		registerReceiver(screenOffReceiver, filter);
 		
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.UPDATE");
-		registerReceiver(updateReceiver, filter);
+		filter.addAction("lab.davidahn.appshuttle.PREDICT");
+		registerReceiver(predictReceiver, filter);
 
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		
 		if(preferenceSettings.getBoolean("service.collection.enabled", true)){
-			Intent collectingCxtIntent = new Intent(this, CollectionService.class);
-			collectingCxtOperation = PendingIntent.getService(this, 0, collectingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.collection.period", 6000), collectingCxtOperation);
+			Intent collectionIntent = new Intent(this, CollectionService.class);
+			collectionOperation = PendingIntent.getService(this, 0, collectionIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.collection.period", 6000), collectionOperation);
 		}
 
 		if(preferenceSettings.getBoolean("service.compaction.enabled", true)){
-			Intent compactingCxtIntent = new Intent(this, CompactionService.class);
-			compactingCxtOperation = PendingIntent.getService(this, 0, compactingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactingCxtOperation);
+			Intent compactionCxtIntent = new Intent(this, CompactionService.class);
+			compactionOperation = PendingIntent.getService(this, 0, compactionCxtIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactionOperation);
 		}
 		if(preferenceSettings.getBoolean("service.report.enabled", false)){
-			Intent reportingCxtIntent = new Intent(this, ReportingCxtService.class);
-			reportingCxtOperation = PendingIntent.getService(this, 0, reportingCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportingCxtOperation);
+			Intent reportIntent = new Intent(this, ReportService.class);
+			reportOperation = PendingIntent.getService(this, 0, reportIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportOperation);
 		}
 		
-		startRepeatingUpdateBroadCast();
+		startRepeatingPredictBroadCast();
 	}
 	
-	private void startRepeatingUpdateBroadCast() {
-		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.UPDATE");
+	private void startRepeatingPredictBroadCast() {
+		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
 		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.update.period", 300000), notiViewOperation);
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.predict.period", 300000), notiViewOperation);
 	}
 	
-	private void stopRepeatingUpdateBroadCast() {
+	private void stopRepeatingPredictBroadCast() {
 		alarmManager.cancel(notiViewOperation);
 	}
 
@@ -97,20 +97,20 @@ public class AppShuttleMainService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		
-		alarmManager.cancel(collectingCxtOperation);
-		alarmManager.cancel(reportingCxtOperation);
+		alarmManager.cancel(collectionOperation);
+		alarmManager.cancel(reportOperation);
 		alarmManager.cancel(notiViewOperation);
-		alarmManager.cancel(compactingCxtOperation);
+		alarmManager.cancel(compactionOperation);
 		
 		unregisterReceiver(screenOnReceiver);
 		unregisterReceiver(screenOffReceiver);
-		unregisterReceiver(updateReceiver);
+		unregisterReceiver(predictReceiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleMainService.this, CompactionService.class));
 		stopService(new Intent(AppShuttleMainService.this, UnregisterBhvService.class));
-		stopService(new Intent(AppShuttleMainService.this, ReportingCxtService.class));
-		stopService(new Intent(AppShuttleMainService.this, UpdateService.class));
+		stopService(new Intent(AppShuttleMainService.this, ReportService.class));
+		stopService(new Intent(AppShuttleMainService.this, PredictionService.class));
 		
 		((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();
 	}
@@ -118,21 +118,21 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			startRepeatingUpdateBroadCast();
+			startRepeatingPredictBroadCast();
 		}
 	};
 	
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			stopRepeatingUpdateBroadCast();
+			stopRepeatingPredictBroadCast();
 		}
 	};
 
-	BroadcastReceiver updateReceiver = new BroadcastReceiver(){
+	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			context.startService(new Intent(context, UpdateService.class));
+			context.startService(new Intent(context, PredictionService.class));
 		}
 	};
 }

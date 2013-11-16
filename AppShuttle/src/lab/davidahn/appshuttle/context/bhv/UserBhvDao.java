@@ -166,7 +166,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void updateNotNotifiable(FavoratesUserBhv uBhv) {
+	public void updateUnNotifiable(FavoratesUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET is_notifiable = 0 " +

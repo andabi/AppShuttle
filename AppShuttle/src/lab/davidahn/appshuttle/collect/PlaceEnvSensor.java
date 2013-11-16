@@ -45,9 +45,9 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			return _currUPlace;
 		}
 		
-		if(!_locEnvCollector.isChanged() /* && _prevUPlace != null && _prevUPlace.isValid() */ ){
+		if(!_locEnvCollector.isChanged() && _prevUPlace.isValid()){
 			_currUPlace = _prevUPlace;
-			
+			Log.d("place", "(continue) "+_currUPlace.toString());
 			return _currUPlace;
 		}
 		
@@ -62,13 +62,16 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		try {
 	    	Geocoder _geocoder = new Geocoder(_appShuttleContext);
     		List<Address> geocoded = _geocoder.getFromLocation(currLocLatitude, currLocLongitude, 1);
-			if(geocoded == null || geocoded.isEmpty())
+			if(geocoded == null || geocoded.isEmpty()) {
+				Log.d("place", "(geocode = null) "+_currUPlace.toString());
 				return _currUPlace;
+			}
 		
 			Address addr = geocoded.get(0);
 			String addressLine = addr.getAddressLine(0);
 			
 			if(addressLine == null) {
+				Log.d("place", "(addressLine = null) "+_currUPlace.toString());
 				return _currUPlace;
 			}
 
@@ -99,6 +102,8 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			
 			return _currUPlace;
 		} catch (IOException e) {
+			Log.d("place", "(Geocoder IOException) "+_currUPlace.toString());
+
 			return _currUPlace;
 		}
 	}
@@ -125,7 +130,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		if(_durationUserEnvBuilder == null) {
 			_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
-			if(isChanged()){
+			if(isChanged()/* || LocEnvSensor.getInstance().isChanged()*/ || isAutoExtractionTime(currTimeDate, currTimeZone)){
 				res = _durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}

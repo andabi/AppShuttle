@@ -155,8 +155,8 @@ public class UserBhvManager {
 		OrdinaryUserBhv ordinaryUserBhv = new OrdinaryUserBhv(uBhv.getUserBhv());
 		_ordinaryBhvSet.add(ordinaryUserBhv);
 
-		uBhv.setNotNotifiable();
-//		FavoratesUserBhv.setNotNotifiable(uBhv);
+		uBhv.setUnNotifiable();
+//		FavoratesUserBhv.setUnNotifiable(uBhv);
 		_userBhvDao.unfavorates(uBhv);
 		_favoratesBhvSet.remove(uBhv);
 		
@@ -168,6 +168,6 @@ public class UserBhvManager {
 //	}
 //	
 //	public void setFavoratesNotNofifiable(FavoratesUserBhv favoratesUserBhv) {
-//		_userBhvDao.updateNotNotifiable(favoratesUserBhv);
+//		_userBhvDao.updateUnNotifiable(favoratesUserBhv);
 //	}
 }

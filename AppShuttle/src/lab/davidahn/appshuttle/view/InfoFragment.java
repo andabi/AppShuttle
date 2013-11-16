@@ -2,7 +2,7 @@ package lab.davidahn.appshuttle.view;
 
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.report.ReportingCxtService;
+import lab.davidahn.appshuttle.report.ReportService;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Fragment;
@@ -71,7 +71,7 @@ public class InfoFragment extends Fragment implements OnClickListener{
 	}
 
 	public void onReportClick(View v) {
-		getActivity().startService(new Intent(getActivity(), ReportingCxtService.class));
+		getActivity().startService(new Intent(getActivity(), ReportService.class));
 	}
 
 	private boolean isAppShuttleServiceRunning() {

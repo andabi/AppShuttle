@@ -11,7 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DurationUserBhvDao {
-	private static DurationUserBhvDao rfdUserCxtDao = new DurationUserBhvDao();
+	private static DurationUserBhvDao durationUserBhvDao = new DurationUserBhvDao();
 	private SQLiteDatabase _db;
 
 	private DurationUserBhvDao() {
@@ -19,7 +19,7 @@ public class DurationUserBhvDao {
 	}
 
 	public static DurationUserBhvDao getInstance() {
-		return rfdUserCxtDao;
+		return durationUserBhvDao;
 	}
 
 	public void store(DurationUserBhv durationUserBhv) {
@@ -148,16 +148,16 @@ public class DurationUserBhvDao {
 //				+ ".csv");
 //	}
 	
-//	public String storeRfdCxtByBhv(RfdUserCxt rfdUCxt) {
+//	public String storeRfdCxtByBhv(RfdUserCxt durationUserBhv) {
 //		Gson gson = new Gson();
 //		ContentValues row = new ContentValues();
-//		String bhvName = rfdUCxt.getBhv().getBhvName();
+//		String bhvName = durationUserBhv.getBhv().getBhvName();
 //		String tableName = "user_behavior_"+bhvName.replace('.', '_');
-//		row.put("s_time", rfdUCxt.getStartTime().getTime());
-//		row.put("e_time", rfdUCxt.getEndTime().getTime());
-////		row.put("timezone", gson.toJson(rfdUCxt.getTimeZone()));
-//		row.put("timezone", rfdUCxt.getTimeZone().getID());
-//		row.put("location_list", gson.toJson(rfdUCxt.getLocFreqList()));
+//		row.put("s_time", durationUserBhv.getStartTime().getTime());
+//		row.put("e_time", durationUserBhv.getEndTime().getTime());
+////		row.put("timezone", gson.toJson(durationUserBhv.getTimeZone()));
+//		row.put("timezone", durationUserBhv.getTimeZone().getID());
+//		row.put("location_list", gson.toJson(durationUserBhv.getLocFreqList()));
 //		db.execSQL("CREATE TABLE IF NOT EXISTS "+tableName+" (context_id INTEGER PRIMARY KEY AUTOINCREMENT, s_time INTEGER, e_time INTEGER, timezone TEXT, location_list TEXT);");
 //		db.insert(tableName, null, row);
 //		Log.i("stored classified refined cxt", row.toString());

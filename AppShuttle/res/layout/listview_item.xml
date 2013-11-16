@@ -1,51 +1,52 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:gravity="left"
+    android:orientation="horizontal"
+    android:padding="6dp" >
 
-    <ImageView
-        android:id="@+id/listview_item_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="6dip"
-        android:layout_marginRight="12dip"
-        android:src="@drawable/ic_launcher" />
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
 
-    <TextView
-        android:id="@+id/listview_item_firstLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/listview_item_icon"
-        android:gravity="center_vertical"
-        android:textColor="#ff000000"
-        android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/listview_item_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/ic_launcher" />
 
-    <TextView
-        android:id="@+id/listview_item_secondLine"
-        android:layout_width="match_parent"
-        android:layout_height="26dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/listview_item_firstLine"
-        android:layout_toRightOf="@id/listview_item_icon"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="#80000000"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/listview_item_firstline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/listview_item_image"
+            android:layout_toRightOf="@id/listview_item_image"
+            android:textColor="#ff000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/listview_item_secondline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listview_item_firstline"
+            android:layout_toRightOf="@id/listview_item_image"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#80000000"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/listview_item_image_rightside"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="12dip"
-        android:layout_marginRight="6dip" />
+        android:layout_height="match_parent"
+		android:layout_weight="0"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="6dp" />
 
-</RelativeLayout>
+</LinearLayout>

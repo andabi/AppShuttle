@@ -27,9 +27,9 @@
     <string name="action_msg_block">앱이 차단됩니다</string>
     <string name="action_msg_unblock">앱 차단이 풀립니다</string>
     <string name="favorates_notify">알림창에 표시</string>
-    <string name="favorates_not_notify">알림창에 표시 안함</string>
+    <string name="favorates_unnotify">알림창에 표시 안함</string>
     <string name="action_msg_favorates_notifiable">알림창에 표시되도록 변경합니다.</string>
-    <string name="action_msg_favorates_not_notifiable">알림창에 표시되지 않도록 변경합니다.</string>
+    <string name="action_msg_favorates_unnotifiable">알림창에 표시되지 않도록 변경합니다.</string>
     <string name="action_msg_favorates_notifiable_failure">개수를 초과하여 변경이 되지 않았습니다.</string>
     <string name="noti_view_enabled">알림창에 표시</string>
     <string name="noti_view_enabled_summ">앱을 알림창에 표시합니다.</string>

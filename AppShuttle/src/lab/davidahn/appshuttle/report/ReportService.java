@@ -6,14 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 
-public class ReportingCxtService extends IntentService {
+public class ReportService extends IntentService {
 	private SharedPreferences preferenceSettings;
 	private Handler handler;
 
-	public ReportingCxtService(){
+	public ReportService(){
 		this("ReportingCxtService");
 	}
-	public ReportingCxtService(String name){
+	public ReportService(String name){
 		super(name);
 	}
 	

@@ -1,15 +1,15 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.predict;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.predict.Predictor;
+import lab.davidahn.appshuttle.view.NotiBarNotifier;
 import android.app.IntentService;
 import android.content.Intent;
 
-public class UpdateService extends IntentService {
-	public UpdateService() {
-		super("UpdateService");
+public class PredictionService extends IntentService {
+	public PredictionService() {
+		super("PredictionService");
 	}
-	public UpdateService(String name) {
+	public PredictionService(String name) {
 		super(name);
 	}
 
@@ -21,7 +21,8 @@ public class UpdateService extends IntentService {
 	public void onHandleIntent(Intent intent) {
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
+		NotiBarNotifier.getInstance().notification();
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
 	}
 }

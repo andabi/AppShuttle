@@ -12,20 +12,20 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class PredictedBhvDao {
-	private SQLiteDatabase _db;
-	private MatcherResultDao _matchedResultDao;
+public class PredictionInfoDao {
+	private SQLiteDatabase db;
+	private MatcherResultDao matcherResultDao;
 
-	private static PredictedBhvDao predictedBhvInfoDao = new PredictedBhvDao();
-	private PredictedBhvDao() {
-		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
-		_matchedResultDao = MatcherResultDao.getInstance();
+	private static PredictionInfoDao predictionInfoDao = new PredictionInfoDao();
+	private PredictionInfoDao() {
+		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		matcherResultDao = MatcherResultDao.getInstance();
 	}
-	public static PredictedBhvDao getInstance() {
-		return predictedBhvInfoDao;
+	public static PredictionInfoDao getInstance() {
+		return predictionInfoDao;
 	}
 
-	public void storePredictedBhv(PredictionInfo predictionInfo) {
+	public void storePredictionInfo(PredictionInfo predictionInfo) {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
@@ -35,19 +35,18 @@ public class PredictedBhvDao {
 		row.put("bhv_type", predictionInfo.getUserBhv().getBhvType().toString());
 		row.put("bhv_name", predictionInfo.getUserBhv().getBhvName());
 		row.put("score", predictionInfo.getScore());
-		_db.insert("predicted_bhv", null, row);
+		db.insert("predicted_bhv", null, row);
 		
 		for(MatcherGroupResult matcherGroupResult : predictionInfo.getMatcherGroupResultMap().values()) {
-			for(MatcherResult matchedResult : matcherGroupResult.getMatcherResultMap().values()) {
-				_matchedResultDao.storeMatchedResult(matchedResult);
+			for(MatcherResult matcherResult : matcherGroupResult.getMatcherResultMap().values()) {
+				matcherResultDao.storeMatcherResult(matcherResult);
 			}
 		}
-		
-//		Log.i("stored predicted bhv", predictedBhvInfo.toString());
+//		Log.i("stored prediction info", predictionInfo.toString());
 	}
 	
-	public void deletePredictedBhvInfo(Date timeDate){
-		_db.execSQL("" +
+	public void deletePredictionInfoBefore(Date timeDate){
+		db.execSQL("" +
 				"DELETE " +
 				"FROM predicted_bhv " +
 				"WHERE time < " + timeDate.getTime() +";");

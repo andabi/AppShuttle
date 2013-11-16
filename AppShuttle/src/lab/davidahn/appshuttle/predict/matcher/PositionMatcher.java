@@ -5,40 +5,40 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
-public abstract class PositionMatcher extends BaseMatcher {
-	int _toleranceInMeter;
+public abstract class PositionMatcher extends BaseMatcher<PositionMatcherConf> {
 
-	public PositionMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, int toleranceInMeter) {
-		super(duration, minLikelihood, minInverseEntropy, minNumCxt);
-		_toleranceInMeter = toleranceInMeter;
+	public PositionMatcher(PositionMatcherConf conf){
+		super(conf);
 	}
 	
 	@Override
 	public abstract MatcherType getMatcherType();
 	
 	@Override
-	protected abstract List<MatcherCountUnit> mergeCxtByCountUnit(List<DurationUserBhv> rfdUCxtList, SnapshotUserCxt uCxt);
+	protected abstract List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt);
 
 	@Override
 	protected abstract double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt);
 	
 	@Override
-	protected abstract double computeLikelihood(int numRelatedCxt, Map<MatcherCountUnit, Double> relatedCxtMap, SnapshotUserCxt uCxt);
+	protected abstract double computeLikelihood(int numRelatedHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt);
 	
 	@Override
 	protected abstract double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList);
 	
 	@Override
-	protected double computeScore(MatcherResult matchedResult) {
-		double likelihood = matchedResult.getLikelihood();
-		double inverseEntropy = matchedResult.getInverseEntropy();
+	protected double computeScore(MatcherResult matcherResult) {
+		double likelihood = matcherResult.getLikelihood();
+		double inverseEntropy = matcherResult.getInverseEntropy();
 		
 		double score = (1 + 0.5 * inverseEntropy + 0.1 * likelihood);
 		
 		return score;
 	}
-	
+
+}
 //	private boolean moved(Entry<Date, UserLoc> start, Entry<Date, UserLoc> end){
 //		ChangeUserEnvDao changedUserEnvDao = ChangeUserEnvDao.getInstance(cxt);
 //		
@@ -50,7 +50,6 @@ public abstract class PositionMatcher extends BaseMatcher {
 //		} else
 //			return false;
 //	}
-}
 	
 //	public List<MatchedCxt> matchAndGetResult(UserEnv uEnv){
 //		Map<String, Integer> totalNumMap = new HashMap<String, Integer>();
@@ -95,31 +94,31 @@ public abstract class PositionMatcher extends BaseMatcher {
 //	public List<MatchedCxt> matchAndGetResult(UserEnv uEnv){
 //		List<MatchedCxt> res = new ArrayList<MatchedCxt>();
 //		
-//		List<RfdUserCxt> rfdUCxtList = retrieveCxt(uEnv);
-//		totalCxtSize = rfdUCxtList.size();
+//		List<RfdUserCxt> durationUserBhvList = retrieveCxt(uEnv);
+//		totalCxtSize = durationUserBhvList.size();
 //		Map<UserBhv, SparseArray<Double>> relatednessSparseArrayMap = new HashMap<UserBhv, SparseArray<Double>>();
 //
-//		for(RfdUserCxt rfdUCxt : rfdUCxtList) {
-//			int contextId = rfdUCxt.getContextId();
-//			UserBhv userBhv = rfdUCxt.getBhv();
+//		for(RfdUserCxt durationUserBhv : durationUserBhvList) {
+//			int contextId = durationUserBhv.getContextId();
+//			UserBhv userBhv = durationUserBhv.getBhv();
 //			
 //			if(!relatednessSparseArrayMap.containsKey(userBhv)) relatednessSparseArrayMap.put(userBhv, new SparseArray<Double>());
-//			SparseArray<Double> relatedCxtSparseArray = relatednessSparseArrayMap.get(userBhv);
-//			double relatedness = computeRelatedness(rfdUCxt, uEnv);
-//			relatedCxtSparseArray.put(contextId, relatedness);
-//			relatednessSparseArrayMap.put(userBhv, relatedCxtSparseArray);
+//			SparseArray<Double> relatedHistorySparseArray = relatednessSparseArrayMap.get(userBhv);
+//			double relatedness = computeRelatedness(durationUserBhv, uEnv);
+//			relatedHistorySparseArray.put(contextId, relatedness);
+//			relatednessSparseArrayMap.put(userBhv, relatedHistorySparseArray);
 //		}
 //
 //		for(UserBhv userBhv : relatednessSparseArrayMap.keySet()){
-//			SparseArray<Double> relatedCxtMap = relatednessSparseArrayMap.get(userBhv);
-//			double likelihood = computeLikelihood(relatedCxtMap);
+//			SparseArray<Double> relatedHistoryMap = relatednessSparseArrayMap.get(userBhv);
+//			double likelihood = computeLikelihood(relatedHistoryMap);
 //			if(likelihood <= threshold) continue;
 //
 //			MatchedCxt matchedCxt = new MatchedCxt(uEnv);
 //			matchedCxt.setUserBhv(userBhv);
-//			matchedCxt.setNumTotalCxt(relatedCxtMap.size());
+//			matchedCxt.setNumTotalCxt(relatedHistoryMap.size());
 //			matchedCxt.setLikelihood(likelihood);
-//			matchedCxt.setRelatedCxt(relatedCxtMap);
+//			matchedCxt.setRelatedCxt(relatedHistoryMap);
 //			matchedCxt.setCondition(conditionName());
 //			res.add(matchedCxt);
 //		}
@@ -129,25 +128,25 @@ public abstract class PositionMatcher extends BaseMatcher {
 //	Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
 //	
 //	UserLoc curPlace = null;
-////	RfdUserCxt prevRfdUCxt = null;
+////	RfdUserCxt prevDurationUserBhv = null;
 //	boolean isMoved = false;
-//	for(RfdUserCxt rfdUCxt : rfdUCxtList){
-//		if(rfdUCxt.getPlaces().isEmpty()) continue;
+//	for(RfdUserCxt durationUserBhv : durationUserBhvList){
+//		if(durationUserBhv.getPlaces().isEmpty()) continue;
 //
-//		if(curPlace == null) curPlace = rfdUCxt.getPlaces().get(0).getULoc();
-////		if(prevRfdUCxt == null) prevRfdUCxt = rfdUCxt;
+//		if(curPlace == null) curPlace = durationUserBhv.getPlaces().get(0).getULoc();
+////		if(prevDurationUserBhv == null) prevDurationUserBhv = durationUserBhv;
 //		
-//		UserBhv uBhv = rfdUCxt.getBhv();
+//		UserBhv uBhv = durationUserBhv.getBhv();
 //		if(ongoingBhvMap.isEmpty() || !ongoingBhvMap.containsKey(uBhv)) {
-//			ongoingBhvMap.put(uBhv, rfdUCxt);
+//			ongoingBhvMap.put(uBhv, durationUserBhv);
 //		}
 //		else {
 ////			if()
-//			for(LocFreq placeFreq : rfdUCxt.getPlaces()){
+//			for(LocFreq placeFreq : durationUserBhv.getPlaces()){
 //				
 //			}
 //		}
-////		prevRfdUCxt = rfdUCxt;
+////		prevDurationUserBhv = durationUserBhv;
 //		
 //		if(isMoved){
 //			for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
@@ -159,15 +158,15 @@ public abstract class PositionMatcher extends BaseMatcher {
 //	}
 //	
 //	for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
-//		RfdUserCxt restRfdUCxt = ongoingBhvMap.get(ongoingBhv);
-//		res.add(restRfdUCxt);
+//		RfdUserCxt restDurationUserBhv = ongoingBhvMap.get(ongoingBhv);
+//		res.add(restDurationUserBhv);
 //	}
 
-//private boolean Proximity(RfdUserCxt prevRfdUCxt, RfdUserCxt curRfdUCxt){
-//	if(curRfdUCxt.getPlaces().isEmpty()) return false;
-//	if(curRfdUCxt.getPlaces().size() > 1) return true;
-//	else if(!prevRfdUCxt.getPlaces().get(prevRfdUCxt.getPlaces().size()-1).
-//	equals(curRfdUCxt.getPlaces().get(0)))
+//private boolean Proximity(RfdUserCxt prevDurationUserBhv, RfdUserCxt curDurationUserBhv){
+//	if(curDurationUserBhv.getPlaces().isEmpty()) return false;
+//	if(curDurationUserBhv.getPlaces().size() > 1) return true;
+//	else if(!prevDurationUserBhv.getPlaces().get(prevDurationUserBhv.getPlaces().size()-1).
+//	equals(curDurationUserBhv.getPlaces().get(0)))
 //		return true;
 //	else
 //		return false;

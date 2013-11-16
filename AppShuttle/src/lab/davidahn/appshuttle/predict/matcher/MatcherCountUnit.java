@@ -9,46 +9,46 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 
 public class MatcherCountUnit {
-	private final UserBhv _uBhv;
-	private final List<DurationUserBhv> _durationUserBhvList;
-	private final Map<String, Object> _properties;
+	private final UserBhv uBhv;
+	private final List<DurationUserBhv> durationUserBhvList;
+	private final Map<String, Object> properties;
 
 	private MatcherCountUnit(Builder builder) {
-		_uBhv = builder._uBhv;
-		_durationUserBhvList = builder._durationUserBhvList;
-		_properties = builder._properties;
+		uBhv = builder.uBhv;
+		durationUserBhvList = builder.durationUserBhvList;
+		properties = builder.properties;
 	}
 	
 	public UserBhv getUBhv() {
-		return _uBhv;
+		return uBhv;
 	}
 
 	public List<DurationUserBhv> getDurationUserBhvList() {
-		return _durationUserBhvList;
+		return durationUserBhvList;
 	}
 
 	public Map<String, Object> getProperties() {
-		return _properties;
+		return properties;
 	}
 
 	public Object getProperty(String key) {
-		return _properties.get(key);
+		return properties.get(key);
 	}
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("bhv: ").append(_uBhv).append(", ");
-		msg.append("properties: ").append(_properties.toString());
+		msg.append("bhv: ").append(uBhv).append(", ");
+		msg.append("properties: ").append(properties.toString());
 		return msg.toString();
 	}
 	
 	public static class Builder {
-		private UserBhv _uBhv = null;
-		private List<DurationUserBhv> _durationUserBhvList = new ArrayList<DurationUserBhv>();
-		private Map<String, Object> _properties = new HashMap<String, Object>();
+		private UserBhv uBhv = null;
+		private List<DurationUserBhv> durationUserBhvList = new ArrayList<DurationUserBhv>();
+		private Map<String, Object> properties = new HashMap<String, Object>();
 
-		public Builder(UserBhv uBhv){
-			_uBhv = uBhv;
+		public Builder(UserBhv _uBhv){
+			uBhv = _uBhv;
 		}
 		
 		public MatcherCountUnit build(){
@@ -56,11 +56,11 @@ public class MatcherCountUnit {
 		}
 		
 		public void setProperty(String key, Object val){
-			_properties.put(key, val);
+			properties.put(key, val);
 		}
 		
 		public void addRelatedDurationUserBhv(DurationUserBhv durationUserBhv){
-			_durationUserBhvList.add(durationUserBhv);
+			durationUserBhvList.add(durationUserBhv);
 		}	
 	}
 }

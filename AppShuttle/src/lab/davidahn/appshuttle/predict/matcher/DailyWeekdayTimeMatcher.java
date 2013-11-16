@@ -9,12 +9,13 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 
 
-public class TimeDailyWeekdayMatcher extends TimeMatcher {
+public class DailyWeekdayTimeMatcher extends TimeMatcher {
 
-	public TimeDailyWeekdayMatcher(long duration, double minLikelihood, double minInverseEntropy, int minNumCxt, long period, long tolerance, long acceptanceDelay) {
-		super(duration, minLikelihood, minInverseEntropy, minNumCxt, period, tolerance, acceptanceDelay);
+	public DailyWeekdayTimeMatcher(TimeMatcherConf conf){
+		super(conf);
 	}
 	
 	@Override
@@ -29,12 +30,12 @@ public class TimeDailyWeekdayMatcher extends TimeMatcher {
 		if(!isWeekDay(currUCxt.getTimeDate()))
 			return res;
 		
-		DurationUserBhvDao rfdUserCxtDao = DurationUserBhvDao.getInstance();
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
-		Date toTime = new Date(currUCxt.getTimeDate().getTime() - _tolerance);
-		Date fromTime = new Date(toTime.getTime() - _duration);
+		Date toTime = new Date(currUCxt.getTimeDate().getTime() - conf.getTolerance());
+		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
 		
-		List<DurationUserBhv> durationUserBhvList = rfdUserCxtDao.retrieveByBhv(fromTime, toTime, uBhv);
+		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			if(isWeekDay(durationUserBhv.getTimeDate()))
 				res.add(durationUserBhv);

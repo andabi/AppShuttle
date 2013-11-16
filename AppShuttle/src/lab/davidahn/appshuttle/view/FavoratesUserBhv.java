@@ -58,7 +58,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		}
 	}
 	
-	public void setNotNotifiable() {
+	public void setUnNotifiable() {
 		if(!_isNotifiable)
 			return ;
 		
@@ -124,8 +124,8 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		}
 	}
 	
-	public synchronized static void setNotNotifiable(FavoratesUserBhv favoratesUserBhv) {
-		favoratesUserBhv.setNotNotifiable();
-		UserBhvDao.getInstance().updateNotNotifiable(favoratesUserBhv);
+	public synchronized static void setUnNotifiable(FavoratesUserBhv favoratesUserBhv) {
+		favoratesUserBhv.setUnNotifiable();
+		UserBhvDao.getInstance().updateUnNotifiable(favoratesUserBhv);
 	}
 }

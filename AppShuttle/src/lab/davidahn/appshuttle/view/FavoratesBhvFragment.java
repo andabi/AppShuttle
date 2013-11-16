@@ -61,7 +61,11 @@ public class FavoratesBhvFragment extends ListFragment {
 	        @Override
 	        public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
 	    		if(actionMode == null) {
-	    			actionMode = getActivity().startActionMode(actionCallback);
+	    			if(favoratesBhvList.get(position).isNotifiable())
+	    				actionMode = getActivity().startActionMode(notifiableActionModeCallback);
+	    			else
+	    				actionMode = getActivity().startActionMode(unnotifiableActionModeCallback);
+	    				
 	    			actionMode.setTag(position);
 //	    			actionMode.setTitle();
 	    		}
@@ -97,13 +101,13 @@ public class FavoratesBhvFragment extends ListFragment {
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
 			FavoratesUserBhv favoratesUserBhv = favoratesBhvList.get(position);
 
-			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_icon);
+			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
 			iconView.setImageDrawable(favoratesUserBhv.getIcon());
 
-			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstLine);
+			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
 			firstLineView.setText(favoratesUserBhv.getBhvNameText());
 
-			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondLine);
+			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
 			secondLineView.setText(favoratesUserBhv.getViewMsg());
 			
 			ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_item_image_rightside);
@@ -114,17 +118,52 @@ public class FavoratesBhvFragment extends ListFragment {
 		}
 	}
 	
-	ActionMode.Callback actionCallback = new ActionMode.Callback() {
+	ActionMode.Callback notifiableActionModeCallback = new ActionMode.Callback() {
 		
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-//			int pos = (Integer)mode.getTag();
 
 			MenuInflater inflater = mode.getMenuInflater();
-//			if(favoratesBhvList.get(pos).isNotifiable())
-				inflater.inflate(R.menu.favorates_notifiable_actionmode, menu);
-//			else
-//				inflater.inflate(R.menu.favorates_not_notifiable_actionmode, menu);
+			inflater.inflate(R.menu.notifiable_favorates_actionmode, menu);
+			
+			return true;
+		}
+		
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+		
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			actionMode = null;
+		}
+		
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			int pos = (Integer)mode.getTag();
+
+			if(favoratesBhvList.size() < pos + 1)
+				return false;
+
+			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
+			doPostAction();
+			showToastMsg(actionMsg);
+			
+			if(actionMode != null)
+				actionMode.finish();
+			
+			return true;
+		}
+	};
+	
+	ActionMode.Callback unnotifiableActionModeCallback = new ActionMode.Callback() {
+		
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.unnotifiable_favorates_actionmode, menu);
 			
 			return true;
 		}
@@ -146,44 +185,9 @@ public class FavoratesBhvFragment extends ListFragment {
 			if(favoratesBhvList.size() < pos + 1)
 				return false;
 			
-			String actionMsg = "";
-			UserBhvManager uBhvManager = UserBhvManager.getInstance();
-
-			FavoratesUserBhv favoratesUBhv = favoratesBhvList.get(pos);
-			switch(item.getItemId()) {
-			case R.id.unfavorates:
-				uBhvManager.unfavorates(favoratesUBhv);
-				actionMsg = getResources().getString(R.string.action_msg_unfavorates);
-				break;
-			case R.id.favorates_not_notify:
-				
-				if(!favoratesUBhv.isNotifiable())
-					return true;
-				
-				FavoratesUserBhv.setNotNotifiable(favoratesUBhv);
-				actionMsg = getResources().getString(R.string.action_msg_favorates_not_notifiable);
-				break;
-			case R.id.favorates_notify:
-				
-				if(favoratesUBhv.isNotifiable())
-					return true;
-
-				boolean isSuccess = FavoratesUserBhv.trySetNotifiable(favoratesUBhv);
-				if(isSuccess){
-					actionMsg = getResources().getString(R.string.action_msg_favorates_notifiable);
-				} else {
-					actionMsg = getResources().getString(R.string.action_msg_favorates_notifiable_failure);
-				}
-				break;
-			default:
-				;
-			}
-			
-			getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.REFRESH"));
-			
-			Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
-			t.setGravity(Gravity.CENTER, 0, 0);
-			t.show();
+			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
+			doPostAction();
+			showToastMsg(actionMsg);
 			
 			if(actionMode != null)
 				actionMode.finish();
@@ -191,4 +195,41 @@ public class FavoratesBhvFragment extends ListFragment {
 			return true;
 		}
 	};
+
+	private String doActionAndGetMsg(int pos, int itemId) {
+		FavoratesUserBhv favoratesUserBhv = favoratesBhvList.get(pos);
+		switch(itemId) {
+		case R.id.unfavorates:
+			UserBhvManager uBhvManager = UserBhvManager.getInstance();
+			uBhvManager.unfavorates(favoratesUserBhv);
+			return getResources().getString(R.string.action_msg_unfavorates);
+		case R.id.favorates_notify:
+			boolean isSuccess = FavoratesUserBhv.trySetNotifiable(favoratesUserBhv);
+
+			if(isSuccess){
+				return getResources().getString(R.string.action_msg_favorates_notifiable);
+			} else {
+				return getResources().getString(R.string.action_msg_favorates_notifiable_failure);
+			}
+		case R.id.favorates_unnotify:
+			FavoratesUserBhv.setUnNotifiable(favoratesUserBhv);
+			return getResources().getString(R.string.action_msg_favorates_unnotifiable);
+		default:
+			return null;
+		}
+	}
+
+	private void doPostAction() {
+		NotiBarNotifier.getInstance().notification();
+		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
+	}
+	
+	private void showToastMsg(String actionMsg){
+		if(actionMsg == null)
+			return ;
+		
+		Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
+	}
 }
