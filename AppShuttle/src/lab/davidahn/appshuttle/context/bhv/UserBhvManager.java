@@ -139,7 +139,7 @@ public class UserBhvManager {
 		_ordinaryBhvSet.remove(uBhv);
 
 		long currTime = System.currentTimeMillis();
-		FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, currTime);
+		FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, currTime, true);
 		favoratesUserBhv.trySetNotifiable();
 		_userBhvDao.favorates(favoratesUserBhv);
 		_favoratesBhvSet.add(favoratesUserBhv);

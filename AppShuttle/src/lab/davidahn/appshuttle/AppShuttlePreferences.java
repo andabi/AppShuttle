@@ -92,7 +92,7 @@ public class AppShuttlePreferences {
 		//view
 //		editor.putBoolean("noti.view.enabled", true);
 		editor.putInt("viewer.noti.max_num_ordinary", 8);
-		editor.putInt("viewer.noti.max_num_favorates", 8);
+		editor.putInt("viewer.noti.max_num_favorates", 4);
 		
 		editor.commit();
 	}
