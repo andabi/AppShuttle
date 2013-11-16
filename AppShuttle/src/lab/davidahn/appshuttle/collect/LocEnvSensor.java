@@ -18,12 +18,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class LocEnvSensor extends BaseEnvSensor {
-	private LocationManager _locationManager;
-	private Location _lastKnownLoc;
-	private String _bestProvider;
+	private LocationManager locationManager;
+	private Location lastKnownLoc;
+	private String bestProvider;
 	
-	private UserLoc _prevULoc;
-	private UserLoc _currULoc;
+	private UserLoc prevULoc;
+	private UserLoc currULoc;
     private DurationUserEnv.Builder _durationUserEnvBuilder;
 
     private static LocEnvSensor locEnvSensor = new LocEnvSensor();
@@ -35,69 +35,75 @@ public class LocEnvSensor extends BaseEnvSensor {
 	private LocEnvSensor(){
 		super();
 		
-		_locationManager = (LocationManager) _appShuttleContext.getSystemService(Context.LOCATION_SERVICE);
+		locationManager = (LocationManager) _appShuttleContext.getSystemService(Context.LOCATION_SERVICE);
 		
-		_prevULoc = _currULoc = InvalidUserLoc.getInstance();
+		prevULoc = currULoc = InvalidUserLoc.getInstance();
 
 		Criteria crit = new Criteria();
 		crit.setAccuracy(Criteria.ACCURACY_FINE);
 		crit.setCostAllowed(true);
 		crit.setPowerRequirement(Criteria.POWER_HIGH);
 
-		List<String> providers = _locationManager.getProviders(true);
+		List<String> providers = locationManager.getProviders(true);
 
 		if(providers.isEmpty()){
 			Log.i("loc provider", "null");
 			return;
 		}
 		
-		_bestProvider = _locationManager.getBestProvider(crit, true);
+		bestProvider = locationManager.getBestProvider(crit, true);
 // 		 Log.d("best provider", bestProvider);
 		
-		_locationManager.requestLocationUpdates(_bestProvider, 
+		locationManager.requestLocationUpdates(bestProvider, 
 				_preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
 				_preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
 				locationListener);
 
-		_lastKnownLoc = _locationManager.getLastKnownLocation(_bestProvider);
+		lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
 		
-		if(_lastKnownLoc == null){
+		if(lastKnownLoc == null){
 			for(String provider : providers) {
 //				Log.d("provider", provider);
-				_lastKnownLoc = _locationManager.getLastKnownLocation(provider);
-				if(_lastKnownLoc != null) 
+				lastKnownLoc = locationManager.getLastKnownLocation(provider);
+				if(lastKnownLoc != null) 
 					break;
 			}
 		}
 	}
 
 	public UserLoc getCurrULoc() {
-		return _currULoc;
+		return currULoc;
 	}
 	
-	public Location getLastKnownLoc(){
-		return _lastKnownLoc;
+	public UserLoc getPrevULoc() {
+		return prevULoc;
 	}
+	
+//	public Location getLastKnownLoc(){
+//		return _lastKnownLoc;
+//	}
 
-	public UserLoc sense(){
-		_prevULoc = _currULoc;
+	@Override
+	public UserLoc sense(Date currTimeDate, TimeZone currTimeZone){
+		prevULoc = currULoc;
 
-		if(_lastKnownLoc == null) {
-			_currULoc =  InvalidUserLoc.getInstance();
+		if(lastKnownLoc == null) {
+			currULoc =  InvalidUserLoc.getInstance();
 			Log.i("location", "sensing failure");
 		} else {
-			_currULoc =  UserLoc.create(_lastKnownLoc.getLatitude(), _lastKnownLoc.getLongitude());
-			Log.i("location", _currULoc.toString());
+			currULoc =  UserLoc.create(lastKnownLoc.getLatitude(), lastKnownLoc.getLongitude());
+			Log.i("location", currULoc.toString());
 		}
 
-		return _currULoc;
+		return currULoc;
 	}
 	
+	@Override
 	public boolean isChanged(){
 //		if(_prevULoc == null)
 //			return false;
 		
-		if(!_currULoc.equals(_prevULoc)) {
+		if(!currULoc.equals(prevULoc)) {
 			Log.i("user env", "location moved");
 			return true;
 		} else {
@@ -105,11 +111,13 @@ public class LocEnvSensor extends BaseEnvSensor {
 		}
 	}
 	
+	@Override
 	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
 			TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 
+	@Override
 	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
 		if(_durationUserEnvBuilder == null) {
@@ -123,6 +131,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 		return res;
 	}
 	
+	@Override
 	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
 		DurationUserEnv res = _durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 		_durationUserEnvBuilder = null;
@@ -141,19 +150,19 @@ public class LocEnvSensor extends BaseEnvSensor {
 	LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
 			Log.i("changed location", "latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
-			_lastKnownLoc = location;
+			lastKnownLoc = location;
 		}
 
 		public void onProviderDisabled(String provider) {
 		}
 
 		public void onProviderEnabled(String provider) {
-			_locationManager.requestLocationUpdates(_bestProvider, 
+			locationManager.requestLocationUpdates(bestProvider, 
 					_preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
 					_preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
 					locationListener);
 			
-			_lastKnownLoc = _locationManager.getLastKnownLocation(_bestProvider);
+			lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
 		}
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {

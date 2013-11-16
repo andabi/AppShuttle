@@ -21,22 +21,27 @@ public abstract class BaseEnvSensor implements EnvSensor {
 //		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 	
-	public UserEnv sense() {
+	@Override
+	public UserEnv sense(Date currTimeDate, TimeZone currTimeZone) {
 		return null;
 	}
 	
+	@Override
 	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 
+	@Override
 	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		return null;
 	}
 	
+	@Override
 	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
 		return null;
 	}
 	
+	@Override
 	public abstract boolean isChanged();
 
 	public boolean isAutoExtractionTime(Date currTimeDate, TimeZone currTimeZone){

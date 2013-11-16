@@ -22,10 +22,10 @@ public class InvalidUserLoc extends UserLoc {
 		throw new InvalidUserEnvException(EnvType.INVALID_LOCATION, this);
 	}
 	
-//	@Override
-//	public boolean isValid(){
-//		return false;
-//	}
+	@Override
+	public boolean isValid(){
+		return false;
+	}
 	
 //	@Override
 //	public boolean isSame(UserLoc uLoc) throws InvalidUserEnvException {
@@ -36,6 +36,12 @@ public class InvalidUserLoc extends UserLoc {
 	public boolean proximity(UserLoc uLoc, int toleranceInMeter) throws InvalidUserEnvException {
 		throw new InvalidUserEnvException(EnvType.INVALID_LOCATION, this);
 	}
+	
+	@Override
+	public double distanceTo(UserLoc uLoc) throws InvalidUserEnvException {
+		throw new InvalidUserEnvException(EnvType.INVALID_LOCATION, this);
+	}
+
 	
 	@Override
 	public EnvType getEnvType(){

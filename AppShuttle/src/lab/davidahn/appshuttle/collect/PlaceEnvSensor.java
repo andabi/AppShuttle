@@ -33,11 +33,12 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		return placeEnvSensor;
 	}
 	
-	public UserPlace sense(){
+	@Override
+	public UserPlace sense(Date currTimeDate, TimeZone currTimeZone){
 		_prevUPlace = _currUPlace;
 		
-		LocEnvSensor _locEnvCollector = LocEnvSensor.getInstance();
-		UserLoc currLoc = _locEnvCollector.getCurrULoc();
+		LocEnvSensor locEnvSensor = LocEnvSensor.getInstance();
+		UserLoc currLoc = locEnvSensor.getCurrULoc();
 		
 		_currUPlace = InvalidUserPlace.getInstance();
 		
@@ -45,7 +46,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			return _currUPlace;
 		}
 		
-		if(!_locEnvCollector.isChanged() && _prevUPlace.isValid()){
+		if(!locEnvSensor.isChanged() && _prevUPlace.isValid()){
 			_currUPlace = _prevUPlace;
 			Log.d("place", "(continue) "+_currUPlace.toString());
 			return _currUPlace;
@@ -108,6 +109,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		}
 	}
 	
+	@Override
 	public boolean isChanged(){
 //		if(_prevUPlace == null)
 //			return false;
@@ -120,11 +122,12 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		}
 	}
 	
-	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
-			TimeZone currTimeZone) {
+	@Override
+	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 
+	@Override
 	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
 		if(_durationUserEnvBuilder == null) {
@@ -138,6 +141,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		return res;
 	}
 	
+	@Override
 	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
 		DurationUserEnv res = _durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 		_durationUserEnvBuilder = null;

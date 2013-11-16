@@ -123,6 +123,10 @@ public class DurationUserEnv {
 			_uEnv = userEnv;
 			return this;
 		}
+		
+		public Date getTimeDate(){
+			return _timeDate;
+		}
 		public UserEnv getUserEnv() {
 			return _uEnv;
 		}

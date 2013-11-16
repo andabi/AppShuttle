@@ -63,7 +63,7 @@ public class CollectionService extends Service {
 		
 	
 		SnapshotUserCxt uCxt = CollectSnapshotUserContext();
-		CollectDurationUserContext(uCxt);
+		extractDurationUserContext(uCxt);
 
 		AppShuttleApplication.currUserCxt = uCxt;
 		
@@ -115,7 +115,7 @@ public class CollectionService extends Service {
 		
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
-			UserEnv uEnv = sensor.sense();
+			UserEnv uEnv = sensor.sense(uCxt.getTimeDate(), uCxt.getTimeZone());
 			uCxt.addUserEnv(envType, uEnv);
 		}
 		
@@ -129,7 +129,7 @@ public class CollectionService extends Service {
 		return uCxt;
 	}
 
-	private void CollectDurationUserContext(SnapshotUserCxt uCxt) {
+	private void extractDurationUserContext(SnapshotUserCxt uCxt) {
 		Date currTimeDate = uCxt.getTimeDate();
 		TimeZone currTimeZone = uCxt.getTimeZone();
 		

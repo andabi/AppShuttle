@@ -11,7 +11,7 @@ public enum EnvType {
 	INVALID_PLACE(InvalidUserPlace.class),
 	
 	SPEED(UserSpeed.class),
-	ZERO_SPEED(ZeroUserSpeed.class);
+	INVALID_SPEED(InvalidUserSpeed.class);
 	
 	private Class<? extends UserEnv> _clazz;
 	

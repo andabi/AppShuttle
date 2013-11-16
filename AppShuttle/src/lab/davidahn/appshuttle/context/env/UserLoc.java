@@ -72,6 +72,18 @@ public class UserLoc extends UserEnv {
 		else return false;
 	}
 	
+	public double distanceTo(UserLoc uLoc) throws InvalidUserEnvException {
+		Location loc1 = new Location("loc1");
+		Location loc2 = new Location("loc2");
+		loc1.setLatitude(_latitude);
+		loc1.setLongitude(_longitude);
+		loc2.setLatitude(uLoc.getLatitude());
+		loc2.setLongitude(uLoc.getLongitude());
+
+		return loc1.distanceTo(loc2);
+	}
+
+	
 	public EnvType getEnvType(){
 		return EnvType.LOCATION;
 	}
@@ -99,9 +111,4 @@ public class UserLoc extends UserEnv {
 	public int hashCode(){
 		return Double.valueOf(_latitude).hashCode() ^ Double.valueOf(_longitude).hashCode();
 	}
-	
-//	public enum UserLocValidity{
-//		VALID, 
-//		INVALID
-//	}
 }

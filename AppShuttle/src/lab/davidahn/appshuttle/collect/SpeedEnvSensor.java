@@ -6,49 +6,68 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.ZeroUserSpeed;
+import lab.davidahn.appshuttle.context.env.InvalidUserEnvException;
+import lab.davidahn.appshuttle.context.env.InvalidUserSpeed;
 import lab.davidahn.appshuttle.context.env.UserEnv;
+import lab.davidahn.appshuttle.context.env.UserLoc;
 import lab.davidahn.appshuttle.context.env.UserSpeed;
-import android.location.Location;
 import android.util.Log;
 
 public class SpeedEnvSensor extends BaseEnvSensor {
-	private UserSpeed prevUSpeed;
-	private UserSpeed currUSpeed;
+	private LocEnvSensor locEnvSensor;
     private DurationUserEnv.Builder durationUserEnvBuilder;
-	
+    
     private static SpeedEnvSensor speedEnvSensor = new SpeedEnvSensor();
 
     private SpeedEnvSensor(){
     	super();
-		prevUSpeed = currUSpeed = ZeroUserSpeed.getInstance();
+    	locEnvSensor = LocEnvSensor.getInstance();
 	}
 	
 	public static SpeedEnvSensor getInstance(){
 		return speedEnvSensor;
 	}
 	
-	public UserSpeed sense(){
-		prevUSpeed = currUSpeed;
-		
-		Location loc = LocEnvSensor.getInstance().getLastKnownLoc();
-		
-		currUSpeed = ZeroUserSpeed.getInstance();
+	@Override
+	public UserSpeed sense(Date currTimeDate, TimeZone currTimeZone){
+		UserSpeed currUSpeed = InvalidUserSpeed.getInstance();
 
-		if(!loc.hasSpeed()) {
-			Log.d("speed", "value :"+loc.getSpeed());
-			return currUSpeed;
+		if(locEnvSensor.isChanged()) {
+			UserLoc currLoc = locEnvSensor.getCurrULoc();
+			UserLoc prevLoc =  locEnvSensor.getPrevULoc();
+
+			if(!currLoc.isValid() || !prevLoc.isValid()){
+				Log.d("speed", "sensing failure: invalidUserLoc");
+				return currUSpeed;
+			}
+			
+			Date lastSensedTimeDate;
+			if(durationUserEnvBuilder == null)
+				lastSensedTimeDate = currTimeDate;
+			else
+				lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
+			
+			try {
+				double speed = currLoc.distanceTo(prevLoc) / (currTimeDate.getTime() - lastSensedTimeDate.getTime());
+				currUSpeed = UserSpeed.create(speed);
+				
+				Log.i("speed", "sensed: " + currUSpeed.toString());
+			} catch (InvalidUserEnvException e) {
+				Log.d("speed", "sensing failure: invalidUserLoc");
+				return currUSpeed;
+			}
+			
+			lastSensedTimeDate = currTimeDate;
+		} else {
+			Log.d("speed", "not sensed yet");
 		}
-		
-		currUSpeed = UserSpeed.create(loc.getSpeed());
-		
-		Log.i("speed", currUSpeed.toString());
 		
 		return currUSpeed;
 	}
 	
+	@Override
 	public boolean isChanged(){
-		if(!currUSpeed.equals(prevUSpeed)) {
+		if(locEnvSensor.isChanged()) {
 			Log.i("user env", "user speed changed");
 			return true;
 		} else {
@@ -56,36 +75,36 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 		}
 	}
 	
+	@Override
 	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
 			TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 
+	@Override
 	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
 		if(durationUserEnvBuilder == null) {
-			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
+			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 		} else {
 			if(isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
-				res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
-				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
+				res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
+				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 			}
 		}
 		return res;
 	}
 	
+	@Override
 	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
-		DurationUserEnv res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 		durationUserEnvBuilder = null;
-		return res;
+		return null;
 	}
 	
-	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
+	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone) {
 		return new DurationUserEnv.Builder()
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
-			.setTimeZone(currTimeZone)
-			.setEnvType(uEnv.getEnvType())
-			.setUserEnv(uEnv);
+			.setTimeZone(currTimeZone);
 	}
 }
