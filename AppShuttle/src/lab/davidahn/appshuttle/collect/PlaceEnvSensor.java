@@ -111,9 +111,6 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public boolean isChanged(){
-//		if(_prevUPlace == null)
-//			return false;
-		
 		if(!_currUPlace.equals(_prevUPlace)) {
 			Log.i("user env", "place moved");
 			return true;

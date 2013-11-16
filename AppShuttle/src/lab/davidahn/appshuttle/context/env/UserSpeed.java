@@ -11,6 +11,9 @@ public class UserSpeed extends UserEnv {
 	}
 	
 	public static UserSpeed create(double speed) {
+		if(speed == 0.0)
+			return ZeroUserSpeed.getInstance();
+		
 		return new UserSpeed(speed);
 	}
 

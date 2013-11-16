@@ -15,6 +15,7 @@ import android.util.Log;
 
 public class SpeedEnvSensor extends BaseEnvSensor {
 	private LocEnvSensor locEnvSensor;
+	private UserSpeed prevUSpeed, currUSpeed;
     private DurationUserEnv.Builder durationUserEnvBuilder;
     
     private static SpeedEnvSensor speedEnvSensor = new SpeedEnvSensor();
@@ -22,6 +23,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
     private SpeedEnvSensor(){
     	super();
     	locEnvSensor = LocEnvSensor.getInstance();
+    	prevUSpeed = currUSpeed = UserSpeed.create(0.0);
 	}
 	
 	public static SpeedEnvSensor getInstance(){
@@ -30,8 +32,10 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public UserSpeed sense(Date currTimeDate, TimeZone currTimeZone){
-		UserSpeed currUSpeed = InvalidUserSpeed.getInstance();
-
+		prevUSpeed = currUSpeed;
+		
+		currUSpeed = InvalidUserSpeed.getInstance();
+		
 		if(locEnvSensor.isChanged()) {
 			UserLoc currLoc = locEnvSensor.getCurrULoc();
 			UserLoc prevLoc =  locEnvSensor.getPrevULoc();
@@ -59,6 +63,8 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 			
 			lastSensedTimeDate = currTimeDate;
 		} else {
+			currUSpeed = prevUSpeed;
+			
 			Log.d("speed", "not sensed yet");
 		}
 		
@@ -67,7 +73,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public boolean isChanged(){
-		if(locEnvSensor.isChanged()) {
+		if(!currUSpeed.equals(prevUSpeed)) {
 			Log.i("user env", "user speed changed");
 			return true;
 		} else {
@@ -87,7 +93,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 		if(durationUserEnvBuilder == null) {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 		} else {
-			if(isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
+			if(locEnvSensor.isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
 				res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 			}
