@@ -32,41 +32,39 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public UserSpeed sense(Date currTimeDate, TimeZone currTimeZone){
+		if(!locEnvSensor.isChanged()) {
+			Log.d("speed", "not sensed yet");
+			return UserSpeed.create(0.0);
+		}
+		
 		prevUSpeed = currUSpeed;
 		
-		currUSpeed = InvalidUserSpeed.getInstance();
-		
-		if(locEnvSensor.isChanged()) {
-			UserLoc currLoc = locEnvSensor.getCurrULoc();
-			UserLoc prevLoc =  locEnvSensor.getPrevULoc();
+		UserLoc currLoc = locEnvSensor.getCurrULoc();
+		UserLoc prevLoc =  locEnvSensor.getPrevULoc();
 
-			if(!currLoc.isValid() || !prevLoc.isValid()){
-				Log.d("speed", "sensing failure: invalidUserLoc");
-				return currUSpeed;
-			}
-			
-			Date lastSensedTimeDate;
-			if(durationUserEnvBuilder == null)
-				lastSensedTimeDate = currTimeDate;
-			else
-				lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
-			
-			try {
-				double speed = currLoc.distanceTo(prevLoc) / (currTimeDate.getTime() - lastSensedTimeDate.getTime());
-				currUSpeed = UserSpeed.create(speed);
-				
-				Log.i("speed", "sensed: " + currUSpeed.toString());
-			} catch (InvalidUserEnvException e) {
-				Log.d("speed", "sensing failure: invalidUserLoc");
-				return currUSpeed;
-			}
-			
-			lastSensedTimeDate = currTimeDate;
-		} else {
-			currUSpeed = prevUSpeed;
-			
-			Log.d("speed", "not sensed yet");
+		if(!currLoc.isValid() || !prevLoc.isValid()){
+			currUSpeed = InvalidUserSpeed.getInstance();
+			Log.d("speed", "sensing failure: invalidUserLoc");
+			return currUSpeed;
 		}
+		
+		Date lastSensedTimeDate;
+		if(durationUserEnvBuilder == null)
+			lastSensedTimeDate = currTimeDate;
+		else
+			lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
+		
+		try {
+			double speed = currLoc.distanceTo(prevLoc) / (currTimeDate.getTime() - lastSensedTimeDate.getTime() * 1000);
+			currUSpeed = UserSpeed.create(speed);
+			
+			Log.i("speed", "sensed: " + currUSpeed.toString());
+		} catch (InvalidUserEnvException e) {
+			Log.d("speed", "sensing failure: invalidUserLoc");
+			return currUSpeed;
+		}
+			
+		lastSensedTimeDate = currTimeDate;
 		
 		return currUSpeed;
 	}

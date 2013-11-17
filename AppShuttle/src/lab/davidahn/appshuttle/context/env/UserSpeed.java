@@ -3,11 +3,11 @@ package lab.davidahn.appshuttle.context.env;
 
 public class UserSpeed extends UserEnv {
 	protected double speed;
-	protected int level;
+	protected Level level;
 
 	public UserSpeed(double _speed) {
 		speed = _speed;
-		level = (int)Math.round(_speed);
+		level = getLevel(_speed);
 	}
 	
 	public static UserSpeed create(double speed) {
@@ -25,11 +25,11 @@ public class UserSpeed extends UserEnv {
 		this.speed = speed;
 	}
 	
-	public int getLevel() {
+	public Level getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Level level) {
 		this.level = level;
 	}
 
@@ -53,6 +53,22 @@ public class UserSpeed extends UserEnv {
 	
 	@Override
 	public int hashCode(){
-		return Double.valueOf(level).hashCode();
+		return Double.valueOf(level.name()).hashCode();
+	}
+	
+	private Level getLevel(double speed) {
+		double speedKmh = speed * 3.6;
+		if(speedKmh <= 0.0)
+			return Level.STAY;
+		else if(speedKmh <= 10.0)
+			return Level.WALK;
+		else
+			return Level.VEHICLE;
+	}
+	
+	public enum Level {
+		STAY,
+		WALK,
+		VEHICLE,
 	}
 }
