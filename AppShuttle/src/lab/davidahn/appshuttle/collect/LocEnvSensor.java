@@ -24,7 +24,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 	
 	private UserLoc prevULoc;
 	private UserLoc currULoc;
-    private DurationUserEnv.Builder _durationUserEnvBuilder;
+    private DurationUserEnv.Builder durationUserEnvBuilder;
 
     private static LocEnvSensor locEnvSensor = new LocEnvSensor();
 	
@@ -120,12 +120,12 @@ public class LocEnvSensor extends BaseEnvSensor {
 	@Override
 	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
-		if(_durationUserEnvBuilder == null) {
-			_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
+		if(durationUserEnvBuilder == null) {
+			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
 			if(isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
-				res = _durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
-				_durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
+				res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
+				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
 		}
 		return res;
@@ -133,8 +133,8 @@ public class LocEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
-		DurationUserEnv res = _durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
-		_durationUserEnvBuilder = null;
+		DurationUserEnv res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
+		durationUserEnvBuilder = null;
 		return res;
 	}
 	

@@ -33,7 +33,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	@Override
 	public UserSpeed sense(Date currTimeDate, TimeZone currTimeZone){
 		if(!locEnvSensor.isChanged()) {
-			Log.d("speed", "not sensed yet");
+//			Log.d("speed", "not sensed yet");
 			return UserSpeed.create(0.0);
 		}
 		
@@ -55,7 +55,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 			lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
 		
 		try {
-			double speed = currLoc.distanceTo(prevLoc) / (currTimeDate.getTime() - lastSensedTimeDate.getTime() * 1000);
+			double speed = currLoc.distanceTo(prevLoc) / (currTimeDate.getTime() - lastSensedTimeDate.getTime()) * 1000;
 			currUSpeed = UserSpeed.create(speed);
 			
 			Log.i("speed", "sensed: " + currUSpeed.toString());
