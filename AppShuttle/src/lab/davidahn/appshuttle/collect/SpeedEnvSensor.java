@@ -91,7 +91,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 		if(durationUserEnvBuilder == null) {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 		} else {
-			if(locEnvSensor.isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
+			if(locEnvSensor.isChanged() || isAutoExtraction(currTimeDate, currTimeZone)){
 				res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 			}
@@ -110,5 +110,24 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)
 			.setTimeZone(currTimeZone);
+	}
+	
+	@Override
+	public boolean isAutoExtraction(Date currTimeDate, TimeZone currTimeZone){
+		if(currUSpeed.getLevel() != UserSpeed.Level.VEHICLE)
+			return false;
+		
+		long minAcceptableSpeedMph = 5000;
+		long minWaitingTime = preferenceSettings.getInt("collection.location.tolerance.distance", 500) * (1000 * 60 * 60 / minAcceptableSpeedMph);
+		long reasonableWaitingTime = (long)(1.5 * minWaitingTime);
+
+		Date lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
+		
+		if(currTimeDate.getTime() - lastSensedTimeDate.getTime() > reasonableWaitingTime) {
+			Log.d("speed", "Auto extracted by exceeding reasonable waiting time");
+			return true;
+		}
+		
+		return false;
 	}
 }
