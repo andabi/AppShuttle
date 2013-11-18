@@ -19,7 +19,7 @@ public class AppShuttlePreferences {
 		editor.putBoolean("service.collection.enabled", true);
 		editor.putLong("service.collection.period", 30000);
 		
-		editor.putBoolean("service.report.enabled", false);
+		editor.putBoolean("service.report.enabled", true);
 		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
 		
 		editor.putBoolean("service.compaction.enabled", true);
