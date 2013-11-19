@@ -58,7 +58,9 @@ public class UserSpeed extends UserEnv {
 	
 	private Level getLevel(double speed) {
 		double speedKmh = speed * 3.6;
-		if(speedKmh < 3.0)
+		if(speedKmh < 0)
+			return Level.INVALID;
+		else if(speedKmh < 3.0)
 			return Level.STAY;
 		else if(speedKmh < 5.0)
 			return Level.WALK;
@@ -70,5 +72,6 @@ public class UserSpeed extends UserEnv {
 		STAY,
 		WALK,
 		VEHICLE,
+		INVALID,
 	}
 }

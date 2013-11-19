@@ -44,7 +44,7 @@ public abstract class BaseEnvSensor implements EnvSensor {
 	@Override
 	public abstract boolean isChanged();
 
-	public boolean isAutoExtraction(Date currTimeDate, TimeZone currTimeZone){
+	public boolean isAutoExtractionTime(Date currTimeDate, TimeZone currTimeZone){
 		long autoStoreMaxDuration = preferenceSettings.getLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
 		long collectionPeriod = preferenceSettings.getLong("service.collection.period", 30000);
 		

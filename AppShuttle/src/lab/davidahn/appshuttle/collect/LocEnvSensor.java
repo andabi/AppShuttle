@@ -123,7 +123,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 		if(durationUserEnvBuilder == null) {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
-			if(isChanged() || isAutoExtraction(currTimeDate, currTimeZone)){
+			if(isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
 				res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
