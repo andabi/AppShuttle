@@ -15,6 +15,7 @@ import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.PlacePositionMatcher;
+import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
@@ -111,14 +112,24 @@ public class Predictor {
 		
 		locMatcherGroup.registerMatcher(new PlacePositionMatcher(
 			new PositionMatcherConf.Builder()
-				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 6 * AlarmManager.INTERVAL_DAY))
+				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 14 * AlarmManager.INTERVAL_DAY))
 				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
-				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", 0.3f))
+				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
 				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
 				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.place.tolerance_in_meter", 2000))
 				.build()
 			)
 		);
+		locMatcherGroup.registerMatcher(new MovePositionMatcher(
+				new PositionMatcherConf.Builder()
+					.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 14 * AlarmManager.INTERVAL_DAY))
+					.setMinLikelihood(preferenceSettings.getFloat("matcher.position.move.min_likelihood", 0.3f))
+					.setMinInverseEntropy(Float.MIN_VALUE)
+					.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_history", 3))
+					.setToleranceInMeter(0)
+					.build()
+				)
+			);
 		
 //		locMatcherGroup.registerMatcher(new LocationMatcher(
 //			new PositionMatcherConf.Builder()

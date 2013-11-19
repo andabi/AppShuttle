@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -57,15 +58,6 @@ public class PlacePositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
-		UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
-		if(uPlace.equals((UserPlace) unit.getProperty("place")))
-			return 1;
-		else
-			return 0;
-	}
-	
-	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
 		
@@ -98,5 +90,24 @@ public class PlacePositionMatcher extends PositionMatcher {
 		assert(0 <= inverseEntropy && inverseEntropy <= 1);
 		
 		return inverseEntropy;
+	}
+
+	@Override
+	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
+		UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
+		if(uPlace.equals((UserPlace) unit.getProperty("place")))
+			return 1;
+		else
+			return 0;
+	}
+	
+	@Override
+	protected double computeLikelihood(int numTotalHistory,
+			Map<MatcherCountUnit, Double> relatedHistoryMap,
+			SnapshotUserCxt uCxt) {
+		if(numTotalHistory <= 0)
+			return 0;
+		
+		return relatedHistoryMap.size() / numTotalHistory;
 	}
 }

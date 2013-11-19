@@ -1,11 +1,8 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
@@ -67,58 +64,35 @@ public class MovePositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected double computeLikelihood(int numTotalHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
+	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
+		int numUserSpeedLevel = UserSpeed.Level.values().length;
+
+		if(numUserSpeedLevel == 0)
+			return 0;
+
+		return 1.0 / numUserSpeedLevel;
+	}
+
+	@Override
+	protected double computeLikelihood(int numTotalHistory,
+			Map<MatcherCountUnit, Double> relatedHistoryMap,
+			SnapshotUserCxt uCxt) {
+		if(numTotalHistory <= 0)
+			return 0;
+		
 		double likelihood = 0;
-		for(double relatedness : relatedHistoryMap.values()){
-			likelihood+=relatedness;
+		for (double relatedness : relatedHistoryMap.values()) {
+			likelihood += relatedness;
 		}
-		if(relatedHistoryMap.size() > 0)
-			likelihood /= relatedHistoryMap.size();
-		else
-			likelihood = 0;
+		likelihood /= numTotalHistory;
 		return likelihood;
 	}
-	
+
 	@Override
 	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		if((UserSpeed.Level) unit.getProperty("speed_level") == UserSpeed.Level.VEHICLE)
 			return 1;
 		
 		return 0;
-	}
-	
-	@Override
-	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
-		
-		double inverseEntropy = 0;
-		Set<UserSpeed.Level> uniqueUserSpeedlevel = new HashSet<UserSpeed.Level>();
-		
-		for(MatcherCountUnit unit : matcherCountUnitList){
-			UserSpeed.Level uSpeedLevel = ((UserSpeed.Level) unit.getProperty("speed_level"));
-			Iterator<UserSpeed.Level> it = uniqueUserSpeedlevel.iterator();
-			boolean unique = true;
-			if(!uniqueUserSpeedlevel.isEmpty()){
-				while(it.hasNext()){
-					UserSpeed.Level uniqueUserSpeedLevelElem = it.next();
-					if(uSpeedLevel.equals(uniqueUserSpeedLevelElem)){
-						unique = false;
-						break;
-					}
-				}
-			}
-			if(unique)
-				uniqueUserSpeedlevel.add(uSpeedLevel);
-		}
-		int entropy = uniqueUserSpeedlevel.size();
-		if(entropy > 0) {
-			inverseEntropy = 1.0 / entropy;
-		} else {
-			inverseEntropy = 0;
-		}
-		
-		assert(0 <= inverseEntropy && inverseEntropy <= 1);
-		
-		return inverseEntropy;
 	}
 }

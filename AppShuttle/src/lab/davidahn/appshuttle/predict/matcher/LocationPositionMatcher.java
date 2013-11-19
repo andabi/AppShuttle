@@ -68,34 +68,6 @@ public class LocationPositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
-		return 1;
-	}
-	
-	@Override
-	protected double computeLikelihood(int numRelatedHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
-		long totalSpentTime = 0, validSpentTime = 0;
-		
-		for(MatcherCountUnit unit : relatedHistoryMap.keySet()){
-			UserLoc userLoc = ((UserLoc) unit.getProperty("loc"));
-			long duration = ((Long) unit.getProperty("duration"));
-			totalSpentTime += duration;
-			try{
-				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), ((PositionMatcherConf)conf).getToleranceInMeter())){
-					validSpentTime += duration;
-				}
-			} catch (InvalidUserEnvException e) {
-				;
-			}
-		}
-		
-		double likelihood = 0;
-		if(totalSpentTime > 0)
-			likelihood = 1.0 * validSpentTime / totalSpentTime;
-		return likelihood;
-	}
-	
-	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
 		
@@ -132,5 +104,33 @@ public class LocationPositionMatcher extends PositionMatcher {
 		assert(0 <= inverseEntropy && inverseEntropy <= 1);
 		
 		return inverseEntropy;
+	}
+
+	@Override
+	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
+		return 1;
+	}
+	
+	@Override
+	protected double computeLikelihood(int numTotalHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
+		long totalSpentTime = 0, validSpentTime = 0;
+		
+		for(MatcherCountUnit unit : relatedHistoryMap.keySet()){
+			UserLoc userLoc = ((UserLoc) unit.getProperty("loc"));
+			long duration = ((Long) unit.getProperty("duration"));
+			totalSpentTime += duration;
+			try{
+				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), ((PositionMatcherConf)conf).getToleranceInMeter())){
+					validSpentTime += duration;
+				}
+			} catch (InvalidUserEnvException e) {
+				;
+			}
+		}
+		
+		double likelihood = 0;
+		if(totalSpentTime > 0)
+			likelihood = 1.0 * validSpentTime / totalSpentTime;
+		return likelihood;
 	}
 }

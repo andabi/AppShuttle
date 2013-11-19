@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -75,30 +76,6 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 	}
 	
 	@Override
-	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
-		double relatedness = 0;
-		
-		long currTime = uCxt.getTimeDate().getTime();
-		long currTimePeriodic = currTime % conf.getPeriod();
-		long targetTime = ((Date) unit.getProperty("time")).getTime();
-		long targetTimePeriodic = targetTime % conf.getPeriod();
-		
-		long mean = currTimePeriodic;
-		long std = conf.getTolerance() / 2;
-		NormalDistribution nd = new NormalDistribution(mean, std);
-
-		long start = (currTimePeriodic - conf.getTolerance()) % conf.getPeriod();
-		long end = (currTimePeriodic + conf.getTolerance()) % conf.getPeriod();
-				
-		if(Time.isBetween(start, targetTimePeriodic, end, conf.getPeriod())){
-			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
-		} else {
-			relatedness = 0;
-		}
-		return relatedness;
-	}
-	
-	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
 		
@@ -132,6 +109,37 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 		assert(0 <= inverseEntropy && inverseEntropy <= 1);
 		
 		return inverseEntropy;
+	}
+
+	@Override
+	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
+		double relatedness = 0;
+		
+		long currTime = uCxt.getTimeDate().getTime();
+		long currTimePeriodic = currTime % conf.getPeriod();
+		long targetTime = ((Date) unit.getProperty("time")).getTime();
+		long targetTimePeriodic = targetTime % conf.getPeriod();
+		
+		long mean = currTimePeriodic;
+		long std = conf.getTolerance() / 2;
+		NormalDistribution nd = new NormalDistribution(mean, std);
+
+		long start = (currTimePeriodic - conf.getTolerance()) % conf.getPeriod();
+		long end = (currTimePeriodic + conf.getTolerance()) % conf.getPeriod();
+				
+		if(Time.isBetween(start, targetTimePeriodic, end, conf.getPeriod())){
+			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
+		} else {
+			relatedness = 0;
+		}
+		return relatedness;
+	}
+	
+	@Override
+	protected double computeLikelihood(int numTotalHistory,
+		Map<MatcherCountUnit, Double> relatedHistoryMap,
+		SnapshotUserCxt uCxt) {
+		return 1;
 	}
 	
 	@Override

@@ -98,31 +98,18 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		return pureDurationUserBhvList;
 	}
 
-	protected double computeLikelihood(int numTotalHistory,
-			Map<MatcherCountUnit, Double> relatedHistoryMap,
-			SnapshotUserCxt uCxt) {
-		if(relatedHistoryMap.size() <= 0)
-			return 0;
-		
-		double likelihood = 0;
-		for (double relatedness : relatedHistoryMap.values()) {
-			likelihood += relatedness;
-		}
-		likelihood /= relatedHistoryMap.size();
-		return likelihood;
-	}
-
-	protected double computeInverseEntropy(
-			List<MatcherCountUnit> matcherCountUnitList) {
-		double inverseEntropy = Double.MIN_VALUE;
-		return inverseEntropy;
-	}
-
 	protected abstract List<MatcherCountUnit> mergeHistoryByCountUnit(
-			List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt);
+				List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt);
 
+	protected abstract double computeInverseEntropy(
+			List<MatcherCountUnit> matcherCountUnitList);
+	
 	protected abstract double computeRelatedness(MatcherCountUnit durationUserBhv,
-			SnapshotUserCxt uCxt);
+	SnapshotUserCxt uCxt);
+
+	protected abstract double computeLikelihood(int numTotalHistory,
+				Map<MatcherCountUnit, Double> relatedHistoryMap,
+				SnapshotUserCxt uCxt);
 
 	protected abstract double computeScore(MatcherResult matcherResult);
 
