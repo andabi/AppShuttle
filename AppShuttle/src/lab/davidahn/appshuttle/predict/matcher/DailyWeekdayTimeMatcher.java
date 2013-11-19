@@ -33,7 +33,8 @@ public class DailyWeekdayTimeMatcher extends TimeMatcher {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
 		Date toTime = new Date(currUCxt.getTimeDate().getTime() - conf.getTolerance());
-		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
+		long numWeekend = 2 * (1 + conf.getDuration() / 5);
+		Date fromTime = new Date(toTime.getTime() - conf.getDuration() - numWeekend);
 		
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
