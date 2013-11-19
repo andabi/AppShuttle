@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
@@ -13,9 +12,6 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 	public RecentMatcher(RecentMatcherConf conf){
 		super(conf);
 	}
-	
-	@Override
-	public abstract MatcherType getMatcherType();
 	
 	@Override
 	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
@@ -44,12 +40,10 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 	}
 	
 	@Override
-	protected double computeRelatedness(MatcherCountUnit durationUserBhv, SnapshotUserCxt uCxt) {
+	protected double computeRelatedness(MatcherCountUnit durationUserBhv,
+			SnapshotUserCxt uCxt) {
 		return 1;
 	}
-
-	@Override
-	protected abstract double computeLikelihood(int numRelatedHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt);
 	
 	@Override
 	protected double computeScore(MatcherResult matcherResult) {

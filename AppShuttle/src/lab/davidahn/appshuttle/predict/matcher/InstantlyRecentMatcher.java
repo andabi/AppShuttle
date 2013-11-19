@@ -44,8 +44,8 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 	}
 	
 	@Override
-	protected double computeLikelihood(int numRelatedHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
-		if(numRelatedHistory <= 0 || relatedHistoryMap.isEmpty())
+	protected double computeLikelihood(int numTotalHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
+		if(relatedHistoryMap.isEmpty())
 			return 0;
 
 		double likelihood = 0;

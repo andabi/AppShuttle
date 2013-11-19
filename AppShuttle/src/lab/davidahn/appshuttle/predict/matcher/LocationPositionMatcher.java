@@ -32,6 +32,7 @@ public class LocationPositionMatcher extends PositionMatcher {
 		return MatcherType.LOCATION;
 	}
 
+	//FIXME duration
 	@Override
 	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();

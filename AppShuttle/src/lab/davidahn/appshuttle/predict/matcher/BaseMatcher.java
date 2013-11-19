@@ -23,8 +23,10 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 	public abstract MatcherType getMatcherType();
 
 	@Override
-	public MatcherResult matchAndGetResult(UserBhv uBhv,
-			SnapshotUserCxt currUCxt) {
+	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt) {
+		if(!preConditionForCurrUserCxt(currUCxt))
+			return null;
+		
 		List<MatcherCountUnit> matcherCountUnitList = mergeHistoryByCountUnit(
 				getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
 
@@ -51,7 +53,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		if (numRelatedHistory < conf.getMinNumHistory())
 			return null;
 
-		double likelihood = computeLikelihood(numRelatedHistory,
+		double likelihood = computeLikelihood(numTotalHistory,
 				relatedHistory, currUCxt);
 		if (likelihood < conf.getMinLikelihood())
 			return null;
@@ -71,6 +73,10 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		// matchedCxt.getMatcherType().toString());
 
 		return matcherResult;
+	}
+	
+	protected boolean preConditionForCurrUserCxt(SnapshotUserCxt currUCxt) {
+		return true;
 	}
 
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv,
@@ -92,14 +98,17 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		return pureDurationUserBhvList;
 	}
 
-	protected double computeLikelihood(int numRelatedHistory,
+	protected double computeLikelihood(int numTotalHistory,
 			Map<MatcherCountUnit, Double> relatedHistoryMap,
 			SnapshotUserCxt uCxt) {
+		if(relatedHistoryMap.size() <= 0)
+			return 0;
+		
 		double likelihood = 0;
 		for (double relatedness : relatedHistoryMap.values()) {
 			likelihood += relatedness;
 		}
-		likelihood /= numRelatedHistory;
+		likelihood /= relatedHistoryMap.size();
 		return likelihood;
 	}
 
