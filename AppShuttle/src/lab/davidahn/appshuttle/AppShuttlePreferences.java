@@ -70,7 +70,9 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.time.daily.min_num_history", 3);
 		editor.putLong("matcher.time.daily.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
 		editor.putLong("matcher.time.daily.tolerance", pref.getLong("matcher.time.daily.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
-		
+
+		editor.putLong("matcher.time.daily.weekday.duration", 7 * AlarmManager.INTERVAL_DAY);
+
 //		editor.putLong("matcher.time.daily.strict.duration", 5 * AlarmManager.INTERVAL_DAY);
 //		editor.putFloat("matcher.time.daily.strict.min_likelihood", 0.5f);
 //		editor.putFloat("matcher.time.daily.strict.min_inverse_entropy", Float.MIN_VALUE);

@@ -10,12 +10,16 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
-
+import android.app.AlarmManager;
 
 public class DailyWeekdayTimeMatcher extends TimeMatcher {
+	private static final long INTERVAL_WEEK = 7 * AlarmManager.INTERVAL_DAY;
 
 	public DailyWeekdayTimeMatcher(TimeMatcherConf conf){
 		super(conf);
+
+		if(conf.getDuration() % INTERVAL_WEEK != 0)
+			throw new IllegalArgumentException("duration must be times of a week");
 	}
 	
 	@Override
@@ -33,9 +37,14 @@ public class DailyWeekdayTimeMatcher extends TimeMatcher {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
 		Date toTime = new Date(currUCxt.getTimeDate().getTime() - conf.getTolerance());
-		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
 		
+		assert(conf.getDuration() % INTERVAL_WEEK == 0);
+		
+		int numWeekend = 2 * (int)(conf.getDuration() / INTERVAL_WEEK);
+		Date fromTime = new Date(toTime.getTime() - conf.getDuration() - numWeekend * AlarmManager.INTERVAL_DAY);
+
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
+		
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			if(isWeekDay(durationUserBhv.getTimeDate()))
 				res.add(durationUserBhv);

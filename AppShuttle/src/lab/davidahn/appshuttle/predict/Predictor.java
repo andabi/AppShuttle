@@ -90,7 +90,7 @@ public class Predictor {
 
 		timeMatcherGroup.registerMatcher(new DailyWeekdayTimeMatcher(
 			new TimeMatcherConf.Builder()
-				.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
+				.setDuration(preferenceSettings.getLong("matcher.time.daily.weekday.duration", 7 * AlarmManager.INTERVAL_DAY))
 				.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
 				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
 				.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
