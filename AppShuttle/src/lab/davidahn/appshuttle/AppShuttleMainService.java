@@ -60,7 +60,7 @@ public class AppShuttleMainService extends Service {
 		if(preferenceSettings.getBoolean("service.report.enabled", false)){
 			Intent reportIntent = new Intent(this, ReportService.class);
 			reportOperation = PendingIntent.getService(this, 0, reportIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportOperation);
 		}
 		
 		startRepeatingPredictBroadCast();

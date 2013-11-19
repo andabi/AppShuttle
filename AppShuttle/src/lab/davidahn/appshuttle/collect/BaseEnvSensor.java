@@ -13,11 +13,11 @@ import android.content.SharedPreferences;
 
 public abstract class BaseEnvSensor implements EnvSensor {
 	protected AppShuttleApplication _appShuttleContext;
-	protected SharedPreferences _preferenceSettings;
+	protected SharedPreferences preferenceSettings;
 
 	public BaseEnvSensor(){
 		_appShuttleContext = AppShuttleApplication.getContext();
-		_preferenceSettings = _appShuttleContext.getPreferences();
+		preferenceSettings = _appShuttleContext.getPreferences();
 //		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 	
@@ -44,9 +44,9 @@ public abstract class BaseEnvSensor implements EnvSensor {
 	@Override
 	public abstract boolean isChanged();
 
-	public boolean isAutoExtractionTime(Date currTimeDate, TimeZone currTimeZone){
-		long autoStoreMaxDuration = _preferenceSettings.getLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
-		long collectionPeriod = _preferenceSettings.getLong("service.collection.period", 30000);
+	public boolean isAutoExtraction(Date currTimeDate, TimeZone currTimeZone){
+		long autoStoreMaxDuration = preferenceSettings.getLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
+		long collectionPeriod = preferenceSettings.getLong("service.collection.period", 30000);
 		
 		if(currTimeDate.getTime() % autoStoreMaxDuration < collectionPeriod)
 			return true;

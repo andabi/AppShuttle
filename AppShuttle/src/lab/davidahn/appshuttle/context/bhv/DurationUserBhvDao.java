@@ -111,6 +111,35 @@ public class DurationUserBhvDao {
 		cur.close();
 		return res;
 	}
+	
+	public List<DurationUserBhv> retrieveOnEndTimeByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
+//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Cursor cur = _db.rawQuery(
+				"SELECT * " +
+				"FROM history_user_bhv " +
+				"WHERE end_time >= " + beginTime.getTime() + " " +
+					"AND end_time < " + endTime.getTime() + " " +
+					"AND bhv_type = '"+uBhv.getBhvType()+"' " +
+					"AND bhv_name = '"+uBhv.getBhvName()+"';", null);
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+		while (cur.moveToNext()) {
+			Date timeDate = new Date(cur.getLong(0));
+			long duration = cur.getLong(1);
+			Date endTimeDate = new Date(cur.getLong(2));
+			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
+//			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
+			DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
+				.setTime(timeDate)
+				.setDuration(duration)
+				.setEndTime(endTimeDate)
+				.setTimeZone(timezone)
+				.setBhv(uBhv)
+				.build();
+			res.add(durationUserBhv);
+		}
+		cur.close();
+		return res;
+	}
 
 //	//TODO fix
 //	public File loadRfdCxtAsCsvFile(Context cxt, String fileName, Date sTime, Date eTime) {

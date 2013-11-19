@@ -55,8 +55,8 @@ public class LocEnvSensor extends BaseEnvSensor {
 // 		 Log.d("best provider", bestProvider);
 		
 		locationManager.requestLocationUpdates(bestProvider, 
-				_preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
-				_preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
+				preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
+				preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
 				locationListener);
 
 		lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
@@ -123,7 +123,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 		if(durationUserEnvBuilder == null) {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 		} else {
-			if(isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
+			if(isChanged() || isAutoExtraction(currTimeDate, currTimeZone)){
 				res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
 			}
@@ -158,8 +158,8 @@ public class LocEnvSensor extends BaseEnvSensor {
 
 		public void onProviderEnabled(String provider) {
 			locationManager.requestLocationUpdates(bestProvider, 
-					_preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
-					_preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
+					preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
+					preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
 					locationListener);
 			
 			lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
