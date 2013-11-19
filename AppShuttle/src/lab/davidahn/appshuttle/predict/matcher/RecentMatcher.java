@@ -15,9 +15,6 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 	}
 	
 	@Override
-	public abstract MatcherType getMatcherType();
-	
-	@Override
 	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
@@ -42,14 +39,26 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 			res.add(mergedDurationUserBhvBuilder.build());
 		return res;
 	}
-	
+
 	@Override
-	protected double computeRelatedness(MatcherCountUnit durationUserBhv, SnapshotUserCxt uCxt) {
+	protected double computeInverseEntropy(
+			List<MatcherCountUnit> matcherCountUnitList) {
 		return 1;
 	}
 
 	@Override
-	protected abstract double computeLikelihood(int numRelatedHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt);
+	protected double computeRelatedness(MatcherCountUnit durationUserBhv,
+			SnapshotUserCxt uCxt) {
+		return 1;
+	}
+
+	
+	@Override
+	protected double computeLikelihood(int numTotalHistory,
+			Map<MatcherCountUnit, Double> relatedHistoryMap,
+			SnapshotUserCxt uCxt) {
+	return 1;
+}
 	
 	@Override
 	protected double computeScore(MatcherResult matcherResult) {

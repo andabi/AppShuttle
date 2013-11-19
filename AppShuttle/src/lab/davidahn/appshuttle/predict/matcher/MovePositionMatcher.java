@@ -1,54 +1,60 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserPlace;
+import lab.davidahn.appshuttle.context.env.UserSpeed;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
-public class PlacePositionMatcher extends PositionMatcher {
+public class MovePositionMatcher extends PositionMatcher {
 
-	public PlacePositionMatcher(PositionMatcherConf conf){
+	public MovePositionMatcher(PositionMatcherConf conf){
 		super(conf);
 	}
 	
 	@Override
 	public MatcherType getMatcherType(){
-		return MatcherType.PLACE;
+		return MatcherType.MOVE;
 	}
 	
+	@Override
+	protected boolean preConditionForCurrUserCxt(SnapshotUserCxt uCxt) {
+		UserSpeed.Level currUserSpeedLevel = ((UserSpeed)uCxt.getUserEnv(EnvType.SPEED)).getLevel();
+		if(currUserSpeedLevel == UserSpeed.Level.VEHICLE)
+			return true;
+		
+		return false;
+	}
+
 	@Override
 	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
 		MatcherCountUnit.Builder mergedDurationUserBhvBuilder = null;
-		UserPlace lastKnownUserPlace = null;
+		UserSpeed.Level lastKnownUserSpeedLevel = null;
 		
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
-					, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
-				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
-				if(lastKnownUserPlace == null) {
+					, durationUserBhv.getEndTimeDate(), EnvType.SPEED)){
+				UserSpeed.Level userSpeedLevel = ((UserSpeed)durationUserEnv.getUserEnv()).getLevel();
+				if(lastKnownUserSpeedLevel == null) {
 					mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					mergedDurationUserBhvBuilder.setProperty("place", userPlace);
+					mergedDurationUserBhvBuilder.setProperty("speed_level", userSpeedLevel);
 				} else {
-						if(!userPlace.equals(lastKnownUserPlace)){
+						if(!userSpeedLevel.equals(lastKnownUserSpeedLevel)){
 							res.add(mergedDurationUserBhvBuilder.build());
 							mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-							mergedDurationUserBhvBuilder.setProperty("place", userPlace);
+							mergedDurationUserBhvBuilder.setProperty("speed_level", userSpeedLevel);
 						}
 				}
-				lastKnownUserPlace = userPlace;
+				lastKnownUserSpeedLevel = userSpeedLevel;
 			}
 		}
 		if(mergedDurationUserBhvBuilder != null)
@@ -59,48 +65,14 @@ public class PlacePositionMatcher extends PositionMatcher {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
-		
-		double inverseEntropy = 0;
-		Set<UserPlace> uniquePlace = new HashSet<UserPlace>();
-		
-		for(MatcherCountUnit unit : matcherCountUnitList){
-			UserPlace uPlace = ((UserPlace) unit.getProperty("place"));
-			Iterator<UserPlace> it = uniquePlace.iterator();
-			boolean unique = true;
-			if(!uniquePlace.isEmpty()){
-				while(it.hasNext()){
-					UserPlace uniquePlaceElem = it.next();
-					if(uPlace.equals(uniquePlaceElem)){
-						unique = false;
-						break;
-					}
-				}
-			}
-			if(unique)
-				uniquePlace.add(uPlace);
-		}
-		int entropy = uniquePlace.size();
-		if(entropy > 0) {
-			inverseEntropy = 1.0 / entropy;
-		} else {
-			inverseEntropy = 0;
-		}
-		
-		assert(0 <= inverseEntropy && inverseEntropy <= 1);
-		
-		return inverseEntropy;
+		int numUserSpeedLevel = UserSpeed.Level.values().length;
+
+		if(numUserSpeedLevel == 0)
+			return 0;
+
+		return 1.0 / numUserSpeedLevel;
 	}
 
-	@Override
-	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
-		UserPlace uPlace = (UserPlace) uCxt.getUserEnv(EnvType.PLACE);
-		if(uPlace.equals((UserPlace) unit.getProperty("place")))
-			return 1;
-		else
-			return 0;
-	}
-	
 	@Override
 	protected double computeLikelihood(int numTotalHistory,
 			Map<MatcherCountUnit, Double> relatedHistoryMap,
@@ -108,6 +80,19 @@ public class PlacePositionMatcher extends PositionMatcher {
 		if(numTotalHistory <= 0)
 			return 0;
 		
-		return relatedHistoryMap.size() / numTotalHistory;
+		double likelihood = 0;
+		for (double relatedness : relatedHistoryMap.values()) {
+			likelihood += relatedness;
+		}
+		likelihood /= numTotalHistory;
+		return likelihood;
+	}
+
+	@Override
+	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
+		if((UserSpeed.Level) unit.getProperty("speed_level") == UserSpeed.Level.VEHICLE)
+			return 1;
+		
+		return 0;
 	}
 }

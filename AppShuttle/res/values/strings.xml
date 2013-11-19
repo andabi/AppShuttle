@@ -15,6 +15,7 @@
     <string name="predict_time_daily_weekday_msg">Time, weekday</string>
     <string name="predict_place_msg">Place</string>
     <string name="predict_gps_msg">Location</string>
+    <string name="predict_move_msg">Move</string>
     <string name="favorates">favorates</string>
     <string name="unfavorates">unfavorates</string>
     <string name="block">block</string>

@@ -10,12 +10,16 @@ import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
-
+import android.app.AlarmManager;
 
 public class DailyWeekdayTimeMatcher extends TimeMatcher {
+	private static final long INTERVAL_WEEK = 7 * AlarmManager.INTERVAL_DAY;
 
 	public DailyWeekdayTimeMatcher(TimeMatcherConf conf){
 		super(conf);
+
+		if(conf.getDuration() % INTERVAL_WEEK != 0)
+			throw new IllegalArgumentException("duration must be times of a week");
 	}
 	
 	@Override
@@ -24,19 +28,26 @@ public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	}
 	
 	@Override
+	protected boolean preConditionForCurrUserCxt(SnapshotUserCxt currUCxt) {
+		if(isWeekDay(currUCxt.getTimeDate()))
+			return true;
+		
+		return false;
+	}
+	
+	@Override
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		
-		if(!isWeekDay(currUCxt.getTimeDate()))
-			return res;
-		
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
-
 		Date toTime = new Date(currUCxt.getTimeDate().getTime() - conf.getTolerance());
-		long numWeekend = 2 * (1 + conf.getDuration() / 5);
-		Date fromTime = new Date(toTime.getTime() - conf.getDuration() - numWeekend);
 		
+		assert(conf.getDuration() % INTERVAL_WEEK == 0);
+		
+		int numWeekend = 2 * (int)(conf.getDuration() / INTERVAL_WEEK);
+		Date fromTime = new Date(toTime.getTime() - conf.getDuration() - numWeekend * AlarmManager.INTERVAL_DAY);
+
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
+		
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			if(isWeekDay(durationUserBhv.getTimeDate()))
 				res.add(durationUserBhv);

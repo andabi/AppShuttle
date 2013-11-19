@@ -4,7 +4,7 @@ public class InvalidUserSpeed extends UserSpeed {
 	private static InvalidUserSpeed invalidUserSpeed = new InvalidUserSpeed();
 	
 	private InvalidUserSpeed() {
-		super(0.0);
+		super(-1.0);
 	}
 	
 	public static InvalidUserSpeed getInstance(){
