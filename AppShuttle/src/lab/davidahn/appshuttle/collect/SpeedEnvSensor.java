@@ -16,6 +16,7 @@ import android.util.Log;
 public class SpeedEnvSensor extends BaseEnvSensor {
 	private LocEnvSensor locEnvSensor;
 	private UserSpeed prevUSpeed, currUSpeed;
+//	private boolean isMoving;
     private DurationUserEnv.Builder durationUserEnvBuilder;
     
     private static SpeedEnvSensor speedEnvSensor = new SpeedEnvSensor();
@@ -91,7 +92,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 		if(durationUserEnvBuilder == null) {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 		} else {
-			if(locEnvSensor.isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
+			if(locEnvSensor.isChanged()/* || isAutoExtractionTime(currTimeDate, currTimeZone)*/){
 				res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
 			}

@@ -60,7 +60,7 @@ public class UserSpeed extends UserEnv {
 		double speedKmh = speed * 3.6;
 		if(speedKmh <= 0.0)
 			return Level.STAY;
-		else if(speedKmh <= 10.0)
+		else if(speedKmh <= 5.0)
 			return Level.WALK;
 		else
 			return Level.VEHICLE;
