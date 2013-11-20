@@ -74,25 +74,26 @@ public class MovePositionMatcher extends PositionMatcher {
 	}
 
 	@Override
-	protected double computeLikelihood(int numTotalHistory,
-			Map<MatcherCountUnit, Double> relatedHistoryMap,
-			SnapshotUserCxt uCxt) {
-		if(numTotalHistory <= 0)
-			return 0;
-		
-		double likelihood = 0;
-		for (double relatedness : relatedHistoryMap.values()) {
-			likelihood += relatedness;
-		}
-		likelihood /= numTotalHistory;
-		return likelihood;
-	}
-
-	@Override
 	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		if((UserSpeed.Level) unit.getProperty("speed_level") == UserSpeed.Level.VEHICLE)
 			return 1;
 		
 		return 0;
+	}
+
+	@Override
+	protected double computeLikelihood(int numTotalHistory,
+			Map<MatcherCountUnit, Double> relatedHistoryMap,
+			SnapshotUserCxt uCxt) {	
+		return (double)relatedHistoryMap.size() / Integer.MAX_VALUE;
+	}
+	
+	@Override
+	protected double computeScore(MatcherResult matcherResult) {
+		double score = (1 + matcherResult.getLikelihood());
+		
+		assert(1 <= score && score <=2);		
+		
+		return score;
 	}
 }

@@ -153,6 +153,7 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 		double score = 1 + 0.5 * (inverseEntropy * (numRelatedHistory / conf.getDuration())) + 0.1 * likelihood;
 
 		assert(1 <= score && score <=2);
+		
 		return score;
 	}
 	

@@ -15,6 +15,8 @@ public abstract class PositionMatcher extends BaseMatcher<PositionMatcherConf> {
 		
 		double score = (1 + 0.5 * inverseEntropy + 0.1 * likelihood);
 		
+		assert(1 <= score && score <=2);
+		
 		return score;
 	}
 
