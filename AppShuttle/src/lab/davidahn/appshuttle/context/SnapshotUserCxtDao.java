@@ -23,7 +23,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class SnapshotUserCxtDao {
@@ -40,7 +39,8 @@ public class SnapshotUserCxtDao {
 	}
 
 	public void storeCxt(SnapshotUserCxt uCxt) {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
 
 		for(BaseUserBhv uBhv : uCxt.getUserBhvs()){
 			ContentValues row = new ContentValues();
@@ -57,7 +57,7 @@ public class SnapshotUserCxtDao {
 	
 	//TODO need test
 	public List<SnapshotUserCxt> retrieveCxt(Date sTime, Date eTime) {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
 
 		Cursor cur = _db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);
@@ -98,7 +98,7 @@ public class SnapshotUserCxtDao {
 	
 	//TODO fix
 	public File loadCxtAsCsvFile(Context cxt, String fileName, Date sTime, Date eTime) {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
 
 		Cursor cur = _db.rawQuery("SELECT * FROM snapshot_context WHERE time >= "
 				+ sTime.getTime() + " AND time <= " + eTime.getTime()+";", null);

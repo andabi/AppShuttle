@@ -15,7 +15,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class UserBhvDao {
@@ -30,7 +29,8 @@ public class UserBhvDao {
 	}
 
 	public void storeUserBhv(OrdinaryUserBhv uBhv) {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
 
 		ContentValues row = new ContentValues();
 		row.put("bhv_type", uBhv.getBhvType().toString());
@@ -43,7 +43,7 @@ public class UserBhvDao {
 	}
 	
 	public List<OrdinaryUserBhv> retrieveOrdinaryUserBhv() {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
 
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
@@ -69,7 +69,7 @@ public class UserBhvDao {
 	}
 	
 	public List<BlockedUserBhv> retrieveBlockedUserBhv() {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
 
 //		int isBlockedInt = (isBlocked) ? 1 : 0;
 		Cursor cur = _db.rawQuery(
@@ -112,8 +112,7 @@ public class UserBhvDao {
 	}
 	
 	public List<FavoratesUserBhv> retrieveFavoratesUserBhv() {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-
+		Gson gson = new Gson();
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
 				"FROM list_user_bhv " +
