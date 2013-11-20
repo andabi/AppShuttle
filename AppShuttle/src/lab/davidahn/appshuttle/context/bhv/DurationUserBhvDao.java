@@ -23,8 +23,6 @@ public class DurationUserBhvDao {
 	}
 
 	public void store(DurationUserBhv durationUserBhv) {
-//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-		
 		ContentValues row = new ContentValues();
 		row.put("time", durationUserBhv.getTimeDate().getTime());
 		row.put("duration", durationUserBhv.getDuration());
@@ -38,8 +36,6 @@ public class DurationUserBhvDao {
 	}
 
 	public List<DurationUserBhv> retrieve(long beginTime, long endTime) {
-//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-		
 		Cursor cur = _db.rawQuery("" +
 				"SELECT * " +
 				"FROM history_user_bhv" +
@@ -84,7 +80,6 @@ public class DurationUserBhvDao {
 	}
 	
 	public List<DurationUserBhv> retrieveByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
-//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
 				"FROM history_user_bhv " +
@@ -113,7 +108,6 @@ public class DurationUserBhvDao {
 	}
 	
 	public List<DurationUserBhv> retrieveOnEndTimeByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
-//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
 				"FROM history_user_bhv " +

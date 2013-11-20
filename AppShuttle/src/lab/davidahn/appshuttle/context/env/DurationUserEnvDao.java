@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class DurationUserEnvDao {
 	private static DurationUserEnvDao durationUserEnvDao = new DurationUserEnvDao();
@@ -26,8 +25,9 @@ public class DurationUserEnvDao {
 	}
 
 	public void store(DurationUserEnv durationUserEnv) {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
-
+//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
+		
 		ContentValues row = new ContentValues();
 		row.put("time", durationUserEnv.getTime().getTime());
 		row.put("duration", durationUserEnv.getDuration());
@@ -70,7 +70,8 @@ public class DurationUserEnvDao {
 //	}
 	
 	public DurationUserEnv retrieveContainsByEnv(Date time, EnvType envType) {
-	Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+	Gson gson = new Gson();
+	
 	Cursor cur = _db.rawQuery("SELECT * " +
 			"FROM history_user_env " +
 			"WHERE time <= " + time.getTime() + " " +
@@ -98,7 +99,7 @@ public class DurationUserEnvDao {
 	}
 	
 	public List<DurationUserEnv> retrieveBetweenByEnv(Date fromTime, Date toTime, EnvType envType) {
-		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
+		Gson gson = new Gson();
 		Cursor cur = _db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
 				"WHERE time >= " + fromTime.getTime() + " " +

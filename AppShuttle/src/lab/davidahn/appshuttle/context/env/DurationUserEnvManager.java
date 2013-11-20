@@ -36,6 +36,10 @@ public class DurationUserEnvManager {
 	}
 	
 	public List<DurationUserEnv> retrieve(Date beginTimeDate, Date endTimeDate, EnvType envType){
+		return _durationUserEnvDao.retrieveBetweenByEnv(beginTimeDate, endTimeDate, envType);
+	}
+	
+	public List<DurationUserEnv> retrieveExactly(Date beginTimeDate, Date endTimeDate, EnvType envType){
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		
 		DurationUserEnv tempFirst = _durationUserEnvDao.retrieveContainsByEnv(beginTimeDate, envType);
