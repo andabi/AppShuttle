@@ -12,10 +12,11 @@ import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.matcher.DailyTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
+import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
-import lab.davidahn.appshuttle.predict.matcher.PlacePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
+import lab.davidahn.appshuttle.predict.matcher.PlacePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
@@ -78,29 +79,38 @@ public class Predictor {
 		MatcherGroup timeMatcherGroup = new TimeMatcherGroup();
 		
 		timeMatcherGroup.registerMatcher(new DailyTimeMatcher(
-				new TimeMatcherConf.Builder()
-					.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
-					.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
-					.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
-					.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
-					.setPeriod(AlarmManager.INTERVAL_DAY)
-					.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
-					.setAcceptanceDelay(preferenceSettings.getLong("matcher.time.daily.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2))
-					.build()
-				));
+			new TimeMatcherConf.Builder()
+			.setPeriod(AlarmManager.INTERVAL_DAY)
+			.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HOUR))
+			.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
+			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
+			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
+			.build()
+		));
 
 		timeMatcherGroup.registerMatcher(new DailyWeekdayTimeMatcher(
 			new TimeMatcherConf.Builder()
-				.setDuration(preferenceSettings.getLong("matcher.time.daily.weekday.duration", 7 * AlarmManager.INTERVAL_DAY))
-				.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
-				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
-				.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
-				.setPeriod(AlarmManager.INTERVAL_DAY)
-				.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR / 6))
-				.setAcceptanceDelay(preferenceSettings.getLong("matcher.time.daily.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2))
-				.build()
-			));
+			.setPeriod(AlarmManager.INTERVAL_DAY)
+			.setTolerance(preferenceSettings.getLong("matcher.time.daily_weekday.tolerance", AlarmManager.INTERVAL_HOUR))
+			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekday.duration", 7 * AlarmManager.INTERVAL_DAY))
+			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekday.min_likelihood", 0.5f))
+			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekday.min_inverse_entropy", 0.2f))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekday.min_num_history", 3))
+			.build()
+		));
 		
+		timeMatcherGroup.registerMatcher(new DailyWeekendTimeMatcher(
+			new TimeMatcherConf.Builder()
+			.setPeriod(AlarmManager.INTERVAL_DAY)
+			.setTolerance(preferenceSettings.getLong("matcher.time.daily_weekend.tolerance", 2 * AlarmManager.INTERVAL_HOUR))
+			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekend.duration", 21 * AlarmManager.INTERVAL_DAY))
+			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekend.min_likelihood", 0.5f))
+			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekend.min_inverse_entropy", 0.2f))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekend.min_num_history", 2))
+			.build()
+		));
+	
 		registerMatcherGroup(timeMatcherGroup);
 //		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		/*, noiseTimeTolerance*/

@@ -10,6 +10,7 @@ public enum MatcherType {
 
 	//time
 	TIME_DAILY_WEEKDAY(0, R.string.predict_time_daily_weekday_msg),
+	TIME_DAILY_WEEKEND(0, R.string.predict_time_daily_weekend_msg),
 	TIME_DAILY(1, R.string.predict_time_daily_msg),
 	
 	//location

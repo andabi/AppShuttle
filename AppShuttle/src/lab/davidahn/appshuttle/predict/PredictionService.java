@@ -13,8 +13,10 @@ public class PredictionService extends IntentService {
 		super(name);
 	}
 
+	@Override
 	public void onCreate(){
 		super.onCreate();
+		AppShuttleApplication.isPredictionServiceRunning = true;
 	}
 	
 	@Override
@@ -24,5 +26,12 @@ public class PredictionService extends IntentService {
 		NotiBarNotifier.getInstance().notification();
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		AppShuttleApplication.isPredictionServiceRunning = false;
+
 	}
 }

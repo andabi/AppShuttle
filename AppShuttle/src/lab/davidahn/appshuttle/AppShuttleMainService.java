@@ -63,17 +63,31 @@ public class AppShuttleMainService extends Service {
 			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportOperation);
 		}
 		
-		startRepeatingPredictBroadCast();
+		startPeriodicPrediction();
 	}
 	
-	private void startRepeatingPredictBroadCast() {
+	private void startPeriodicPrediction() {
+		startPrediction();
+		activatePeriodicPrediction();
+	}
+	
+	private void stopPeriodicPrediction() {
+		startPrediction();
+		alarmManager.cancel(notiViewOperation);
+	}
+
+	private void startPrediction() {
+		if(AppShuttleApplication.isPredictionServiceRunning)
+			return;
+		
+		startService(new Intent(this, PredictionService.class));
+	}
+
+	private void activatePeriodicPrediction() {
 		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
 		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.predict.period", 180000), notiViewOperation);
-	}
-	
-	private void stopRepeatingPredictBroadCast() {
-		alarmManager.cancel(notiViewOperation);
+		long period = preferenceSettings.getLong("service.predict.period", 180000);
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + period, period, notiViewOperation);
 	}
 
 	public long getExecuteTimeHour(int hourOfDay){
@@ -118,21 +132,21 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			startRepeatingPredictBroadCast();
+			startPeriodicPrediction();
 		}
 	};
 	
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			stopRepeatingPredictBroadCast();
+			stopPeriodicPrediction();
 		}
 	};
 
 	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			context.startService(new Intent(context, PredictionService.class));
+			startPrediction();
 		}
 	};
 }

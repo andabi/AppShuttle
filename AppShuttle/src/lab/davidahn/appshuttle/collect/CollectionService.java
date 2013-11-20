@@ -77,15 +77,9 @@ public class CollectionService extends Service {
 	
 	@Override
 	public void onDestroy() {
-		postCollectDurationUserContext();
 		super.onDestroy();
+		postCollectDurationUserContext();
 	}
-	
-//	@Override
-//	public void onLowMemory(){
-//		postCollectDurationUserContext();
-//		super.onLowMemory();
-//	}
 	
 	private void preCollectCollectDurationUserContext() {
 		currTimeDate = new Date(System.currentTimeMillis());

@@ -68,18 +68,8 @@ public class AppShuttlePreferences {
 		editor.putFloat("matcher.time.daily.min_likelihood", 0.5f);
 		editor.putFloat("matcher.time.daily.min_inverse_entropy", Float.MIN_VALUE);
 		editor.putInt("matcher.time.daily.min_num_history", 3);
-		editor.putLong("matcher.time.daily.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR);
-		editor.putLong("matcher.time.daily.tolerance", pref.getLong("matcher.time.daily.acceptance_delay", 2 * AlarmManager.INTERVAL_HOUR) / 2);
+		editor.putLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HOUR);
 
-		editor.putLong("matcher.time.daily.weekday.duration", 7 * AlarmManager.INTERVAL_DAY);
-
-//		editor.putLong("matcher.time.daily.strict.duration", 5 * AlarmManager.INTERVAL_DAY);
-//		editor.putFloat("matcher.time.daily.strict.min_likelihood", 0.5f);
-//		editor.putFloat("matcher.time.daily.strict.min_inverse_entropy", Float.MIN_VALUE);
-//		editor.putInt("matcher.time.daily.strict.min_num_history", 3);
-//		editor.putLong("matcher.time.daily.strict.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
-//		editor.putLong("matcher.time.daily.strict.tolerance", pref.getLong("matcher.time.daily.strictacceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);
-		
 		editor.putLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.position.place.min_likelihood", 0.7f);
 		editor.putFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE);
@@ -104,3 +94,10 @@ public class AppShuttlePreferences {
 		editor.commit();
 	}
 }
+
+//editor.putLong("matcher.time.daily.strict.duration", 5 * AlarmManager.INTERVAL_DAY);
+//editor.putFloat("matcher.time.daily.strict.min_likelihood", 0.5f);
+//editor.putFloat("matcher.time.daily.strict.min_inverse_entropy", Float.MIN_VALUE);
+//editor.putInt("matcher.time.daily.strict.min_num_history", 3);
+//editor.putLong("matcher.time.daily.strict.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
+//editor.putLong("matcher.time.daily.strict.tolerance", pref.getLong("matcher.time.daily.strictacceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);

@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,8 +57,9 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 				matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
 				matcherCountUnitBuilder.setProperty("timeZone", durationUserBhv.getTimeZone());
 			} else {
+				long acceptanceDelay = 2 * conf.getTolerance();
 				if(durationUserBhv.getTimeDate().getTime() - prevDurationUserBhv.getEndTimeDate().getTime()
-						< conf.getAcceptanceDelay()){
+						< acceptanceDelay){
 					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
 				} else {
 					res.add(matcherCountUnitBuilder.build());
@@ -152,5 +154,16 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 
 		assert(1 <= score && score <=2);
 		return score;
+	}
+	
+	protected boolean isWeekDay(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int day = calendar.get(Calendar.DAY_OF_WEEK);
+		
+		if(day == Calendar.SATURDAY || day == Calendar.SUNDAY)
+			return false;
+		
+		return true;
 	}
 }

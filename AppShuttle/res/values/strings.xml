@@ -12,7 +12,8 @@
     <string name="predict_frequently_recent_msg">Frequency</string>
     <string name="predict_instantly_recent_msg">recent</string>
     <string name="predict_time_daily_msg">Time</string>
-    <string name="predict_time_daily_weekday_msg">Time, weekday</string>
+    <string name="predict_time_daily_weekday_msg">Time(weekday)</string>
+    <string name="predict_time_daily_weekend_msg">Time(weekend)</string>
     <string name="predict_place_msg">Place</string>
     <string name="predict_gps_msg">Location</string>
     <string name="predict_move_msg">Move</string>
