@@ -32,24 +32,4 @@ public class AppShuttleApplication extends Application {
 	public SharedPreferences getPreferences(){
 		return PreferenceManager.getDefaultSharedPreferences(this);
 	}
-
-//	public List<PredictedBhvInfo> getRecentPredictedBhvInfoList() {
-//		return _recentPredictedBhvInfoList;
-//	}
-//
-//	public void setRecentPredictedBhvInfoList(List<PredictedBhvInfo> recentPredictedBhvInfoList) {
-//		_recentPredictedBhvInfoList = recentPredictedBhvInfoList;
-//	}
-	
-//	public long getLaunchTime(){
-//		return _launchTime;
-//	}
-	
-//	public SnapshotUserCxt getCurrUserCxt() {
-//		return _currUserCxt;
-//	}
-//	public void setCurrUserCxt(SnapshotUserCxt currUserCxt) {
-//		_currUserCxt = currUserCxt;
-//	}
-	
 }

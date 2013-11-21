@@ -32,6 +32,5 @@ public class PredictionService extends IntentService {
 	public void onDestroy(){
 		super.onDestroy();
 		AppShuttleApplication.isPredictionServiceRunning = false;
-
 	}
 }

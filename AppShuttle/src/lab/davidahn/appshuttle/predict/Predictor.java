@@ -122,7 +122,7 @@ public class Predictor {
 		
 		locMatcherGroup.registerMatcher(new PlacePositionMatcher(
 			new PositionMatcherConf.Builder()
-				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 14 * AlarmManager.INTERVAL_DAY))
+				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY))
 				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
 				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
 				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
@@ -132,7 +132,7 @@ public class Predictor {
 		);
 		locMatcherGroup.registerMatcher(new MovePositionMatcher(
 				new PositionMatcherConf.Builder()
-					.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 14 * AlarmManager.INTERVAL_DAY))
+					.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY))
 					.setMinLikelihood(preferenceSettings.getFloat("matcher.position.move.min_likelihood", 0.3f))
 					.setMinInverseEntropy(Float.MIN_VALUE)
 					.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_history", 3))

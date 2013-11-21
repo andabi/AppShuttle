@@ -22,6 +22,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -39,14 +40,22 @@ public class AppShuttleMainActivity extends Activity {
 	BroadcastReceiver progressVisibleReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
     		ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
-			progress.setVisibility(View.VISIBLE);
+    		if(progress != null)
+    			progress.setVisibility(View.VISIBLE);
+    		ImageView refresh = (ImageView)findViewById(R.id.refresh);
+    		if(refresh != null)
+    			refresh.setVisibility(View.INVISIBLE);
         }
     };
     
 	BroadcastReceiver progressInvisibleReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
     		ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
-    		progress.setVisibility(View.INVISIBLE);
+    		if(progress != null)
+    			progress.setVisibility(View.INVISIBLE);
+    		ImageView refresh = (ImageView)findViewById(R.id.refresh);
+    		if(refresh != null)
+    			refresh.setVisibility(View.VISIBLE);
         }
     };
 
@@ -129,9 +138,16 @@ public class AppShuttleMainActivity extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.actionbarmenu, menu);
 		
+//		ImageView refresh = (ImageView)findViewById(R.id.refresh);
+//		refresh.setOnClickListener(new ImageView.OnClickListener(){
+//			public void onClick(View v) {
+//				Log.d("test","ref");
+//			}
+//		});
+	
 		return true;
 	}
-	
+		
 	public static class TabsAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
 		private final Context mContext;
@@ -216,4 +232,5 @@ public class AppShuttleMainActivity extends Activity {
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		}
 	}
+
 }
