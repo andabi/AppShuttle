@@ -33,32 +33,33 @@ public class MovePositionMatcher extends PositionMatcher {
 	}
 
 	@Override
-	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder mergedDurationUserBhvBuilder = null;
-		UserSpeed.Level lastKnownUserSpeedLevel = null;
+		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 		
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			UserSpeed.Level lastKnownUserSpeedLevel = null;
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
 					, durationUserBhv.getEndTimeDate(), EnvType.SPEED)){
 				UserSpeed.Level userSpeedLevel = ((UserSpeed)durationUserEnv.getUserEnv()).getLevel();
 				if(lastKnownUserSpeedLevel == null) {
-					mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					mergedDurationUserBhvBuilder.setProperty("speed_level", userSpeedLevel);
+					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					matcherCountUnitBuilder.setProperty("speed_level", userSpeedLevel);
 				} else {
 						if(!userSpeedLevel.equals(lastKnownUserSpeedLevel)){
-							res.add(mergedDurationUserBhvBuilder.build());
-							mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-							mergedDurationUserBhvBuilder.setProperty("speed_level", userSpeedLevel);
+							res.add(matcherCountUnitBuilder.build());
+							matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+							matcherCountUnitBuilder.setProperty("speed_level", userSpeedLevel);
 						}
 				}
 				lastKnownUserSpeedLevel = userSpeedLevel;
 			}
+
+			if(matcherCountUnitBuilder != null)
+				res.add(matcherCountUnitBuilder.build());
 		}
-		if(mergedDurationUserBhvBuilder != null)
-			res.add(mergedDurationUserBhvBuilder.build());
 		
 		return res;
 	}

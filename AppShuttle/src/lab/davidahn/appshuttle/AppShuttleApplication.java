@@ -15,7 +15,7 @@ public class AppShuttleApplication extends Application {
 	public static boolean isPredictionServiceRunning;
 	public static SnapshotUserCxt currUserCxt;
 	public static Map<UserBhv, PredictionInfo> recentPredictionInfoMap ;
-	public static int currNumFavoratesNotifiable;
+	public static int numFavoratesNotifiable;
 
 	public AppShuttleApplication(){}
 

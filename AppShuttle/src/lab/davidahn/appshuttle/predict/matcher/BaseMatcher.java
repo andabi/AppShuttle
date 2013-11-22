@@ -27,7 +27,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		if(!preConditionForCurrUserCxt(currUCxt))
 			return null;
 		
-		List<MatcherCountUnit> matcherCountUnitList = mergeHistoryByCountUnit(
+		List<MatcherCountUnit> matcherCountUnitList = makeMatcherCountUnit(
 				getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
 
 		if (matcherCountUnitList.isEmpty()) {
@@ -98,7 +98,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		return pureDurationUserBhvList;
 	}
 
-	protected abstract List<MatcherCountUnit> mergeHistoryByCountUnit(
+	protected abstract List<MatcherCountUnit> makeMatcherCountUnit(
 				List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt);
 
 	protected abstract double computeInverseEntropy(

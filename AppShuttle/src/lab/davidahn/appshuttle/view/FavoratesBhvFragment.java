@@ -207,7 +207,13 @@ public class FavoratesBhvFragment extends ListFragment {
 			boolean isSuccess = FavoratesUserBhv.trySetNotifiable(favoratesUserBhv);
 
 			if(isSuccess){
-				return getResources().getString(R.string.action_msg_favorates_notifiable);
+				String msg = getResources().getString(R.string.action_msg_favorates_notifiable);
+				if(FavoratesUserBhv.isFullProperNumFavorates()){
+					msg += " " 
+						+ FavoratesUserBhv.getProperNumFavorates() 
+						+ getResources().getString(R.string.action_msg_favorates_notifiable_num_proper);
+				}
+				return msg;
 			} else {
 				return getResources().getString(R.string.action_msg_favorates_notifiable_failure);
 			}

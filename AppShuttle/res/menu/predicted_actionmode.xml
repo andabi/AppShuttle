@@ -5,11 +5,11 @@
         android:id="@+id/favorate"
         android:icon="@drawable/ic_menu_star"
         android:showAsAction="always|withText"
-        android:title="@string/favorates"/>
+        android:title="@string/action_favorates"/>
     <item
         android:id="@+id/block"
         android:icon="@android:drawable/ic_menu_delete"
         android:showAsAction="always|withText"
-        android:title="@string/block"/>
+        android:title="@string/action_block"/>
 
 </menu>

@@ -45,7 +45,7 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		DurationUserBhv prevDurationUserBhv = null;

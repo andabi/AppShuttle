@@ -70,26 +70,26 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.time.daily.min_num_history", 3);
 		editor.putLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HOUR);
 
-		editor.putLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.position.place.min_likelihood", 0.7f);
-		editor.putFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE);
+		editor.putLong("matcher.position.place.duration", 3 * AlarmManager.INTERVAL_DAY);
+		editor.putFloat("matcher.position.place.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.3f);
 		editor.putInt("matcher.position.place.min_num_history", 3);
-		editor.putInt("matcher.position.place.tolerance_in_meter", 2000);
 
 		editor.putLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.position.move.min_likelihood", Float.MIN_VALUE);
+		editor.putFloat("matcher.position.move.min_likelihood", 0.5f);
 		editor.putInt("matcher.position.move.min_num_history", 3);
 		
-		editor.putLong("matcher.position.loc.duration", 7 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.position.loc.min_likelihood", 0.7f);
-		editor.putFloat("matcher.position.loc.min_inverse_entropy", Float.MIN_VALUE);
-		editor.putInt("matcher.position.loc.min_num_history", 3);
-		editor.putInt("matcher.position.loc.tolerance_in_meter", 100);
+//		editor.putLong("matcher.position.loc.duration", 7 * AlarmManager.INTERVAL_DAY);
+//		editor.putFloat("matcher.position.loc.min_likelihood", 0.7f);
+//		editor.putFloat("matcher.position.loc.min_inverse_entropy", Float.MIN_VALUE);
+//		editor.putInt("matcher.position.loc.min_num_history", 3);
+//		editor.putInt("matcher.position.loc.tolerance_in_meter", 100);
 
 		//view
 //		editor.putBoolean("noti.view.enabled", true);
 		editor.putInt("viewer.noti.max_num_ordinary", 8);
-		editor.putInt("viewer.noti.max_num_favorates", 4);
+		editor.putInt("viewer.noti.max_num_favorates", 8);
+		editor.putInt("viewer.noti.reasonable_num_favorates", 3);
 		
 		editor.commit();
 	}

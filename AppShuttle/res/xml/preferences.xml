@@ -2,8 +2,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
         android:key="noti.view.enabled"
-        android:title="@string/noti_view_enabled"
-        android:summary="@string/noti_view_enabled_summ"
+        android:title="@string/settings_noti_view_enabled"
+        android:summary="@string/settings_noti_view_enabled_summary"
         android:defaultValue="true" />
 <!--     <ListPreference
         android:dependency="pref_sync"

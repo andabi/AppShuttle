@@ -25,37 +25,70 @@ public class PlacePositionMatcher extends PositionMatcher {
 	public MatcherType getMatcherType(){
 		return MatcherType.PLACE;
 	}
-	
+
 	@Override
-	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder mergedDurationUserBhvBuilder = null;
-		UserPlace lastKnownUserPlace = null;
+		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 		
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			UserPlace lastKnownUserPlace = null;
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
 					, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
 				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
 				if(lastKnownUserPlace == null) {
-					mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					mergedDurationUserBhvBuilder.setProperty("place", userPlace);
+					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					matcherCountUnitBuilder.setProperty("place", userPlace);
 				} else {
-						if(!userPlace.equals(lastKnownUserPlace)){
-							res.add(mergedDurationUserBhvBuilder.build());
-							mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-							mergedDurationUserBhvBuilder.setProperty("place", userPlace);
-						}
+					if(!userPlace.equals(lastKnownUserPlace)){
+						res.add(matcherCountUnitBuilder.build());
+						matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+						matcherCountUnitBuilder.setProperty("place", userPlace);
+					}
 				}
 				lastKnownUserPlace = userPlace;
 			}
+			
+			if(matcherCountUnitBuilder != null)
+				res.add(matcherCountUnitBuilder.build());
 		}
-		if(mergedDurationUserBhvBuilder != null)
-			res.add(mergedDurationUserBhvBuilder.build());
 		
 		return res;
 	}
+
+	
+//	@Override
+//	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+//		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+//		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
+//
+//		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+//		UserPlace lastKnownUserPlace = null;
+//		
+//		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+//			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
+//					, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
+//				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
+//				if(lastKnownUserPlace == null) {
+//					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+//					matcherCountUnitBuilder.setProperty("place", userPlace);
+//				} else {
+//					if(!userPlace.equals(lastKnownUserPlace)){
+//						res.add(matcherCountUnitBuilder.build());
+//						matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+//						matcherCountUnitBuilder.setProperty("place", userPlace);
+//					}
+//				}
+//				lastKnownUserPlace = userPlace;
+//			}
+//		}
+//		if(matcherCountUnitBuilder != null)
+//			res.add(matcherCountUnitBuilder.build());
+//		
+//		return res;
+//	}
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {

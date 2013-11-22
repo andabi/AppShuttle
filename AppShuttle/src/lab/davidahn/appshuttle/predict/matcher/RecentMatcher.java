@@ -15,28 +15,28 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 	}
 	
 	@Override
-	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		DurationUserBhv prevDurationUserBhv = null;
-		MatcherCountUnit.Builder mergedDurationUserBhvBuilder = null;
+		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			if(prevDurationUserBhv == null){
-				mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+				matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 			} else {
 				if(durationUserBhv.getTimeDate().getTime() - prevDurationUserBhv.getEndTimeDate().getTime()
 						< conf.getAcceptanceDelay()){
 				} else {
-					res.add(mergedDurationUserBhvBuilder.build());
-					mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					res.add(matcherCountUnitBuilder.build());
+					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 				}
 			}
-			mergedDurationUserBhvBuilder.addRelatedDurationUserBhv(durationUserBhv);
+			matcherCountUnitBuilder.addRelatedDurationUserBhv(durationUserBhv);
 			prevDurationUserBhv = durationUserBhv;
 		}
 		
-		if(mergedDurationUserBhvBuilder != null)
-			res.add(mergedDurationUserBhvBuilder.build());
+		if(matcherCountUnitBuilder != null)
+			res.add(matcherCountUnitBuilder.build());
 		return res;
 	}
 

@@ -5,12 +5,12 @@
         android:id="@+id/unfavorates"
         android:icon="@drawable/ic_menu_emoticons"
         android:showAsAction="always|withText"
-        android:title="@string/unfavorates"/>
+        android:title="@string/action_unfavorates"/>
     
     <item
 	    android:id="@+id/favorates_notify"
 	    android:showAsAction="always|withText"
 	    android:icon="@drawable/ic_audio_alarm"
-	    android:title="@string/favorates_notify"/>
+	    android:title="@string/action_favorates_notify"/>
 
 </menu>

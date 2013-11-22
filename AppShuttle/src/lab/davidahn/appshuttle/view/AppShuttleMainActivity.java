@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ActionProvider;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -94,16 +96,22 @@ public class AppShuttleMainActivity extends Activity {
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle(); 
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_emoticons),
+		mTabsAdapter.addTab(bar.newTab()
+				.setText(" " + getResources().getString(R.string.actionbar_tab_text_ordinary))
+				.setIcon(R.drawable.ic_menu_emoticons),
 				OrdinaryBhvFragment.class, bundle);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_menu_star),
+		mTabsAdapter.addTab(bar.newTab()
+				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorates))
+				.setIcon(R.drawable.ic_menu_star),
 				FavoratesBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(android.R.drawable.ic_menu_delete),
+		mTabsAdapter.addTab(bar.newTab()
+				.setText(" " + getResources().getString(R.string.actionbar_tab_text_blocked))
+				.setIcon(android.R.drawable.ic_menu_delete),
 				BlockedBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
-				SettingsFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
-				InfoFragment.class, null);
+//		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
+//				SettingsFragment.class, null);
+//		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ic_sysbar_quicksettings),
+//				InfoFragment.class, null);
 
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
@@ -137,14 +145,7 @@ public class AppShuttleMainActivity extends Activity {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.actionbarmenu, menu);
-		
-//		ImageView refresh = (ImageView)findViewById(R.id.refresh);
-//		refresh.setOnClickListener(new ImageView.OnClickListener(){
-//			public void onClick(View v) {
-//				Log.d("test","ref");
-//			}
-//		});
-	
+
 		return true;
 	}
 		
@@ -232,5 +233,35 @@ public class AppShuttleMainActivity extends Activity {
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		}
 	}
-
+	
+	public static class AppShuttleActionProvider extends ActionProvider {
+		Context cxt;
+		
+		public AppShuttleActionProvider(Context _cxt) {
+			super(_cxt);
+			cxt = _cxt;
+		}
+		
+		public View onCreateActionView(){
+			LayoutInflater inflator = LayoutInflater.from(cxt);
+			View layout = inflator.inflate(R.layout.actionbarlayout, null);
+			
+			ImageView refresh = (ImageView)layout.findViewById(R.id.refresh);
+			refresh.setOnClickListener(new ImageView.OnClickListener(){
+				public void onClick(View v) {
+					cxt.sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
+				}
+			});
+			
+			ImageView preferences = (ImageView)layout.findViewById(R.id.preferences);
+			preferences.setOnClickListener(new ImageView.OnClickListener(){
+				public void onClick(View v) {
+					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
+				}
+			});
+			
+			
+			return layout;
+		}
+	}
 }

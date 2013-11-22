@@ -126,7 +126,7 @@ public class Predictor {
 				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
 				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
 				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
-				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.place.tolerance_in_meter", 2000))
+				.setToleranceInMeter(0)
 				.build()
 			)
 		);

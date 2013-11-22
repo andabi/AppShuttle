@@ -139,8 +139,13 @@ public class UserBhvManager {
 		_ordinaryBhvSet.remove(uBhv);
 
 		long currTime = System.currentTimeMillis();
-		FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, currTime, true);
-		favoratesUserBhv.trySetNotifiable();
+		
+		FavoratesUserBhv favoratesUserBhv;
+		favoratesUserBhv = new FavoratesUserBhv(uBhv, currTime, false);
+		
+		if(!FavoratesUserBhv.isFullProperNumFavorates())
+			favoratesUserBhv.trySetNotifiable();
+		
 		_userBhvDao.favorates(favoratesUserBhv);
 		_favoratesBhvSet.add(favoratesUserBhv);
 		

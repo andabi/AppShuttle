@@ -15,6 +15,7 @@ import lab.davidahn.appshuttle.predict.Predictor;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
+import android.content.SharedPreferences;
 
 
 public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<FavoratesUserBhv> {
@@ -49,9 +50,9 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 			return true;
 		
 		int notiMaxNumFavorates = AppShuttleApplication.getContext().getPreferences().getInt("viewer.noti.max_num_favorates", 3);
-		if(AppShuttleApplication.currNumFavoratesNotifiable < notiMaxNumFavorates) {
+		if(AppShuttleApplication.numFavoratesNotifiable < notiMaxNumFavorates) {
 			_isNotifiable = true;
-			AppShuttleApplication.currNumFavoratesNotifiable++;
+			AppShuttleApplication.numFavoratesNotifiable++;
 			return true;
 		} else {
 			return false;
@@ -63,7 +64,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 			return ;
 		
 		_isNotifiable = false;
-		AppShuttleApplication.currNumFavoratesNotifiable--;
+		AppShuttleApplication.numFavoratesNotifiable--;
 	}
 
 	@Override
@@ -127,5 +128,20 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 	public synchronized static void setUnNotifiable(FavoratesUserBhv favoratesUserBhv) {
 		favoratesUserBhv.setUnNotifiable();
 		UserBhvDao.getInstance().updateUnNotifiable(favoratesUserBhv);
+	}
+
+	public static boolean isFullProperNumFavorates() {
+		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
+		int properNumFavorates = preferences.getInt("viewer.noti.proper_num_favorates", 3);
+
+		if(AppShuttleApplication.numFavoratesNotifiable >= properNumFavorates)
+			return true;
+		
+		return false;
+	}
+
+	public static int getProperNumFavorates() {
+		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
+		return preferences.getInt("viewer.noti.proper_num_favorates", 3);
 	}
 }

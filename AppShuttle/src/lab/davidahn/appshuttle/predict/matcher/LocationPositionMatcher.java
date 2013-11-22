@@ -32,37 +32,39 @@ public class LocationPositionMatcher extends PositionMatcher {
 		return MatcherType.LOCATION;
 	}
 
-	//FIXME duration
 	@Override
-	protected List<MatcherCountUnit> mergeHistoryByCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder mergedDurationUserBhvBuilder = null;
-		UserLoc lastKnownUserLoc = null;
+		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			UserLoc lastKnownUserLoc = null;
+			long accumulativeDuration = 0;
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
 					, durationUserBhv.getEndTimeDate(), EnvType.LOCATION)){
 				UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 				long duration = durationUserEnv.getDuration();
 				if(lastKnownUserLoc == null) {
-					mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					mergedDurationUserBhvBuilder.setProperty("loc", userLoc);
-					mergedDurationUserBhvBuilder.setProperty("duration", duration);
+					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					matcherCountUnitBuilder.setProperty("location", userLoc);
+					matcherCountUnitBuilder.setProperty("duration", duration);
 				} else {
 					if(!userLoc.equals(lastKnownUserLoc)){
-						res.add(mergedDurationUserBhvBuilder.build());
-						mergedDurationUserBhvBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-						mergedDurationUserBhvBuilder.setProperty("loc", userLoc);
-						mergedDurationUserBhvBuilder.setProperty("duration", duration);
+						res.add(matcherCountUnitBuilder.build());
+						matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+						matcherCountUnitBuilder.setProperty("location", userLoc);
+						matcherCountUnitBuilder.setProperty("duration", accumulativeDuration );
 					}
 				}
+				accumulativeDuration += duration;
 				lastKnownUserLoc = userLoc;
 			}
+			
+			if(matcherCountUnitBuilder != null)
+				res.add(matcherCountUnitBuilder.build());
 		}
-		if(mergedDurationUserBhvBuilder != null)
-			res.add(mergedDurationUserBhvBuilder.build());
 		
 		return res;
 	}
@@ -75,7 +77,7 @@ public class LocationPositionMatcher extends PositionMatcher {
 		Set<UserLoc> uniqueLoc = new HashSet<UserLoc>();
 		
 		for(MatcherCountUnit unit : matcherCountUnitList){
-			UserLoc uLoc = ((UserLoc) unit.getProperty("loc"));
+			UserLoc uLoc = ((UserLoc) unit.getProperty("location"));
 			Iterator<UserLoc> it = uniqueLoc.iterator();
 			boolean unique = true;
 			if(!uniqueLoc.isEmpty()){
@@ -116,7 +118,7 @@ public class LocationPositionMatcher extends PositionMatcher {
 		long totalSpentTime = 0, validSpentTime = 0;
 		
 		for(MatcherCountUnit unit : relatedHistoryMap.keySet()){
-			UserLoc userLoc = ((UserLoc) unit.getProperty("loc"));
+			UserLoc userLoc = ((UserLoc) unit.getProperty("location"));
 			long duration = ((Long) unit.getProperty("duration"));
 			totalSpentTime += duration;
 			try{
