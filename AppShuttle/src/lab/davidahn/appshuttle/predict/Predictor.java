@@ -107,7 +107,7 @@ public class Predictor {
 			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekend.duration", 21 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekend.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekend.min_inverse_entropy", 0.2f))
-			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekend.min_num_history", 2))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekend.min_num_history", 3))
 			.build()
 		));
 	
