@@ -25,8 +25,8 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 				matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 			} else {
 				long time = durationUserBhv.getTimeDate().getTime();
-				long lastEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
-				if(time - lastEndTime >= conf.getAcceptanceDelay()){
+				long prevEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
+				if(time - prevEndTime >= conf.getAcceptanceDelay()){
 					res.add(matcherCountUnitBuilder.build());
 					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 				}
