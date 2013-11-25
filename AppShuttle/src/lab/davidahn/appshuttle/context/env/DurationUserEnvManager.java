@@ -29,23 +29,28 @@ public class DurationUserEnvManager {
 		
 		DurationUserEnv uEnv = durationUserEnvDao.retrieveContains(beginTimeDate, endTimeDate, envType);
 		if(uEnv != null){
-			res.add(uEnv);
+			addNewDurationUserEnv(res, uEnv);
+//			res.add(uEnv);
 		} else {
 			DurationUserEnv tempFirst = durationUserEnvDao.retrieveContains(beginTimeDate, envType);
 			if(tempFirst != null)
-				res.add(tempFirst);
+				addNewDurationUserEnv(res, tempFirst);
+//				res.add(tempFirst);
 			
 			List<DurationUserEnv> tempMiddles = durationUserEnvDao.retrieveBetween(beginTimeDate, endTimeDate, envType);
-			res.addAll(tempMiddles);
+			addAllNewDurationUserEnv(res, tempMiddles);
+//			res.addAll(tempMiddles);
 	
 			DurationUserEnv tempLast = durationUserEnvDao.retrieveContains(endTimeDate, envType);
 			if(tempLast != null){
 				if(res.isEmpty()) {
-					res.add(tempLast);
+					addNewDurationUserEnv(res, tempLast);
+//					res.add(tempLast);
 				} else {
 					DurationUserEnv last = res.get(res.size()-1);
 					if(!last.equals(tempLast))
-						res.add(tempLast);
+						addNewDurationUserEnv(res, tempLast);
+//						res.add(tempLast);
 				}
 			}
 			
@@ -61,6 +66,24 @@ public class DurationUserEnvManager {
 		last.setEndTime(endTimeDate);
 		
 		return res;
+	}
+	
+	private void addAllNewDurationUserEnv(List<DurationUserEnv> list, List<DurationUserEnv> durationUserEnvs) {
+		for(DurationUserEnv durationUserEnv : durationUserEnvs)
+			addNewDurationUserEnv(list, durationUserEnv);
+	}
+	
+	private void addNewDurationUserEnv(List<DurationUserEnv> list, DurationUserEnv durationUserEnv){
+		if(list.isEmpty())
+			list.add(durationUserEnv);
+		else {
+			DurationUserEnv last = list.get(list.size()-1);
+			if(last.getEndTime().getTime() == durationUserEnv.getTime().getTime() 
+					&& last.getUserEnv().equals(durationUserEnv.getUserEnv()))
+				last.setEndTime(durationUserEnv.getEndTime());
+			else
+				list.add(durationUserEnv);
+		}
 	}
 	
 	public void deleteAllBefore(Date timeDate){

@@ -13,6 +13,7 @@ import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 import lab.davidahn.appshuttle.utils.Time;
 
@@ -52,21 +53,14 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			if(prevDurationUserBhv == null){
-				matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-				matcherCountUnitBuilder.setProperty("time", durationUserBhv.getTimeDate());
-				matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
-				matcherCountUnitBuilder.setProperty("timeZone", durationUserBhv.getTimeZone());
+				matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv);
 			} else {
-				long acceptanceDelay = 2 * conf.getTolerance();
 				if(durationUserBhv.getTimeDate().getTime() - prevDurationUserBhv.getEndTimeDate().getTime()
-						< acceptanceDelay){
+						< conf.getAcceptanceDelay()){
 					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
 				} else {
 					res.add(matcherCountUnitBuilder.build());
-					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					matcherCountUnitBuilder.setProperty("time", durationUserBhv.getTimeDate());
-					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
-					matcherCountUnitBuilder.setProperty("timeZone", durationUserBhv.getTimeZone());
+					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv);
 				}
 			}
 			prevDurationUserBhv = durationUserBhv;
@@ -74,7 +68,15 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 		
 		if(matcherCountUnitBuilder != null)
 			res.add(matcherCountUnitBuilder.build());
+		
 		return res;
+	}
+	
+	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv) {
+		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
+		.setProperty("time", durationUserBhv.getTimeDate())
+		.setProperty("endTime", durationUserBhv.getEndTimeDate())
+		.setProperty("timeZone", durationUserBhv.getTimeZone());
 	}
 	
 	@Override

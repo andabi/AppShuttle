@@ -23,8 +23,9 @@ public class TimeMatcherConf extends BaseMatcherConf{
 	public static class Builder extends BaseMatcherConf.Builder<Builder> {
 		private long period = AlarmManager.INTERVAL_DAY;
 		private long tolerance = AlarmManager.INTERVAL_HOUR;
-
+		
 		public TimeMatcherConf build(){
+			acceptanceDelay = tolerance * 2;
 			return new TimeMatcherConf(this);
 		}
 		

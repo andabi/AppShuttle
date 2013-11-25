@@ -33,7 +33,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		if (matcherCountUnitList.isEmpty()) {
 			return null;
 		}
-
+		
 		double inverseEntropy = computeInverseEntropy(matcherCountUnitList);
 		if (inverseEntropy < conf.getMinInverseEntropy()) {
 			return null;
@@ -74,6 +74,28 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 
 		return matcherResult;
 	}
+	
+//	protected List<MatcherCountUnit> mergeMatcherCountUnit(List<MatcherCountUnit> matcherCountUnitList) {
+//		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+//
+//		MatcherCountUnit lastUnit = null;
+//		for(MatcherCountUnit unit : matcherCountUnitList){
+//			if(lastUnit == null){
+//				continue;
+//			}
+//			
+//			long time = unit.getDurationUserBhvList().get(0).getTimeDate().getTime();
+//			long lastTime = lastUnit.getDurationUserBhvList().get(0).getTimeDate().getTime();
+//			if(time - lastTime	>= conf.getAcceptanceDelay()){
+//				res.add(lastUnit);
+//			}
+//			
+//			lastUnit = unit;
+//		}
+//		res.add(lastUnit);
+//		
+//		return res;
+//	}
 	
 	protected boolean preConditionForCurrUserCxt(SnapshotUserCxt currUCxt) {
 		return true;

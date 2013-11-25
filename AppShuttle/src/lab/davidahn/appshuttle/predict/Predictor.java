@@ -54,19 +54,19 @@ public class Predictor {
 		recentMatcherGroup.registerMatcher(new FrequentlyRecentMatcher(
 				new RecentMatcherConf.Builder()
 					.setDuration(preferenceSettings.getLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY))
+					.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6))
 					.setMinLikelihood(0.0)
 					.setMinInverseEntropy(0.0)
 					.setMinNumHistory(preferenceSettings.getInt("matcher.recent.frequently.min_num_history", 3))
-					.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6))
 					.build()
 				));
 		recentMatcherGroup.registerMatcher(new InstantlyRecentMatcher(
 			new RecentMatcherConf.Builder()
 				.setDuration(preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3 * 2))
+				.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0))
 				.setMinLikelihood(0.0)
 				.setMinInverseEntropy(0.0)
 				.setMinNumHistory(preferenceSettings.getInt("matcher.recent.instantly.min_num_history", 1))
-				.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0))
 				.build()
 			));
 
@@ -123,6 +123,7 @@ public class Predictor {
 		locMatcherGroup.registerMatcher(new PlacePositionMatcher(
 			new PositionMatcherConf.Builder()
 				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY))
+				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
 				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
 				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
 				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
@@ -133,6 +134,7 @@ public class Predictor {
 		locMatcherGroup.registerMatcher(new MovePositionMatcher(
 				new PositionMatcherConf.Builder()
 					.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY))
+					.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
 					.setMinLikelihood(preferenceSettings.getFloat("matcher.position.move.min_likelihood", 0.3f))
 					.setMinInverseEntropy(Float.MIN_VALUE)
 					.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_history", 3))

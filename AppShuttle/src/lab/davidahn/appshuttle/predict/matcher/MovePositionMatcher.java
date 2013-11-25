@@ -10,6 +10,7 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserSpeed;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
 public class MovePositionMatcher extends PositionMatcher {
@@ -38,30 +39,43 @@ public class MovePositionMatcher extends PositionMatcher {
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
 		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
-		
+
+		DurationUserBhv prevDurationUserBhv = null;
+		UserSpeed.Level lastKnownUserSpeedLevel = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			UserSpeed.Level lastKnownUserSpeedLevel = null;
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
 					, durationUserBhv.getEndTimeDate(), EnvType.SPEED)){
 				UserSpeed.Level userSpeedLevel = ((UserSpeed)durationUserEnv.getUserEnv()).getLevel();
-				if(lastKnownUserSpeedLevel == null) {
-					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					matcherCountUnitBuilder.setProperty("speed_level", userSpeedLevel);
+				if(prevDurationUserBhv == null) {
+					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
 				} else {
-						if(!userSpeedLevel.equals(lastKnownUserSpeedLevel)){
+					if(!userSpeedLevel.equals(lastKnownUserSpeedLevel)){
+						res.add(matcherCountUnitBuilder.build());
+						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
+					} else {
+						long time = durationUserBhv.getTimeDate().getTime();
+						long lastEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
+						if(time - lastEndTime >= conf.getAcceptanceDelay()){
 							res.add(matcherCountUnitBuilder.build());
-							matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-							matcherCountUnitBuilder.setProperty("speed_level", userSpeedLevel);
+							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
 						}
+					}
 				}
+				
+				prevDurationUserBhv = durationUserBhv;
 				lastKnownUserSpeedLevel = userSpeedLevel;
 			}
-
-			if(matcherCountUnitBuilder != null)
-				res.add(matcherCountUnitBuilder.build());
 		}
+
+		if(matcherCountUnitBuilder != null)
+			res.add(matcherCountUnitBuilder.build());
 		
 		return res;
+	}
+
+	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv, UserSpeed.Level userSpeedLevel) {
+		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
+		.setProperty("speed_level", userSpeedLevel);
 	}
 	
 	@Override

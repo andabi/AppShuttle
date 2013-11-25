@@ -19,22 +19,36 @@ public class MatcherCountUnit {
 		properties = builder.properties;
 	}
 	
+//	public MatcherCountUnit(UserBhv uBhv){
+//		this.uBhv = uBhv;
+//		durationUserBhvList = new ArrayList<DurationUserBhv>();
+//		properties = new HashMap<String, Object>();
+//	}
+	
 	public UserBhv getUBhv() {
 		return uBhv;
 	}
+	
+	public Object getProperty(String key) {
+		return properties.get(key);
+	}
+	
+//	public void setProperty(String key, Object val) {
+//		properties.put(key, val);
+//	}
+	
+	public Map<String, Object> getProperties() {
+		return properties;
+	}
+	
+//	public void addRelatedDurationUserBhv(DurationUserBhv durationUserBhv) {
+//		durationUserBhvList.add(durationUserBhv);
+//	}
 
 	public List<DurationUserBhv> getDurationUserBhvList() {
 		return durationUserBhvList;
 	}
 
-	public Map<String, Object> getProperties() {
-		return properties;
-	}
-
-	public Object getProperty(String key) {
-		return properties.get(key);
-	}
-	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("bhv: ").append(uBhv).append(", ");
@@ -55,12 +69,14 @@ public class MatcherCountUnit {
 			return new MatcherCountUnit(this);
 		}
 		
-		public void setProperty(String key, Object val){
+		public Builder setProperty(String key, Object val){
 			properties.put(key, val);
+			return this;
 		}
 		
-		public void addRelatedDurationUserBhv(DurationUserBhv durationUserBhv){
+		public Builder addRelatedDurationUserBhv(DurationUserBhv durationUserBhv){
 			durationUserBhvList.add(durationUserBhv);
+			return this;
 		}	
 	}
 }

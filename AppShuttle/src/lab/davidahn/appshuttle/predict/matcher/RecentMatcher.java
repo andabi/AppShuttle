@@ -24,19 +24,19 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 			if(prevDurationUserBhv == null){
 				matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 			} else {
-				if(durationUserBhv.getTimeDate().getTime() - prevDurationUserBhv.getEndTimeDate().getTime()
-						< conf.getAcceptanceDelay()){
-				} else {
+				long time = durationUserBhv.getTimeDate().getTime();
+				long lastEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
+				if(time - lastEndTime >= conf.getAcceptanceDelay()){
 					res.add(matcherCountUnitBuilder.build());
 					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 				}
 			}
-			matcherCountUnitBuilder.addRelatedDurationUserBhv(durationUserBhv);
 			prevDurationUserBhv = durationUserBhv;
 		}
 		
 		if(matcherCountUnitBuilder != null)
 			res.add(matcherCountUnitBuilder.build());
+		
 		return res;
 	}
 

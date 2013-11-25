@@ -4,12 +4,14 @@ import android.app.AlarmManager;
 
 public class BaseMatcherConf {
 	protected final long duration;
+	protected final long acceptanceDelay;
 	protected final int minNumHistory;
 	protected final double minLikelihood;
 	protected final double minInverseEntropy;
 
 	protected <B extends Builder<B>> BaseMatcherConf(Builder<B> builder) {
 		duration = builder.duration;
+		acceptanceDelay = builder.acceptanceDelay;
 		minNumHistory = builder.minNumHistory;
 		minLikelihood = builder.minLikelihood;
 		minInverseEntropy = builder.minInverseEntropy;
@@ -19,6 +21,10 @@ public class BaseMatcherConf {
 		return duration;
 	}
 
+	public long getAcceptanceDelay(){
+		return acceptanceDelay;
+	}
+	
 	public int getMinNumHistory() {
 		return minNumHistory;
 	}
@@ -33,6 +39,7 @@ public class BaseMatcherConf {
 
 	public static abstract class Builder<B extends Builder<B>>{
 		protected long duration = 5 * AlarmManager.INTERVAL_DAY;
+		protected long acceptanceDelay = AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3;
 		protected int minNumHistory = 3;
 		protected double minLikelihood = 0;
 		protected double minInverseEntropy = 0;
@@ -43,6 +50,11 @@ public class BaseMatcherConf {
 	
 		public B setDuration(long duration) {
 			this.duration = duration;
+			return getThis();
+		}
+		
+		public B setAcceptanceDelay(long acceptanceDelay){
+			this.acceptanceDelay = acceptanceDelay;
 			return getThis();
 		}
 

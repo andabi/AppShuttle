@@ -13,6 +13,7 @@ import lab.davidahn.appshuttle.context.env.DurationUserEnv;
 import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserPlace;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
 public class PlacePositionMatcher extends PositionMatcher {
@@ -25,7 +26,7 @@ public class PlacePositionMatcher extends PositionMatcher {
 	public MatcherType getMatcherType(){
 		return MatcherType.PLACE;
 	}
-
+	
 	@Override
 	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
@@ -33,63 +34,43 @@ public class PlacePositionMatcher extends PositionMatcher {
 
 		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 		
+		DurationUserBhv prevDurationUserBhv = null;
+		UserPlace lastKnownUserPlace = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			UserPlace lastKnownUserPlace = null;
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
 					, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
 				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
-				if(lastKnownUserPlace == null) {
-					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					matcherCountUnitBuilder.setProperty("place", userPlace);
+				if(prevDurationUserBhv == null) {
+					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
 				} else {
 					if(!userPlace.equals(lastKnownUserPlace)){
 						res.add(matcherCountUnitBuilder.build());
-						matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-						matcherCountUnitBuilder.setProperty("place", userPlace);
+						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
+					} else {
+						long time = durationUserBhv.getTimeDate().getTime();
+						long lastEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
+						if(time - lastEndTime >= conf.getAcceptanceDelay()){
+							res.add(matcherCountUnitBuilder.build());
+							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
+						}
 					}
 				}
+				
+				prevDurationUserBhv = durationUserBhv;
 				lastKnownUserPlace = userPlace;
 			}
-			
-			if(matcherCountUnitBuilder != null)
-				res.add(matcherCountUnitBuilder.build());
 		}
+
+		if(matcherCountUnitBuilder != null)
+			res.add(matcherCountUnitBuilder.build());
 		
 		return res;
 	}
 
-	
-//	@Override
-//	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
-//		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-//		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
-//
-//		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
-//		UserPlace lastKnownUserPlace = null;
-//		
-//		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-//			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
-//					, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
-//				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
-//				if(lastKnownUserPlace == null) {
-//					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-//					matcherCountUnitBuilder.setProperty("place", userPlace);
-//				} else {
-//					if(!userPlace.equals(lastKnownUserPlace)){
-//						res.add(matcherCountUnitBuilder.build());
-//						matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-//						matcherCountUnitBuilder.setProperty("place", userPlace);
-//					}
-//				}
-//				lastKnownUserPlace = userPlace;
-//			}
-//		}
-//		if(matcherCountUnitBuilder != null)
-//			res.add(matcherCountUnitBuilder.build());
-//		
-//		return res;
-//	}
-	
+	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv, UserPlace userPlace) {
+		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv()).setProperty("place", userPlace);
+	}
+
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
 		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
@@ -144,3 +125,54 @@ public class PlacePositionMatcher extends PositionMatcher {
 		return relatedHistoryMap.size() / numTotalHistory;
 	}
 }
+
+//@Override
+//protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+//	List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+//	MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+//	
+//	for(DurationUserBhv durationUserBhv : durationUserBhvList){
+//		for(DurationUserEnv durationUserEnv : DurationUserEnvManager.getInstance().retrieve(durationUserBhv.getTimeDate()
+//				, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
+//			matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
+//				.addRelatedDurationUserBhv(durationUserBhv)
+//				.setProperty("place", (UserPlace)durationUserEnv.getUserEnv());
+//			res.add(matcherCountUnitBuilder.build());
+//		}
+//	}
+//	
+//	return res;
+//}
+
+//@Override
+//protected List<MatcherCountUnit> mergeMatcherCountUnit(List<MatcherCountUnit> matcherCountUnitList) {
+//	List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+//
+//	MatcherCountUnit lastUnit = null;
+//	for(MatcherCountUnit unit : matcherCountUnitList){
+//		if(lastUnit == null){
+//			lastUnit = unit;
+//			continue;
+//		}
+//		
+//		UserPlace userPlace = (UserPlace)unit.getProperty("place");
+//		UserPlace lastUserPlace = (UserPlace)lastUnit.getProperty("place");
+//		if(!userPlace.equals(lastUserPlace)){
+//			res.add(lastUnit);
+//			lastUnit = unit;
+//			continue;
+//		}
+//		
+//		long time = unit.getDurationUserBhvList().get(0).getTimeDate().getTime();
+//		long lastTime = lastUnit.getDurationUserBhvList().get(0).getTimeDate().getTime();
+//		if(time - lastTime	>= conf.getAcceptanceDelay()){
+//			res.add(lastUnit);
+//		}
+//		
+//		lastUnit = unit;
+//	}
+//	
+//	res.add(lastUnit);
+//	
+//	return res;
+//}
