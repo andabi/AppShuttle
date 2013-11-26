@@ -17,9 +17,9 @@
     <string name="predict_place_msg">현재 장소에서 주로 사용</string>
     <string name="predict_gps_msg">현재 위치에서 주로 사용</string>
     <string name="predict_move_msg">이동 중에 사용</string>
-    <string name="actionbar_tab_text_ordinary">셔틀된 앱</string>
-    <string name="actionbar_tab_text_favorates">고정된 앱</string>
-    <string name="actionbar_tab_text_blocked">차단된 앱</string>
+    <string name="actionbar_tab_text_ordinary">셔틀</string>
+    <string name="actionbar_tab_text_favorates">고정</string>
+    <string name="actionbar_tab_text_blocked">차단</string>
     <string name="action_favorates">앱 고정</string>
     <string name="action_unfavorates">앱 고정 풀기</string>
     <string name="action_block">앱 차단</string>
@@ -41,8 +41,8 @@
     <string name="settings_category_info">정보</string>    
     <string name="settings_noti_view_enabled">알림창에 표시</string>
     <string name="settings_noti_view_enabled_summary">앱을 알림창에 표시합니다.</string>
-    <string name="settings_info_feedback">사용자 의견 보내기</string>    
+    <string name="settings_info_feedback">건의사항 보내기</string>
     <string name="settings_info_feedback_summary">오류를 알리거나 새로운 기능을 요청합니다.</string>    
-    <string name="settings_info_shared">친구에게 앱셔틀 공유하기 </string>
+    <string name="settings_info_shared">친구에게 앱셔틀 알려주기 </string>
     <string name="settings_info_shared_message">지금 이 순간 필요한 앱을 셔틀해드립니다! AppShuttle! 바로 다운로드 https://db.tt/WIwHzcgz</string>
 </resources>

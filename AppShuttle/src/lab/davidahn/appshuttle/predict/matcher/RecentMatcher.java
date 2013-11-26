@@ -31,6 +31,7 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
 				}
 			}
+			matcherCountUnitBuilder.addRelatedDurationUserBhv(durationUserBhv);
 			prevDurationUserBhv = durationUserBhv;
 		}
 		
