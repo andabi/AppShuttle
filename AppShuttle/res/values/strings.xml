@@ -46,5 +46,5 @@
     <string name="settings_info_feedback_success_msg">Feedback was sent successfully</string>
     <string name="settings_info_feedback_failure_msg">Feedback was not sent. Try again.</string>
     <string name="settings_info_shared">Share App Shuttle!</string>
-    <string name="settings_info_shared_message">Shuttle Apps which you need, App Shuttle! Download: https://db.tt/WIwHzcgz</string>
+    <string name="settings_info_shared_msg">Shuttle Apps which you need, App Shuttle! Download: https://db.tt/WIwHzcgz</string>
 </resources>

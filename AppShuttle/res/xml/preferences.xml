@@ -23,7 +23,7 @@
                 android:mimeType="text/plain" >
                 <extra
                     android:name="android.intent.extra.TEXT"
-                    android:value="@string/settings_info_shared_message" />
+                    android:value="@string/settings_info_shared_msg" />
             </intent>
         </Preference>
     </PreferenceCategory>
