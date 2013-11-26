@@ -79,9 +79,9 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.position.move.min_num_history", 3);
 
 		//view
-		editor.putInt("viewer.noti.max_num_ordinary", 8);
+		editor.putInt("viewer.noti.max_num", 12);
 		editor.putInt("viewer.noti.max_num_favorates", 8);
-		editor.putInt("viewer.noti.reasonable_num_favorates", 3);
+		editor.putInt("viewer.noti.proper_num_favorates", 3);
 		
 		editor.commit();
 	}

@@ -73,7 +73,7 @@ public class NotiBarNotifier {
 			.setContent(notiView)
 			.setOngoing(true)
 			.setWhen(AppShuttleApplication.launchTime)
-			.setPriority(Notification.PRIORITY_HIGH)
+			.setPriority(Notification.PRIORITY_MAX)
 			.build();
 		notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
 	}
@@ -116,7 +116,7 @@ public class NotiBarNotifier {
 	}
 	
 	public int getNumElem() {
-		int maxNumElem = cxt.getPreferences().getInt("viewer.noti.max_num_ordinary", 8);
+		int maxNumElem = cxt.getPreferences().getInt("viewer.noti.max_num", 12);
 		int NotibarIconAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_icon_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
 		int NotibarBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_bhv_area_width) / 
