@@ -34,7 +34,7 @@
     <string name="action_favorates_notify">notify</string>
     <string name="action_favorates_unnotify">not notify</string>
     <string name="action_msg_favorates_notifiable">making notifiable</string>
-    <string name="action_msg_favorates_notifiable_num_proper">is the proper number</string>
+    <string name="action_msg_favorates_notifiable_num_proper">is usually the proper number</string>
     <string name="action_msg_favorates_unnotifiable">making not notifiable</string>
     <string name="action_msg_favorates_notifiable_failure">limited</string>
     <string name="settings_category_setting">Setting</string>  
