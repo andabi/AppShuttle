@@ -40,7 +40,7 @@ public class NotiBarNotifier {
 	
 	public void notification() {
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		if(pref.getBoolean("noti.view.enabled", true))
+		if(pref.getBoolean("settings_pref_noti_view_enabled_key", true))
 			updateNotibar();
 		else
 			hideNotibar();

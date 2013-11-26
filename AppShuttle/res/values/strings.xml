@@ -34,15 +34,17 @@
     <string name="action_favorates_notify">notify</string>
     <string name="action_favorates_unnotify">not notify</string>
     <string name="action_msg_favorates_notifiable">making notifiable</string>
-    <string name="action_msg_favorates_notifiable_num_proper">is the proper number</string>
+    <string name="action_msg_favorates_notifiable_num_proper">is usually the proper number</string>
     <string name="action_msg_favorates_unnotifiable">making not notifiable</string>
     <string name="action_msg_favorates_notifiable_failure">limited</string>
     <string name="settings_category_setting">Setting</string>  
     <string name="settings_category_info">Information</string>    
-    <string name="settings_noti_view_enabled">Visible on notification bar</string>
-    <string name="settings_noti_view_enabled_summary">make the apps visible on notification bar</string>
+    <string name="settings_pref_noti_view_enabled">Visible on notification bar</string>
+    <string name="settings_pref_noti_view_enabled_summary">make the apps visible on notification bar</string>
 	<string name="settings_info_feedback">Send user feedback</string>    
     <string name="settings_info_feedback_summary">You can ask the error or suggest new functions to developers.</string>    
+    <string name="settings_info_feedback_success_msg">Feedback was sent successfully</string>
+    <string name="settings_info_feedback_failure_msg">Feedback was not sent. Try again.</string>
     <string name="settings_info_shared">Share App Shuttle!</string>
-    <string name="settings_info_shared_message">Shuttle Apps which you need, App Shuttle! Download: https://db.tt/WIwHzcgz</string>
+    <string name="settings_info_shared_msg">Shuttle Apps which you need, App Shuttle! Download: https://db.tt/WIwHzcgz</string>
 </resources>
