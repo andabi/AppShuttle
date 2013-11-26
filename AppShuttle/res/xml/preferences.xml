@@ -4,16 +4,20 @@
     <PreferenceCategory android:title="@string/settings_category_setting" >
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="noti.view.enabled"
-            android:summary="@string/settings_noti_view_enabled_summary"
-            android:title="@string/settings_noti_view_enabled" />
+            android:key="settings_pref_noti_view_enabled_key"
+            android:summary="@string/settings_pref_noti_view_enabled_summary"
+            android:title="@string/settings_pref_noti_view_enabled" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_category_info" >
-        <Preference
-            android:defaultValue="true"
+        <EditTextPreference
+            android:defaultValue="enter"
             android:dialogTitle="@string/settings_info_feedback"
+            android:key="settings_info_feedback_key"
             android:summary="@string/settings_info_feedback_summary"
             android:title="@string/settings_info_feedback" >
+        </EditTextPreference>
+
+        <Preference android:title="@string/settings_info_shared" >
             <intent
                 android:action="android.intent.action.SEND"
                 android:mimeType="text/plain" >
@@ -22,30 +26,6 @@
                     android:value="@string/settings_info_shared_message" />
             </intent>
         </Preference>
-
-        <Preference
-            android:defaultValue="true"
-            android:title="@string/settings_info_shared" >
-            <intent
-                android:action="android.intent.action.SEND"
-                android:mimeType="text/plain" >
-                <extra
-                    android:name="android.intent.extra.TEXT"
-                    android:value="@string/settings_info_shared_message" />
-            </intent>
-        </Preference>
-
-        <!--
-         <ListPreference
-        android:dependency="pref_sync"
-        android:key="pref_syncConnectionType"
-        android:title="@string/pref_syncConnectionType"
-        android:dialogTitle="@string/pref_syncConnectionType"
-        android:entries="@array/pref_syncConnectionTypes_entries"
-        android:entryValues="@array/pref_syncConnectionTypes_values"
-        android:defaultValue="@string/pref_syncConnectionTypes_default" />
-        -->
-
     </PreferenceCategory>
 
 </PreferenceScreen>

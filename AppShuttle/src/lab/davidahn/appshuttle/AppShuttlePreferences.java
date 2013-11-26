@@ -10,16 +10,14 @@ public class AppShuttlePreferences {
 		SharedPreferences.Editor editor = pref.edit();
 		
 		//general
-//		editor.putString("database.name", new StringBuilder(AppShuttleApplication.getContext().getResources().getString(R.string.app_name)).append(".db").toString());
-		editor.putBoolean("mode.debug", true);
-		
+		editor.putBoolean("mode.debug", false);
 		editor.putString("database.name", "AppShuttle.db");
 
 		//service
 		editor.putBoolean("service.collection.enabled", true);
 		editor.putLong("service.collection.period", 30000);
 		
-		editor.putBoolean("service.report.enabled", true);
+		editor.putBoolean("service.report.enabled", false);
 		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
 		
 		editor.putBoolean("service.compaction.enabled", true);
@@ -46,13 +44,12 @@ public class AppShuttlePreferences {
 //		editor.putInt("context.bhv.duration_user_bhv.cache_size", 100);
 		
 		//report
-		editor.putString("email.sender.addr", "davidahn412@gmail.com");
-		editor.putString("email.sender.pwd", "rnrmfepdl");
-		
+		editor.putString("email.sender.addr", "appshuttle2@gmail.com");
+		editor.putString("email.sender.pwd", "appshuttle2@");
 		editor.putString("email.receiver.addr", "andabi412@gmail.com");
 		
 		//matcher
-		editor.putBoolean("predictor.store", true);
+		editor.putBoolean("predictor.store", false);
 		
 //		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		
@@ -80,15 +77,8 @@ public class AppShuttlePreferences {
 		editor.putLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 		editor.putFloat("matcher.position.move.min_likelihood", 0.5f);
 		editor.putInt("matcher.position.move.min_num_history", 3);
-		
-//		editor.putLong("matcher.position.loc.duration", 7 * AlarmManager.INTERVAL_DAY);
-//		editor.putFloat("matcher.position.loc.min_likelihood", 0.7f);
-//		editor.putFloat("matcher.position.loc.min_inverse_entropy", Float.MIN_VALUE);
-//		editor.putInt("matcher.position.loc.min_num_history", 3);
-//		editor.putInt("matcher.position.loc.tolerance_in_meter", 100);
 
 		//view
-//		editor.putBoolean("noti.view.enabled", true);
 		editor.putInt("viewer.noti.max_num_ordinary", 8);
 		editor.putInt("viewer.noti.max_num_favorates", 8);
 		editor.putInt("viewer.noti.reasonable_num_favorates", 3);
@@ -96,6 +86,12 @@ public class AppShuttlePreferences {
 		editor.commit();
 	}
 }
+
+//		editor.putLong("matcher.position.loc.duration", 7 * AlarmManager.INTERVAL_DAY);
+//		editor.putFloat("matcher.position.loc.min_likelihood", 0.7f);
+//		editor.putFloat("matcher.position.loc.min_inverse_entropy", Float.MIN_VALUE);
+//		editor.putInt("matcher.position.loc.min_num_history", 3);
+//		editor.putInt("matcher.position.loc.tolerance_in_meter", 100);
 
 //editor.putLong("matcher.time.daily.strict.duration", 5 * AlarmManager.INTERVAL_DAY);
 //editor.putFloat("matcher.time.daily.strict.min_likelihood", 0.5f);
