@@ -69,6 +69,11 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 
 	@Override
 	public int compareTo(FavoratesUserBhv uBhv) {
+		if(!isNotifiable() && uBhv.isNotifiable())
+			return 1;
+		else if(isNotifiable() && !uBhv.isNotifiable())
+			return -1;
+			
 		if(_setTime > uBhv._setTime)
 			return 1;
 		else if(_setTime == uBhv._setTime)

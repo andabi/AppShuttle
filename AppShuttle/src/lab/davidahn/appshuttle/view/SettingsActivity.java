@@ -4,6 +4,7 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.Reporter;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -54,7 +55,9 @@ public class SettingsActivity extends PreferenceActivity {
 				NotiBarNotifier.getInstance().notification();
 			} else if(key.equals("settings_info_feedback_key")){
 				String contents = sharedPreferences.getString(key, "");
-				doFeedback(contents);
+				if(!contents.equals(""))
+					doFeedback(contents);
+				sharedPreferences.edit().putString(key, "").commit();
 			}
 		}
 
@@ -87,15 +90,16 @@ public class SettingsActivity extends PreferenceActivity {
 		@SuppressLint("HandlerLeak")
 		Handler handler = new Handler() {
 			public void handleMessage(Message msg){
-				String successMsg = getResources().getString(R.string.settings_info_feedback_success_msg);
-				String failureMsg = getResources().getString(R.string.settings_info_feedback_failure_msg);
+				Context cxt = AppShuttleApplication.getContext();
+				String successMsg = cxt.getResources().getString(R.string.settings_info_feedback_success_msg);
+				String failureMsg = cxt.getResources().getString(R.string.settings_info_feedback_failure_msg);
 
 				if (msg.what == 1) {
 					Log.i("feedback", successMsg);
-					Toast.makeText(getActivity(), successMsg, Toast.LENGTH_SHORT).show();
+					Toast.makeText(cxt, successMsg, Toast.LENGTH_SHORT).show();
 				} else {
 					Log.d("feedback", failureMsg);
-					Toast.makeText(getActivity(), failureMsg, Toast.LENGTH_SHORT).show();
+					Toast.makeText(cxt, failureMsg, Toast.LENGTH_SHORT).show();
 				}
 			}
 		};
