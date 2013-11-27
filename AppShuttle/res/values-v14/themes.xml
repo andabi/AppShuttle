@@ -8,17 +8,24 @@
     </style>
     -->
 
-    <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
-         <item name="android:actionBarStyle">@style/MyActionBar</item>
+    <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-<!--          <item name="android:background">@color/Indigo</item> -->
-<!--    		<item name="android:actionBarTabStyle">@style/MyActionBarTabs</item> -->
-	</style>
-<!-- 
-    <style name="MyActionBarTabs" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
+        <item name="android:icon">@drawable/appshuttle_pure</item>
         <item name="android:background">@color/Indigo</item>
-	</style> -->
+<!--         <item name="android:displayOptions">useLogo|showHome|showTitle</item>
+        <item name="android:actionBarTabStyle">@style/MyActionBarTab</item>
+        <item name="android:actionBarTabBarStyle">@style/MyActionBarTabBar</item>
+ -->    </style>
 
+    <style name="MyActionBarTab" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
+        <item name="android:background">@color/White</item>
+    </style>
+    
+    <style name="MyActionBarTabBar" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar">
+        <item name="android:background">@color/Indigo</item>
+    </style>
+    
 </resources>

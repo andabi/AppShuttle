@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="White">#ffffffff</color>
     <color name="Indigo">#ff4b0082</color>
     <color name="Semi_indigo">#804b0082</color>
 </resources>
