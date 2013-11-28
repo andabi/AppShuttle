@@ -8,7 +8,7 @@
     </style>
     -->
 
-    <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light">
+    <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
