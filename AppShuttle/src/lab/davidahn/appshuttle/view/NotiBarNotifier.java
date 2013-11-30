@@ -7,7 +7,6 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -64,18 +64,28 @@ public class NotiBarNotifier {
 		notificationManager.cancel(UPDATE_NOTI_VIEW);
 	}
 	
-	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
 	private <T extends UserBhv & Viewable> void updateNotiView(List<T> viewableUserBhv) {
+		Notification noti;
 		RemoteViews notiView = createNotiRemoteViews(viewableUserBhv);
-
-		Notification notiUpdate = new Notification.Builder(cxt)
+		final int sdkVersion = android.os.Build.VERSION.SDK_INT;
+		if(sdkVersion < Build.VERSION_CODES.JELLY_BEAN) {
+			noti = new Notification.Builder(cxt)
 			.setSmallIcon(R.drawable.appshuttle)
 			.setContent(notiView)
 			.setOngoing(true)
 			.setWhen(AppShuttleApplication.launchTime)
-			.setPriority(Notification.PRIORITY_MAX)
-			.build();
-		notificationManager.notify(UPDATE_NOTI_VIEW, notiUpdate);
+			.getNotification();
+		} else {
+			noti = new Notification.Builder(cxt)
+				.setSmallIcon(R.drawable.appshuttle)
+				.setContent(notiView)
+				.setOngoing(true)
+				.setWhen(AppShuttleApplication.launchTime)
+				.setPriority(Notification.PRIORITY_MAX)
+				.build();
+		}
+		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
 	}
 
 	private <T extends UserBhv & Viewable> RemoteViews createNotiRemoteViews(List<T> viewableUserBhvList) {

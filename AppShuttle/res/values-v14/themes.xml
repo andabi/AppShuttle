@@ -14,8 +14,8 @@
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:icon">@drawable/appshuttle_pure</item>
-        <item name="android:background">@color/Indigo</item>
-<!--         <item name="android:displayOptions">useLogo|showHome|showTitle</item>
+<!--        <item name="android:background">@color/Indigo</item>
+         <item name="android:displayOptions">useLogo|showHome|showTitle</item>
         <item name="android:actionBarTabStyle">@style/MyActionBarTab</item>
         <item name="android:actionBarTabBarStyle">@style/MyActionBarTabBar</item>
  -->    </style>
