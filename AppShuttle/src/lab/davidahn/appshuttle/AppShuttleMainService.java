@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.util.Log;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
@@ -82,7 +81,7 @@ public class AppShuttleMainService extends Service {
 	}
 	
 	private void doPrediction() {
-		Log.d("test","prediction");
+//		Log.d("test","prediction");
 		startService(new Intent(this, PredictionService.class));
 		AppShuttleApplication.lastPredictionTime = System.currentTimeMillis();
 	}
