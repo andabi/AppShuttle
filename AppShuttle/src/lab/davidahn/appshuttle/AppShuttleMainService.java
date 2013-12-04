@@ -7,6 +7,7 @@ import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.predict.PredictionService;
 import lab.davidahn.appshuttle.report.ReportService;
+import lab.davidahn.appshuttle.view.NotiBarNotifier;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,7 +18,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.util.Log;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
@@ -45,6 +45,10 @@ public class AppShuttleMainService extends Service {
 		filter.addAction("lab.davidahn.appshuttle.PREDICT");
 		registerReceiver(predictReceiver, filter);
 
+		filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+		registerReceiver(screenOrientationReceiver, filter);
+		
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		
 		if(preferenceSettings.getBoolean("collection.enabled", true)){
@@ -88,7 +92,6 @@ public class AppShuttleMainService extends Service {
 		
 		startService(new Intent(this, PredictionService.class));
 		AppShuttleApplication.lastPredictionTime = currTimeMillis;
-		Log.d("test","predict");
 	}
 
 	private void activatePeriodicPrediction() {
@@ -127,6 +130,7 @@ public class AppShuttleMainService extends Service {
 		unregisterReceiver(screenOnReceiver);
 		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(predictReceiver);
+		unregisterReceiver(screenOrientationReceiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleMainService.this, CompactionService.class));
@@ -155,6 +159,14 @@ public class AppShuttleMainService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			doPrediction();
+		}
+	};
+	
+	BroadcastReceiver screenOrientationReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			NotiBarNotifier.getInstance().doNotification();
+//			if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 		}
 	};
 }

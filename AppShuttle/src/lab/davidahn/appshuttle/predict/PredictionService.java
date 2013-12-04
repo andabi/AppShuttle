@@ -23,7 +23,7 @@ public class PredictionService extends IntentService {
 	public void onHandleIntent(Intent intent) {
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE"));
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
-		NotiBarNotifier.getInstance().notification();
+		NotiBarNotifier.getInstance().doNotification();
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE"));
 	}
