@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="lab.davidahn.appshuttle"
-    android:versionCode="5"
-    android:versionName="0.9.3" >
+    android:versionCode="6"
+    android:versionName="0.9.4" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -33,14 +33,13 @@
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="lab.davidahn.appshuttle.view.SettingsActivity" >
-            
+        <activity android:name="lab.davidahn.appshuttle.view.SettingsActivity" >
         </activity>
-        
+
         <service android:name="lab.davidahn.appshuttle.AppShuttleMainService" />
         <service android:name="lab.davidahn.appshuttle.collect.CollectionService" />
         <service android:name="lab.davidahn.appshuttle.collect.CompactionService" />
@@ -56,9 +55,8 @@
         <receiver android:name="lab.davidahn.appshuttle.PackageRemovedReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <data android:scheme="package"/>
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
     </application>
-
 </manifest>

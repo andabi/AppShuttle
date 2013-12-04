@@ -38,7 +38,7 @@ public class NotiBarNotifier {
 		return notifier;
 	}
 	
-	public void notification() {
+	public void doNotification() {
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
 		if(pref.getBoolean("settings_pref_noti_view_enabled_key", true))
 			updateNotibar();

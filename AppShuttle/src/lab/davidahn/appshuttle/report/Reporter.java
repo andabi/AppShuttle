@@ -18,8 +18,8 @@ public class Reporter {
 
 	public Reporter(String[] receivers, String subject, String body){
 		SharedPreferences preference = AppShuttleApplication.getContext().getPreferences();
-		senderAddr = preference.getString("email.sender.addr", "appshuttle2@gmail.com");
-		senderPwd = preference.getString("email.sender.pwd", "appshuttle2@");
+		senderAddr = preference.getString("report.email.sender_addr", "appshuttle2@gmail.com");
+		senderPwd = preference.getString("report.email.sender_pwd", "appshuttle2@");
 		this.receivers = receivers;
 		this.subject = subject;
 		this.body = body;

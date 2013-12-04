@@ -13,20 +13,10 @@ public class AppShuttlePreferences {
 		editor.putBoolean("mode.debug", false);
 		editor.putString("database.name", "AppShuttle.db");
 
-		//service
-		editor.putBoolean("service.collection.enabled", true);
-		editor.putLong("service.collection.period", 30000);
-		
-		editor.putBoolean("service.report.enabled", false);
-		editor.putLong("service.report.period", AlarmManager.INTERVAL_DAY);
-		
-		editor.putBoolean("service.compaction.enabled", true);
-		editor.putLong("service.compaction.period", AlarmManager.INTERVAL_DAY);
-		editor.putLong("service.compaction.expiration", 35 * AlarmManager.INTERVAL_DAY);
-
-		editor.putLong("service.predict.period", 180000);
-
 		//collection
+		editor.putBoolean("collection.enabled", true);
+		editor.putLong("collection.period", 30000);
+		
 		editor.putLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
 		
 		editor.putLong("collection.location.tolerance.time", 300000);
@@ -38,18 +28,28 @@ public class AppShuttlePreferences {
 		
 		editor.putBoolean("collection.store_snapshot_cxt.enabled", false);
 		
+		//compaction
+		editor.putBoolean("compaction.enabled", true);
+		editor.putLong("compaction.period", AlarmManager.INTERVAL_DAY);
+		editor.putLong("compaction.expiration", 35 * AlarmManager.INTERVAL_DAY);
+		
 		//TODO history enable setting
 		
 		//context
 //		editor.putInt("context.bhv.duration_user_bhv.cache_size", 100);
 		
 		//report
-		editor.putString("email.sender.addr", "appshuttle2@gmail.com");
-		editor.putString("email.sender.pwd", "appshuttle2@");
-		editor.putString("email.receiver.addr", "andabi412@gmail.com");
+		editor.putBoolean("report.enabled", false);
+		editor.putLong("report.period", AlarmManager.INTERVAL_DAY);
 		
-		//matcher
+		editor.putString("report.email.sender_addr", "appshuttle2@gmail.com");
+		editor.putString("report.email.sender_pwd", "appshuttle2@");
+		editor.putString("report.email.receiver_addr", "andabi412@gmail.com");
+		
+		//predictor
 		editor.putBoolean("predictor.store", false);
+		editor.putLong("predictor.period", 300000);
+		editor.putLong("predictor.ignored_delay", 180000);
 		
 //		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		

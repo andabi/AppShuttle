@@ -12,7 +12,8 @@ import android.preference.PreferenceManager;
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
 	public static long launchTime;
-	public static boolean isPredictionServiceRunning;
+//	public static boolean isPredictionServiceRunning;
+	public static long lastPredictionTime;
 	public static SnapshotUserCxt currUserCxt;
 	public static Map<UserBhv, PredictionInfo> recentPredictionInfoMap;
 	public static int numFavoratesNotifiable;
@@ -22,7 +23,7 @@ public class AppShuttleApplication extends Application {
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();
-		isPredictionServiceRunning = false;
+//		isPredictionServiceRunning = false;
 	}
 	
 	public static AppShuttleApplication getContext(){

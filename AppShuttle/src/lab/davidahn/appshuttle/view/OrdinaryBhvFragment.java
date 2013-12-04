@@ -165,7 +165,7 @@ public class OrdinaryBhvFragment extends ListFragment {
 	}
 
 	private void doPostAction() {
-		NotiBarNotifier.getInstance().notification();
+		NotiBarNotifier.getInstance().doNotification();
 		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
 	}
 	

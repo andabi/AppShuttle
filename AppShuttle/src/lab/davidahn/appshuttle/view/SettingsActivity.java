@@ -52,7 +52,7 @@ public class SettingsActivity extends PreferenceActivity {
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
 			if (key.equals("settings_pref_noti_view_enabled_key")) {
-				NotiBarNotifier.getInstance().notification();
+				NotiBarNotifier.getInstance().doNotification();
 			} else if(key.equals("settings_info_feedback_key")){
 				String contents = sharedPreferences.getString(key, "");
 				if(!contents.equals(""))
@@ -69,7 +69,7 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 
 		private void doFeedback(final String contents) {
-			final String[] receivers = {AppShuttleApplication.getContext().getPreferences().getString("email.receiver.addr", "appshuttle2@gmail.com")};
+			final String[] receivers = {AppShuttleApplication.getContext().getPreferences().getString("report.email.receiver_addr", "appshuttle2@gmail.com")};
 			final String subject = "[appshuttle feedback]";
 
 			Thread thread = new Thread(new Runnable(){
