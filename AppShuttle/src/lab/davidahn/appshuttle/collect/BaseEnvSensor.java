@@ -46,7 +46,7 @@ public abstract class BaseEnvSensor implements EnvSensor {
 
 	public boolean isAutoExtractionTime(Date currTimeDate, TimeZone currTimeZone){
 		long autoStoreMaxDuration = preferenceSettings.getLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
-		long collectionPeriod = preferenceSettings.getLong("service.collection.period", 30000);
+		long collectionPeriod = preferenceSettings.getLong("collection.period", 30000);
 		
 		if(currTimeDate.getTime() % autoStoreMaxDuration < collectionPeriod)
 			return true;

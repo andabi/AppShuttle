@@ -47,7 +47,7 @@ public class ReportService extends IntentService {
 	
 	public boolean reportUserData() throws Exception {
 
-		String[] receivers = {preferenceSettings.getString("email.receiver.addr", "appshuttle2@gmail.com")};
+		String[] receivers = {preferenceSettings.getString("report.email.receiver_addr", "appshuttle2@gmail.com")};
 		
 		String subject = "[appshuttle user data] ";
 		Account[] account = AccountManager.get(this).getAccounts();

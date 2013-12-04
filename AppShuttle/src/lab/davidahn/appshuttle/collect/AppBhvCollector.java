@@ -83,7 +83,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 	@Override
 	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<BaseUserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		long adjustment = _preferenceSettings.getLong("service.collection.period", 10000) / 2;
+		long adjustment = _preferenceSettings.getLong("collection.period", 10000) / 2;
 
 		if(_durationUserBhvBuilderMap.isEmpty()) {
 			for(BaseUserBhv uBhv : userBhvList){
@@ -107,7 +107,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 			for(BaseUserBhv uBhv : new HashSet<BaseUserBhv>((_durationUserBhvBuilderMap.keySet()))){
 				DurationUserBhv.Builder _durationUserBhvBuilder = _durationUserBhvBuilderMap.get(uBhv);
 				if(currTime.getTime() - _durationUserBhvBuilder.getEndTime().getTime() 
-						> _preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
+						> _preferenceSettings.getLong("collection.period", 10000) * 1.5){
 					res.add(_durationUserBhvBuilder.build());
 					_durationUserBhvBuilderMap.remove(uBhv);
 				}
@@ -124,7 +124,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 		for(BaseUserBhv uBhv : _durationUserBhvBuilderMap.keySet()){
 			DurationUserBhv.Builder durationUserBhvBuilder = _durationUserBhvBuilderMap.get(uBhv);
 			if(currTimeDate.getTime() - durationUserBhvBuilder.getEndTime().getTime() 
-					> _preferenceSettings.getLong("service.collection.period", 10000) * 1.5){
+					> _preferenceSettings.getLong("collection.period", 10000) * 1.5){
 				res.add(durationUserBhvBuilder.build());
 //				ongoingBhvBuilderMap.remove(ongoingBhv);
 			}

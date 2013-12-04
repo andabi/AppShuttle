@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
@@ -46,47 +47,54 @@ public class AppShuttleMainService extends Service {
 
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		
-		if(preferenceSettings.getBoolean("service.collection.enabled", true)){
+		if(preferenceSettings.getBoolean("collection.enabled", true)){
 			Intent collectionIntent = new Intent(this, CollectionService.class);
 			collectionOperation = PendingIntent.getService(this, 0, collectionIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("service.collection.period", 6000), collectionOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("collection.period", 6000), collectionOperation);
 		}
 
-		if(preferenceSettings.getBoolean("service.compaction.enabled", true)){
+		if(preferenceSettings.getBoolean("compaction.enabled", true)){
 			Intent compactionCxtIntent = new Intent(this, CompactionService.class);
 			compactionOperation = PendingIntent.getService(this, 0, compactionCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("service.compaction.period", AlarmManager.INTERVAL_DAY), compactionOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("compaction.period", AlarmManager.INTERVAL_DAY), compactionOperation);
 		}
-		if(preferenceSettings.getBoolean("service.report.enabled", false)){
+		if(preferenceSettings.getBoolean("report.enabled", false)){
 			Intent reportIntent = new Intent(this, ReportService.class);
 			reportOperation = PendingIntent.getService(this, 0, reportIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("service.report.period", AlarmManager.INTERVAL_DAY), reportOperation);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("report.period", AlarmManager.INTERVAL_DAY), reportOperation);
 		}
 		
 		startPeriodicPrediction();
 	}
 	
 	private void startPeriodicPrediction() {
-		startPrediction();
+		doPrediction();
 		activatePeriodicPrediction();
 	}
 	
 	private void stopPeriodicPrediction() {
-		startPrediction();
+		doPrediction();
 		alarmManager.cancel(notiViewOperation);
 	}
 
-	private void startPrediction() {
-		if(AppShuttleApplication.isPredictionServiceRunning)
+	private void doPrediction() {
+//		if(AppShuttleApplication.isPredictionServiceRunning)
+//			return;
+		long currTimeMillis = System.currentTimeMillis();
+		long ignoredDelay = preferenceSettings.getLong("predictor.ignored_delay", 180000);
+		if(AppShuttleApplication.lastPredictionTime != 0
+				&& currTimeMillis - AppShuttleApplication.lastPredictionTime < ignoredDelay)
 			return;
 		
 		startService(new Intent(this, PredictionService.class));
+		AppShuttleApplication.lastPredictionTime = currTimeMillis;
+		Log.d("test","predict");
 	}
 
 	private void activatePeriodicPrediction() {
 		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
 		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
-		long period = preferenceSettings.getLong("service.predict.period", 180000);
+		long period = preferenceSettings.getLong("predictor.period", 180000);
 		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + period, period, notiViewOperation);
 	}
 
@@ -146,7 +154,7 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			startPrediction();
+			doPrediction();
 		}
 	};
 }

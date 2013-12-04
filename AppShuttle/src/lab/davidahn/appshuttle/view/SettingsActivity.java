@@ -69,7 +69,7 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 
 		private void doFeedback(final String contents) {
-			final String[] receivers = {AppShuttleApplication.getContext().getPreferences().getString("email.receiver.addr", "appshuttle2@gmail.com")};
+			final String[] receivers = {AppShuttleApplication.getContext().getPreferences().getString("report.email.receiver_addr", "appshuttle2@gmail.com")};
 			final String subject = "[appshuttle feedback]";
 
 			Thread thread = new Thread(new Runnable(){
