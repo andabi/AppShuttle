@@ -18,12 +18,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
 	private PendingIntent collectionOperation;
 	private PendingIntent reportOperation;
-	private PendingIntent notiViewOperation;
+	private PendingIntent predictionOperation;
 	private PendingIntent compactionOperation;
 	private SharedPreferences preferenceSettings;
 	
@@ -68,37 +69,29 @@ public class AppShuttleMainService extends Service {
 			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("report.period", AlarmManager.INTERVAL_DAY), reportOperation);
 		}
 		
-		startPeriodicPrediction();
-	}
-	
-	private void startPeriodicPrediction() {
 		doPrediction();
 		activatePeriodicPrediction();
 	}
 	
-	private void stopPeriodicPrediction() {
-		doPrediction();
-		alarmManager.cancel(notiViewOperation);
-	}
-
-	private void doPrediction() {
-//		if(AppShuttleApplication.isPredictionServiceRunning)
-//			return;
-		long currTimeMillis = System.currentTimeMillis();
+	private void tryPrediction() {
 		long ignoredDelay = preferenceSettings.getLong("predictor.ignored_delay", 180000);
-		if(AppShuttleApplication.lastPredictionTime != 0
-				&& currTimeMillis - AppShuttleApplication.lastPredictionTime < ignoredDelay)
+		if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
 			return;
-		
-		startService(new Intent(this, PredictionService.class));
-		AppShuttleApplication.lastPredictionTime = currTimeMillis;
+	
+		doPrediction();
 	}
-
+	
+	private void doPrediction() {
+		Log.d("test","prediction");
+		startService(new Intent(this, PredictionService.class));
+		AppShuttleApplication.lastPredictionTime = System.currentTimeMillis();
+	}
+	
 	private void activatePeriodicPrediction() {
-		Intent notiViewIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
-		notiViewOperation = PendingIntent.getBroadcast(this, 0, notiViewIntent, 0);
+		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
+		predictionOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
 		long period = preferenceSettings.getLong("predictor.period", 180000);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + period, period, notiViewOperation);
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + period, period, predictionOperation);
 	}
 
 	public long getExecuteTimeHour(int hourOfDay){
@@ -110,21 +103,24 @@ public class AppShuttleMainService extends Service {
 		return calendar.getTimeInMillis();
 	}
 	
+	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
 		return START_STICKY;
 	}
 	
+	@Override
 	public IBinder onBind(Intent intent){
 		return null;
 	}
 
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		
 		alarmManager.cancel(collectionOperation);
 		alarmManager.cancel(reportOperation);
-		alarmManager.cancel(notiViewOperation);
+		alarmManager.cancel(predictionOperation);
 		alarmManager.cancel(compactionOperation);
 		
 		unregisterReceiver(screenOnReceiver);
@@ -144,14 +140,16 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			startPeriodicPrediction();
+			tryPrediction();
+			activatePeriodicPrediction();
 		}
 	};
 	
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			stopPeriodicPrediction();
+			tryPrediction();
+			alarmManager.cancel(predictionOperation);
 		}
 	};
 
