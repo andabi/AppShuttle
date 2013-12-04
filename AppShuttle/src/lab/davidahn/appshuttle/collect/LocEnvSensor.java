@@ -40,9 +40,9 @@ public class LocEnvSensor extends BaseEnvSensor {
 		prevULoc = currULoc = InvalidUserLoc.getInstance();
 
 		Criteria crit = new Criteria();
-		crit.setAccuracy(Criteria.ACCURACY_FINE);
+		crit.setAccuracy(Criteria.ACCURACY_COARSE);
 		crit.setCostAllowed(true);
-		crit.setPowerRequirement(Criteria.POWER_HIGH);
+		crit.setPowerRequirement(Criteria.POWER_MEDIUM);
 
 		List<String> providers = locationManager.getProviders(true);
 
