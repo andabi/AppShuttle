@@ -9,14 +9,6 @@
             android:title="@string/settings_pref_noti_view_enabled" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_category_info" >
-        <EditTextPreference
-            android:defaultValue=""
-            android:dialogTitle="@string/settings_info_feedback"
-            android:key="settings_info_feedback_key"
-            android:summary="@string/settings_info_feedback_summary"
-            android:title="@string/settings_info_feedback" >
-        </EditTextPreference>
-
         <Preference android:title="@string/settings_info_shared" >
             <intent
                 android:action="android.intent.action.SEND"
@@ -26,6 +18,14 @@
                     android:value="@string/settings_info_shared_msg" />
             </intent>
         </Preference>
+        <EditTextPreference
+            android:defaultValue=""
+            android:dialogTitle="@string/settings_info_feedback"
+            android:key="settings_info_feedback_key"
+            android:summary="@string/settings_info_feedback_summary"
+            android:title="@string/settings_info_feedback" >
+        </EditTextPreference>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
