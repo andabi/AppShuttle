@@ -13,7 +13,6 @@ import android.preference.PreferenceManager;
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
 	public static long launchTime;
-//	public static boolean isPredictionServiceRunning;
 	public static long lastPredictionTime;
 	public static SnapshotUserCxt currUserCxt;
 	public static Map<UserBhv, PredictionInfo> recentPredicted ;
@@ -25,7 +24,6 @@ public class AppShuttleApplication extends Application {
 		instance = this;
 		launchTime = System.currentTimeMillis();
 		recentPredicted = new HashMap<UserBhv, PredictionInfo>();
-//		isPredictionServiceRunning = false;
 	}
 	
 	public static AppShuttleApplication getContext(){
