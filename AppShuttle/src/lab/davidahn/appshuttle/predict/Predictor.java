@@ -189,9 +189,17 @@ public class Predictor {
 			predicted.put(uBhv, predictionInfo);
 		}
 		
-		Map<UserBhv, PredictionInfo> finallyPredicted = AppShuttleApplication.recentPredicted;
+		Map<UserBhv, PredictionInfo> finallyPredicted = new HashMap<UserBhv, PredictionInfo>();
+
 		Map<UserBhv, PredictionInfo> newlyPredicted = extractNewlyPredicted(predicted);
 		finallyPredicted.putAll(newlyPredicted);
+		
+		Set<UserBhv> continuouslyPredictedSet = predicted.keySet();
+		continuouslyPredictedSet.removeAll(newlyPredicted.keySet());
+
+		for(UserBhv uBhv : continuouslyPredictedSet)
+			finallyPredicted.put(uBhv, AppShuttleApplication.recentPredicted.get(uBhv));
+		
 		AppShuttleApplication.recentPredicted = finallyPredicted;
 		
 		storeNewlyPredicted(newlyPredicted);
