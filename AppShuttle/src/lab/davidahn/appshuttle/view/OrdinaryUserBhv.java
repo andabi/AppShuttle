@@ -27,15 +27,25 @@ public class OrdinaryUserBhv extends ViewableUserBhv implements Comparable<Ordin
 	@Override
 	public int compareTo(OrdinaryUserBhv uBhv) {
 		Predictor predictor = Predictor.getInstance();
-		double _score = predictor.getPredictionInfo(_uBhv).getScore();
-		double score = predictor.getPredictionInfo(uBhv).getScore();
 
-		if(_score < score)
+		long _predictedTime = predictor.getPredictionInfo(_uBhv).getTimeDate().getTime();
+		long predictedTime = predictor.getPredictionInfo(uBhv).getTimeDate().getTime();
+		
+		if(_predictedTime < predictedTime)
 			return 1;
-		else if(_score == score)
-			return 0;
-		else 
+		else if(_predictedTime > predictedTime)
 			return -1;
+		else {
+			double _score = predictor.getPredictionInfo(_uBhv).getScore();
+			double score = predictor.getPredictionInfo(uBhv).getScore();
+		
+			if(_score < score)
+				return 1;
+			else if(_score == score)
+				return 0;
+			else 
+				return -1;
+		}
 	}
 	
 	@Override
@@ -64,7 +74,7 @@ public class OrdinaryUserBhv extends ViewableUserBhv implements Comparable<Ordin
 	}
 	
 	public static List<OrdinaryUserBhv> getPredictedSorted(int topN) {
-		Map<UserBhv, PredictionInfo> predictionInfoMap = Predictor.getInstance().getRecentPredictionInfoMap();
+		Map<UserBhv, PredictionInfo> predictionInfoMap = Predictor.getInstance().getPredicted();
 		
 		if(predictionInfoMap == null)
 			return Collections.emptyList();

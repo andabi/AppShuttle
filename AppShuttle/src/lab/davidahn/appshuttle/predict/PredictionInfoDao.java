@@ -29,7 +29,7 @@ public class PredictionInfoDao {
 		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		
 		ContentValues row = new ContentValues();
-		row.put("time", predictionInfo.getTime().getTime());
+		row.put("time", predictionInfo.getTimeDate().getTime());
 		row.put("timezone", predictionInfo.getTimeZone().getID());
 		row.put("user_envs", gson.toJson(predictionInfo.getUserEnvMap()));
 		row.put("bhv_type", predictionInfo.getUserBhv().getBhvType().toString());

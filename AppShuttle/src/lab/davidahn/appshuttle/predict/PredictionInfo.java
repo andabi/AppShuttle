@@ -8,6 +8,8 @@ import java.util.TimeZone;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
 import lab.davidahn.appshuttle.context.env.EnvType;
 import lab.davidahn.appshuttle.context.env.UserEnv;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 
@@ -28,7 +30,7 @@ public class PredictionInfo implements Comparable<PredictionInfo> {
 		score = _score;
 	}
 
-	public Date getTime() {
+	public Date getTimeDate() {
 		return timeDate;
 	}
 
@@ -58,6 +60,14 @@ public class PredictionInfo implements Comparable<PredictionInfo> {
 
 	public double getScore() {
 		return score;
+	}
+	
+	public EnumMap<MatcherType, MatcherResult> getMatcherResultMap(){
+		EnumMap<MatcherType, MatcherResult> matcherResultMap = new EnumMap<MatcherType, MatcherResult>(MatcherType.class);
+		for(MatcherGroupType matcherGroupType : matcherGroupResults.keySet())
+			matcherResultMap.putAll(matcherGroupResults.get(matcherGroupType).getMatcherResultMap());
+
+		return matcherResultMap;
 	}
 	
 	@Override

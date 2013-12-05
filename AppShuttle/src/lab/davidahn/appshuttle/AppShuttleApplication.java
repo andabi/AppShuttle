@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -15,7 +16,7 @@ public class AppShuttleApplication extends Application {
 //	public static boolean isPredictionServiceRunning;
 	public static long lastPredictionTime;
 	public static SnapshotUserCxt currUserCxt;
-	public static Map<UserBhv, PredictionInfo> recentPredictionInfoMap ;
+	public static Map<UserBhv, PredictionInfo> recentPredicted ;
 	public static int numFavoratesNotifiable;
 
 	public AppShuttleApplication(){}
@@ -23,6 +24,7 @@ public class AppShuttleApplication extends Application {
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();
+		recentPredicted = new HashMap<UserBhv, PredictionInfo>();
 //		isPredictionServiceRunning = false;
 	}
 	

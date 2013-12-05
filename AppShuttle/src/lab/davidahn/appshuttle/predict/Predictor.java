@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -15,6 +16,7 @@ import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.PlacePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
@@ -176,9 +178,8 @@ public class Predictor {
 				matcherGroupMap.put(matcherGroup.getMatcherGroupType(), matcherGroupResult);
 			}
 
-			if(matcherGroupMap.isEmpty()) {
+			if(matcherGroupMap.isEmpty())
 				continue;
-			}
 			
 			PredictionInfo predictionInfo = new PredictionInfo(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
@@ -188,22 +189,63 @@ public class Predictor {
 			predicted.put(uBhv, predictionInfo);
 		}
 		
-		storeNewPredictionInfo(predicted);
+		Map<UserBhv, PredictionInfo> finallyPredicted = AppShuttleApplication.recentPredicted;
+		Map<UserBhv, PredictionInfo> newlyPredicted = extractNewlyPredicted(predicted);
+		for(UserBhv uBhv : newlyPredicted.keySet())
+			finallyPredicted.put(uBhv, newlyPredicted.get(uBhv));
+		AppShuttleApplication.recentPredicted = finallyPredicted;
 		
-		AppShuttleApplication.recentPredictionInfoMap = predicted;
+		storeNewlyPredicted(newlyPredicted);
 	}
 	
-	public Map<UserBhv, PredictionInfo> getRecentPredictionInfoMap(){
-		return AppShuttleApplication.recentPredictionInfoMap;
+	public Map<UserBhv, PredictionInfo> getPredicted(){
+		return AppShuttleApplication.recentPredicted;
 	}
-
+	
 	public PredictionInfo getPredictionInfo(UserBhv uBhv){
-		Map<UserBhv, PredictionInfo> predictionInfoMap = AppShuttleApplication.recentPredictionInfoMap;
-		
-		if(predictionInfoMap == null)
+		if(AppShuttleApplication.recentPredicted == null)
 			return null;
 		
-		return predictionInfoMap.get(uBhv);
+		return AppShuttleApplication.recentPredicted.get(uBhv);
+	}
+	
+	private Map<UserBhv, PredictionInfo> extractNewlyPredicted(Map<UserBhv, PredictionInfo> predicted) {
+		Map<UserBhv, PredictionInfo> newlyPredicted = new HashMap<UserBhv, PredictionInfo>(predicted);
+	
+		if(AppShuttleApplication.recentPredicted.isEmpty())
+			return newlyPredicted;
+	
+		for(UserBhv uBhv : predicted.keySet()) {
+			if(!AppShuttleApplication.recentPredicted.containsKey(uBhv))
+				continue;
+		
+			Set<MatcherGroupType> prevUsedMatcherGroupTypes = AppShuttleApplication.recentPredicted.get(uBhv).getMatcherGroupResultMap().keySet();
+			Set<MatcherGroupType> currUsedMatcherGroupTypes = predicted.get(uBhv).getMatcherGroupResultMap().keySet();
+			if(!prevUsedMatcherGroupTypes.equals(currUsedMatcherGroupTypes))
+				continue;
+			
+			Set<MatcherType> prevUsedMatcherTypes = AppShuttleApplication.recentPredicted.get(uBhv).getMatcherResultMap().keySet();
+			Set<MatcherType> currUsedMatcherTypes = predicted.get(uBhv).getMatcherResultMap().keySet();
+	
+			if(!prevUsedMatcherTypes.equals(currUsedMatcherTypes))
+				continue;
+			
+			newlyPredicted.remove(uBhv);
+		}
+		
+		return newlyPredicted;
+	}
+	
+	public void storeNewlyPredicted(Map<UserBhv, PredictionInfo> newlyPredicted) {
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
+		
+		if(!preferenceSettings.getBoolean("predictor.store", false))
+			return;
+		
+		PredictionInfoDao predictionInfoDao = PredictionInfoDao.getInstance();
+		for(UserBhv uBhv : newlyPredicted.keySet()) {
+			predictionInfoDao.storePredictionInfo(newlyPredicted.get(uBhv));
+		}
 	}
 	
 	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults){
@@ -215,21 +257,6 @@ public class Predictor {
 			PredictionScore += score;
 		}
 		return PredictionScore;
-	}
-	
-
-	public void storeNewPredictionInfo(Map<UserBhv, PredictionInfo> predictionInfoMap) {
-		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-		
-		if(!preferenceSettings.getBoolean("predictor.store", false))
-			return;
-		
-		PredictionInfoDao predictionInfoDao = PredictionInfoDao.getInstance();
-		for(UserBhv uBhv : predictionInfoMap.keySet()) {
-			if(AppShuttleApplication.recentPredictionInfoMap == null || !AppShuttleApplication.recentPredictionInfoMap.containsKey(uBhv)) {
-				predictionInfoDao.storePredictionInfo(predictionInfoMap.get(uBhv));
-			}
-		}
 	}
 }
 
