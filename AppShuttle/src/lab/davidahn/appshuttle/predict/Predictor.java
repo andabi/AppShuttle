@@ -217,9 +217,6 @@ public class Predictor {
 		Map<UserBhv, PredictedBhv> res = new HashMap<UserBhv, PredictedBhv>();
 		
 		for(UserBhv uBhv : predictionInfoMap.keySet()){
-			if(!UserBhvManager.getInstance().getOrdinaryBhvSet().contains(uBhv))
-				continue;
-			
 			PredictionInfo predictionInfo = predictionInfoMap.get(uBhv);
 
 			PredictedBhv predictedBhv = new PredictedBhv(uBhv);
@@ -247,9 +244,13 @@ public class Predictor {
 		return AppShuttleApplication.recentSnapshotPredictionInfoMap.get(uBhv);
 	}
 	
-	public List<PredictedBhv> getPredictedBhvSorted(int topN) {
-		List<PredictedBhv> res = new ArrayList<PredictedBhv>(
-				AppShuttleApplication.recentPredictedBhvs.values());
+	public List<PredictedBhv> getPredictedOrdinaryBhvSorted(int topN) {
+		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
+
+		for(PredictedBhv predictedBhv : AppShuttleApplication.recentPredictedBhvs.values())
+			if(UserBhvManager.getInstance().getOrdinaryBhvSet().contains(predictedBhv))
+				res.add(predictedBhv);
+
 		Collections.sort(res);
 		return res.subList(0, Math.min(res.size(), topN));
 	}

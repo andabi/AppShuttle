@@ -50,7 +50,7 @@ public class PredictedBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.predicted_fragment_empty_msg));
 		
-		predictedBhvList = Predictor.getInstance().getPredictedBhvSorted(Integer.MAX_VALUE);
+		predictedBhvList = Predictor.getInstance().getPredictedOrdinaryBhvSorted(Integer.MAX_VALUE);
 		
 		adapter = new PredictedBhvAdapter();
 		setListAdapter(adapter);
