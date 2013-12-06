@@ -17,7 +17,7 @@
     <string name="predict_place_msg">Place</string>
     <string name="predict_gps_msg">Location</string>
     <string name="predict_move_msg">Move</string>
-	<string name="actionbar_tab_text_ordinary">Delivered</string>
+	<string name="actionbar_tab_text_predicted">Delivered</string>
     <string name="actionbar_tab_text_favorates">Favorates</string>
     <string name="actionbar_tab_text_blocked">Blocked</string>
     <string name="action_favorates">favorates</string>

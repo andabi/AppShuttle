@@ -4,6 +4,8 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.predict.PredictedBhv;
+import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -24,10 +26,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OrdinaryBhvFragment extends ListFragment {
+public class PredictedBhvFragment extends ListFragment {
 	private PredictedBhvAdapter adapter;
 	private ActionMode actionMode;
-	private List<OrdinaryUserBhv> predictedOrdinaryBhvList;
+	private List<PredictedBhv> predictedBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,12 @@ public class OrdinaryBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.predicted_fragment_empty_msg));
 		
-		predictedOrdinaryBhvList = OrdinaryUserBhv.getPredictedSorted(Integer.MAX_VALUE);
+		predictedBhvList = Predictor.getInstance().getPredictedBhvSorted(Integer.MAX_VALUE);
 		
 		adapter = new PredictedBhvAdapter();
 		setListAdapter(adapter);
 
-		if (predictedOrdinaryBhvList == null) {
+		if (predictedBhvList == null) {
 			setListShown(false);
 		} else {
 			setListShown(true);
@@ -87,26 +89,26 @@ public class OrdinaryBhvFragment extends ListFragment {
 		super.onDestroy();
 	}
 
-	public class PredictedBhvAdapter extends ArrayAdapter<OrdinaryUserBhv> {
+	public class PredictedBhvAdapter extends ArrayAdapter<PredictedBhv> {
 
 		public PredictedBhvAdapter() {
-			super(getActivity(), R.layout.listview_item, predictedOrdinaryBhvList);
+			super(getActivity(), R.layout.listview_item, predictedBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			OrdinaryUserBhv ordinaryBhv = predictedOrdinaryBhvList.get(position);
+			PredictedBhv predictedBhv = predictedBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
-			iconView.setImageDrawable(ordinaryBhv.getIcon());
+			iconView.setImageDrawable(predictedBhv.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
-			firstLineView.setText(ordinaryBhv.getBhvNameText());
+			firstLineView.setText(predictedBhv.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
-			secondLineView.setText(ordinaryBhv.getViewMsg());
+			secondLineView.setText(predictedBhv.getViewMsg());
 
 			return itemView;
 		}
@@ -135,7 +137,7 @@ public class OrdinaryBhvFragment extends ListFragment {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			int pos = (Integer)actionMode.getTag();
 
-			if(predictedOrdinaryBhvList.size() < pos + 1)
+			if(predictedBhvList.size() < pos + 1)
 				return false;
 
 			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
@@ -154,10 +156,10 @@ public class OrdinaryBhvFragment extends ListFragment {
 		
 		switch(itemId) {
 		case R.id.favorate:	
-			uBhvManager.favorates((predictedOrdinaryBhvList.get(pos)));
+			uBhvManager.favorates((predictedBhvList.get(pos)));
 			return getResources().getString(R.string.action_msg_favorates);
 		case R.id.block:
-			uBhvManager.block((predictedOrdinaryBhvList.get(pos)));
+			uBhvManager.block((predictedBhvList.get(pos)));
 			return getResources().getString(R.string.action_msg_block);
 		default:
 			return null;

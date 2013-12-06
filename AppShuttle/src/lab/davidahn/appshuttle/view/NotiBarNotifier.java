@@ -7,6 +7,7 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.context.bhv.BhvType;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -52,10 +53,10 @@ public class NotiBarNotifier {
 		int numElem = getNumElem();
 		List<FavoratesUserBhv> notifiableFavoratesBhvList = FavoratesUserBhv.getNotifiableFavoratesBhvList();
 		int numFavoratesElem = Math.min(notifiableFavoratesBhvList.size(), numElem);
-		int numOrdinaryElem = numElem - numFavoratesElem;
+		int numPredictedElem = numElem - numFavoratesElem;
 		
 		viewableUserBhvList.addAll(notifiableFavoratesBhvList.subList(0, numFavoratesElem));
-		viewableUserBhvList.addAll(OrdinaryUserBhv.getPredictedSorted(numOrdinaryElem));
+		viewableUserBhvList.addAll(Predictor.getInstance().getPredictedBhvSorted(numPredictedElem));
 		
 		updateNotiView(viewableUserBhvList);
 	}
@@ -92,7 +93,7 @@ public class NotiBarNotifier {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 
 		//clean
-		notiRemoteView.removeAllViews(R.id.noti_ordinary_container);
+		notiRemoteView.removeAllViews(R.id.noti_predicted_container);
 		notiRemoteView.removeAllViews(R.id.noti_favorates_container);
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));

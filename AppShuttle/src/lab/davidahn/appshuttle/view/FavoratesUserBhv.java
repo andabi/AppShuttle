@@ -85,13 +85,13 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 	@Override
 	public String getViewMsg() {
 		StringBuffer msg = new StringBuffer();
-		_viewMsg = msg.toString();
+		viewMsg = msg.toString();
 
 		Predictor predictor = Predictor.getInstance();
-		PredictionInfo predictionInfo = predictor.getRecentPredictionInfo(_uBhv);
+		PredictionInfo predictionInfo = predictor.getRecentSnapshotPredictionInfo(uBhv);
 		
 		if(predictionInfo == null) {
-			return _viewMsg;
+			return viewMsg;
 		}
 		
 		Map<MatcherGroupType, MatcherGroupResult> macherGroupResults = predictionInfo.getMatcherGroupResultMap();
@@ -102,9 +102,9 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 			msg.append(macherGroupResults.get(matcherGroupType).getViewMsg()).append(", ");
 		}
 		msg.delete(msg.length() - 2, msg.length());
-		_viewMsg = msg.toString();
+		viewMsg = msg.toString();
 		
-		return _viewMsg;
+		return viewMsg;
 	}
 	
 	@Override

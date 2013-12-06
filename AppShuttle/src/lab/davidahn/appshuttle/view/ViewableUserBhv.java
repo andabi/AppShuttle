@@ -14,44 +14,44 @@ import android.net.Uri;
 
 public class ViewableUserBhv implements UserBhv, Viewable {
 
-	protected UserBhv _uBhv;
+	protected UserBhv uBhv;
 	
-	protected Drawable _icon;
-	protected String _bhvNameText;
-	protected String _viewMsg;
-	protected Intent _launchIntent;
+	protected Drawable icon;
+	protected String bhvNameText;
+	protected String viewMsg;
+	protected Intent launchIntent;
 
 	public ViewableUserBhv(UserBhv bhvInfo) {
-		_uBhv = bhvInfo;
+		uBhv = bhvInfo;
 	}
 	
 	public UserBhv getUserBhv() {
-		return _uBhv;
+		return uBhv;
 	}
 	
 	@Override
 	public BhvType getBhvType() {
-		return _uBhv.getBhvType();
+		return uBhv.getBhvType();
 	}
 	@Override
 	public void setBhvType(BhvType bhvType) {
-		_uBhv.setBhvType(bhvType);
+		uBhv.setBhvType(bhvType);
 	}
 	@Override
 	public String getBhvName() {
-		return _uBhv.getBhvName();
+		return uBhv.getBhvName();
 	}
 	@Override
 	public void setBhvName(String bhvName) {
-		_uBhv.setBhvName(bhvName);
+		uBhv.setBhvName(bhvName);
 	}
 	@Override
 	public Object getMeta(String key) {
-		return _uBhv.getMeta(key);
+		return uBhv.getMeta(key);
 	}
 	@Override
 	public void setMeta(String key, Object val){
-		_uBhv.setMeta(key, val);
+		uBhv.setMeta(key, val);
 	}
 
 	@Override
@@ -67,25 +67,25 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 	
 	@Override
 	public int hashCode(){
-		return _uBhv.hashCode();
+		return uBhv.hashCode();
 	}
 	
 	@Override
 	public Drawable getIcon() {
-		if(_icon == null) {
-			_icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_launcher);
+		if(icon == null) {
+			icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_launcher);
 			
-			BhvType bhvType = _uBhv.getBhvType();
+			BhvType bhvType = uBhv.getBhvType();
 			switch(bhvType){
 				case APP:
 					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
-					String packageName = _uBhv.getBhvName();
+					String packageName = uBhv.getBhvName();
 					try {
-						_icon = (BitmapDrawable) packageManager.getApplicationIcon(packageName);
+						icon = (BitmapDrawable) packageManager.getApplicationIcon(packageName);
 					} catch (NameNotFoundException e) {}
 					break;
 				case CALL:
-					_icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+					icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
 				case NONE:
 					;
 				default:
@@ -93,26 +93,26 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 			}
 		}
 		
-		return _icon;
+		return icon;
 	}
 
 	@Override
 	public String getBhvNameText() {
-		if(_bhvNameText == null) {
-			_bhvNameText = "no name";
+		if(bhvNameText == null) {
+			bhvNameText = "no name";
 			
-			BhvType bhvType = _uBhv.getBhvType();
+			BhvType bhvType = uBhv.getBhvType();
 			switch(bhvType){
 				case APP:
 					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
-					String packageName = _uBhv.getBhvName();
+					String packageName = uBhv.getBhvName();
 					try {
 						ApplicationInfo ai = packageManager.getApplicationInfo(packageName, 0);
-						_bhvNameText = (String) (ai != null ? packageManager.getApplicationLabel(ai) : "no name");
+						bhvNameText = (String) (ai != null ? packageManager.getApplicationLabel(ai) : "no name");
 					} catch (NameNotFoundException e) {}
 					break;
 				case CALL:
-					_bhvNameText = (String) (_uBhv).getMeta("cachedName");
+					bhvNameText = (String) (uBhv).getMeta("cachedName");
 				case NONE:
 					;
 				default:
@@ -120,29 +120,29 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 				}
 		}
 		
-		return _bhvNameText;
+		return bhvNameText;
 	}
 
 	@Override
 	public String getViewMsg() {
-		_viewMsg = "";
-		return _viewMsg;
+		viewMsg = "";
+		return viewMsg;
 	}
 	
 	@Override
 	public Intent getLaunchIntent() {
-		if(_launchIntent == null) {
-			_launchIntent = new Intent();
+		if(launchIntent == null) {
+			launchIntent = new Intent();
 			
-			BhvType bhvType = _uBhv.getBhvType();
-			String bhvName = _uBhv.getBhvName();
+			BhvType bhvType = uBhv.getBhvType();
+			String bhvName = uBhv.getBhvName();
 			switch(bhvType){
 				case APP:
 					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
-					_launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
+					launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
 					break;
 				case CALL:
-					_launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+					launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
 				case NONE:
 					;
 				default:
@@ -150,7 +150,7 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 			}
 		}
 		
-		return _launchIntent;
+		return launchIntent;
 	}
 
 	@Override

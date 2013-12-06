@@ -5,6 +5,7 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
 import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.PredictedBhv;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -15,8 +16,8 @@ public class AppShuttleApplication extends Application {
 	public static long launchTime;
 	public static long lastPredictionTime;
 	public static SnapshotUserCxt currUserCxt;
-	public static Map<UserBhv, PredictionInfo> recentPredicted ;
-	public static Map<UserBhv, PredictionInfo> recentViewedPredicted;
+	public static Map<UserBhv, PredictionInfo> recentSnapshotPredictionInfoMap ;
+	public static Map<UserBhv, PredictedBhv> recentPredictedBhvs;
 	public static int numFavoratesNotifiable;
 
 	public AppShuttleApplication(){}
@@ -24,8 +25,8 @@ public class AppShuttleApplication extends Application {
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();
-		recentPredicted = new HashMap<UserBhv, PredictionInfo>();
-		recentViewedPredicted = new HashMap<UserBhv, PredictionInfo>();
+		recentSnapshotPredictionInfoMap = new HashMap<UserBhv, PredictionInfo>();
+		recentPredictedBhvs = new HashMap<UserBhv, PredictedBhv>();
 	}
 	
 	public static AppShuttleApplication getContext(){

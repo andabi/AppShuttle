@@ -67,15 +67,15 @@ public abstract class BaseMatcherGroup implements MatcherGroup {
 		
 		assert(!matcherResults.isEmpty());
 		
-		Collections.sort(matcherResults);
-		return matcherResults.get(0).getMatcherType().viewMsg;
+		MatcherResult maxPriority = Collections.max(matcherResults);
+		return maxPriority.getMatcherType().viewMsg;
 	}
 
 	protected double computeScore(List<MatcherResult> matcherResults) {
 		
 		assert(!matcherResults.isEmpty());
 		
-		Collections.sort(matcherResults);
-		return matcherResults.get(0).getScore();
+		MatcherResult maxPriority = Collections.max(matcherResults);
+		return maxPriority.getScore();
 	}
 }

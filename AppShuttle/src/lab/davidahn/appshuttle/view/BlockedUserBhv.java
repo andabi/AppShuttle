@@ -30,15 +30,15 @@ public class BlockedUserBhv extends ViewableUserBhv implements Comparable<Blocke
 	public String getViewMsg() {
 //		long blockedTime = ((BlockedUserBhv)_uBhv).getBlockedTime();
 		StringBuffer msg = new StringBuffer();
-		_viewMsg = msg.toString();
+		viewMsg = msg.toString();
 		
 		msg.append(DateUtils.getRelativeTimeSpanString(_blockedTime, 
 				System.currentTimeMillis(), 
 				DateUtils.MINUTE_IN_MILLIS, 
 				0
 				));
-		_viewMsg = msg.toString();
+		viewMsg = msg.toString();
 		
-		return _viewMsg;
+		return viewMsg;
 	}
 }

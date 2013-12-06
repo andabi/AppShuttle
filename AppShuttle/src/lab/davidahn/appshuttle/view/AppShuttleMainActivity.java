@@ -97,9 +97,9 @@ public class AppShuttleMainActivity extends Activity {
 		Bundle bundle = new Bundle(); 
 		bundle.putString("tag", "predicted");
 		mTabsAdapter.addTab(bar.newTab()
-				.setText(" " + getResources().getString(R.string.actionbar_tab_text_ordinary))
+				.setText(" " + getResources().getString(R.string.actionbar_tab_text_predicted))
 				.setIcon(R.drawable.ic_menu_emoticons),
-				OrdinaryBhvFragment.class, bundle);
+				PredictedBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorates))
 				.setIcon(R.drawable.ic_menu_star),

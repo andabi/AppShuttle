@@ -17,7 +17,7 @@
     <string name="predict_place_msg">현재 장소에서 주로 사용</string>
     <string name="predict_gps_msg">현재 위치에서 주로 사용</string>
     <string name="predict_move_msg">이동 중에 사용</string>
-    <string name="actionbar_tab_text_ordinary">셔틀</string>
+    <string name="actionbar_tab_text_predicted">셔틀</string>
     <string name="actionbar_tab_text_favorates">고정</string>
     <string name="actionbar_tab_text_blocked">차단</string>
     <string name="action_favorates">앱 고정</string>

@@ -16,7 +16,6 @@ public class PredictionService extends IntentService {
 	@Override
 	public void onCreate(){
 		super.onCreate();
-//		AppShuttleApplication.isPredictionServiceRunning = true;
 	}
 	
 	@Override
@@ -31,6 +30,5 @@ public class PredictionService extends IntentService {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-//		AppShuttleApplication.isPredictionServiceRunning = false;
 	}
 }
