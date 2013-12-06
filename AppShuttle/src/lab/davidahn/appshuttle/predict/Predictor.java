@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.context.SnapshotUserCxt;
@@ -16,7 +15,6 @@ import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
-import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.PlacePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
@@ -189,61 +187,21 @@ public class Predictor {
 			predicted.put(uBhv, predictionInfo);
 		}
 		
-		Map<UserBhv, PredictionInfo> finallyPredicted = new HashMap<UserBhv, PredictionInfo>();
-
-		Map<UserBhv, PredictionInfo> newlyPredicted = extractNewlyPredicted(predicted);
-		finallyPredicted.putAll(newlyPredicted);
-		
-		Set<UserBhv> continuouslyPredictedSet = predicted.keySet();
-		continuouslyPredictedSet.removeAll(newlyPredicted.keySet());
-
-		for(UserBhv uBhv : continuouslyPredictedSet)
-			finallyPredicted.put(uBhv, AppShuttleApplication.recentPredicted.get(uBhv));
-		
-		AppShuttleApplication.recentPredicted = finallyPredicted;
-		
-		storeNewlyPredicted(newlyPredicted);
+		AppShuttleApplication.recentPredicted = predicted;
 	}
 	
-	public Map<UserBhv, PredictionInfo> getPredicted(){
+	public Map<UserBhv, PredictionInfo> getRecentPredicted(){
 		return AppShuttleApplication.recentPredicted;
 	}
 	
-	public PredictionInfo getPredictionInfo(UserBhv uBhv){
+	public PredictionInfo getRecentPredictionInfo(UserBhv uBhv){
 		if(AppShuttleApplication.recentPredicted == null)
 			return null;
 		
 		return AppShuttleApplication.recentPredicted.get(uBhv);
 	}
-	
-	private Map<UserBhv, PredictionInfo> extractNewlyPredicted(Map<UserBhv, PredictionInfo> predicted) {
-		Map<UserBhv, PredictionInfo> newlyPredicted = new HashMap<UserBhv, PredictionInfo>(predicted);
-	
-		if(AppShuttleApplication.recentPredicted.isEmpty())
-			return newlyPredicted;
-	
-		for(UserBhv uBhv : predicted.keySet()) {
-			if(!AppShuttleApplication.recentPredicted.containsKey(uBhv))
-				continue;
-		
-			Set<MatcherGroupType> prevUsedMatcherGroupTypes = AppShuttleApplication.recentPredicted.get(uBhv).getMatcherGroupResultMap().keySet();
-			Set<MatcherGroupType> currUsedMatcherGroupTypes = predicted.get(uBhv).getMatcherGroupResultMap().keySet();
-			if(!prevUsedMatcherGroupTypes.equals(currUsedMatcherGroupTypes))
-				continue;
-			
-			Set<MatcherType> prevUsedMatcherTypes = AppShuttleApplication.recentPredicted.get(uBhv).getMatcherResultMap().keySet();
-			Set<MatcherType> currUsedMatcherTypes = predicted.get(uBhv).getMatcherResultMap().keySet();
-	
-			if(!prevUsedMatcherTypes.equals(currUsedMatcherTypes))
-				continue;
-			
-			newlyPredicted.remove(uBhv);
-		}
-		
-		return newlyPredicted;
-	}
-	
-	public void storeNewlyPredicted(Map<UserBhv, PredictionInfo> newlyPredicted) {
+
+	public void storePredicted(Map<UserBhv, PredictionInfo> newlyPredicted) {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		
 		if(!preferenceSettings.getBoolean("predictor.store", false))

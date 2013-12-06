@@ -88,7 +88,7 @@ public class FavoratesUserBhv extends ViewableUserBhv implements Comparable<Favo
 		_viewMsg = msg.toString();
 
 		Predictor predictor = Predictor.getInstance();
-		PredictionInfo predictionInfo = predictor.getPredictionInfo(_uBhv);
+		PredictionInfo predictionInfo = predictor.getRecentPredictionInfo(_uBhv);
 		
 		if(predictionInfo == null) {
 			return _viewMsg;
