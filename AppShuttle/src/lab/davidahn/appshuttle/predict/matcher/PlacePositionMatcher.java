@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserPlace;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
+import lab.davidahn.appshuttle.collect.env.EnvType;
+import lab.davidahn.appshuttle.collect.env.UserPlace;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 

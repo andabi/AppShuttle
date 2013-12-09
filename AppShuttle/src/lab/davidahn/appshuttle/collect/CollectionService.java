@@ -9,16 +9,22 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.SnapshotUserCxtDao;
-import lab.davidahn.appshuttle.context.bhv.BaseUserBhv;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserEnv;
+import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.BhvCollector;
+import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.SensorOnCollector;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
+import lab.davidahn.appshuttle.collect.env.EnvSensor;
+import lab.davidahn.appshuttle.collect.env.EnvType;
+import lab.davidahn.appshuttle.collect.env.LocEnvSensor;
+import lab.davidahn.appshuttle.collect.env.PlaceEnvSensor;
+import lab.davidahn.appshuttle.collect.env.SpeedEnvSensor;
+import lab.davidahn.appshuttle.collect.env.UserEnv;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,6 +58,7 @@ public class CollectionService extends Service {
 		collectors = new ArrayList<BhvCollector>();
 		collectors.add(AppBhvCollector.getInstance());
 		collectors.add(CallBhvCollector.getInstance());
+		collectors.add(SensorOnCollector.getInstance());
 	}
 
 	@Override

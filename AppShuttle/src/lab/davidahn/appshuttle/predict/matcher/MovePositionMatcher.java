@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnv;
-import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserSpeed;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
+import lab.davidahn.appshuttle.collect.env.EnvType;
+import lab.davidahn.appshuttle.collect.env.UserSpeed;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 
@@ -25,7 +26,7 @@ public class MovePositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected boolean preConditionForCurrUserCxt(SnapshotUserCxt uCxt) {
+	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt uCxt) {
 		UserSpeed.Level currUserSpeedLevel = ((UserSpeed)uCxt.getUserEnv(EnvType.SPEED)).getLevel();
 		if(currUserSpeedLevel == UserSpeed.Level.VEHICLE)
 			return true;

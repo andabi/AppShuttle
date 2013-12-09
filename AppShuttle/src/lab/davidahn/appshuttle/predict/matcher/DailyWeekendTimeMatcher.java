@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 import android.app.AlarmManager;
 
@@ -27,7 +27,7 @@ public class DailyWeekendTimeMatcher extends TimeMatcher {
 	}
 	
 	@Override
-	protected boolean preConditionForCurrUserCxt(SnapshotUserCxt currUCxt) {
+	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
 		if(!isWeekDay(currUCxt.getTimeDate()))
 			return true;
 		

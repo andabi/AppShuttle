@@ -2,8 +2,8 @@ package lab.davidahn.appshuttle.view;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.BhvType;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -11,6 +11,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.Settings;
 
 public class ViewableUserBhv implements UserBhv, Viewable {
 
@@ -30,11 +31,11 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 	}
 	
 	@Override
-	public BhvType getBhvType() {
+	public UserBhvType getBhvType() {
 		return uBhv.getBhvType();
 	}
 	@Override
-	public void setBhvType(BhvType bhvType) {
+	public void setBhvType(UserBhvType bhvType) {
 		uBhv.setBhvType(bhvType);
 	}
 	@Override
@@ -75,21 +76,23 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		if(icon == null) {
 			icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_launcher);
 			
-			BhvType bhvType = uBhv.getBhvType();
+			UserBhvType bhvType = uBhv.getBhvType();
 			switch(bhvType){
-				case APP:
-					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
-					String packageName = uBhv.getBhvName();
-					try {
-						icon = (BitmapDrawable) packageManager.getApplicationIcon(packageName);
-					} catch (NameNotFoundException e) {}
-					break;
-				case CALL:
-					icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
-				case NONE:
-					;
-				default:
-					;
+			case APP:
+				PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
+				String packageName = uBhv.getBhvName();
+				try {
+					icon = (BitmapDrawable) packageManager.getApplicationIcon(packageName);
+				} catch (NameNotFoundException e) {}
+				break;
+			case CALL:
+				icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+			case SENSOR_ON:
+				icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.stat_sys_tether_wifi);
+			case NONE:
+				;
+			default:
+				;
 			}
 		}
 		
@@ -101,7 +104,7 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		if(bhvNameText == null) {
 			bhvNameText = "no name";
 			
-			BhvType bhvType = uBhv.getBhvType();
+			UserBhvType bhvType = uBhv.getBhvType();
 			switch(bhvType){
 				case APP:
 					PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
@@ -113,6 +116,8 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 					break;
 				case CALL:
 					bhvNameText = (String) (uBhv).getMeta("cachedName");
+				case SENSOR_ON:
+					bhvNameText = AppShuttleApplication.getContext().getResources().getString(R.string.predict_notibar_msg_sensor_wifi);
 				case NONE:
 					;
 				default:
@@ -134,7 +139,7 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		if(launchIntent == null) {
 			launchIntent = new Intent();
 			
-			BhvType bhvType = uBhv.getBhvType();
+			UserBhvType bhvType = uBhv.getBhvType();
 			String bhvName = uBhv.getBhvName();
 			switch(bhvType){
 				case APP:
@@ -143,6 +148,8 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 					break;
 				case CALL:
 					launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+				case SENSOR_ON:
+					launchIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
 				case NONE:
 					;
 				default:

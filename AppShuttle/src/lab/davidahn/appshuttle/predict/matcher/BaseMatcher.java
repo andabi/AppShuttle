@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.BaseMatcherConf;
 
 public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher {
@@ -24,7 +24,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 
 	@Override
 	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		if(!preConditionForCurrUserCxt(currUCxt))
+		if(!preConditions(uBhv, currUCxt))
 			return null;
 		
 		List<MatcherCountUnit> matcherCountUnitList = makeMatcherCountUnit(
@@ -97,7 +97,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 //		return res;
 //	}
 	
-	protected boolean preConditionForCurrUserCxt(SnapshotUserCxt currUCxt) {
+	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
 		return true;
 	}
 

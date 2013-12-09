@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 
 public interface Matcher {
 	

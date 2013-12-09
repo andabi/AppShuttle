@@ -1,26 +1,26 @@
 package lab.davidahn.appshuttle.view;
 
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import android.text.format.DateUtils;
 
 
 public class BlockedUserBhv extends ViewableUserBhv implements Comparable<BlockedUserBhv> {
-	private long _blockedTime;
+	private long blockedTime;
 	
 	public BlockedUserBhv(UserBhv uBhv, long blockedTime){
 		super(uBhv);
-		_blockedTime = blockedTime;
+		this.blockedTime = blockedTime;
 	}
 	
 	public long getBlockedTime() {
-		return _blockedTime;
+		return blockedTime;
 	}
 	
 	@Override
 	public int compareTo(BlockedUserBhv uBhv) {
-		if(_blockedTime < uBhv._blockedTime)
+		if(blockedTime < uBhv.blockedTime)
 			return 1;
-		else if(_blockedTime == uBhv._blockedTime)
+		else if(blockedTime == uBhv.blockedTime)
 			return 0;
 		else
 			return -1;
@@ -32,7 +32,7 @@ public class BlockedUserBhv extends ViewableUserBhv implements Comparable<Blocke
 		StringBuffer msg = new StringBuffer();
 		viewMsg = msg.toString();
 		
-		msg.append(DateUtils.getRelativeTimeSpanString(_blockedTime, 
+		msg.append(DateUtils.getRelativeTimeSpanString(blockedTime, 
 				System.currentTimeMillis(), 
 				DateUtils.MINUTE_IN_MILLIS, 
 				0

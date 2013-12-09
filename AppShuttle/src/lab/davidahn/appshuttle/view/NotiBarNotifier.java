@@ -5,8 +5,8 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.BhvType;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -100,7 +100,7 @@ public class NotiBarNotifier {
 
 		for(T viewableUserBhv : viewableUserBhvList) {
 
-			BhvType bhvType = viewableUserBhv.getBhvType();
+			UserBhvType bhvType = viewableUserBhv.getBhvType();
 			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_element);
 			
 			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(cxt, 0, viewableUserBhv.getLaunchIntent(), 0));
@@ -108,7 +108,7 @@ public class NotiBarNotifier {
 			BitmapDrawable iconDrawable = (BitmapDrawable)viewableUserBhv.getIcon();
 			notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());
 			
-			if (bhvType == BhvType.CALL){
+			if (bhvType == UserBhvType.CALL){
 //				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
 				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, viewableUserBhv.getBhvNameText());
 				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, 

@@ -5,9 +5,9 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserEnv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.env.EnvType;
+import lab.davidahn.appshuttle.collect.env.UserEnv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 

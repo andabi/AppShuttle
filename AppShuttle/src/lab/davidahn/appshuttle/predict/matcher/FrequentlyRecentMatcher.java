@@ -2,7 +2,7 @@ package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 
 public class FrequentlyRecentMatcher extends RecentMatcher {

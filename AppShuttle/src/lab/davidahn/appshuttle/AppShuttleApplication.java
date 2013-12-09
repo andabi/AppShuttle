@@ -3,8 +3,8 @@ package lab.davidahn.appshuttle;
 import java.util.HashMap;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import android.app.Application;

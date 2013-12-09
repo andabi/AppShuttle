@@ -4,11 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.context.env.DurationUserEnvManager;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.predict.PredictionInfoDao;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResultDao;
 import lab.davidahn.appshuttle.view.OrdinaryUserBhv;

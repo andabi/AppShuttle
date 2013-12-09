@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.env.EnvType;
-import lab.davidahn.appshuttle.context.env.UserEnv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.env.EnvType;
+import lab.davidahn.appshuttle.collect.env.UserEnv;
 
 public class MatcherResult implements Comparable<MatcherResult> {
 	private MatcherType matcherType;

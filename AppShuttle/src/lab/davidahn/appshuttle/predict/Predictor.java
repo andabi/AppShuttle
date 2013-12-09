@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.matcher.DailyTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;

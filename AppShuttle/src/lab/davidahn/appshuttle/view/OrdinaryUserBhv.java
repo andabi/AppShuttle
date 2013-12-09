@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import lab.davidahn.appshuttle.predict.Predictor;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;

@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.context.SnapshotUserCxt;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.context.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.context.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.SensorType;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 
 public class InstantlyRecentMatcher extends RecentMatcher {
@@ -21,6 +23,15 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 	@Override
 	public MatcherType getMatcherType(){
 		return MatcherType.INSTANTALY_RECENT;
+	}
+	
+	@Override
+	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
+		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON && uBhv.getBhvName().equals(SensorType.WIFI.name())){
+			return false;
+		}
+		
+		return true;
 	}
 	
 	@Override

@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
-import lab.davidahn.appshuttle.context.bhv.UnregisterBhvService;
+import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.predict.PredictionService;
 import lab.davidahn.appshuttle.report.ReportService;
 import lab.davidahn.appshuttle.view.NotiBarNotifier;

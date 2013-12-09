@@ -3,7 +3,7 @@ package lab.davidahn.appshuttle.view;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.context.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
 import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.ListFragment;

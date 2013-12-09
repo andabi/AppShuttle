@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -43,7 +44,7 @@
         <service android:name="lab.davidahn.appshuttle.AppShuttleMainService" />
         <service android:name="lab.davidahn.appshuttle.collect.CollectionService" />
         <service android:name="lab.davidahn.appshuttle.collect.CompactionService" />
-        <service android:name="lab.davidahn.appshuttle.context.bhv.UnregisterBhvService" />
+        <service android:name="lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService" />
         <service android:name="lab.davidahn.appshuttle.report.ReportService" />
         <service android:name="lab.davidahn.appshuttle.predict.PredictionService" />
 
