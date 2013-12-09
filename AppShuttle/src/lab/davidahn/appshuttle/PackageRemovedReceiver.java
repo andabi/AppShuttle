@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle;
 
-import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

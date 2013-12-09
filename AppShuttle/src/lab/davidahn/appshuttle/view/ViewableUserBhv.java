@@ -2,8 +2,8 @@ package lab.davidahn.appshuttle.view;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -87,10 +87,12 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 				break;
 			case CALL:
 				icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+				break;
 			case SENSOR_ON:
-				icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.stat_sys_tether_wifi);
+				icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_action_network_wifi);
+				break;
 			case NONE:
-				;
+				break;
 			default:
 				;
 			}
@@ -116,10 +118,12 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 					break;
 				case CALL:
 					bhvNameText = (String) (uBhv).getMeta("cachedName");
+					break;
 				case SENSOR_ON:
 					bhvNameText = AppShuttleApplication.getContext().getResources().getString(R.string.predict_notibar_msg_sensor_wifi);
+					break;
 				case NONE:
-					;
+					break;
 				default:
 					;
 				}
@@ -148,10 +152,12 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 					break;
 				case CALL:
 					launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+					break;
 				case SENSOR_ON:
 					launchIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+					break;
 				case NONE:
-					;
+					break;
 				default:
 					;
 			}
