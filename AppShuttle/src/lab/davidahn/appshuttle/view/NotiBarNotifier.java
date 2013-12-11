@@ -108,7 +108,7 @@ public class NotiBarNotifier {
 			BitmapDrawable iconDrawable = (BitmapDrawable)viewableUserBhv.getIcon();
 			notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());
 			
-			if (bhvType == UserBhvType.CALL || bhvType == UserBhvType.SENSOR_ON){
+			if (bhvType == UserBhvType.CALL/* || bhvType == UserBhvType.SENSOR_ON*/){
 //				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
 				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, viewableUserBhv.getBhvNameText());
 				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, 

@@ -73,7 +73,7 @@ public class AppShuttleMainService extends Service {
 	}
 	
 	private void tryPrediction() {
-		long ignoredDelay = preferenceSettings.getLong("predictor.ignored_delay", 180000);
+		long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 180000);
 		if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
 			return;
 	
