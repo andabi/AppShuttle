@@ -28,7 +28,6 @@ import lab.davidahn.appshuttle.collect.env.UserEnv;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 public class CollectionService extends Service {
 	private Date currTimeDate;
@@ -155,7 +154,7 @@ public class CollectionService extends Service {
 		postCollectDurationUserBhv();
 		postCollectDurationUserEnv();
 		
-		Log.d("collection", "post collection");
+//		Log.d("collection", "post collection");
 	}
 
 	private void postCollectDurationUserEnv() {

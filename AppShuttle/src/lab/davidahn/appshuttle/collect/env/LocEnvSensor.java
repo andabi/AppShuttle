@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 
 public class LocEnvSensor extends BaseEnvSensor {
 	private LocationManager locationManager;
@@ -43,7 +42,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 		List<String> providers = locationManager.getProviders(true);
 
 		if(providers.isEmpty()){
-			Log.i("loc provider", "null");
+//			Log.i("loc provider", "null");
 			return;
 		}
 		
@@ -85,10 +84,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 
 		if(lastKnownLoc == null) {
 			currULoc =  InvalidUserLoc.getInstance();
-			Log.i("location", "sensing failure");
+//			Log.i("location", "sensing failure");
 		} else {
 			currULoc =  UserLoc.create(lastKnownLoc.getLatitude(), lastKnownLoc.getLongitude());
-			Log.i("location", currULoc.toString());
+//			Log.i("location", currULoc.toString());
 		}
 
 		return currULoc;
@@ -100,7 +99,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 //			return false;
 		
 		if(!currULoc.equals(prevULoc)) {
-			Log.i("user env", "location moved");
+//			Log.i("user env", "location moved");
 			return true;
 		} else {
 			return false;
@@ -145,7 +144,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 	
 	LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
-			Log.i("changed location", "latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
+//			Log.i("changed location", "latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
 			lastKnownLoc = location;
 		}
 

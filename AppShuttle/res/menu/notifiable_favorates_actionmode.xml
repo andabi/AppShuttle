@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/unfavorates"
-        android:icon="@drawable/ic_menu_emoticons"
+        android:icon="@drawable/ic_action_phone"
         android:showAsAction="always|withText"
         android:title="@string/action_unfavorates"/>
 
     <item
 	    android:id="@+id/favorates_unnotify"
 	    android:showAsAction="always|withText"
-	    android:icon="@drawable/ic_audio_alarm_mute"
+	    android:icon="@drawable/ic_action_not_important"
 	    android:title="@string/action_favorates_unnotify"/>
 
 </menu>

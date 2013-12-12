@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -95,10 +94,10 @@ public class SettingsActivity extends PreferenceActivity {
 				String failureMsg = cxt.getResources().getString(R.string.settings_info_feedback_failure_msg);
 
 				if (msg.what == 1) {
-					Log.i("feedback", successMsg);
+//					Log.i("feedback", successMsg);
 					Toast.makeText(cxt, successMsg, Toast.LENGTH_SHORT).show();
 				} else {
-					Log.d("feedback", failureMsg);
+//					Log.d("feedback", failureMsg);
 					Toast.makeText(cxt, failureMsg, Toast.LENGTH_SHORT).show();
 				}
 			}

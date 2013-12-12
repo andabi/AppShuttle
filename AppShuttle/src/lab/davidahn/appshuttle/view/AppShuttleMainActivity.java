@@ -98,15 +98,15 @@ public class AppShuttleMainActivity extends Activity {
 		bundle.putString("tag", "predicted");
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_predicted))
-				.setIcon(R.drawable.ic_menu_emoticons),
+				.setIcon(R.drawable.ic_action_phone),
 				PredictedBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorates))
-				.setIcon(R.drawable.ic_menu_star),
+				.setIcon(R.drawable.ic_action_favorite),
 				FavoratesBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_blocked))
-				.setIcon(android.R.drawable.ic_menu_delete),
+				.setIcon(R.drawable.ic_action_discard),
 				BlockedBhvFragment.class, null);
 
 		if (savedInstanceState != null) {

@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header android:fragment="lab.davidahn.appshuttle.view.PreferencesActivity$PreferencesFragment"
-            android:icon="@drawable/ic_sysbar_quicksettings"
+            android:icon="@drawable/ic_action_settings"
             android:title="Preferences"
             android:summary="Preferences" />
 

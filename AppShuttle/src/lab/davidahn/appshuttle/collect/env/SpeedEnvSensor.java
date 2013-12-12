@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import android.util.Log;
-
 public class SpeedEnvSensor extends BaseEnvSensor {
 	private LocEnvSensor locEnvSensor;
 	private UserSpeed prevUSpeed, currUSpeed;
@@ -38,7 +36,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 
 		if(!currLoc.isValid() || !prevLoc.isValid()){
 			currUSpeed = InvalidUserSpeed.getInstance();
-			Log.d("speed", "sensing failure: invalidUserLoc");
+//			Log.d("speed", "sensing failure: invalidUserLoc");
 			return currUSpeed;
 		}
 		
@@ -52,9 +50,9 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 			double speed = currLoc.distanceTo(prevLoc) / (currTimeDate.getTime() - lastSensedTimeDate.getTime()) * 1000;
 			currUSpeed = UserSpeed.create(speed);
 			
-			Log.i("speed", "sensed: " + currUSpeed.toString());
+//			Log.i("speed", "sensed: " + currUSpeed.toString());
 		} catch (InvalidUserEnvException e) {
-			Log.d("speed", "sensing failure: invalidUserLoc");
+//			Log.d("speed", "sensing failure: invalidUserLoc");
 			return currUSpeed;
 		}
 			
@@ -66,7 +64,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	@Override
 	public boolean isChanged(){
 		if(!currUSpeed.equals(prevUSpeed)) {
-			Log.i("user env", "user speed changed");
+//			Log.i("user env", "user speed changed");
 			return true;
 		} else {
 			return false;
@@ -114,7 +112,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 		Date lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
 		
 		if(currTimeDate.getTime() - lastSensedTimeDate.getTime() > reasonableWaitingTime) {
-			Log.d("speed", "Auto extracted by exceeding reasonable waiting time");
+//			Log.d("speed", "Auto extracted by exceeding reasonable waiting time");
 			return true;
 		}
 		
