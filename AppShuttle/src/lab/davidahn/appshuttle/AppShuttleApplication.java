@@ -16,8 +16,8 @@ public class AppShuttleApplication extends Application {
 	public static long launchTime;
 	public static long lastPredictionTime;
 	public static SnapshotUserCxt currUserCxt;
-	public static Map<UserBhv, PredictionInfo> recentSnapshotPredictionInfoMap ;
-	public static Map<UserBhv, PredictedBhv> recentPredictedBhvs;
+	public static Map<UserBhv, PredictionInfo> predictionInfoByUserBhv;
+	public static Map<UserBhv, PredictedBhv> predictedBhvs;
 	public static int numFavoriteNotifiable;
 
 	public AppShuttleApplication(){}
@@ -25,8 +25,8 @@ public class AppShuttleApplication extends Application {
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();
-		recentSnapshotPredictionInfoMap = new HashMap<UserBhv, PredictionInfo>();
-		recentPredictedBhvs = new HashMap<UserBhv, PredictedBhv>();
+		predictionInfoByUserBhv = new HashMap<UserBhv, PredictionInfo>();
+		predictedBhvs = new HashMap<UserBhv, PredictedBhv>();
 	}
 	
 	public static AppShuttleApplication getContext(){

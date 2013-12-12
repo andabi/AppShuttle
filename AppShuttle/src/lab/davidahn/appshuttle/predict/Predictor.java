@@ -194,7 +194,7 @@ public class Predictor {
 			predictionInfos.put(uBhv, predictionInfo);
 		}
 		
-		AppShuttleApplication.recentSnapshotPredictionInfoMap = predictionInfos;
+		AppShuttleApplication.predictionInfoByUserBhv = predictionInfos;
 	}
 	
 	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults){
@@ -209,7 +209,7 @@ public class Predictor {
 	}
 	
 	private void extractPredictedBhvs() {
-		Map<UserBhv, PredictionInfo> predictionInfoMap = AppShuttleApplication.recentSnapshotPredictionInfoMap;
+		Map<UserBhv, PredictionInfo> predictionInfoMap = AppShuttleApplication.predictionInfoByUserBhv;
 
 		if (predictionInfoMap == null || predictionInfoMap.isEmpty())
 			return ;
@@ -223,7 +223,7 @@ public class Predictor {
 			for(MatcherType matcherType : predictionInfo.getMatcherResultMap().keySet())
 				predictedBhv.setFirstPredictedTime(matcherType, predictionInfo.getTimeDate().getTime());
 
-			PredictedBhv recentPredictedBhv = AppShuttleApplication.recentPredictedBhvs.get(uBhv);
+			PredictedBhv recentPredictedBhv = AppShuttleApplication.predictedBhvs.get(uBhv);
 			if(recentPredictedBhv != null){
 				for(MatcherType matcherType : predictionInfo.getMatcherResultMap().keySet()){
 					Long firstPredictedTime = recentPredictedBhv.getFirstPredictedTime(matcherType);
@@ -234,20 +234,20 @@ public class Predictor {
 			res.put(uBhv, predictedBhv);
 		}
 		
-		AppShuttleApplication.recentPredictedBhvs = res;
+		AppShuttleApplication.predictedBhvs = res;
 	}
 
 	public PredictionInfo getRecentSnapshotPredictionInfo(UserBhv uBhv){
-		if(AppShuttleApplication.recentSnapshotPredictionInfoMap == null)
+		if(AppShuttleApplication.predictionInfoByUserBhv == null)
 			return null;
 		
-		return AppShuttleApplication.recentSnapshotPredictionInfoMap.get(uBhv);
+		return AppShuttleApplication.predictionInfoByUserBhv.get(uBhv);
 	}
 	
 	public List<PredictedBhv> getPredictedOrdinaryBhvSorted(int topN) {
 		List<PredictedBhv> res = new ArrayList<PredictedBhv>();
 
-		for(PredictedBhv predictedBhv : AppShuttleApplication.recentPredictedBhvs.values())
+		for(PredictedBhv predictedBhv : AppShuttleApplication.predictedBhvs.values())
 			if(UserBhvManager.getInstance().getOrdinaryBhvSet().contains(predictedBhv))
 				res.add(predictedBhv);
 

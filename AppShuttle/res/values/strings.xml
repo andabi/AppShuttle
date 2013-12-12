@@ -18,7 +18,7 @@
     <string name="predict_gps_msg">Location</string>
     <string name="predict_move_msg">Move</string>
     <string name="predict_notibar_msg_sensor_wifi">Wi-Fi</string>
-    <string name="actionbar_tab_text_predicted">Delivered</string>
+    <string name="actionbar_tab_text_predicted">Now</string>
     <string name="actionbar_tab_text_favorite">Favorite</string>
     <string name="actionbar_tab_text_blocked">Blocked</string>
     <string name="action_favorite">favorite</string>
@@ -46,7 +46,7 @@
     <string name="settings_info_feedback_summary">You can ask the error or suggest new functions to developers.</string>
     <string name="settings_info_feedback_success_msg">Feedback was sent successfully</string>
     <string name="settings_info_feedback_failure_msg">Feedback was not sent. Try again.</string>
-    <string name="settings_info_shared">Share App Shuttle!</string>
-    <string name="settings_info_shared_msg">Shuttle Apps which you need, App Shuttle! Download: https://db.tt/WIwHzcgz</string>
+    <string name="settings_info_shared">Share AppShuttle!</string>
+    <string name="settings_info_shared_msg">Shuttle Apps which you need, AppShuttle! Download: https://db.tt/WIwHzcgz</string>
 
 </resources>
