@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+/*package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.Date;
 
@@ -38,3 +38,4 @@ public class MatcherResultDao {
 		db.execSQL("DELETE FROM matched_result WHERE time < " + timeDate.getTime() +";");
 	}
 }
+*/

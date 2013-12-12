@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.utils;
+/*package lab.davidahn.appshuttle.utils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,4 +28,4 @@ public class MapUtils
         }
         return result;
     }
-}
+}*/

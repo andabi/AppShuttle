@@ -39,8 +39,8 @@ public class AppShuttlePreferences {
 //		editor.putInt("context.bhv.duration_user_bhv.cache_size", 100);
 		
 		//report
-		editor.putBoolean("report.enabled", false);
-		editor.putLong("report.period", AlarmManager.INTERVAL_DAY);
+//		editor.putBoolean("report.enabled", false);
+//		editor.putLong("report.period", AlarmManager.INTERVAL_DAY);
 		
 		editor.putString("report.email.sender_addr", "appshuttle2@gmail.com");
 		editor.putString("report.email.sender_pwd", "appshuttle2@");

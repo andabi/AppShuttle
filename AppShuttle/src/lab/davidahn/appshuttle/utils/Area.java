@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.utils;
+/*package lab.davidahn.appshuttle.utils;
 
 public class Area {
 	double x;
@@ -31,3 +31,4 @@ public class Area {
 		this.radius = radius;
 	}
 }
+*/

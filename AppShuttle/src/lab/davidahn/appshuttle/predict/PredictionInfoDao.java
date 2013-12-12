@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict;
+/*package lab.davidahn.appshuttle.predict;
 
 import java.util.Date;
 
@@ -52,3 +52,4 @@ public class PredictionInfoDao {
 				"WHERE time < " + timeDate.getTime() +";");
 	}
 }
+*/

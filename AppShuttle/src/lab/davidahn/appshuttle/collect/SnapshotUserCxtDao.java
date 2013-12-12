@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.collect;
+/*package lab.davidahn.appshuttle.collect;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -131,3 +131,4 @@ public class SnapshotUserCxtDao {
 				+ ".csv");
 	}
 }
+*/

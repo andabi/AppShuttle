@@ -62,11 +62,11 @@ public class AppShuttleMainService extends Service {
 			compactionOperation = PendingIntent.getService(this, 0, compactionCxtIntent, 0);
 			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("compaction.period", AlarmManager.INTERVAL_DAY), compactionOperation);
 		}
-		if(preferenceSettings.getBoolean("report.enabled", false)){
-			Intent reportIntent = new Intent(this, ReportService.class);
-			reportOperation = PendingIntent.getService(this, 0, reportIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("report.period", AlarmManager.INTERVAL_DAY), reportOperation);
-		}
+//		if(preferenceSettings.getBoolean("report.enabled", false)){
+//			Intent reportIntent = new Intent(this, ReportService.class);
+//			reportOperation = PendingIntent.getService(this, 0, reportIntent, 0);
+//			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("report.period", AlarmManager.INTERVAL_DAY), reportOperation);
+//		}
 		
 		doPrediction();
 		activatePeriodicPrediction();

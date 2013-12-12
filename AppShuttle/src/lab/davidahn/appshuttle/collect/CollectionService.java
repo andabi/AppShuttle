@@ -27,7 +27,6 @@ import lab.davidahn.appshuttle.collect.env.SpeedEnvSensor;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -125,7 +124,7 @@ public class CollectionService extends Service {
 			uCxt.addUserBhvAll(userBhvList);
 		}
 		
-		storeSnapshotCxt(uCxt);
+//		storeSnapshotCxt(uCxt);
 		
 		return uCxt;
 	}
@@ -185,15 +184,15 @@ public class CollectionService extends Service {
 		}
 	}
 
-	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
-		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-
-		if(!preferenceSettings.getBoolean("collection.store_snapshot_cxt.enabled", false))
-			return;
-		
-		SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance();
-		snapshotUserCxtDao.storeCxt(uCxt);
-	}
+//	private void storeSnapshotCxt(SnapshotUserCxt uCxt) {
+//		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
+//
+//		if(!preferenceSettings.getBoolean("collection.store_snapshot_cxt.enabled", false))
+//			return;
+//		
+//		SnapshotUserCxtDao snapshotUserCxtDao = SnapshotUserCxtDao.getInstance();
+//		snapshotUserCxtDao.storeCxt(uCxt);
+//	}
 
 	private void storeDurationUserEnv(DurationUserEnv durationUserEnv) {
 		if(durationUserEnv == null)

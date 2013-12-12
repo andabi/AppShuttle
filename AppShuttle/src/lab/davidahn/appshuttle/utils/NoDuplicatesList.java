@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.utils;
+/*package lab.davidahn.appshuttle.utils;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -39,4 +39,4 @@ public class NoDuplicatesList<E> extends LinkedList<E> {
             super.add(index, element);
         }
     }
-}   
+}   */

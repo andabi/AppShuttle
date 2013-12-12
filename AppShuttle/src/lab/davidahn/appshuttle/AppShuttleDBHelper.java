@@ -34,14 +34,14 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER DEFAULT 0, blocked_time INTEGER DEFAULT 0, favorates INTEGER DEFAULT 0, favorates_time INTEGER DEFAULT 0, is_notifiable INTEGER DEFAULT 0, "
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
 
-		db.execSQL("CREATE TABLE IF NOT EXISTS matched_result ("
-				+ "time INTEGER, timezone TEXT, bhv_type TEXT, bhv_name TEXT, matcher_type TEXT, likelihood REAL, inverse_entropy REAL, "
-				+ "PRIMARY KEY (time, timezone, bhv_type, bhv_name, matcher_type)"
-				+ ");");
-
-		db.execSQL("CREATE TABLE IF NOT EXISTS predicted_bhv ("
-				+ "time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, score REAL, "
-				+ "PRIMARY KEY (time, timezone, bhv_type, bhv_name)" + ");");
+//		db.execSQL("CREATE TABLE IF NOT EXISTS matched_result ("
+//				+ "time INTEGER, timezone TEXT, bhv_type TEXT, bhv_name TEXT, matcher_type TEXT, likelihood REAL, inverse_entropy REAL, "
+//				+ "PRIMARY KEY (time, timezone, bhv_type, bhv_name, matcher_type)"
+//				+ ");");
+//
+//		db.execSQL("CREATE TABLE IF NOT EXISTS predicted_bhv ("
+//				+ "time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, score REAL, "
+//				+ "PRIMARY KEY (time, timezone, bhv_type, bhv_name)" + ");");
 
 		// db.execSQL("CREATE TABLE IF NOT EXISTS snapshot_context (time INTEGER, timezone TEXT, user_envs TEXT, bhv_type TEXT, bhv_name TEXT, "
 		// +
@@ -50,26 +50,26 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(oldVersion <= 38) {
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN blocked INTEGER DEFAULT 0"
-					);
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
-					);
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN favorates INTEGER DEFAULT 0"
-					);
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
-					);
-		}
-		
-		if(oldVersion <= 39) {
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
-					);
-		}
+//		if(oldVersion <= 38) {
+//			db.execSQL("ALTER TABLE list_user_bhv "
+//					+ "ADD COLUMN blocked INTEGER DEFAULT 0"
+//					);
+//			db.execSQL("ALTER TABLE list_user_bhv "
+//					+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
+//					);
+//			db.execSQL("ALTER TABLE list_user_bhv "
+//					+ "ADD COLUMN favorates INTEGER DEFAULT 0"
+//					);
+//			db.execSQL("ALTER TABLE list_user_bhv "
+//					+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
+//					);
+//		}
+//		
+//		if(oldVersion <= 39) {
+//			db.execSQL("ALTER TABLE list_user_bhv "
+//					+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
+//					);
+//		}
 		
 //		db.execSQL("UPDATE list_user_bhv " + 
 //				"SET blocked=0 " +

@@ -8,8 +8,6 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
-import lab.davidahn.appshuttle.predict.PredictionInfoDao;
-import lab.davidahn.appshuttle.predict.matcher.MatcherResultDao;
 import lab.davidahn.appshuttle.view.OrdinaryUserBhv;
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -41,8 +39,8 @@ public class CompactionService extends IntentService {
 		compactHistoryUserBhv(expirationBoundTimeDate);
 		compactHistoryUserEnv(expirationBoundTimeDate);
 		
-		compactPredictedBhv(expirationBoundTimeDate);
-		compactMatchedResult(expirationBoundTimeDate);
+//		compactPredictedBhv(expirationBoundTimeDate);
+//		compactMatchedResult(expirationBoundTimeDate);
 
 		compactUserBhv(expirationBoundTimeDate);
 	}
@@ -61,15 +59,15 @@ public class CompactionService extends IntentService {
 		durationUserEnvManager.deleteAllBefore(expirationBoundTimeDate);
 	}
 	
-	private void compactPredictedBhv(Date expirationBoundTimeDate) {
-		PredictionInfoDao predictedBhvDao = PredictionInfoDao.getInstance();
-		predictedBhvDao.deletePredictionInfoBefore(expirationBoundTimeDate);
-	}
-
-	private void compactMatchedResult(Date expirationBoundTimeDate) {
-		MatcherResultDao matcherResultDao = MatcherResultDao.getInstance();
-		matcherResultDao.deleteMatcherResult(expirationBoundTimeDate);
-	}
+//	private void compactPredictedBhv(Date expirationBoundTimeDate) {
+//		PredictionInfoDao predictedBhvDao = PredictionInfoDao.getInstance();
+//		predictedBhvDao.deletePredictionInfoBefore(expirationBoundTimeDate);
+//	}
+//
+//	private void compactMatchedResult(Date expirationBoundTimeDate) {
+//		MatcherResultDao matcherResultDao = MatcherResultDao.getInstance();
+//		matcherResultDao.deleteMatcherResult(expirationBoundTimeDate);
+//	}
 	
 	private void compactUserBhv(Date expirationBoundTimeDate) {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();

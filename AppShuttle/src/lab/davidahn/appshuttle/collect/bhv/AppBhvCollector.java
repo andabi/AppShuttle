@@ -23,8 +23,6 @@ public class AppBhvCollector extends BaseBhvCollector {
 	private PowerManager powerManager;
 	private KeyguardManager keyguardManager;
 
-//	private Map<BaseUserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
-
 	private static AppBhvCollector appBhvCollector = new AppBhvCollector();
 
 	private AppBhvCollector(){
@@ -33,8 +31,6 @@ public class AppBhvCollector extends BaseBhvCollector {
 		packageManager = cxt.getPackageManager();
 		powerManager = (PowerManager) cxt.getSystemService(Context.POWER_SERVICE); 
 	    keyguardManager = (KeyguardManager) cxt.getSystemService(Context.KEYGUARD_SERVICE);
-	    
-//		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
 	}
 	
 	public static AppBhvCollector getInstance(){
@@ -65,69 +61,6 @@ public class AppBhvCollector extends BaseBhvCollector {
 	    return res;
 	}
 
-//	@Override
-//	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<BaseUserBhv> userBhvList) {
-//		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-//		long adjustment = preferenceSettings.getLong("collection.period", 10000) / 2;
-//
-//		if(durationUserBhvBuilderMap.isEmpty()) {
-//			for(BaseUserBhv uBhv : userBhvList){
-//				durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
-//				, new Date(currTime.getTime() + adjustment)
-//				, currTimezone
-//				, uBhv));
-//			}
-//		} else {
-//			for(BaseUserBhv uBhv : userBhvList){
-//				if(durationUserBhvBuilderMap.containsKey(uBhv)){
-//					DurationUserBhv.Builder durationUserBhvBuilder = durationUserBhvBuilderMap.get(uBhv);
-//					durationUserBhvBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
-//				} else {
-//					durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
-//					, new Date(currTime.getTime() + adjustment)
-//					, currTimezone
-//					, uBhv));
-//				}
-//			}
-//			for(BaseUserBhv uBhv : new HashSet<BaseUserBhv>((durationUserBhvBuilderMap.keySet()))){
-//				DurationUserBhv.Builder _durationUserBhvBuilder = durationUserBhvBuilderMap.get(uBhv);
-//				if(currTime.getTime() - _durationUserBhvBuilder.getEndTime().getTime() 
-//						> preferenceSettings.getLong("collection.period", 10000) * 1.5){
-//					res.add(_durationUserBhvBuilder.build());
-//					durationUserBhvBuilderMap.remove(uBhv);
-//				}
-//			}
-//		}
-//		return res;
-//	}
-//	
-//	@Override
-//	public List<DurationUserBhv> postExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
-//		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-//
-////		for(UserBhv ongoingBhv : new HashSet<UserBhv>(ongoingBhvBuilderMap.keySet())){
-//		for(BaseUserBhv uBhv : durationUserBhvBuilderMap.keySet()){
-//			DurationUserBhv.Builder durationUserBhvBuilder = durationUserBhvBuilderMap.get(uBhv);
-//			if(currTimeDate.getTime() - durationUserBhvBuilder.getEndTime().getTime() 
-//					> preferenceSettings.getLong("collection.period", 10000) * 1.5){
-//				res.add(durationUserBhvBuilder.build());
-////				ongoingBhvBuilderMap.remove(ongoingBhv);
-//			}
-//		}
-//		
-//		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
-//		
-//		return res;
-//	}
-//	
-//	private DurationUserBhv.Builder createDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, BaseUserBhv bhv) {
-//		return new DurationUserBhv.Builder()
-//		.setTime(time)
-//		.setEndTime(endTime)
-//		.setTimeZone(currTimeZone)
-//		.setBhv(bhv);
-//	}
-	
 	private List<BaseUserBhv> collectServiceBhv() {
 		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 //		for(String bhvName : applicationManager.getCurrentService()){

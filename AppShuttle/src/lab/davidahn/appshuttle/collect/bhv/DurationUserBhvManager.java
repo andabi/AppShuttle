@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.collect.bhv;
+/*package lab.davidahn.appshuttle.collect.bhv;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,4 +47,4 @@ public class DurationUserBhvManager {
 		
 		return res;
 	}
-}
+}*/

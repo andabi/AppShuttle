@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.view;
+/*package lab.davidahn.appshuttle.view;
 
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.R;
@@ -99,4 +99,4 @@ public class InfoFragment extends Fragment implements OnClickListener{
 			onReportClick(v);
 		}
 	}
-}
+}*/
