@@ -94,7 +94,9 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 			if(!uniqueTime.isEmpty()){
 				while(it.hasNext()){
 					Long uniqueTimeElem = it.next();
-					if(Time.isBetween((uniqueTimeElem - conf.getTolerance()) % conf.getPeriod(), timePeriodic, (uniqueTimeElem + conf.getTolerance()) % conf.getPeriod(), conf.getPeriod())){
+					long from = (uniqueTimeElem - conf.getTolerance() + conf.getPeriod()) % conf.getPeriod();
+					long to = (uniqueTimeElem + conf.getTolerance()) % conf.getPeriod();
+					if(Time.isIncludedIn(from, timePeriodic, to, conf.getPeriod())){
 						unique = false;
 						break;
 					}
@@ -128,10 +130,10 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 		long std = conf.getTolerance() / 2;
 		NormalDistribution nd = new NormalDistribution(mean, std);
 
-		long start = (currTimePeriodic - conf.getTolerance()) % conf.getPeriod();
-		long end = (currTimePeriodic + conf.getTolerance()) % conf.getPeriod();
+		long from = (currTimePeriodic - conf.getTolerance() + conf.getPeriod()) % conf.getPeriod();
+		long to = (currTimePeriodic + conf.getTolerance()) % conf.getPeriod();
 				
-		if(Time.isBetween(start, targetTimePeriodic, end, conf.getPeriod())){
+		if(Time.isIncludedIn(from, targetTimePeriodic, to, conf.getPeriod())){
 			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
 			relatedness = 0;
