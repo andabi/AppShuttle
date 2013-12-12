@@ -6,7 +6,6 @@ import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.predict.PredictionService;
-import lab.davidahn.appshuttle.report.ReportService;
 import lab.davidahn.appshuttle.view.NotiBarNotifier;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -22,7 +21,6 @@ import android.os.IBinder;
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
 	private PendingIntent collectionOperation;
-	private PendingIntent reportOperation;
 	private PendingIntent predictionOperation;
 	private PendingIntent compactionOperation;
 	private SharedPreferences preferenceSettings;
@@ -62,11 +60,6 @@ public class AppShuttleMainService extends Service {
 			compactionOperation = PendingIntent.getService(this, 0, compactionCxtIntent, 0);
 			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("compaction.period", AlarmManager.INTERVAL_DAY), compactionOperation);
 		}
-//		if(preferenceSettings.getBoolean("report.enabled", false)){
-//			Intent reportIntent = new Intent(this, ReportService.class);
-//			reportOperation = PendingIntent.getService(this, 0, reportIntent, 0);
-//			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(10), preferenceSettings.getLong("report.period", AlarmManager.INTERVAL_DAY), reportOperation);
-//		}
 		
 		doPrediction();
 		activatePeriodicPrediction();
@@ -81,7 +74,6 @@ public class AppShuttleMainService extends Service {
 	}
 	
 	private void doPrediction() {
-//		Log.d("test","prediction");
 		startService(new Intent(this, PredictionService.class));
 		AppShuttleApplication.lastPredictionTime = System.currentTimeMillis();
 	}
@@ -118,7 +110,6 @@ public class AppShuttleMainService extends Service {
 		super.onDestroy();
 		
 		alarmManager.cancel(collectionOperation);
-		alarmManager.cancel(reportOperation);
 		alarmManager.cancel(predictionOperation);
 		alarmManager.cancel(compactionOperation);
 		
@@ -130,7 +121,6 @@ public class AppShuttleMainService extends Service {
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleMainService.this, CompactionService.class));
 		stopService(new Intent(AppShuttleMainService.this, UnregisterBhvService.class));
-		stopService(new Intent(AppShuttleMainService.this, ReportService.class));
 		stopService(new Intent(AppShuttleMainService.this, PredictionService.class));
 		
 		((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancelAll();

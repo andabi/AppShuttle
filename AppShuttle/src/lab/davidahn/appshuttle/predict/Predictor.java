@@ -254,46 +254,4 @@ public class Predictor {
 		Collections.sort(res);
 		return res.subList(0, Math.min(res.size(), topN));
 	}
-
-//	public void storePredicted(Map<UserBhv, PredictionInfo> newlyPredicted) {
-//		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-//		
-//		if(!preferenceSettings.getBoolean("predictor.store", false))
-//			return;
-//		
-//		PredictionInfoDao predictionInfoDao = PredictionInfoDao.getInstance();
-//		for(UserBhv uBhv : newlyPredicted.keySet()) {
-//			predictionInfoDao.storePredictionInfo(newlyPredicted.get(uBhv));
-//		}
-//	}
-
 }
-
-//ContextMatcher timeCxtMatcher = new TimeContextMatcher(cxt
-//, settings.getFloat("matcher.time.min_likelihood", 0.7f)
-//, settings.getInt("matcher.time.min_num_history", 3)
-//, AlarmManager.INTERVAL_DAY
-//, settings.getLong("matcher.time.tolerance", AlarmManager.INTERVAL_HOUR / 6));
-//ContextMatcher locCxtMatcher = new LocContextMatcher(cxt
-//, settings.getFloat("matcher.loc.min_likelihood", 0.7f)
-//, settings.getInt("matcher.loc.min_num_history", 3)
-//, settings.getInt("matcher.loc.tolerance_in_meter", 2000));
-//ContextMatcher FreqCxtMatcher = new FreqContextMatcher(cxt
-//, Double.MIN_VALUE
-//, settings.getInt("matcher.recent.frequently.min_num_history", 3));
-
-
-//List<MatchedCxt> locMatchhedCxtList;
-//if(GlobalState.recentLocMatchedCxtList == null) 
-//	GlobalState.recentLocMatchedCxtList = new ArrayList<MatchedCxt>();
-//if(GlobalState.moved == true){
-//	ContextMatcher locCxtMatcher = new LocContextMatcher(cxt, 0, settings.getInt("location.tolerance_in_meter", 2000));
-//	locMatchedCxtList = locCxtMatcher.matchAndGetResult(GlobalState.currentUEnv);
-//	GlobalState.recentLocMatchedCxtList = locMatchedCxtList;
-//	Log.i("location", "moved");
-//} else {
-//	locMatchedCxtList = GlobalState.recentLocMatchedCxtList;
-//}
-
-//Collections.sort(res);
-//res = res.subList(0, Math.min(res.size(), topN));

@@ -45,7 +45,6 @@
         <service android:name="lab.davidahn.appshuttle.collect.CollectionService" />
         <service android:name="lab.davidahn.appshuttle.collect.CompactionService" />
         <service android:name="lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService" />
-        <service android:name="lab.davidahn.appshuttle.report.ReportService" />
         <service android:name="lab.davidahn.appshuttle.predict.PredictionService" />
 
         <receiver android:name="lab.davidahn.appshuttle.BootCompletedReceiver" >

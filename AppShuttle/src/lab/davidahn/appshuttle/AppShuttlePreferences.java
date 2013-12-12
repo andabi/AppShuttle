@@ -33,15 +33,7 @@ public class AppShuttlePreferences {
 		editor.putLong("compaction.period", AlarmManager.INTERVAL_DAY);
 		editor.putLong("compaction.expiration", 35 * AlarmManager.INTERVAL_DAY);
 		
-		//TODO history enable setting
-		
-		//context
-//		editor.putInt("context.bhv.duration_user_bhv.cache_size", 100);
-		
 		//report
-//		editor.putBoolean("report.enabled", false);
-//		editor.putLong("report.period", AlarmManager.INTERVAL_DAY);
-		
 		editor.putString("report.email.sender_addr", "appshuttle2@gmail.com");
 		editor.putString("report.email.sender_pwd", "appshuttle2@");
 		editor.putString("report.email.receiver_addr", "andabi412@gmail.com");
@@ -50,8 +42,6 @@ public class AppShuttlePreferences {
 		editor.putBoolean("predictor.store", false);
 		editor.putLong("predictor.period", 180000);
 		editor.putLong("predictor.delay_ignorance", 60000);
-		
-//		editor.putLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		
 		editor.putLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
@@ -86,16 +76,3 @@ public class AppShuttlePreferences {
 		editor.commit();
 	}
 }
-
-//		editor.putLong("matcher.position.loc.duration", 7 * AlarmManager.INTERVAL_DAY);
-//		editor.putFloat("matcher.position.loc.min_likelihood", 0.7f);
-//		editor.putFloat("matcher.position.loc.min_inverse_entropy", Float.MIN_VALUE);
-//		editor.putInt("matcher.position.loc.min_num_history", 3);
-//		editor.putInt("matcher.position.loc.tolerance_in_meter", 100);
-
-//editor.putLong("matcher.time.daily.strict.duration", 5 * AlarmManager.INTERVAL_DAY);
-//editor.putFloat("matcher.time.daily.strict.min_likelihood", 0.5f);
-//editor.putFloat("matcher.time.daily.strict.min_inverse_entropy", Float.MIN_VALUE);
-//editor.putInt("matcher.time.daily.strict.min_num_history", 3);
-//editor.putLong("matcher.time.daily.strict.acceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3);
-//editor.putLong("matcher.time.daily.strict.tolerance", pref.getLong("matcher.time.daily.strictacceptance_delay", AlarmManager.INTERVAL_HALF_HOUR / 3) / 2);

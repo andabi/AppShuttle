@@ -15,7 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 public class CompactionService extends IntentService {
-	private SnapshotUserCxt _currUserCxt;
+	private SnapshotUserCxt currUserCxt;
 	
 	public CompactionService() {
 		this("CompactionService");
@@ -27,21 +27,17 @@ public class CompactionService extends IntentService {
 
 	public void onCreate() {
 		super.onCreate();
-		_currUserCxt = AppShuttleApplication.currUserCxt;
+		currUserCxt = AppShuttleApplication.currUserCxt;
 	}
 	
 	public void onHandleIntent(Intent intent){
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 
 		long expirationDuration = preferenceSettings.getLong("compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
-		Date expirationBoundTimeDate = new Date(_currUserCxt.getTimeDate().getTime() - expirationDuration);
+		Date expirationBoundTimeDate = new Date(currUserCxt.getTimeDate().getTime() - expirationDuration);
 		
 		compactHistoryUserBhv(expirationBoundTimeDate);
 		compactHistoryUserEnv(expirationBoundTimeDate);
-		
-//		compactPredictedBhv(expirationBoundTimeDate);
-//		compactMatchedResult(expirationBoundTimeDate);
-
 		compactUserBhv(expirationBoundTimeDate);
 	}
 	
@@ -59,22 +55,12 @@ public class CompactionService extends IntentService {
 		durationUserEnvManager.deleteAllBefore(expirationBoundTimeDate);
 	}
 	
-//	private void compactPredictedBhv(Date expirationBoundTimeDate) {
-//		PredictionInfoDao predictedBhvDao = PredictionInfoDao.getInstance();
-//		predictedBhvDao.deletePredictionInfoBefore(expirationBoundTimeDate);
-//	}
-//
-//	private void compactMatchedResult(Date expirationBoundTimeDate) {
-//		MatcherResultDao matcherResultDao = MatcherResultDao.getInstance();
-//		matcherResultDao.deleteMatcherResult(expirationBoundTimeDate);
-//	}
-	
 	private void compactUserBhv(Date expirationBoundTimeDate) {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		
 		for(OrdinaryUserBhv uBhv : userBhvManager.getOrdinaryBhvSet()){
-			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTimeDate, _currUserCxt.getTimeDate(), uBhv);
+			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
 			if(!durationUserBhvList.isEmpty())
 				continue;
 			userBhvManager.unregisterBhv(uBhv);
