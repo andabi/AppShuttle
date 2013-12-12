@@ -9,7 +9,10 @@ import java.util.Map;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.SensorOnCollector;
+import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.conf.BaseMatcherConf;
 
 public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher {
@@ -98,6 +101,11 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 //	}
 	
 	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
+		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON && uBhv.getBhvName().equals(SensorType.WIFI.name())){
+			if(SensorOnCollector.isWifiAvailable())
+				return false;
+		}
+		
 		return true;
 	}
 
