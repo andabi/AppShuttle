@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/unfavorite"
+        android:icon="@drawable/ic_action_phone"
+        android:showAsAction="always|withText"
+        android:title="@string/action_unfavorite"/>
+
+    <item
+	    android:id="@+id/favorite_unnotify"
+	    android:showAsAction="always|withText"
+	    android:icon="@drawable/ic_action_not_important"
+	    android:title="@string/action_favorite_unnotify"/>
+
+</menu>
