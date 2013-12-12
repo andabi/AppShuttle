@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
