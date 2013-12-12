@@ -8,7 +8,7 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import lab.davidahn.appshuttle.view.BlockedUserBhv;
-import lab.davidahn.appshuttle.view.FavoratesUserBhv;
+import lab.davidahn.appshuttle.view.FavoriteUserBhv;
 import lab.davidahn.appshuttle.view.OrdinaryUserBhv;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -111,14 +111,14 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public List<FavoratesUserBhv> retrieveFavoratesUserBhv() {
+	public List<FavoriteUserBhv> retrieveFavoriteUserBhv() {
 		Gson gson = new Gson();
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
 				"FROM list_user_bhv " +
 				"WHERE favorates = 1"
 				, null);
-		List<FavoratesUserBhv> res = new ArrayList<FavoratesUserBhv>();
+		List<FavoriteUserBhv> res = new ArrayList<FavoriteUserBhv>();
 		while (cur.moveToNext()) {
 			UserBhvType bhvType= UserBhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
@@ -129,18 +129,18 @@ public class UserBhvDao {
 			
 			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			((BaseUserBhv)uBhv).setMetas(metas);
-			FavoratesUserBhv favoratesUserBhv = new FavoratesUserBhv(uBhv, setTime, isNotifiable);
+			FavoriteUserBhv favoriteUserBhv = new FavoriteUserBhv(uBhv, setTime, isNotifiable);
 //			if(isNotifiable)
-//				favoratesUserBhv.trySetNotifiable();
-//				FavoratesUserBhv.trySetNotifiable(favoratesUserBhv);
-			res.add(favoratesUserBhv);
+//				favoriteUserBhv.trySetNotifiable();
+//				FavoriteUserBhv.trySetNotifiable(favoriteUserBhv);
+			res.add(favoriteUserBhv);
 		}
 		cur.close();
 //		Log.i("retrieved userBhv", res.toString());
 		return res;
 	}
 	
-	public void favorates(FavoratesUserBhv uBhv) {
+	public void favorite(FavoriteUserBhv uBhv) {
 		int notifiable = (uBhv.isNotifiable()) ? 1 : 0;
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
@@ -149,7 +149,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void unfavorates(FavoratesUserBhv uBhv) {
+	public void unfavorite(FavoriteUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET favorates = 0, is_notifiable = 0 " +
@@ -157,7 +157,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void updateNotifiable(FavoratesUserBhv uBhv) {
+	public void updateNotifiable(FavoriteUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET is_notifiable = 1 " +
@@ -165,7 +165,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void updateUnNotifiable(FavoratesUserBhv uBhv) {
+	public void updateUnNotifiable(FavoriteUserBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET is_notifiable = 0 " +

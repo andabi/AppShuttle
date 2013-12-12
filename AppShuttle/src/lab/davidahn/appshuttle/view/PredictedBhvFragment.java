@@ -156,8 +156,8 @@ public class PredictedBhvFragment extends ListFragment {
 		
 		switch(itemId) {
 		case R.id.favorate:	
-			uBhvManager.favorates((predictedBhvList.get(pos)));
-			return getResources().getString(R.string.action_msg_favorates);
+			uBhvManager.favorite((predictedBhvList.get(pos)));
+			return getResources().getString(R.string.action_msg_favorite);
 		case R.id.block:
 			uBhvManager.block((predictedBhvList.get(pos)));
 			return getResources().getString(R.string.action_msg_block);

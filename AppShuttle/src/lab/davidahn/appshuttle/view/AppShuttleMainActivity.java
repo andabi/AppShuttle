@@ -101,9 +101,9 @@ public class AppShuttleMainActivity extends Activity {
 				.setIcon(R.drawable.ic_action_phone),
 				PredictedBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab()
-				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorates))
+				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorite))
 				.setIcon(R.drawable.ic_action_favorite),
-				FavoratesBhvFragment.class, null);
+				FavoriteBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_blocked))
 				.setIcon(R.drawable.ic_action_discard),

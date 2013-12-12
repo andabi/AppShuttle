@@ -36,7 +36,47 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+		if(oldVersion <= 38) {
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN blocked INTEGER DEFAULT 0"
+					);
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
+					);
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN favorates INTEGER DEFAULT 0"
+					);
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
+					);
+		}
+		
+		if(oldVersion <= 39) {
+			db.execSQL("ALTER TABLE list_user_bhv "
+					+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
+					);
+		}
+		
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET blocked=0 " +
+//				"WHERE blocked IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET blocked_time=0 " +
+//				"WHERE blocked_time IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET favorates=0 " +
+//				"WHERE favorates IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET favorite_time=0 " +
+//				"WHERE favorite_time IS NULL"
+//				);
+//		db.execSQL("UPDATE list_user_bhv " + 
+//				"SET is_notifiable=0 " +
+//				"WHERE is_notifiable IS NULL"
+//				);
 	}
 	
 }

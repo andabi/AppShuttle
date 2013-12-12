@@ -51,11 +51,11 @@ public class NotiBarNotifier {
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
 		
 		int numElem = getNumElem();
-		List<FavoratesUserBhv> notifiableFavoratesBhvList = FavoratesUserBhv.getNotifiableFavoratesBhvList();
-		int numFavoratesElem = Math.min(notifiableFavoratesBhvList.size(), numElem);
-		int numPredictedElem = numElem - numFavoratesElem;
+		List<FavoriteUserBhv> notifiableFavoriteBhvList = FavoriteUserBhv.getNotifiableFavoriteBhvList();
+		int numFavoriteElem = Math.min(notifiableFavoriteBhvList.size(), numElem);
+		int numPredictedElem = numElem - numFavoriteElem;
 		
-		viewableUserBhvList.addAll(notifiableFavoratesBhvList.subList(0, numFavoratesElem));
+		viewableUserBhvList.addAll(notifiableFavoriteBhvList.subList(0, numFavoriteElem));
 		viewableUserBhvList.addAll(Predictor.getInstance().getPredictedOrdinaryBhvSorted(numPredictedElem));
 		
 		updateNotiView(viewableUserBhvList);
@@ -94,7 +94,7 @@ public class NotiBarNotifier {
 
 		//clean
 		notiRemoteView.removeAllViews(R.id.noti_predicted_container);
-		notiRemoteView.removeAllViews(R.id.noti_favorates_container);
+		notiRemoteView.removeAllViews(R.id.noti_favorite_container);
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 

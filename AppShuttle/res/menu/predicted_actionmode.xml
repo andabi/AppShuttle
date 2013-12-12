@@ -5,7 +5,7 @@
         android:id="@+id/favorate"
         android:icon="@drawable/ic_action_favorite"
         android:showAsAction="always|withText"
-        android:title="@string/action_favorates"/>
+        android:title="@string/action_favorite"/>
     <item
         android:id="@+id/block"
         android:icon="@drawable/ic_action_discard"
