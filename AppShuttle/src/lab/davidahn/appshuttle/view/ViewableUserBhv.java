@@ -92,7 +92,7 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 				break;
 			case SENSOR_ON:
 				if(bhvName.equals(SensorType.WIFI.name()))
-					icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.ic_action_network_wifi);
+					icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.wifi);
 				break;
 			case NONE:
 				break;

@@ -15,7 +15,7 @@
             android:id="@+id/refresh"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_action_refresh" />
+            android:src="@drawable/refresh" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -30,6 +30,6 @@
         android:layout_height="30dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:src="@drawable/ic_action_settings" />
+        android:src="@drawable/settings" />
 
 </LinearLayout>

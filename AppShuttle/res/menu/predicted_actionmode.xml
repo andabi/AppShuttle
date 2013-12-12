@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/favorate"
-        android:icon="@drawable/ic_action_favorite"
+        android:icon="@drawable/favorite"
         android:showAsAction="always|withText"
         android:title="@string/action_favorite"/>
     <item
         android:id="@+id/block"
-        android:icon="@drawable/ic_action_discard"
+        android:icon="@drawable/discard"
         android:showAsAction="always|withText"
         android:title="@string/action_block"/>
 

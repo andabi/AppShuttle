@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/unfavorite"
-        android:icon="@drawable/ic_action_good"
+        android:icon="@drawable/predicted"
         android:showAsAction="always|withText"
         android:title="@string/action_unfavorite"/>
     
     <item
 	    android:id="@+id/favorite_notify"
 	    android:showAsAction="always|withText"
-	    android:icon="@drawable/ic_action_make_available_offline"
+	    android:icon="@drawable/notifiable"
 	    android:title="@string/action_favorite_notify"/>
 
 </menu>

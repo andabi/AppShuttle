@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/unblock"
-        android:icon="@drawable/ic_action_good"
+        android:icon="@drawable/predicted"
         android:showAsAction="always|withText"
         android:title="@string/action_unblock"/>
 

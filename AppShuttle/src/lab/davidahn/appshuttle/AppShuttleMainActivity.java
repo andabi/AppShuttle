@@ -1,11 +1,12 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle;
 
 import java.util.ArrayList;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.AppShuttleMainService;
-import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.view.BlockedBhvFragment;
+import lab.davidahn.appshuttle.view.FavoriteBhvFragment;
+import lab.davidahn.appshuttle.view.PredictedBhvFragment;
+import lab.davidahn.appshuttle.view.SettingsActivity;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -98,15 +99,15 @@ public class AppShuttleMainActivity extends Activity {
 		bundle.putString("tag", "predicted");
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_predicted))
-				.setIcon(R.drawable.ic_action_good),
+				.setIcon(R.drawable.predicted),
 				PredictedBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorite))
-				.setIcon(R.drawable.ic_action_favorite),
+				.setIcon(R.drawable.favorite),
 				FavoriteBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_blocked))
-				.setIcon(R.drawable.ic_action_discard),
+				.setIcon(R.drawable.discard),
 				BlockedBhvFragment.class, null);
 
 		if (savedInstanceState != null) {

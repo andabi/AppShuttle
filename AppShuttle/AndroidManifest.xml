@@ -30,7 +30,7 @@
         android:theme="@style/AppBaseTheme"
         >
         <activity
-            android:name="lab.davidahn.appshuttle.view.AppShuttleMainActivity"
+            android:name="lab.davidahn.appshuttle.AppShuttleMainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
