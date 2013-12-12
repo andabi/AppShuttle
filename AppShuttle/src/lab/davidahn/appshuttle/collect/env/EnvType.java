@@ -1,8 +1,6 @@
 package lab.davidahn.appshuttle.collect.env;
 
 public enum EnvType {
-//	LOCATION,
-//	PLACE;
 
 	LOCATION(UserLoc.class),
 	INVALID_LOCATION(InvalidUserLoc.class),
