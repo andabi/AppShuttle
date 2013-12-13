@@ -3,9 +3,6 @@
 
     <string name="app_name">앱셔틀</string>
     <string name="action_settings">설정</string>
-    <string name="start">시작</string>
-    <string name="stop">중지</string>
-    <string name="report">리포팅</string>
     <string name="report_success_msg">전송 완료</string>
     <string name="report_failure_msg">전송 실패</string>
     <string name="app_icon">앱셔틀 아이콘</string>
@@ -38,14 +35,15 @@
     <string name="action_msg_favorite_notifiable_num_proper">개가 보통 적당합니다.</string>
     <string name="action_msg_favorite_unnotifiable">알림창에 표시되지 않도록 변경합니다.</string>
     <string name="action_msg_favorite_notifiable_failure">가능한 개수를 초과하여 변경이 되지 않았습니다.</string>
-    <string name="settings_category_setting">설정</string>    
-    <string name="settings_category_info">정보</string>    
+    <string name="settings_category_setting">설정</string>
+    <string name="settings_category_info">정보</string>
     <string name="settings_pref_noti_view_enabled">알림창에 표시</string>
     <string name="settings_pref_noti_view_enabled_summary">앱을 알림창에 표시합니다.</string>
     <string name="settings_info_feedback">건의사항 보내기</string>
-    <string name="settings_info_feedback_summary">오류를 알리거나 새로운 기능을 요청합니다.</string>    
+    <string name="settings_info_feedback_summary">오류를 알리거나 새로운 기능을 요청합니다.</string>
     <string name="settings_info_feedback_success_msg">건의사항을 보내주셔서 감사합니다.</string>
     <string name="settings_info_feedback_failure_msg">건의사항이 보내지지 않았습니다. 잠시후 다시 시도해주세요.</string>
     <string name="settings_info_shared">친구에게 앱셔틀 알려주기 </string>
     <string name="settings_info_shared_msg">지금 사용할 앱을 알아서 셔틀해드립니다! 앱셔틀 바로 다운로드 https://db.tt/WIwHzcgz</string>
+
 </resources>
