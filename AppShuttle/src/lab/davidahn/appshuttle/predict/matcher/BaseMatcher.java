@@ -102,7 +102,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 	
 	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
 		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON && uBhv.getBhvName().equals(SensorType.WIFI.name())){
-			if(SensorOnCollector.isWifiAvailable())
+			if(SensorOnCollector.isWifiEnabled())
 				return false;
 		}
 		

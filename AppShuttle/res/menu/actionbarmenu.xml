@@ -3,6 +3,6 @@
         android:title=""
         android:showAsAction="always"
         android:actionProviderClass=
-        	"lab.davidahn.appshuttle.view.AppShuttleMainActivity$AppShuttleActionProvider"
+        	"lab.davidahn.appshuttle.AppShuttleMainActivity$AppShuttleActionProvider"
         />
 </menu>

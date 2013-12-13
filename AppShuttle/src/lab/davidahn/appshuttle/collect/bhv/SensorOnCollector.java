@@ -7,8 +7,7 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 
 public class SensorOnCollector extends BaseBhvCollector {
 	private static SensorOnCollector sensorOnCollector = new SensorOnCollector();
@@ -23,16 +22,18 @@ public class SensorOnCollector extends BaseBhvCollector {
 
 	public List<BaseUserBhv> collect() {
 		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
-		if (isWifiAvailable()) {
+		if (isWifiEnabled()) {
 			res.add(create(UserBhvType.SENSOR_ON, SensorType.WIFI.name()));
 		}
 		return res;
 	}
 
-	public static boolean isWifiAvailable() {
-		ConnectivityManager connManager = (ConnectivityManager) AppShuttleApplication
-				.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		return wifi.isAvailable();
+	public static boolean isWifiEnabled() {
+//		ConnectivityManager connManager = (ConnectivityManager) AppShuttleApplication
+//				.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//		NetworkInfo wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//		return wifi.isAvailable();
+		WifiManager wifi = (WifiManager)AppShuttleApplication.getContext().getSystemService(Context.WIFI_SERVICE);
+		return wifi.isWifiEnabled();
 	}
 }
