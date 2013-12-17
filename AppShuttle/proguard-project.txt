@@ -26,3 +26,5 @@
 -libraryjars libs/commons-math3-3.0.jar
 -libraryjars libs/gson-2.2.4.jar
 -libraryjars libs/mail.jar
+
+-dontwarn java.awt.**,javax.security.**,java.beans.**
