@@ -30,6 +30,7 @@ import lab.davidahn.appshuttle.collect.env.UserEnv;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 public class CollectionService extends Service {
 	private Date currTimeDate;
@@ -101,9 +102,7 @@ public class CollectionService extends Service {
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> preExtractedDurationUserBhvList = 
 					collector.preExtractDurationUserBhv(currTimeDate, currTimeZone);
-			storeDurationUserBhv(preExtractedDurationUserBhvList);
-
-			registerEachBhv(preExtractedDurationUserBhvList);
+			RegisterAndStoreDurationUserBhv(preExtractedDurationUserBhvList);
 		}
 //		Log.d("collection", "pre collection");
 	}
@@ -143,7 +142,8 @@ public class CollectionService extends Service {
 			}
 		}
 		
-		storeDurationUserBhv(snapshotAppUserBhvList);
+		Log.d("test", snapshotAppUserBhvList.toString());
+		RegisterAndStoreDurationUserBhv(snapshotAppUserBhvList);
 	}
 
 	private void extractAndStoreDurationUserContext(SnapshotUserCxt uCxt) {
@@ -159,9 +159,7 @@ public class CollectionService extends Service {
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> durationUserBhvList = 
 					collector.extractDurationUserBhv(currTimeDate, currTimeZone, uCxt.getUserBhvs());
-			storeDurationUserBhv(durationUserBhvList);
-
-			registerEachBhv(durationUserBhvList);
+			RegisterAndStoreDurationUserBhv(durationUserBhvList);
 		}
 	}
 	
@@ -186,18 +184,7 @@ public class CollectionService extends Service {
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> postExtractedDurationUserBhvList = 
 					collector.postExtractDurationUserBhv(currTimeDate, currTimeZone);
-			storeDurationUserBhv(postExtractedDurationUserBhvList);
-
-			registerEachBhv(postExtractedDurationUserBhvList);
-		}
-	}
-
-	private void registerEachBhv(List<DurationUserBhv> durationUserBhvList) {
-		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			BaseUserBhv uBhv = (BaseUserBhv)durationUserBhv.getUserBhv();
-			if(uBhv.isValid())
-				userBhvManager.registerBhv(uBhv);
+			RegisterAndStoreDurationUserBhv(postExtractedDurationUserBhvList);
 		}
 	}
 
@@ -218,10 +205,21 @@ public class CollectionService extends Service {
 		durationUserEnvManager.store(durationUserEnv);
 	}
 	
-	private void storeDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {
+	private void RegisterAndStoreDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {
+		registerUserBhvs(durationUserBhvList);
+
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			durationUserBhvDao.store(durationUserBhv);
-		}		
+		}
+	}
+	
+	private void registerUserBhvs(List<DurationUserBhv> durationUserBhvList) {
+		UserBhvManager userBhvManager = UserBhvManager.getInstance();
+		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			BaseUserBhv uBhv = (BaseUserBhv)durationUserBhv.getUserBhv();
+			if(uBhv.isValid())
+				userBhvManager.registerBhv(uBhv);
+		}
 	}
 }
