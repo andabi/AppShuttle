@@ -18,6 +18,7 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.SensorOnCollector;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvSensor;
@@ -68,8 +69,8 @@ public class CollectionService extends Service {
 		currTimeZone = Calendar.getInstance().getTimeZone();
 		
 		SnapshotUserCxt uCxt = CollectSnapshotUserContext();
-		extractSnapshotUserBhvAsDurationUserBhv(uCxt);
-		extractDurationUserContext(uCxt);
+		extractAndStoreSnapshotAppUserBhvAsDurationUserBhv(uCxt);
+		extractAndStoreDurationUserContext(uCxt);
 
 		AppShuttleApplication.currUserCxt = uCxt;
 		
@@ -129,25 +130,23 @@ public class CollectionService extends Service {
 		return uCxt;
 	}
 	
-    private void extractSnapshotUserBhvAsDurationUserBhv(SnapshotUserCxt uCxt) {
-		Date currTimeDate = uCxt.getTimeDate();
-		TimeZone currTimeZone = uCxt.getTimeZone();
-		
-		List<DurationUserBhv> durationUserBhvList = new ArrayList<DurationUserBhv>();
+    private void extractAndStoreSnapshotAppUserBhvAsDurationUserBhv(SnapshotUserCxt uCxt) {
+		List<DurationUserBhv> snapshotAppUserBhvList = new ArrayList<DurationUserBhv>();
 		for(UserBhv uBhv : uCxt.getUserBhvs()){
-			if(!AppShuttleApplication.durationUserBhvBuilderMap.containsKey(uBhv)){
-				durationUserBhvList.add(new DurationUserBhv.Builder()
-						.setTime(currTimeDate)
-						.setEndTime(currTimeDate)
-						.setTimeZone(currTimeZone)
-						.setBhv(uBhv)
-						.build());
+			if(uBhv.getBhvType() != UserBhvType.APP)
+				continue;
+			
+			AppBhvCollector bhvCollector = AppBhvCollector.getInstance();
+			if(!bhvCollector.isTrackedForDurationUserBhv(uBhv)){
+				snapshotAppUserBhvList.add(bhvCollector.createDurationUserBhvBuilder(
+						uCxt.getTimeDate(), uCxt.getTimeDate(), uCxt.getTimeZone(), uBhv).build());
 			}
 		}
-		storeDurationUserBhv(durationUserBhvList);
+		
+		storeDurationUserBhv(snapshotAppUserBhvList);
 	}
 
-	private void extractDurationUserContext(SnapshotUserCxt uCxt) {
+	private void extractAndStoreDurationUserContext(SnapshotUserCxt uCxt) {
 		Date currTimeDate = uCxt.getTimeDate();
 		TimeZone currTimeZone = uCxt.getTimeZone();
 		

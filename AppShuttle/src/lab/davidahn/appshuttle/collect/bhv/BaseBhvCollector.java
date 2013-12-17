@@ -22,7 +22,6 @@ public class BaseBhvCollector implements BhvCollector {
 		cxt = AppShuttleApplication.getContext();
 		preferenceSettings = cxt.getPreferences();
 		
-//		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
 		durationUserBhvBuilderMap = AppShuttleApplication.durationUserBhvBuilderMap;
 	}
 
@@ -39,12 +38,11 @@ public class BaseBhvCollector implements BhvCollector {
 	@Override
 	public List<DurationUserBhv> extractDurationUserBhv(Date currTime, TimeZone currTimezone, List<BaseUserBhv> userBhvList) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		long adjustment = preferenceSettings.getLong("collection.period", 10000) / 2;
 
 		if(durationUserBhvBuilderMap.isEmpty()) {
 			for(BaseUserBhv uBhv : userBhvList){
-				durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
-				, new Date(currTime.getTime() + adjustment)
+				durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime())
+				, new Date(currTime.getTime())
 				, currTimezone
 				, uBhv));
 			}
@@ -52,10 +50,10 @@ public class BaseBhvCollector implements BhvCollector {
 			for(BaseUserBhv uBhv : userBhvList){
 				if(durationUserBhvBuilderMap.containsKey(uBhv)){
 					DurationUserBhv.Builder durationUserBhvBuilder = durationUserBhvBuilderMap.get(uBhv);
-					durationUserBhvBuilder.setEndTime(new Date(currTime.getTime() + adjustment)).setTimeZone(currTimezone);
+					durationUserBhvBuilder.setEndTime(new Date(currTime.getTime())).setTimeZone(currTimezone);
 				} else {
-					durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime() - adjustment)
-					, new Date(currTime.getTime() + adjustment)
+					durationUserBhvBuilderMap.put(uBhv, createDurationUserBhvBuilder(new Date(currTime.getTime())
+					, new Date(currTime.getTime())
 					, currTimezone
 					, uBhv));
 				}
@@ -89,11 +87,20 @@ public class BaseBhvCollector implements BhvCollector {
 		return res;
 	}
 	
-	private DurationUserBhv.Builder createDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, BaseUserBhv bhv) {
+	public DurationUserBhv.Builder createDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, UserBhv bhv) {
+		long adjustment = preferenceSettings.getLong("collection.period", 10000) / 2;
+
 		return new DurationUserBhv.Builder()
-		.setTime(time)
-		.setEndTime(endTime)
+		.setTime(new Date(time.getTime() - adjustment))
+		.setEndTime(new Date(endTime.getTime() + adjustment))
 		.setTimeZone(currTimeZone)
 		.setBhv(bhv);
+	}
+	
+	public boolean isTrackedForDurationUserBhv(UserBhv uBhv){
+		if(AppShuttleApplication.durationUserBhvBuilderMap.containsKey(uBhv))
+			return true;
+		else
+			return false;
 	}
 }
