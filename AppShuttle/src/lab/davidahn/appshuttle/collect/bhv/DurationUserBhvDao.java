@@ -12,10 +12,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class DurationUserBhvDao {
 	private static DurationUserBhvDao durationUserBhvDao = new DurationUserBhvDao();
-	private SQLiteDatabase _db;
+	private SQLiteDatabase db;
 
 	private DurationUserBhvDao() {
-		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 	}
 
 	public static DurationUserBhvDao getInstance() {
@@ -30,13 +30,13 @@ public class DurationUserBhvDao {
 		row.put("timezone", durationUserBhv.getTimeZone().getID());
 		row.put("bhv_type", durationUserBhv.getUserBhv().getBhvType().toString());
 		row.put("bhv_name", durationUserBhv.getUserBhv().getBhvName());
-		_db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
-//		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
+//		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
+		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 //		Log.i("stored duration bhv", durationUserBhv.toString());
 	}
 
 	public List<DurationUserBhv> retrieve(long beginTime, long endTime) {
-		Cursor cur = _db.rawQuery("" +
+		Cursor cur = db.rawQuery("" +
 				"SELECT * " +
 				"FROM history_user_bhv" +
 				"WHERE time >= " + beginTime + " " +
@@ -65,7 +65,7 @@ public class DurationUserBhvDao {
 	}
 	
 	public void delete(Date beginTime, Date endTime){
-		_db.execSQL("" +
+		db.execSQL("" +
 				"DELETE " +
 				"FROM history_user_bhv " +
 				"WHERE time >= " + beginTime.getTime() + " " +
@@ -73,14 +73,14 @@ public class DurationUserBhvDao {
 	}
 	
 	public void deleteBefore(Date timeDate){
-		_db.execSQL("" +
+		db.execSQL("" +
 				"DELETE " +
 				"FROM history_user_bhv " +
 				"WHERE time < " + timeDate.getTime() +";");
 	}
 	
 	public List<DurationUserBhv> retrieveByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
-		Cursor cur = _db.rawQuery(
+		Cursor cur = db.rawQuery(
 				"SELECT * " +
 				"FROM history_user_bhv " +
 				"WHERE time >= " + beginTime.getTime() + " " +
@@ -108,7 +108,7 @@ public class DurationUserBhvDao {
 	}
 	
 	public List<DurationUserBhv> retrieveOnEndTimeByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
-		Cursor cur = _db.rawQuery(
+		Cursor cur = db.rawQuery(
 				"SELECT * " +
 				"FROM history_user_bhv " +
 				"WHERE end_time >= " + beginTime.getTime() + " " +

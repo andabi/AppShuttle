@@ -14,10 +14,10 @@ import com.google.gson.Gson;
 
 public class DurationUserEnvDao {
 	private static DurationUserEnvDao durationUserEnvDao = new DurationUserEnvDao();
-	private SQLiteDatabase _db;
+	private SQLiteDatabase db;
 
 	private DurationUserEnvDao() {
-		_db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 	}
 
 	public static DurationUserEnvDao getInstance() {
@@ -35,7 +35,7 @@ public class DurationUserEnvDao {
 		row.put("timezone", durationUserEnv.getTimeZone().getID());
 		row.put("env_type", durationUserEnv.getEnvType().toString());
 		row.put("user_env", gson.toJson(durationUserEnv.getUserEnv()));
-		_db.insert("history_user_env", null, row);
+		db.insert("history_user_env", null, row);
 		
 //		Log.i("stored history_user_env", durationUserEnv.toString());
 	}
@@ -72,7 +72,7 @@ public class DurationUserEnvDao {
 	public DurationUserEnv retrieveContains(Date time, EnvType envType) {
 		Gson gson = new Gson();
 		
-		Cursor cur = _db.rawQuery("SELECT * " +
+		Cursor cur = db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
 				"WHERE time <= " + time.getTime() + " " +
 					"AND end_time > " + time.getTime() +" " +
@@ -101,7 +101,7 @@ public class DurationUserEnvDao {
 	public DurationUserEnv retrieveContains(Date fromTime, Date toTime, EnvType envType) {
 		Gson gson = new Gson();
 		
-		Cursor cur = _db.rawQuery("SELECT * " +
+		Cursor cur = db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
 				"WHERE time <= " + fromTime.getTime() + " " +
 					"AND end_time > " + toTime.getTime() +" " +
@@ -129,7 +129,7 @@ public class DurationUserEnvDao {
 
 	public List<DurationUserEnv> retrieveBetween(Date fromTime, Date toTime, EnvType envType) {
 		Gson gson = new Gson();
-		Cursor cur = _db.rawQuery("SELECT * " +
+		Cursor cur = db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
 				"WHERE time >= " + fromTime.getTime() + " " +
 					"AND end_time < " + toTime.getTime() +" " +
@@ -156,13 +156,13 @@ public class DurationUserEnvDao {
 	}
 	
 	public void deleteBefore(Date timeDate){
-		_db.execSQL("DELETE " +
+		db.execSQL("DELETE " +
 				"FROM history_user_env " +
 				"WHERE time < " + timeDate.getTime() +";");
 	}
 	
 	public void deleteBetween(Date beginTime, Date endTime){
-		_db.execSQL("DELETE " +
+		db.execSQL("DELETE " +
 				"FROM history_user_env " + 
 				"WHERE time >= " + beginTime.getTime() + " " +
 					"AND time < " + endTime.getTime() + "';");

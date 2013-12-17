@@ -66,7 +66,6 @@ public class CollectionService extends Service {
 		currTimeDate = new Date(System.currentTimeMillis());
 		currTimeZone = Calendar.getInstance().getTimeZone();
 		
-	
 		SnapshotUserCxt uCxt = CollectSnapshotUserContext();
 		extractDurationUserContext(uCxt);
 

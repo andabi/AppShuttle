@@ -112,9 +112,16 @@ public class NotiBarNotifier {
 			if (bhvType == UserBhvType.CALL/* || bhvType == UserBhvType.SENSOR_ON*/){
 //				Bitmap callContactIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sym_action_call);
 				notiElemRemoteView.setTextViewText(R.id.noti_elem_text, viewableUserBhv.getBhvNameText());
-				notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, 
-						TypedValue.COMPLEX_UNIT_PX, 
-						cxt.getResources().getDimension(R.dimen.notibar_text_size));
+
+				float textSize = cxt.getResources().getDimension(R.dimen.notibar_text_size);
+				final int sdkVersion = android.os.Build.VERSION.SDK_INT;
+				if(sdkVersion < Build.VERSION_CODES.JELLY_BEAN) {
+					notiElemRemoteView.setFloat(R.id.noti_elem_text, "setTextSize", textSize);
+				} else {
+					notiElemRemoteView.setTextViewTextSize(R.id.noti_elem_text, 
+							TypedValue.COMPLEX_UNIT_PX, 
+							textSize);
+				}
 			}
 			
 			Integer notibarContainerId = viewableUserBhv.getNotibarContainerId();
