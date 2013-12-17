@@ -1,11 +1,11 @@
-package lab.davidahn.appshuttle;
+package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 
-import lab.davidahn.appshuttle.view.BlockedBhvFragment;
-import lab.davidahn.appshuttle.view.FavoriteBhvFragment;
-import lab.davidahn.appshuttle.view.PredictedBhvFragment;
-import lab.davidahn.appshuttle.view.SettingsActivity;
+import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.AppShuttleMainService;
+import lab.davidahn.appshuttle.AppShuttlePreferences;
+import lab.davidahn.appshuttle.R;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
