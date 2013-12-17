@@ -22,7 +22,6 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON && uBhv.getBhvName().equals(SensorType.WIFI.name())){
 			return false;
 		}
-		
 		return true;
 	}
 	

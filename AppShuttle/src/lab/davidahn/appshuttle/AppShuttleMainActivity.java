@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle;
 
 import java.util.ArrayList;
 
-import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.view.BlockedBhvFragment;
 import lab.davidahn.appshuttle.view.FavoriteBhvFragment;
 import lab.davidahn.appshuttle.view.PredictedBhvFragment;
