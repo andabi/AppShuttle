@@ -30,7 +30,6 @@ import lab.davidahn.appshuttle.collect.env.UserEnv;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 public class CollectionService extends Service {
 	private Date currTimeDate;
@@ -142,7 +141,6 @@ public class CollectionService extends Service {
 			}
 		}
 		
-		Log.d("test", snapshotAppUserBhvList.toString());
 		RegisterAndStoreDurationUserBhv(snapshotAppUserBhvList);
 	}
 
