@@ -22,7 +22,8 @@ public class BaseBhvCollector implements BhvCollector {
 		cxt = AppShuttleApplication.getContext();
 		preferenceSettings = cxt.getPreferences();
 		
-		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
+//		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
+		durationUserBhvBuilderMap = AppShuttleApplication.durationUserBhvBuilderMap;
 	}
 
 	@Override
