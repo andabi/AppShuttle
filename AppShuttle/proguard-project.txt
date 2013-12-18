@@ -11,10 +11,16 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
--keepattributes InnerClasses, Signature
+# For classes referenced in xml
+-keepattributes InnerClasses
 -keep public class lab.davidahn.appshuttle.view.AppShuttleMainActivity$* { *; }
+
+# For gson
+-keepattributes Signature
+-keepattributes *Annotation*
 -keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.examples.android.model.** { *; }
+-keepclassmembers enum * { *; }
+-keep public class * extends lab.davidahn.appshuttle.collect.env.UserEnv { *; }
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
@@ -23,6 +29,7 @@
 #   public *;
 #}
 
+# Library
 -libraryjars libs/activation.jar
 -libraryjars libs/additionnal.jar
 -libraryjars libs/android-support-v13.jar
@@ -31,4 +38,5 @@
 -libraryjars libs/gson-2.2.4.jar
 -libraryjars libs/mail.jar
 
+# Etc
 -dontwarn java.awt.**,javax.security.**,java.beans.**

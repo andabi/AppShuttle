@@ -256,7 +256,6 @@ public class AppShuttleMainActivity extends Activity {
 				}
 			});
 			
-			
 			return layout;
 		}
 	}

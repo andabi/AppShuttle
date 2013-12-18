@@ -3,15 +3,15 @@ package lab.davidahn.appshuttle.collect.env;
 import android.location.Location;
 
 public class UserLoc extends UserEnv {
-	protected double _latitude;
-	protected double _longitude;
+	protected double latitude;
+	protected double longitude;
 //	protected Validity _validity;
 
 //	public UserLoc() {}
 	
 	public UserLoc(double latitude, double longitude) {
-		_latitude = latitude;
-		_longitude = longitude;
+		this.latitude = latitude;
+		this.longitude = longitude;
 //		_validity = Validity.VALID;
 	}
 	
@@ -35,18 +35,18 @@ public class UserLoc extends UserEnv {
 	public double getLatitude() throws InvalidUserEnvException {
 //		if(_validity == Validity.INVALID)
 //			throw new InvalidUserEnvException();
-		return _latitude;
+		return latitude;
 	}
 	public double getLongitude() throws InvalidUserEnvException {
 //		if(_validity == Validity.INVALID)
 //			throw new InvalidUserEnvException();
-		return _longitude;
+		return longitude;
 	}
 	public void setLatitude(double latitude) {
-		_latitude = latitude;
+		this.latitude = latitude;
 	}
 	public void setLongitude(double longitude) {
-		_longitude = longitude;
+		this.longitude = longitude;
 	}
 
 //	public boolean isSame(UserEnv uLoc) throws InvalidUserEnvException {
@@ -63,8 +63,8 @@ public class UserLoc extends UserEnv {
 //			throw new InvalidUserEnvException();
 		Location loc1 = new Location("loc1");
 		Location loc2 = new Location("loc2");
-		loc1.setLatitude(_latitude);
-		loc1.setLongitude(_longitude);
+		loc1.setLatitude(latitude);
+		loc1.setLongitude(longitude);
 		loc2.setLatitude(uLoc.getLatitude());
 		loc2.setLongitude(uLoc.getLongitude());
 		
@@ -75,8 +75,8 @@ public class UserLoc extends UserEnv {
 	public double distanceTo(UserLoc uLoc) throws InvalidUserEnvException {
 		Location loc1 = new Location("loc1");
 		Location loc2 = new Location("loc2");
-		loc1.setLatitude(_latitude);
-		loc1.setLongitude(_longitude);
+		loc1.setLatitude(latitude);
+		loc1.setLongitude(longitude);
 		loc2.setLatitude(uLoc.getLatitude());
 		loc2.setLongitude(uLoc.getLongitude());
 
@@ -91,7 +91,7 @@ public class UserLoc extends UserEnv {
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 //		if(_validity == Validity.VALID)
-		msg.append(" (").append(_latitude).append(", ").append(_longitude).append(") ");
+		msg.append(" (").append(latitude).append(", ").append(longitude).append(") ");
 //		else
 //			msg.append("invalid");
 		return msg.toString();
@@ -99,8 +99,8 @@ public class UserLoc extends UserEnv {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof UserLoc && _latitude == ((UserLoc)o)._latitude
-				&& _longitude == ((UserLoc)o)._longitude)
+		if(o instanceof UserLoc && latitude == ((UserLoc)o).latitude
+				&& longitude == ((UserLoc)o).longitude)
 //				&& _validity == ((UserLoc)o)._validity)
 			return true;
 		else
@@ -109,6 +109,6 @@ public class UserLoc extends UserEnv {
 	
 	@Override
 	public int hashCode(){
-		return Double.valueOf(_latitude).hashCode() ^ Double.valueOf(_longitude).hashCode();
+		return Double.valueOf(latitude).hashCode() ^ Double.valueOf(longitude).hashCode();
 	}
 }
