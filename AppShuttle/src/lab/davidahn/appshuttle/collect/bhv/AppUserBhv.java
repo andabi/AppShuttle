@@ -15,13 +15,13 @@ public class AppUserBhv extends BaseUserBhv {
 		AppShuttleApplication appShuttleContext = AppShuttleApplication.getContext();
 		
 		PackageManager packageManager = appShuttleContext.getPackageManager();
-		Intent launchIntent = packageManager.getLaunchIntentForPackage(_bhvName);
+		Intent launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
 		
-		if(launchIntent == null || _bhvName.equals(appShuttleContext.getApplicationInfo().packageName)) //self
+		if(launchIntent == null || bhvName.equals(appShuttleContext.getApplicationInfo().packageName)) //self
 			return false;
 		
 		AppBhvCollector appUserBhvSensor = AppBhvCollector.getInstance();
-		if(_bhvName.startsWith(appUserBhvSensor.getHomePackageName())) { //home
+		if(bhvName.startsWith(appUserBhvSensor.getHomePackageName())) { //home
 			return false;
 		}
 		

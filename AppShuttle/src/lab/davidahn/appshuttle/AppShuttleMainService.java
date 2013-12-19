@@ -20,17 +20,40 @@ import android.os.IBinder;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
+	private SharedPreferences preferenceSettings;
 	private PendingIntent collectionOperation;
 	private PendingIntent predictionOperation;
 	private PendingIntent compactionOperation;
-	private SharedPreferences preferenceSettings;
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
+		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
+		registerReceivers();
 
+		startPeriodicPrediction();
+		startPeriodicCollection();
+		startPeriodicCompaction();
+	}
+	
+	private void startPeriodicCollection() {
+		if(preferenceSettings.getBoolean("collection.enabled", true)){
+			Intent collectionIntent = new Intent(this, CollectionService.class);
+			collectionOperation = PendingIntent.getService(this, 0, collectionIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("collection.period", 6000), collectionOperation);
+		}
+	}
+
+	private void startPeriodicCompaction() {
+		if(preferenceSettings.getBoolean("compaction.enabled", true)){
+			Intent compactionCxtIntent = new Intent(this, CompactionService.class);
+			compactionOperation = PendingIntent.getService(this, 0, compactionCxtIntent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("compaction.period", AlarmManager.INTERVAL_DAY), compactionOperation);
+		}
+	}
+
+	private void registerReceivers() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
 		registerReceiver(screenOnReceiver, filter);
@@ -44,27 +67,14 @@ public class AppShuttleMainService extends Service {
 		registerReceiver(predictReceiver, filter);
 
 		filter = new IntentFilter();
+		filter.addAction("lab.davidahn.appshuttle.TRY_PREDICT");
+		registerReceiver(tryPredictReceiver, filter);
+		
+		filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
 		registerReceiver(screenOrientationReceiver, filter);
-		
-		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		
-		if(preferenceSettings.getBoolean("collection.enabled", true)){
-			Intent collectionIntent = new Intent(this, CollectionService.class);
-			collectionOperation = PendingIntent.getService(this, 0, collectionIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), preferenceSettings.getLong("collection.period", 6000), collectionOperation);
-		}
-
-		if(preferenceSettings.getBoolean("compaction.enabled", true)){
-			Intent compactionCxtIntent = new Intent(this, CompactionService.class);
-			compactionOperation = PendingIntent.getService(this, 0, compactionCxtIntent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC, getExecuteTimeHour(3), preferenceSettings.getLong("compaction.period", AlarmManager.INTERVAL_DAY), compactionOperation);
-		}
-		
-		doPrediction();
-		activatePeriodicPrediction();
 	}
-	
+
 	private void tryPrediction() {
 		long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 180000);
 		if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
@@ -78,11 +88,11 @@ public class AppShuttleMainService extends Service {
 		AppShuttleApplication.lastPredictionTime = System.currentTimeMillis();
 	}
 	
-	private void activatePeriodicPrediction() {
-		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
+	private void startPeriodicPrediction() {
+		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.TRY_PREDICT");
 		predictionOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
 		long period = preferenceSettings.getLong("predictor.period", 180000);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + period, period, predictionOperation);
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, predictionOperation);
 	}
 
 	public long getExecuteTimeHour(int hourOfDay){
@@ -116,6 +126,7 @@ public class AppShuttleMainService extends Service {
 		unregisterReceiver(screenOnReceiver);
 		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(predictReceiver);
+		unregisterReceiver(tryPredictReceiver);
 		unregisterReceiver(screenOrientationReceiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
@@ -129,8 +140,7 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			tryPrediction();
-			activatePeriodicPrediction();
+			startPeriodicPrediction();
 		}
 	};
 	
@@ -146,6 +156,13 @@ public class AppShuttleMainService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			doPrediction();
+		}
+	};
+	
+	BroadcastReceiver tryPredictReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			tryPrediction();
 		}
 	};
 	

@@ -48,7 +48,7 @@ public class PredictedBhvFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText(getResources().getString(R.string.predicted_fragment_empty_msg));
+		setEmptyText(getResources().getString(R.string.predicted_empty_msg));
 		
 		predictedBhvList = Predictor.getInstance().getPredictedOrdinaryBhvSorted(Integer.MAX_VALUE);
 		

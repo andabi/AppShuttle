@@ -47,7 +47,7 @@ public class BlockedBhvFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText(getResources().getString(R.string.blocked_fragment_empty_msg));
+		setEmptyText(getResources().getString(R.string.blocked_empty_msg));
 
 		UserBhvManager uBhvManager = UserBhvManager.getInstance();
 		blockedBhvList = new ArrayList<BlockedUserBhv>(uBhvManager.getBlockedBhvSetSorted());

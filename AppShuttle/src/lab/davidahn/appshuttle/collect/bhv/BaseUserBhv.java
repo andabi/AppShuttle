@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BaseUserBhv implements UserBhv {
-	protected UserBhvType _bhvType;
-	protected String _bhvName;
-	protected Map<String, Object> _metas;
+	protected UserBhvType bhvType;
+	protected String bhvName;
+	protected Map<String, Object> metas;
 	
 	public BaseUserBhv(UserBhvType bhvType, String bhvName) {
-		_bhvType = bhvType;
-		_bhvName = bhvName;
-		_metas = new HashMap<String, Object>();
+		this.bhvType = bhvType;
+		this.bhvName = bhvName;
+		metas = new HashMap<String, Object>();
 	}
 	
 	//TODO userBhv pool 관리
@@ -32,55 +32,55 @@ public class BaseUserBhv implements UserBhv {
 
 	@Override
 	public UserBhvType getBhvType() {
-		return _bhvType;
+		return bhvType;
 	}
 	
 	@Override
 	public void setBhvType(UserBhvType bhvType) {
-		_bhvType = bhvType;
+		this.bhvType = bhvType;
 	}
 	
 	@Override
 	public String getBhvName() {
-		return _bhvName;
+		return bhvName;
 	}
 	
 	@Override
 	public void setBhvName(String bhvName) {
-		_bhvName = bhvName;
+		this.bhvName = bhvName;
 	}
 	
 	public Map<String, Object> getMetas() {
-		return _metas;
+		return metas;
 	}
 	
 	public void setMetas(Map<String, Object> metas) {
-		_metas = metas;
+		this.metas = metas;
 	}
 
 	@Override
 	public Object getMeta(String key) {
-		return _metas.get(key);
+		return metas.get(key);
 	}
 	
 	@Override
 	public void setMeta(String key, Object val){
-		_metas.put(key, val);
+		metas.put(key, val);
 	}
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("behavior type: ").append(_bhvType.toString()).append(", ");
-		msg.append("behavior name: ").append(_bhvName).append(", ");
-		msg.append("metas: ").append(_metas.toString());
+		msg.append("behavior type: ").append(bhvType.toString()).append(", ");
+		msg.append("behavior name: ").append(bhvName).append(", ");
+		msg.append("metas: ").append(metas.toString());
 		return msg.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o){
 		if((o instanceof UserBhv) 
-				&& _bhvName.equals(((UserBhv)o).getBhvName()) 
-				&& _bhvType == ((UserBhv)o).getBhvType())
+				&& bhvName.equals(((UserBhv)o).getBhvName()) 
+				&& bhvType == ((UserBhv)o).getBhvType())
 			return true;
 		else 
 			return false;
@@ -88,7 +88,7 @@ public class BaseUserBhv implements UserBhv {
 
 	@Override
 	public int hashCode(){
-		return _bhvType.hashCode() ^ _bhvName.hashCode();
+		return bhvType.hashCode() ^ bhvName.hashCode();
 	}
 	
 	public boolean isValid() {

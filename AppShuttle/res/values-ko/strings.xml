@@ -22,9 +22,9 @@
     <string name="action_unfavorite">앱 고정 풀기</string>
     <string name="action_block">앱 차단</string>
     <string name="action_unblock">앱 차단 풀기</string>
-    <string name="blocked_fragment_empty_msg">아직 차단된 앱이 없습니다. 앱을 길게 눌러 차단해보세요.</string>
-    <string name="favorite_fragment_empty_msg">아직 고정된 앱이 없습니다. 앱을 길게 눌러 고정해보세요.</string>
-    <string name="predicted_fragment_empty_msg">지금은 표시할 앱이 없습니다. 계속 사용하세요.</string>
+    <string name="blocked_empty_msg">아직 차단된 앱이 없습니다. 앱을 길게 눌러 차단해보세요.</string>
+    <string name="favorite_empty_msg">아직 고정된 앱이 없습니다. 앱을 길게 눌러 고정해보세요.</string>
+    <string name="predicted_empty_msg">지금은 표시할 앱이 없습니다. 계속 사용하세요.</string>
     <string name="action_msg_favorite">앱이 고정됩니다</string>
     <string name="action_msg_unfavorite">앱 고정이 풀립니다</string>
     <string name="action_msg_block">앱이 차단됩니다</string>
