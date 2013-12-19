@@ -31,7 +31,7 @@ public class OrdinaryUserBhv extends ViewableUserBhv {
 		viewMsg = msg.toString();
 
 		Predictor predictor = Predictor.getInstance();
-		PredictionInfo predictionInfo = predictor.getRecentSnapshotPredictionInfo(uBhv);
+		PredictionInfo predictionInfo = predictor.getCurrentPredictionInfo(uBhv);
 		
 		if(predictionInfo == null) {
 			return viewMsg;

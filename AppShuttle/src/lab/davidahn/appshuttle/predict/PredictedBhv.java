@@ -42,8 +42,8 @@ public class PredictedBhv extends OrdinaryUserBhv implements Comparable<Predicte
 			return -1;
 		else {
 			Predictor predictor = Predictor.getInstance();
-			double score = predictor.getRecentSnapshotPredictionInfo(uBhv).getScore();
-			double _score = predictor.getRecentSnapshotPredictionInfo(_uBhv).getScore();
+			double score = predictor.getCurrentPredictionInfo(uBhv).getScore();
+			double _score = predictor.getCurrentPredictionInfo(_uBhv).getScore();
 		
 			if(score < _score)
 				return 1;
