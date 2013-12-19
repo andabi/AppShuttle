@@ -44,6 +44,7 @@
     <string name="settings_info_feedback_success_msg">Feedback was sent successfully.</string>
     <string name="settings_info_feedback_failure_msg">Feedback was not sent. Try again.</string>
     <string name="settings_info_shared">Share AppShuttle!</string>
+    <string name="settings_info_shared_summary">Let three friends of yours know about AppShuttle.</string>
     <string name="settings_info_shared_msg">It guesses and shows apps which you are supposed to use now, AppShuttle! Download: https://db.tt/WIwHzcgz</string>
 
 </resources>

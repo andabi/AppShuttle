@@ -9,7 +9,9 @@
             android:title="@string/settings_pref_noti_view_enabled" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_category_info" >
-        <Preference android:title="@string/settings_info_shared" >
+        <Preference 
+            android:title="@string/settings_info_shared"
+            android:summary="@string/settings_info_shared_summary">
             <intent
                 android:action="android.intent.action.SEND"
                 android:mimeType="text/plain" >
