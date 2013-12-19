@@ -101,6 +101,7 @@ public class NotiBarNotifier {
 		if(viewableUserBhvList.isEmpty()){
 			RemoteViews noResultRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_no_result);
 			notiRemoteView.addView(R.id.noti_predicted_container, noResultRemoteView);
+			notiRemoteView.setOnClickPendingIntent(R.id.noti_predicted_container, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 			return notiRemoteView;
 		}
 		
