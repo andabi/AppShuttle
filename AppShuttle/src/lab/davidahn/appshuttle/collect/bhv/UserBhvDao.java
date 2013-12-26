@@ -9,7 +9,7 @@ import java.util.Map;
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import lab.davidahn.appshuttle.view.BlockedUserBhv;
 import lab.davidahn.appshuttle.view.FavoriteUserBhv;
-import lab.davidahn.appshuttle.view.OrdinaryUserBhv;
+import lab.davidahn.appshuttle.view.NormalUserBhv;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,7 +28,7 @@ public class UserBhvDao {
 		return userBhvDao;
 	}
 
-	public void storeUserBhv(OrdinaryUserBhv uBhv) {
+	public void storeUserBhv(NormalUserBhv uBhv) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Gson gson = new Gson();
 
@@ -42,7 +42,7 @@ public class UserBhvDao {
 //		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<OrdinaryUserBhv> retrieveOrdinaryUserBhv() {
+	public List<NormalUserBhv> retrieveNormalUserBhv() {
 		Gson gson = new Gson();
 
 		Cursor cur = _db.rawQuery(
@@ -51,7 +51,7 @@ public class UserBhvDao {
 				"WHERE blocked = 0 " +
 					"AND favorates = 0"
 				, null);
-		List<OrdinaryUserBhv> res = new ArrayList<OrdinaryUserBhv>();
+		List<NormalUserBhv> res = new ArrayList<NormalUserBhv>();
 		while (cur.moveToNext()) {
 			UserBhvType bhvType= UserBhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
@@ -60,8 +60,8 @@ public class UserBhvDao {
 
 			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			uBhv.setMetas(metas);
-			OrdinaryUserBhv ordinaryUBhv = new OrdinaryUserBhv(uBhv);
-			res.add(ordinaryUBhv);
+			NormalUserBhv normalUBhv = new NormalUserBhv(uBhv);
+			res.add(normalUBhv);
 		}
 		cur.close();
 //		Log.i("retrieved userBhv", res.toString());

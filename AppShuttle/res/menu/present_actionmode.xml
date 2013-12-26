@@ -8,7 +8,7 @@
         android:title="@string/action_favorite"/>
     <item
         android:id="@+id/block"
-        android:icon="@drawable/discard"
+        android:icon="@drawable/ignore"
         android:showAsAction="always|withText"
         android:title="@string/action_block"/>
 

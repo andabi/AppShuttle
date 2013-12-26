@@ -6,9 +6,9 @@ import java.util.List;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
-import lab.davidahn.appshuttle.view.OrdinaryUserBhv;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.content.Intent;
@@ -59,7 +59,7 @@ public class CompactionService extends IntentService {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		
-		for(OrdinaryUserBhv uBhv : userBhvManager.getOrdinaryBhvSet()){
+		for(UserBhv uBhv : userBhvManager.getNormalBhvSet()){
 			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
 			if(!durationUserBhvList.isEmpty())
 				continue;

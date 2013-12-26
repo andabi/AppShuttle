@@ -34,7 +34,7 @@
     <string name="action_msg_favorite_notifiable_failure">Did not complete because exceeding the limit.</string>
     <string name="blocked_empty_msg">No results. Try long click to register the app to blocking list.</string>
     <string name="favorite_empty_msg">No results. Try long click to register the app to favorite.</string>
-    <string name="predicted_empty_msg">No results. Just keep using this until the results show sooner or later.</string>
+    <string name="present_empty_msg">No results. Just keep using this until the results show sooner or later.</string>
     <string name="settings_category_setting">Settings</string>
     <string name="settings_category_info">Information</string>
     <string name="settings_pref_noti_view_enabled">Enable viewing on notification bar</string>

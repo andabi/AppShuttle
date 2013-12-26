@@ -14,9 +14,9 @@ import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
 
 
-public class OrdinaryUserBhv extends ViewableUserBhv {
+public class NormalUserBhv extends ViewableUserBhv {
 
-	public OrdinaryUserBhv(UserBhv uBhv){
+	public NormalUserBhv(UserBhv uBhv){
 		super(uBhv);
 	}
 	

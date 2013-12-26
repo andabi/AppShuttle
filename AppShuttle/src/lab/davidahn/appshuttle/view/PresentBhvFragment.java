@@ -1,11 +1,14 @@
 package lab.davidahn.appshuttle.view;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
-import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -26,10 +29,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PredictedBhvFragment extends ListFragment {
-	private PredictedBhvAdapter adapter;
+public class PresentBhvFragment extends ListFragment {
+	private PresentBhvAdapter adapter;
 	private ActionMode actionMode;
-	private List<PredictedBhv> predictedBhvList;
+	private List<ViewableUserBhv> presentBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,14 +51,14 @@ public class PredictedBhvFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText(getResources().getString(R.string.predicted_empty_msg));
+		setEmptyText(getResources().getString(R.string.present_empty_msg));
 		
-		predictedBhvList = Predictor.getInstance().getPredictedOrdinaryUserBhvSorted(Integer.MAX_VALUE);
+		presentBhvList = getPresentUserBhvSorted(Integer.MAX_VALUE);
 		
-		adapter = new PredictedBhvAdapter();
+		adapter = new PresentBhvAdapter();
 		setListAdapter(adapter);
 
-		if (predictedBhvList == null) {
+		if (presentBhvList == null) {
 			setListShown(false);
 		} else {
 			setListShown(true);
@@ -78,28 +81,45 @@ public class PredictedBhvFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		getActivity().startActivity(adapter.getItem(position).getLaunchIntent());
 	}
+	
+	public static List<ViewableUserBhv> getPresentUserBhvSorted(int topN) {
+		List<ViewableUserBhv> res = new ArrayList<ViewableUserBhv>();
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
+		List<PredictedBhv> predictedPresent = new ArrayList<PredictedBhv>();
+		for(PredictedBhv predictedBhv : AppShuttleApplication.predictedBhvs.values())
+			if(isCandidatePresentUserBhv(predictedBhv))
+				predictedPresent.add(predictedBhv);
+
+		Collections.sort(predictedPresent);
+		
+		for(PredictedBhv uBhv : predictedPresent)
+			res.add(UserBhvManager.getInstance().getViewableUserBhv(uBhv));
+			
+		return res.subList(0, Math.min(res.size(), topN));
+	}
+	
+	private static boolean isCandidatePresentUserBhv(UserBhv uBhv){
+		UserBhvManager userBhvManager = UserBhvManager.getInstance();
+		if(userBhvManager.getNormalBhvSet().contains(uBhv))
+			return true;
+		else if(userBhvManager.getFavoriteBhvSet().contains(uBhv)
+				&& !((FavoriteUserBhv)userBhvManager.getViewableUserBhv(uBhv)).isNotifiable())
+			return true;
+		else
+			return false;
 	}
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-	}
+	public class PresentBhvAdapter extends ArrayAdapter<ViewableUserBhv> {
 
-	public class PredictedBhvAdapter extends ArrayAdapter<PredictedBhv> {
-
-		public PredictedBhvAdapter() {
-			super(getActivity(), R.layout.listview_item, predictedBhvList);
+		public PresentBhvAdapter() {
+			super(getActivity(), R.layout.listview_item, presentBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			PredictedBhv predictedBhv = predictedBhvList.get(position);
+			ViewableUserBhv predictedBhv = presentBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
 			iconView.setImageDrawable(predictedBhv.getIcon());
@@ -119,7 +139,7 @@ public class PredictedBhvFragment extends ListFragment {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.predicted_actionmode, menu);
+			inflater.inflate(R.menu.present_actionmode, menu);
 			return true;
 		}
 		
@@ -137,7 +157,7 @@ public class PredictedBhvFragment extends ListFragment {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			int pos = (Integer)actionMode.getTag();
 
-			if(predictedBhvList.size() < pos + 1)
+			if(presentBhvList.size() < pos + 1)
 				return false;
 
 			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
@@ -156,10 +176,10 @@ public class PredictedBhvFragment extends ListFragment {
 		
 		switch(itemId) {
 		case R.id.favorate:	
-			uBhvManager.favorite((predictedBhvList.get(pos)));
+			uBhvManager.favorite((presentBhvList.get(pos)));
 			return getResources().getString(R.string.action_msg_favorite);
 		case R.id.block:
-			uBhvManager.block((predictedBhvList.get(pos)));
+			uBhvManager.block((presentBhvList.get(pos)));
 			return getResources().getString(R.string.action_msg_block);
 		default:
 			return null;

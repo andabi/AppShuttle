@@ -7,7 +7,6 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
-import lab.davidahn.appshuttle.predict.Predictor;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -51,12 +50,12 @@ public class NotiBarNotifier {
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
 		
 		int numElem = getNumElem();
-		List<FavoriteUserBhv> notifiableFavoriteBhvList = FavoriteUserBhv.getNotifiableFavoriteBhvList();
+		List<FavoriteUserBhv> notifiableFavoriteBhvList = FavoriteBhvFragment.getNotifiableFavoriteBhvList();
 		int numFavoriteElem = Math.min(notifiableFavoriteBhvList.size(), numElem);
 		int numPredictedElem = numElem - numFavoriteElem;
 		
+		viewableUserBhvList.addAll(PresentBhvFragment.getPresentUserBhvSorted(numPredictedElem));
 		viewableUserBhvList.addAll(notifiableFavoriteBhvList.subList(0, numFavoriteElem));
-		viewableUserBhvList.addAll(Predictor.getInstance().getPredictedOrdinaryUserBhvSorted(numPredictedElem));
 		
 		updateNotiView(viewableUserBhvList);
 	}

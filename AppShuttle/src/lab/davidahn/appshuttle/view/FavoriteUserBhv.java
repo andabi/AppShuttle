@@ -8,50 +8,41 @@ import java.util.Map;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvDao;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import lab.davidahn.appshuttle.predict.Predictor;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
-import android.content.SharedPreferences;
 
 
 public class FavoriteUserBhv extends ViewableUserBhv implements Comparable<FavoriteUserBhv> {
-	private long _setTime;
-	private boolean _isNotifiable;
+	private long setTime;
+	private boolean isNotifiable;
 	
-//	public FavoriteUserBhv(UserBhv uBhv, long setTime){
-//		super(uBhv);
-//		_setTime = setTime;
-//		_isNotifiable = false;
-//	}
-
-	public FavoriteUserBhv(UserBhv uBhv, long setTime, boolean isNotifiable){
+	public FavoriteUserBhv(UserBhv uBhv, long _setTime, boolean _isNotifiable){
 		super(uBhv);
-		_setTime = setTime;
-		_isNotifiable = false;
+		setTime = _setTime;
+		isNotifiable = false;
 
-		if(isNotifiable)
+		if(_isNotifiable)
 			trySetNotifiable();
 	}
 
 	public long getSetTime() {
-		return _setTime;
+		return setTime;
 	}
 	
 	public boolean isNotifiable() {
-		return _isNotifiable;
+		return isNotifiable;
 	}
 
 	public boolean trySetNotifiable() {
-		if(_isNotifiable)
+		if(isNotifiable)
 			return true;
 		
 		int notiMaxNumFavorite = AppShuttleApplication.getContext().getPreferences().getInt("viewer.noti.max_num_favorite", 3);
 		if(AppShuttleApplication.numFavoriteNotifiable < notiMaxNumFavorite) {
-			_isNotifiable = true;
+			isNotifiable = true;
 			AppShuttleApplication.numFavoriteNotifiable++;
 			return true;
 		} else {
@@ -60,10 +51,10 @@ public class FavoriteUserBhv extends ViewableUserBhv implements Comparable<Favor
 	}
 	
 	public void setUnNotifiable() {
-		if(!_isNotifiable)
+		if(!isNotifiable)
 			return ;
 		
-		_isNotifiable = false;
+		isNotifiable = false;
 		AppShuttleApplication.numFavoriteNotifiable--;
 	}
 
@@ -74,9 +65,9 @@ public class FavoriteUserBhv extends ViewableUserBhv implements Comparable<Favor
 		else if(isNotifiable() && !uBhv.isNotifiable())
 			return -1;
 			
-		if(_setTime > uBhv._setTime)
+		if(setTime > uBhv.setTime)
 			return 1;
-		else if(_setTime == uBhv._setTime)
+		else if(setTime == uBhv.setTime)
 			return 0;
 		else
 			return -1;
@@ -110,43 +101,5 @@ public class FavoriteUserBhv extends ViewableUserBhv implements Comparable<Favor
 	@Override
 	public Integer getNotibarContainerId() {
 		return R.id.noti_favorite_container;
-	}
-	
-	public static List<FavoriteUserBhv> getNotifiableFavoriteBhvList() {
-		List<FavoriteUserBhv> res = new ArrayList<FavoriteUserBhv>();
-		for(FavoriteUserBhv uBhv : UserBhvManager.getInstance().getFavoriteBhvSetSorted()) {
-			if(uBhv.isNotifiable())
-				res.add(uBhv);
-		}
-		return res;
-	}
-	
-	public synchronized static boolean trySetNotifiable(FavoriteUserBhv favoriteUserBhv) {
-		if(favoriteUserBhv.trySetNotifiable()) {
-			UserBhvDao.getInstance().updateNotifiable(favoriteUserBhv);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public synchronized static void setUnNotifiable(FavoriteUserBhv favoriteUserBhv) {
-		favoriteUserBhv.setUnNotifiable();
-		UserBhvDao.getInstance().updateUnNotifiable(favoriteUserBhv);
-	}
-
-	public static boolean isFullProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		int properNumFavorite = preferences.getInt("viewer.noti.proper_num_favorite", 3);
-
-		if(AppShuttleApplication.numFavoriteNotifiable >= properNumFavorite)
-			return true;
-		
-		return false;
-	}
-
-	public static int getProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		return preferences.getInt("viewer.noti.proper_num_favorite", 3);
 	}
 }

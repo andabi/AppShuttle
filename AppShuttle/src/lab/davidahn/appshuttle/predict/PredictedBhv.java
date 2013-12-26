@@ -7,9 +7,9 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
-import lab.davidahn.appshuttle.view.OrdinaryUserBhv;
+import lab.davidahn.appshuttle.view.NormalUserBhv;
 
-public class PredictedBhv extends OrdinaryUserBhv implements Comparable<PredictedBhv>{
+public class PredictedBhv extends NormalUserBhv implements Comparable<PredictedBhv>{
 
 	private EnumMap<MatcherType, Long> firstPredictedTimeByMatcherType;
 

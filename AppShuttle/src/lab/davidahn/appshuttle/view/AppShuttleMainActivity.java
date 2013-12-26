@@ -99,14 +99,14 @@ public class AppShuttleMainActivity extends Activity {
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_predicted))
 				.setIcon(R.drawable.predicted),
-				PredictedBhvFragment.class, bundle);
+				PresentBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorite))
 				.setIcon(R.drawable.favorite),
 				FavoriteBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab()
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_blocked))
-				.setIcon(R.drawable.discard),
+				.setIcon(R.drawable.ignore),
 				BlockedBhvFragment.class, null);
 
 		if (savedInstanceState != null) {
