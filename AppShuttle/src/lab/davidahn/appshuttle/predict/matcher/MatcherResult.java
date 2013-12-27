@@ -126,7 +126,7 @@ public class MatcherResult implements Comparable<MatcherResult> {
 
 	public int compareTo(MatcherResult matcherResult){
 		MatcherTypeComparator comparator = new MatcherTypeComparator();
-		int comp = comparator.compare(matcherType, matcherResult.matcherType);		
+		int comp = comparator.compare(matcherType, matcherResult.matcherType);
 		if(comp != 0)
 			return comp;
 		
