@@ -10,6 +10,7 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import android.util.Log;
 
 public class PresentBhv extends NormalBhv implements Comparable<PresentBhv> {
 
@@ -22,6 +23,11 @@ public class PresentBhv extends NormalBhv implements Comparable<PresentBhv> {
 	}
 
 	public PredictionInfo getRecentPredictionInfo() {
+		for(MatcherType matcherType : initialPredictionInfoByMatcherType.keySet()){
+			PredictionInfo info = initialPredictionInfoByMatcherType.get(matcherType);
+			Log.d("test", "cdd :" + info.getTimeDate().toString() + matcherType.name());
+		}
+		Log.d("test", "max :" + Collections.max(initialPredictionInfoByMatcherType.values()).getTimeDate().toString());
 		return Collections.max(initialPredictionInfoByMatcherType.values());
 	}
 

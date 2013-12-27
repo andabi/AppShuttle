@@ -59,8 +59,6 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 		
 		assert(!durationUserBhvsEndTimeList.isEmpty());
 		
-		Collections.max(durationUserBhvsEndTimeList);
-
 		likelihood = 1.0 * Collections.max(durationUserBhvsEndTimeList) / Long.MAX_VALUE;
 		return likelihood;
 	}

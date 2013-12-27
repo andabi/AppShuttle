@@ -5,7 +5,7 @@ import lab.davidahn.appshuttle.R;
 
 public enum MatcherType {
 	//recent
-	FREQUENTLY_RECENT(0, R.string.predict_frequently_recent_msg, true),
+	FREQUENTLY_RECENT(0, R.string.predict_frequently_recent_msg, false),
 	INSTANTALY_RECENT(1, R.string.predict_instantly_recent_msg, true),
 
 	//time
