@@ -50,7 +50,7 @@ public class NotiBarNotifier {
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
 		
 		int numElem = getNumElem();
-		List<FavoriteUserBhv> notifiableFavoriteBhvList = FavoriteBhvFragment.getNotifiableFavoriteBhvList();
+		List<FavoriteBhv> notifiableFavoriteBhvList = FavoriteBhvFragment.getNotifiableFavoriteBhvList();
 		int numFavoriteElem = Math.min(notifiableFavoriteBhvList.size(), numElem);
 		int numPredictedElem = numElem - numFavoriteElem;
 		

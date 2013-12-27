@@ -8,7 +8,6 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.predict.PredictedBhv;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -85,14 +84,14 @@ public class PresentBhvFragment extends ListFragment {
 	public static List<ViewableUserBhv> getPresentUserBhvSorted(int topN) {
 		List<ViewableUserBhv> res = new ArrayList<ViewableUserBhv>();
 
-		List<PredictedBhv> predictedPresent = new ArrayList<PredictedBhv>();
-		for(PredictedBhv predictedBhv : AppShuttleApplication.predictedBhvs.values())
+		List<PresentBhv> predictedPresent = new ArrayList<PresentBhv>();
+		for(PresentBhv predictedBhv : AppShuttleApplication.recentPresentBhvs.values())
 			if(isCandidatePresentUserBhv(predictedBhv))
 				predictedPresent.add(predictedBhv);
 
 		Collections.sort(predictedPresent);
 		
-		for(PredictedBhv uBhv : predictedPresent)
+		for(PresentBhv uBhv : predictedPresent)
 			res.add(UserBhvManager.getInstance().getViewableUserBhv(uBhv));
 			
 		return res.subList(0, Math.min(res.size(), topN));
@@ -103,7 +102,7 @@ public class PresentBhvFragment extends ListFragment {
 		if(userBhvManager.getNormalBhvSet().contains(uBhv))
 			return true;
 		else if(userBhvManager.getFavoriteBhvSet().contains(uBhv)
-				&& !((FavoriteUserBhv)userBhvManager.getViewableUserBhv(uBhv)).isNotifiable())
+				&& !((FavoriteBhv)userBhvManager.getViewableUserBhv(uBhv)).isNotifiable())
 			return true;
 		else
 			return false;

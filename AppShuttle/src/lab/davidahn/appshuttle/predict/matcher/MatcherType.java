@@ -16,15 +16,17 @@ public enum MatcherType {
 	//location
 	PLACE(0, R.string.predict_place_msg),
 	LOCATION(1, R.string.predict_gps_msg),
-	MOVE(2, R.string.predict_move_msg);
+	MOVE(2, R.string.predict_move_msg),
+	;
 //	UNFAMILIER_PLACE
 
-	
 	public int priority;
 	public String viewMsg;
+	public boolean isOverwritableForNewPrediction;
 	
-	MatcherType(int _priority, int viewMsgId){
+	MatcherType(int _priority, int viewMsgId/*, boolean _isOverwritableForNewPrediction*/){
 		priority = _priority;
 		viewMsg = AppShuttleApplication.getContext().getString(viewMsgId);
+//		isOverwritableForNewPrediction = _isOverwritableForNewPrediction;
 	}
 }

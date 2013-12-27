@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
-import lab.davidahn.appshuttle.view.BlockedUserBhv;
-import lab.davidahn.appshuttle.view.FavoriteUserBhv;
-import lab.davidahn.appshuttle.view.NormalUserBhv;
+import lab.davidahn.appshuttle.view.BlockedBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.NormalBhv;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,7 +28,7 @@ public class UserBhvDao {
 		return userBhvDao;
 	}
 
-	public void storeUserBhv(NormalUserBhv uBhv) {
+	public void storeUserBhv(NormalBhv uBhv) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Gson gson = new Gson();
 
@@ -42,7 +42,7 @@ public class UserBhvDao {
 //		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<NormalUserBhv> retrieveNormalUserBhv() {
+	public List<NormalBhv> retrieveNormalUserBhv() {
 		Gson gson = new Gson();
 
 		Cursor cur = _db.rawQuery(
@@ -51,7 +51,7 @@ public class UserBhvDao {
 				"WHERE blocked = 0 " +
 					"AND favorates = 0"
 				, null);
-		List<NormalUserBhv> res = new ArrayList<NormalUserBhv>();
+		List<NormalBhv> res = new ArrayList<NormalBhv>();
 		while (cur.moveToNext()) {
 			UserBhvType bhvType= UserBhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
@@ -60,7 +60,7 @@ public class UserBhvDao {
 
 			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			uBhv.setMetas(metas);
-			NormalUserBhv normalUBhv = new NormalUserBhv(uBhv);
+			NormalBhv normalUBhv = new NormalBhv(uBhv);
 			res.add(normalUBhv);
 		}
 		cur.close();
@@ -68,7 +68,7 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public List<BlockedUserBhv> retrieveBlockedUserBhv() {
+	public List<BlockedBhv> retrieveBlockedUserBhv() {
 		Gson gson = new Gson();
 
 //		int isBlockedInt = (isBlocked) ? 1 : 0;
@@ -77,7 +77,7 @@ public class UserBhvDao {
 				"FROM list_user_bhv " +
 				"WHERE blocked = 1"
 				, null);
-		List<BlockedUserBhv> res = new ArrayList<BlockedUserBhv>();
+		List<BlockedBhv> res = new ArrayList<BlockedBhv>();
 		while (cur.moveToNext()) {
 			UserBhvType bhvType= UserBhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
@@ -87,7 +87,7 @@ public class UserBhvDao {
 			
 			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			uBhv.setMetas(metas);
-			BlockedUserBhv blockedUBhv = new BlockedUserBhv(uBhv, blocked_time);
+			BlockedBhv blockedUBhv = new BlockedBhv(uBhv, blocked_time);
 			res.add(blockedUBhv);
 		}
 		cur.close();
@@ -95,7 +95,7 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public void block(BlockedUserBhv uBhv) {
+	public void block(BlockedBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET blocked = 1, blocked_time = " + uBhv.getBlockedTime() + " " +
@@ -103,7 +103,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void unblock(BlockedUserBhv uBhv) {
+	public void unblock(BlockedBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET blocked = 0 " +
@@ -111,14 +111,14 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public List<FavoriteUserBhv> retrieveFavoriteUserBhv() {
+	public List<FavoriteBhv> retrieveFavoriteUserBhv() {
 		Gson gson = new Gson();
 		Cursor cur = _db.rawQuery(
 				"SELECT * " +
 				"FROM list_user_bhv " +
 				"WHERE favorates = 1"
 				, null);
-		List<FavoriteUserBhv> res = new ArrayList<FavoriteUserBhv>();
+		List<FavoriteBhv> res = new ArrayList<FavoriteBhv>();
 		while (cur.moveToNext()) {
 			UserBhvType bhvType= UserBhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
@@ -129,7 +129,7 @@ public class UserBhvDao {
 			
 			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			((BaseUserBhv)uBhv).setMetas(metas);
-			FavoriteUserBhv favoriteUserBhv = new FavoriteUserBhv(uBhv, setTime, isNotifiable);
+			FavoriteBhv favoriteUserBhv = new FavoriteBhv(uBhv, setTime, isNotifiable);
 //			if(isNotifiable)
 //				favoriteUserBhv.trySetNotifiable();
 //				FavoriteUserBhv.trySetNotifiable(favoriteUserBhv);
@@ -140,7 +140,7 @@ public class UserBhvDao {
 		return res;
 	}
 	
-	public void favorite(FavoriteUserBhv uBhv) {
+	public void favorite(FavoriteBhv uBhv) {
 		int notifiable = (uBhv.isNotifiable()) ? 1 : 0;
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
@@ -149,7 +149,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void unfavorite(FavoriteUserBhv uBhv) {
+	public void unfavorite(FavoriteBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET favorates = 0, is_notifiable = 0 " +
@@ -157,7 +157,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void updateNotifiable(FavoriteUserBhv uBhv) {
+	public void updateNotifiable(FavoriteBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET is_notifiable = 1 " +
@@ -165,7 +165,7 @@ public class UserBhvDao {
 						"AND bhv_name = '" + uBhv.getBhvName() +"';");
 	}
 	
-	public void updateUnNotifiable(FavoriteUserBhv uBhv) {
+	public void updateUnNotifiable(FavoriteBhv uBhv) {
 		_db.execSQL("" +
 				"UPDATE list_user_bhv " +
 				"SET is_notifiable = 0 " +

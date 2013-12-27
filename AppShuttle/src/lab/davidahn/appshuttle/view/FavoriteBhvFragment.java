@@ -32,7 +32,7 @@ import android.widget.Toast;
 public class FavoriteBhvFragment extends ListFragment {
 	private FavoriteBhvInfoAdapter adapter;
 	private ActionMode actionMode;
-	private List<FavoriteUserBhv> favoriteBhvList;
+	private List<FavoriteBhv> favoriteBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class FavoriteBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.favorite_empty_msg));
 
-		favoriteBhvList = new ArrayList<FavoriteUserBhv>(getFavoriteBhvListSorted());
+		favoriteBhvList = new ArrayList<FavoriteBhv>(getFavoriteBhvListSorted());
 		
 		adapter = new FavoriteBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -82,23 +82,23 @@ public class FavoriteBhvFragment extends ListFragment {
 		getActivity().startActivity(adapter.getItem(position).getLaunchIntent());
 	}
 
-	public static List<FavoriteUserBhv> getFavoriteBhvListSorted(){
-		List<FavoriteUserBhv> favorateBhvList = new ArrayList<FavoriteUserBhv>(
+	public static List<FavoriteBhv> getFavoriteBhvListSorted(){
+		List<FavoriteBhv> favorateBhvList = new ArrayList<FavoriteBhv>(
 				UserBhvManager.getInstance().getFavoriteBhvSet());
 		Collections.sort(favorateBhvList);
 		return Collections.unmodifiableList(favorateBhvList);
 	}
 	
-	public static List<FavoriteUserBhv> getNotifiableFavoriteBhvList() {
-		List<FavoriteUserBhv> res = new ArrayList<FavoriteUserBhv>();
-		for(FavoriteUserBhv uBhv : getFavoriteBhvListSorted()) {
+	public static List<FavoriteBhv> getNotifiableFavoriteBhvList() {
+		List<FavoriteBhv> res = new ArrayList<FavoriteBhv>();
+		for(FavoriteBhv uBhv : getFavoriteBhvListSorted()) {
 			if(uBhv.isNotifiable())
 				res.add(uBhv);
 		}
 		return res;
 	}
 	
-	public synchronized static boolean trySetNotifiable(FavoriteUserBhv favoriteUserBhv) {
+	public synchronized static boolean trySetNotifiable(FavoriteBhv favoriteUserBhv) {
 		if(favoriteUserBhv.trySetNotifiable()) {
 			UserBhvDao.getInstance().updateNotifiable(favoriteUserBhv);
 			return true;
@@ -107,7 +107,7 @@ public class FavoriteBhvFragment extends ListFragment {
 		}
 	}
 	
-	public synchronized static void setUnNotifiable(FavoriteUserBhv favoriteUserBhv) {
+	public synchronized static void setUnNotifiable(FavoriteBhv favoriteUserBhv) {
 		favoriteUserBhv.setUnNotifiable();
 		UserBhvDao.getInstance().updateUnNotifiable(favoriteUserBhv);
 	}
@@ -127,7 +127,7 @@ public class FavoriteBhvFragment extends ListFragment {
 		return preferences.getInt("viewer.noti.proper_num_favorite", 3);
 	}
 	
-	public class FavoriteBhvInfoAdapter extends ArrayAdapter<FavoriteUserBhv> {
+	public class FavoriteBhvInfoAdapter extends ArrayAdapter<FavoriteBhv> {
 
 		public FavoriteBhvInfoAdapter() {
 			super(getActivity(), R.layout.listview_item, favoriteBhvList);
@@ -137,7 +137,7 @@ public class FavoriteBhvFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			FavoriteUserBhv favoriteUserBhv = favoriteBhvList.get(position);
+			FavoriteBhv favoriteUserBhv = favoriteBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
 			iconView.setImageDrawable(favoriteUserBhv.getIcon());
@@ -235,7 +235,7 @@ public class FavoriteBhvFragment extends ListFragment {
 	};
 
 	private String doActionAndGetMsg(int pos, int itemId) {
-		FavoriteUserBhv favoriteUserBhv = favoriteBhvList.get(pos);
+		FavoriteBhv favoriteUserBhv = favoriteBhvList.get(pos);
 		switch(itemId) {
 		case R.id.unfavorite:
 			UserBhvManager uBhvManager = UserBhvManager.getInstance();

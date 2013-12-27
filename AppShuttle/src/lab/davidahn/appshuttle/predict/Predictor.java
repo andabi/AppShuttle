@@ -16,7 +16,6 @@ import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
-import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.PlacePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
@@ -28,6 +27,7 @@ import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.PositionMatcherGroup;
 import lab.davidahn.appshuttle.predict.matchergroup.RecentMatcherGroup;
 import lab.davidahn.appshuttle.predict.matchergroup.TimeMatcherGroup;
+import lab.davidahn.appshuttle.view.PresentBhv;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
@@ -164,11 +164,11 @@ public class Predictor {
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
-		Map<UserBhv, PredictionInfo> predictionInfos = doPredictAndExtractPredictionInfos(currUserCxt);
-		Map<UserBhv, PredictedBhv> predictedBhv = extractPredictedBhvs(predictionInfos);
+		Map<UserBhv, PredictionInfo> predictionInfo = doPredictAndExtractPredictionInfos(currUserCxt);
+		Map<UserBhv, PresentBhv> presentBhvs = PresentBhv.extractPresentBhvs(predictionInfo);
 		
-		AppShuttleApplication.currentPredictionInfoByUserBhv = predictionInfos;
-		AppShuttleApplication.predictedBhvs = predictedBhv;
+		AppShuttleApplication.recentPredictionInfo = predictionInfo;
+		AppShuttleApplication.recentPresentBhvs = presentBhvs;
 	}
 	
 	private Map<UserBhv, PredictionInfo> doPredictAndExtractPredictionInfos(SnapshotUserCxt currUserCxt){
@@ -211,38 +211,10 @@ public class Predictor {
 		return PredictionScore;
 	}
 	
-	private Map<UserBhv, PredictedBhv> extractPredictedBhvs(Map<UserBhv, PredictionInfo> currPredictionInfos) {
-		if (currPredictionInfos == null || currPredictionInfos.isEmpty())
-			return Collections.emptyMap();
-
-		Map<UserBhv, PredictedBhv> res = new HashMap<UserBhv, PredictedBhv>();
-		
-		for(UserBhv uBhv : currPredictionInfos.keySet()){
-			PredictionInfo predictionInfo = currPredictionInfos.get(uBhv);
-
-			PredictedBhv predictedBhv = new PredictedBhv(uBhv);
-			for(MatcherType matcherType : predictionInfo.getMatcherResultMap().keySet())
-				predictedBhv.setFirstPredictedTime(matcherType, predictionInfo.getTimeDate().getTime());
-
-			PredictedBhv recentPredictedBhv = AppShuttleApplication.predictedBhvs.get(uBhv);
-			if(recentPredictedBhv != null){
-				for(MatcherType matcherType : predictionInfo.getMatcherResultMap().keySet()){
-					Long firstPredictedTime = recentPredictedBhv.getFirstPredictedTime(matcherType);
-					if(firstPredictedTime != null)
-						predictedBhv.setFirstPredictedTime(matcherType, firstPredictedTime);
-				}
-			}
-			res.put(uBhv, predictedBhv);
-		}
-		
-		return res;
-	}
-
 	public PredictionInfo getCurrentPredictionInfo(UserBhv uBhv){
-		if(AppShuttleApplication.currentPredictionInfoByUserBhv == null)
+		if(AppShuttleApplication.recentPredictionInfo == null)
 			return null;
 		
-		return AppShuttleApplication.currentPredictionInfoByUserBhv.get(uBhv);
+		return AppShuttleApplication.recentPredictionInfo.get(uBhv);
 	}
-
 }

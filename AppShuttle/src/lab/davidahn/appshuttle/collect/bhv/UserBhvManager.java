@@ -5,17 +5,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import lab.davidahn.appshuttle.view.BlockedUserBhv;
+import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvFragment;
-import lab.davidahn.appshuttle.view.FavoriteUserBhv;
-import lab.davidahn.appshuttle.view.NormalUserBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.NormalBhv;
 import lab.davidahn.appshuttle.view.ViewableUserBhv;
 
 public class UserBhvManager {
 	private Map<UserBhv, ViewableUserBhv> viewableUserBhvs;
-	private Set<NormalUserBhv> normalBhvs;	//normal = unfavorite && unblocked
-	private Set<FavoriteUserBhv> favoriteBhvs;
-	private Set<BlockedUserBhv> blockedBhvs;
+	private Set<NormalBhv> normalBhvs;	//normal = unfavorite && unblocked
+	private Set<FavoriteBhv> favoriteBhvs;
+	private Set<BlockedBhv> blockedBhvs;
 	private UserBhvDao userBhvDao;
 
 	private static UserBhvManager userBhvManager = new UserBhvManager();
@@ -23,20 +23,20 @@ public class UserBhvManager {
 		userBhvDao = UserBhvDao.getInstance();
 		viewableUserBhvs = new HashMap<UserBhv, ViewableUserBhv>();
 		
-		normalBhvs = new HashSet<NormalUserBhv>();
-		for(NormalUserBhv normalUserBhv : userBhvDao.retrieveNormalUserBhv()){
+		normalBhvs = new HashSet<NormalBhv>();
+		for(NormalBhv normalUserBhv : userBhvDao.retrieveNormalUserBhv()){
 			viewableUserBhvs.put(normalUserBhv.getUserBhv(), normalUserBhv);
 			normalBhvs.add(normalUserBhv);
 		}
 
-		favoriteBhvs = new HashSet<FavoriteUserBhv>();
-		for(FavoriteUserBhv favoriteUserBhv : userBhvDao.retrieveFavoriteUserBhv()){
+		favoriteBhvs = new HashSet<FavoriteBhv>();
+		for(FavoriteBhv favoriteUserBhv : userBhvDao.retrieveFavoriteUserBhv()){
 			viewableUserBhvs.put(favoriteUserBhv.getUserBhv(), favoriteUserBhv);
 			favoriteBhvs.add(favoriteUserBhv);
 		}
 
-		blockedBhvs = new HashSet<BlockedUserBhv>();
-		for(BlockedUserBhv blockedUserBhv : userBhvDao.retrieveBlockedUserBhv()){
+		blockedBhvs = new HashSet<BlockedBhv>();
+		for(BlockedBhv blockedUserBhv : userBhvDao.retrieveBlockedUserBhv()){
 			viewableUserBhvs.put(blockedUserBhv.getUserBhv(), blockedUserBhv);
 			blockedBhvs.add(blockedUserBhv);
 		}
@@ -53,15 +53,15 @@ public class UserBhvManager {
 		return viewableUserBhvs.keySet();
 	}
 	
-	public Set<NormalUserBhv> getNormalBhvSet(){
+	public Set<NormalBhv> getNormalBhvSet(){
 		return normalBhvs;
 	}
 	
-	public Set<FavoriteUserBhv> getFavoriteBhvSet(){
+	public Set<FavoriteBhv> getFavoriteBhvSet(){
 		return favoriteBhvs;
 	}
 	
-	public Set<BlockedUserBhv> getBlockedBhvSet(){
+	public Set<BlockedBhv> getBlockedBhvSet(){
 		return blockedBhvs;
 	}
 	
@@ -72,7 +72,7 @@ public class UserBhvManager {
 //				_blockedBhvSet.contains(uBhv) || 
 //				_favoriteBhvSet.contains(uBhv))
 //			return ;
-		NormalUserBhv normalUserBhv = new NormalUserBhv(uBhv);
+		NormalBhv normalUserBhv = new NormalBhv(uBhv);
 
 		userBhvDao.storeUserBhv(normalUserBhv);
 
@@ -107,7 +107,7 @@ public class UserBhvManager {
 		}
 	}
 	
-	public synchronized BlockedUserBhv block(ViewableUserBhv uBhv){
+	public synchronized BlockedBhv block(ViewableUserBhv uBhv){
 		if(blockedBhvs.contains(uBhv))
 			return null;
 
@@ -118,7 +118,7 @@ public class UserBhvManager {
 		}
 		
 		long currTime = System.currentTimeMillis();
-		BlockedUserBhv blockedUserBhv = new BlockedUserBhv(uBhv, currTime);
+		BlockedBhv blockedUserBhv = new BlockedBhv(uBhv, currTime);
 
 		userBhvDao.block(blockedUserBhv);
 		blockedBhvs.add(blockedUserBhv);
@@ -128,11 +128,11 @@ public class UserBhvManager {
 		return blockedUserBhv;
 	}
 	
-	public synchronized NormalUserBhv unblock(BlockedUserBhv uBhv){
+	public synchronized NormalBhv unblock(BlockedBhv uBhv){
 		if(!blockedBhvs.contains(uBhv))
 			return null;
 
-		NormalUserBhv normalUserBhv = new NormalUserBhv(uBhv.getUserBhv());
+		NormalBhv normalUserBhv = new NormalBhv(uBhv.getUserBhv());
 		normalBhvs.add(normalUserBhv);
 
 		userBhvDao.unblock(uBhv);
@@ -144,7 +144,7 @@ public class UserBhvManager {
 	}
 	
 	
-	public synchronized FavoriteUserBhv favorite(ViewableUserBhv uBhv){
+	public synchronized FavoriteBhv favorite(ViewableUserBhv uBhv){
 		if(favoriteBhvs.contains(uBhv))
 			return null;
 
@@ -156,8 +156,8 @@ public class UserBhvManager {
 		
 		long currTime = System.currentTimeMillis();
 		
-		FavoriteUserBhv favoriteUserBhv;
-		favoriteUserBhv = new FavoriteUserBhv(uBhv, currTime, false);
+		FavoriteBhv favoriteUserBhv;
+		favoriteUserBhv = new FavoriteBhv(uBhv, currTime, false);
 		
 		if(!FavoriteBhvFragment.isFullProperNumFavorite())
 			favoriteUserBhv.trySetNotifiable();
@@ -170,11 +170,11 @@ public class UserBhvManager {
 		return favoriteUserBhv;
 	}
 	
-	public synchronized NormalUserBhv unfavorite(FavoriteUserBhv uBhv){
+	public synchronized NormalBhv unfavorite(FavoriteBhv uBhv){
 		if(!favoriteBhvs.contains(uBhv))
 				return null;
 		
-		NormalUserBhv normalUserBhv = new NormalUserBhv(uBhv.getUserBhv());
+		NormalBhv normalUserBhv = new NormalBhv(uBhv.getUserBhv());
 		normalBhvs.add(normalUserBhv);
 
 		uBhv.setUnNotifiable();

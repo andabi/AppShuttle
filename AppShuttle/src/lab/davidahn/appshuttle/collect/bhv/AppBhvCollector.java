@@ -3,10 +3,13 @@ package lab.davidahn.appshuttle.collect.bhv;
 import static lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.create;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
 
 import android.app.ActivityManager;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -37,10 +40,24 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return appBhvCollector;
 	}
 	
+	@Override
+	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+		for(String packageName : getRecentApp(Integer.MAX_VALUE, true)){
+			res.add(new DurationUserBhv.Builder()
+			.setBhv(create(UserBhvType.APP, packageName))
+			.setTime(currTimeDate)
+			.setEndTime(currTimeDate)
+			.setTimeZone(currTimeZone)
+			.build());
+		}
+		return res;
+	}
+	
 	public List<BaseUserBhv> collect() {
 		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		res.addAll(collectActivityBhv());
-		res.addAll(collectServiceBhv());
+//		res.addAll(collectServiceBhv());
 		return res;
 	}
 	
@@ -49,47 +66,19 @@ public class AppBhvCollector extends BaseBhvCollector {
 		
 	    if (!powerManager.isScreenOn()) { //screen off
 	    	res.add(create(UserBhvType.NONE, "screen.off"));
-//			Log.d("collection", "screen off");
         } else if (keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
 				res.add(create(UserBhvType.NONE, "lock.screen.on"));
-//				Log.d("collection", "lock screen on");
 	    } else {
-			for(String bhvName : getPresentActivityList()){
+			for(String bhvName : getPresentApp(1, true)){
 				res.add(create(UserBhvType.APP, bhvName));
 			}
 	    }
 	    return res;
 	}
 
-	private List<BaseUserBhv> collectServiceBhv() {
-		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
-//		for(String bhvName : applicationManager.getCurrentService()){
-//			uCxt.addUserBhv(new AppUserBhv("service", bhvName));
-//		}
-	    return res;
-	}
-	
-	private List<String> getPresentActivityList(){
-		List<String> res = new ArrayList<String>();
-		try {
-			res.addAll(getPresentApp(1, true));
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		return res;
-	}
-	
 	@SuppressWarnings("unused")
-	private List<String> getPresentServiceList(){
-		List<String> res = new ArrayList<String>();
-		res.addAll(getPresentService(0, false));
-		return res;
-
-	}
-	
-	@SuppressWarnings("unused")
-	private List<String> getInstalledAppList(boolean includeSystemApp){
-		List<String> res = new ArrayList<String>();
+	private Set<String> getInstalledAppList(boolean includeSystemApp){
+		Set<String> res = new HashSet<String>();
 		for(ApplicationInfo appInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){
 			if(!includeSystemApp && isSystemApp(appInfo))
 				continue;
@@ -102,40 +91,77 @@ public class AppBhvCollector extends BaseBhvCollector {
 	    return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true : false;
 	}
 
-	private boolean isSystemService(RunningServiceInfo serviceInfo) {
-	    return ((serviceInfo.flags & RunningServiceInfo.FLAG_SYSTEM_PROCESS) != 0) ? true : false;
-	}
-
-	private List<String> getPresentApp(int max, boolean includeSystemApp) throws NameNotFoundException{
+	private Set<String> getPresentApp(int max, boolean includeSystemApp) {
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
 		
-		List<String> res = new ArrayList<String>();
+		Set<String> res = new HashSet<String>();
 		String packageName = "";
 		for(RunningTaskInfo taskInfo : activityManager.getRunningTasks(Integer.MAX_VALUE)){
 			packageName = taskInfo.baseActivity.getPackageName();
-			if(!includeSystemApp && isSystemApp(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)))
-				continue;
+			try {
+				if(!includeSystemApp && isSystemApp(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)))
+					continue;
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
 //			res.add(pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA).processName);
 			res.add(packageName);
 			if(res.size() >= max) break;
 		}
 		return res;
 	}
-
-	private List<String> getPresentService(int max, boolean includeSystemApp){
+	
+	private Set<String> getRecentApp(int max, boolean includeSystemApp) {
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
 		
-		List<String> res = new ArrayList<String>();
-		for(RunningServiceInfo serviceInfo : activityManager.getRunningServices(Integer.MAX_VALUE)) {
-			if(!includeSystemApp && isSystemService(serviceInfo))
-				continue;
-			res.add(serviceInfo.service.getClassName());
+		Set<String> res = new HashSet<String>();
+		String packageName = "";
+		for(ActivityManager.RecentTaskInfo recentInfo : activityManager.getRecentTasks(Integer.MAX_VALUE, ActivityManager.RECENT_IGNORE_UNAVAILABLE)){
+			Intent intent = new Intent(recentInfo.baseIntent);
+            if(recentInfo.origActivity != null)
+                intent.setComponent(recentInfo.origActivity);
+
+            packageName = packageManager.resolveActivity(intent, 0).activityInfo.packageName;
+			try {
+				if(!includeSystemApp && isSystemApp(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)))
+					continue;
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+			res.add(packageName);
 			if(res.size() >= max) break;
 		}
 		return res;
 	}
+	
+
+//	private List<BaseUserBhv> collectServiceBhv() {
+//		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
+//		for(String bhvName : getPresentService(0, false)){
+//			uCxt.addUserBhv(new AppUserBhv("service", bhvName));
+//		}
+//	    return res;
+//	}
+	
+//	private boolean isSystemService(RunningServiceInfo serviceInfo) {
+//    return ((serviceInfo.flags & RunningServiceInfo.FLAG_SYSTEM_PROCESS) != 0) ? true : false;
+//}
+	
+//	private Set<String> getPresentService(int max, boolean includeSystemApp){
+//		if(max < 0) return null;
+//		if(max == 0) max = Integer.MAX_VALUE;
+//		
+//		Set<String> res = new HashSet<String>();
+//		for(RunningServiceInfo serviceInfo : activityManager.getRunningServices(Integer.MAX_VALUE)) {
+//			if(!includeSystemApp && isSystemService(serviceInfo))
+//				continue;
+//			res.add(serviceInfo.service.getClassName());
+//			if(res.size() >= max) break;
+//		}
+//		return res;
+//	}
 
 	public String getHomePackageName(){
 		Intent intent = new Intent(Intent.ACTION_MAIN);

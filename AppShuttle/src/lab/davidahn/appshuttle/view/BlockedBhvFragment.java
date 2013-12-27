@@ -29,7 +29,7 @@ import android.widget.Toast;
 public class BlockedBhvFragment extends ListFragment {
 	private BlockedBhvInfoAdapter adapter;
 	private ActionMode actionMode;
-	private List<BlockedUserBhv> blockedBhvList;
+	private List<BlockedBhv> blockedBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.blocked_empty_msg));
 
-		blockedBhvList = new ArrayList<BlockedUserBhv>(getBlockedBhvListSorted());
+		blockedBhvList = new ArrayList<BlockedBhv>(getBlockedBhvListSorted());
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -75,14 +75,14 @@ public class BlockedBhvFragment extends ListFragment {
 		getActivity().startActivity(adapter.getItem(position).getLaunchIntent());
 	}
 
-	public static List<BlockedUserBhv> getBlockedBhvListSorted(){
-		List<BlockedUserBhv> blockedBhvList = new ArrayList<BlockedUserBhv>(
+	public static List<BlockedBhv> getBlockedBhvListSorted(){
+		List<BlockedBhv> blockedBhvList = new ArrayList<BlockedBhv>(
 				UserBhvManager.getInstance().getBlockedBhvSet());
 		Collections.sort(blockedBhvList);
 		return Collections.unmodifiableList(blockedBhvList);
 	}
 
-	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedUserBhv> {
+	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedBhv> {
 
 		public BlockedBhvInfoAdapter() {
 			super(getActivity(), R.layout.listview_item, blockedBhvList);
@@ -92,7 +92,7 @@ public class BlockedBhvFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BlockedUserBhv blockedUserBhv = blockedBhvList.get(position);
+			BlockedBhv blockedUserBhv = blockedBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
 			iconView.setImageDrawable(blockedUserBhv.getIcon());
@@ -145,7 +145,7 @@ public class BlockedBhvFragment extends ListFragment {
 	};
 	
 	private String doActionAndGetMsg(int pos, int itemId) {
-		BlockedUserBhv blockedUserBhv = blockedBhvList.get(pos);
+		BlockedBhv blockedUserBhv = blockedBhvList.get(pos);
 		switch(itemId) {
 		case R.id.unblock:
 			UserBhvManager uBhvManager = UserBhvManager.getInstance();

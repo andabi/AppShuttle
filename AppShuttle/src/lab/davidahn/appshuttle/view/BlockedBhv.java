@@ -4,10 +4,10 @@ import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import android.text.format.DateUtils;
 
 
-public class BlockedUserBhv extends ViewableUserBhv implements Comparable<BlockedUserBhv> {
+public class BlockedBhv extends ViewableUserBhv implements Comparable<BlockedBhv> {
 	private long blockedTime;
 	
-	public BlockedUserBhv(UserBhv uBhv, long blockedTime){
+	public BlockedBhv(UserBhv uBhv, long blockedTime){
 		super(uBhv);
 		this.blockedTime = blockedTime;
 	}
@@ -17,7 +17,7 @@ public class BlockedUserBhv extends ViewableUserBhv implements Comparable<Blocke
 	}
 	
 	@Override
-	public int compareTo(BlockedUserBhv uBhv) {
+	public int compareTo(BlockedBhv uBhv) {
 		if(blockedTime < uBhv.blockedTime)
 			return 1;
 		else if(blockedTime == uBhv.blockedTime)
