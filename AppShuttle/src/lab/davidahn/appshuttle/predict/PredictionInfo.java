@@ -88,12 +88,7 @@ public class PredictionInfo implements Comparable<PredictionInfo> {
 	
 	@Override
 	public int compareTo(PredictionInfo predictionInfo){
-		if(score < predictionInfo.score) 
-			return 1;
-		else if(score == predictionInfo.score) 
-			return 0;
-		else 
-			return -1;
+		return timeDate.compareTo(predictionInfo.timeDate);
 	}
 
 	@Override

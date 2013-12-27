@@ -78,7 +78,7 @@ public class BlockedBhvFragment extends ListFragment {
 	public static List<BlockedBhv> getBlockedBhvListSorted(){
 		List<BlockedBhv> blockedBhvList = new ArrayList<BlockedBhv>(
 				UserBhvManager.getInstance().getBlockedBhvSet());
-		Collections.sort(blockedBhvList);
+		Collections.sort(blockedBhvList, Collections.reverseOrder());
 		return Collections.unmodifiableList(blockedBhvList);
 	}
 

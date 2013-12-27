@@ -103,7 +103,7 @@ public class MatcherGroupResult implements Comparable<MatcherGroupResult> {
 		if(comp != 0)
 			return comp;
 		
-		if(score < matcherGroupResult.score) 
+		if(score > matcherGroupResult.score) 
 			return 1;
 		else if(score == matcherGroupResult.score) 
 			return 0;

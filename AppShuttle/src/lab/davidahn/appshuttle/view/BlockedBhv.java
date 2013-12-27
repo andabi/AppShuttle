@@ -18,7 +18,7 @@ public class BlockedBhv extends ViewableUserBhv implements Comparable<BlockedBhv
 	
 	@Override
 	public int compareTo(BlockedBhv uBhv) {
-		if(blockedTime < uBhv.blockedTime)
+		if(blockedTime > uBhv.blockedTime)
 			return 1;
 		else if(blockedTime == uBhv.blockedTime)
 			return 0;

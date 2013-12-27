@@ -3,14 +3,14 @@ package lab.davidahn.appshuttle.collect.bhv;
 import static lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.create;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlarmManager;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -42,12 +42,19 @@ public class AppBhvCollector extends BaseBhvCollector {
 	
 	@Override
 	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+		List<String> recentApps = getRecentApp(Integer.MAX_VALUE, true);
+		if(recentApps.isEmpty())
+			return Collections.emptyList();
+
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		for(String packageName : getRecentApp(Integer.MAX_VALUE, true)){
+		long depreciation = preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR / 2)
+				/ recentApps.size();
+		for(int i=0;i<recentApps.size();i++){
+			Date time = new Date(currTimeDate.getTime() - i * depreciation);
 			res.add(new DurationUserBhv.Builder()
-			.setBhv(create(UserBhvType.APP, packageName))
-			.setTime(currTimeDate)
-			.setEndTime(currTimeDate)
+			.setBhv(create(UserBhvType.APP, recentApps.get(i)))
+			.setTime(time)
+			.setEndTime(time)
 			.setTimeZone(currTimeZone)
 			.build());
 		}
@@ -77,8 +84,8 @@ public class AppBhvCollector extends BaseBhvCollector {
 	}
 
 	@SuppressWarnings("unused")
-	private Set<String> getInstalledAppList(boolean includeSystemApp){
-		Set<String> res = new HashSet<String>();
+	private List<String> getInstalledAppList(boolean includeSystemApp){
+		List<String> res = new ArrayList<String>();
 		for(ApplicationInfo appInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){
 			if(!includeSystemApp && isSystemApp(appInfo))
 				continue;
@@ -91,11 +98,11 @@ public class AppBhvCollector extends BaseBhvCollector {
 	    return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true : false;
 	}
 
-	private Set<String> getPresentApp(int max, boolean includeSystemApp) {
+	private List<String> getPresentApp(int max, boolean includeSystemApp) {
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
 		
-		Set<String> res = new HashSet<String>();
+		List<String> res = new ArrayList<String>();
 		String packageName = "";
 		for(RunningTaskInfo taskInfo : activityManager.getRunningTasks(Integer.MAX_VALUE)){
 			packageName = taskInfo.baseActivity.getPackageName();
@@ -112,11 +119,11 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 	
-	private Set<String> getRecentApp(int max, boolean includeSystemApp) {
+	private List<String> getRecentApp(int max, boolean includeSystemApp) {
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
 		
-		Set<String> res = new HashSet<String>();
+		List<String> res = new ArrayList<String>();
 		String packageName = "";
 		for(ActivityManager.RecentTaskInfo recentInfo : activityManager.getRecentTasks(Integer.MAX_VALUE, ActivityManager.RECENT_IGNORE_UNAVAILABLE)){
 			Intent intent = new Intent(recentInfo.baseIntent);

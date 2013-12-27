@@ -1,90 +1,101 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
-import lab.davidahn.appshuttle.predict.Predictor;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-public class PresentBhv extends NormalBhv implements Comparable<PresentBhv>{
+public class PresentBhv extends NormalBhv implements Comparable<PresentBhv> {
 
-	private EnumMap<MatcherType, Long> initialPredictedTimeByMatcherType;
-	
+	private EnumMap<MatcherType, PredictionInfo> initialPredictionInfoByMatcherType;
+
 	public PresentBhv(UserBhv uBhv) {
 		super(uBhv);
-		initialPredictedTimeByMatcherType = new EnumMap<MatcherType, Long>(MatcherType.class);
+		initialPredictionInfoByMatcherType = new EnumMap<MatcherType, PredictionInfo>(
+				MatcherType.class);
 	}
-	
-	public Long getInitialPredictedTime(MatcherType matcherType){
-		return initialPredictedTimeByMatcherType.get(matcherType);
+
+	public PredictionInfo getRecentPredictionInfo() {
+		return Collections.max(initialPredictionInfoByMatcherType.values());
 	}
-	
-	public void setInitialPredictedTime(MatcherType matcherType, long predictedTime){
-		initialPredictedTimeByMatcherType.put(matcherType, predictedTime);
+
+	public static Map<UserBhv, PresentBhv> getRecentPresentBhvs() {
+		return AppShuttleApplication.recentPresentBhvs;
 	}
-	
-	public long getRecentPredictedTime(){
-		List<Long> predictedTimes = new ArrayList<Long>(initialPredictedTimeByMatcherType.values());
-		return Collections.max(predictedTimes);
-	}
-	
-	public static Map<UserBhv, PresentBhv> extractPresentBhvs(Map<UserBhv, PredictionInfo> currPredictionInfos) {
+
+	public static Map<UserBhv, PresentBhv> extractPresentBhvs(
+			Map<UserBhv, PredictionInfo> currPredictionInfos) {
 		if (currPredictionInfos == null || currPredictionInfos.isEmpty())
 			return Collections.emptyMap();
 
 		Map<UserBhv, PresentBhv> res = new HashMap<UserBhv, PresentBhv>();
-		
-		for(UserBhv uBhv : currPredictionInfos.keySet()){
+
+		for (UserBhv uBhv : currPredictionInfos.keySet()) {
 			PredictionInfo predictionInfo = currPredictionInfos.get(uBhv);
-			PresentBhv recentPresentBhv = AppShuttleApplication.recentPresentBhvs.get(uBhv);
-			if(recentPresentBhv == null){
+			PresentBhv recentPresentBhv = getRecentPresentBhvs().get(uBhv);
+			if (recentPresentBhv == null) {
 				PresentBhv presentBhv = new PresentBhv(uBhv);
-				for(MatcherType matcherType : predictionInfo.getMatcherResultMap().keySet())
-					presentBhv.setInitialPredictedTime(matcherType, predictionInfo.getTimeDate().getTime());
+				for (MatcherType matcherType : predictionInfo
+						.getMatcherResultMap().keySet())
+					presentBhv.setInitialPredictionInfoByMatcherType(
+							matcherType, predictionInfo);
 				res.put(uBhv, presentBhv);
 			} else {
-				for(MatcherType matcherType : predictionInfo.getMatcherResultMap().keySet()){
-					Long initialPredictedTime = recentPresentBhv.getInitialPredictedTime(matcherType);
-					if(initialPredictedTime == null)
-						recentPresentBhv.setInitialPredictedTime(matcherType, predictionInfo.getTimeDate().getTime());
-//					else {
-//						if(matcherType.isOverwritableForNewPrediction)
-//							recentPresentBhv.setInitialPredictedTime(matcherType, predictionInfo.getTimeDate().getTime());
-//					}
+				for (MatcherType matcherType : predictionInfo
+						.getMatcherResultMap().keySet()) {
+					PredictionInfo initialPredictionInfo = recentPresentBhv
+							.getInitialPredictionInfoByMatcherType(matcherType);
+					if (initialPredictionInfo == null)
+						recentPresentBhv.setInitialPredictionInfoByMatcherType(
+								matcherType, predictionInfo);
+					else {
+						if (matcherType.isOverwritableForNewPrediction)
+							recentPresentBhv.setInitialPredictionInfoByMatcherType(
+									matcherType, predictionInfo);
+					}
 				}
 				res.put(uBhv, recentPresentBhv);
 			}
 		}
-		
+
+		AppShuttleApplication.recentPresentBhvs = res;
+
 		return res;
+	}
+
+	private PredictionInfo getInitialPredictionInfoByMatcherType(
+			MatcherType matcherType) {
+		return initialPredictionInfoByMatcherType.get(matcherType);
+	}
+
+	private void setInitialPredictionInfoByMatcherType(MatcherType matcherType,
+			PredictionInfo info) {
+		initialPredictionInfoByMatcherType.put(matcherType, info);
 	}
 
 	@Override
 	public int compareTo(PresentBhv _uBhv) {
-		long _recentPredictedTime = _uBhv.getRecentPredictedTime();
-		long recentPredictedTime = getRecentPredictedTime();
-		
-		if(recentPredictedTime < _recentPredictedTime)
-			return 1;
-		else if(recentPredictedTime > _recentPredictedTime)
-			return -1;
+		Date recentPredictionTime = getRecentPredictionInfo().getTimeDate();
+		Date _recentPredictionTime = _uBhv.getRecentPredictionInfo()
+				.getTimeDate();
+
+		int comp = recentPredictionTime.compareTo(_recentPredictionTime);
+		if(comp != 0)
+			return comp;
 		else {
-			Predictor predictor = Predictor.getInstance();
-			double score = predictor.getCurrentPredictionInfo(uBhv).getScore();
-			double _score = predictor.getCurrentPredictionInfo(_uBhv).getScore();
-		
-			if(score < _score)
+			double score = getRecentPredictionInfo().getScore();
+			double _score = _uBhv.getRecentPredictionInfo().getScore();
+			if (score > _score)
 				return 1;
-			else if(score == _score)
+			else if (score == _score)
 				return 0;
-			else 
+			else
 				return -1;
 		}
 	}

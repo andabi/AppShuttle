@@ -130,7 +130,7 @@ public class MatcherResult implements Comparable<MatcherResult> {
 		if(comp != 0)
 			return comp;
 		
-		if(score < matcherResult.score) 
+		if(score > matcherResult.score) 
 			return 1;
 		else if(score == matcherResult.score) 
 			return 0;

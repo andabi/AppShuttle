@@ -1,10 +1,19 @@
 package lab.davidahn.appshuttle.view;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.predict.PredictionInfo;
+import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
+import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
+import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -139,7 +148,27 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 
 	@Override
 	public String getViewMsg() {
-		viewMsg = "";
+		StringBuffer msg = new StringBuffer();
+		viewMsg = msg.toString();
+
+		PresentBhv recentPresentBhv = PresentBhv.getRecentPresentBhvs().get(uBhv);
+		if(recentPresentBhv == null)
+			return viewMsg;
+
+		PredictionInfo predictionInfo = recentPresentBhv.getRecentPredictionInfo();
+		if(predictionInfo == null)
+			return viewMsg;
+		
+		Map<MatcherGroupType, MatcherGroupResult> macherGroupResults = predictionInfo.getMatcherGroupResultMap();
+		List<MatcherGroupType> matcherGroupTypeList = new ArrayList<MatcherGroupType>(macherGroupResults.keySet());
+		Collections.sort(matcherGroupTypeList, new MatcherGroupTypeComparator());
+		
+		for (MatcherGroupType matcherGroupType : matcherGroupTypeList) {
+			msg.append(macherGroupResults.get(matcherGroupType).getViewMsg()).append(", ");
+		}
+		msg.delete(msg.length() - 2, msg.length());
+		viewMsg = msg.toString();
+		
 		return viewMsg;
 	}
 	
@@ -171,7 +200,7 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		
 		return launchIntent;
 	}
-
+	
 	@Override
 	public Integer getNotibarContainerId() {
 		return null;

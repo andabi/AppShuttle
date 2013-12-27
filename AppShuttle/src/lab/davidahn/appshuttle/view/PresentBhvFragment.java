@@ -89,7 +89,7 @@ public class PresentBhvFragment extends ListFragment {
 			if(isCandidatePresentUserBhv(predictedBhv))
 				predictedPresent.add(predictedBhv);
 
-		Collections.sort(predictedPresent);
+		Collections.sort(predictedPresent, Collections.reverseOrder());
 		
 		for(PresentBhv uBhv : predictedPresent)
 			res.add(UserBhvManager.getInstance().getViewableUserBhv(uBhv));
@@ -118,16 +118,16 @@ public class PresentBhvFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			ViewableUserBhv predictedBhv = presentBhvList.get(position);
+			ViewableUserBhv presentBhv = presentBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
-			iconView.setImageDrawable(predictedBhv.getIcon());
+			iconView.setImageDrawable(presentBhv.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
-			firstLineView.setText(predictedBhv.getBhvNameText());
+			firstLineView.setText(presentBhv.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
-			secondLineView.setText(predictedBhv.getViewMsg());
+			secondLineView.setText(presentBhv.getViewMsg());
 
 			return itemView;
 		}

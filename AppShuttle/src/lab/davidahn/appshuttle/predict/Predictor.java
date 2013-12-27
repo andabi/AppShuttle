@@ -165,10 +165,7 @@ public class Predictor {
 	
 	public void predict(SnapshotUserCxt currUserCxt){
 		Map<UserBhv, PredictionInfo> predictionInfo = doPredictAndExtractPredictionInfos(currUserCxt);
-		Map<UserBhv, PresentBhv> presentBhvs = PresentBhv.extractPresentBhvs(predictionInfo);
-		
-		AppShuttleApplication.recentPredictionInfo = predictionInfo;
-		AppShuttleApplication.recentPresentBhvs = presentBhvs;
+		PresentBhv.extractPresentBhvs(predictionInfo);
 	}
 	
 	private Map<UserBhv, PredictionInfo> doPredictAndExtractPredictionInfos(SnapshotUserCxt currUserCxt){
@@ -211,10 +208,10 @@ public class Predictor {
 		return PredictionScore;
 	}
 	
-	public PredictionInfo getCurrentPredictionInfo(UserBhv uBhv){
-		if(AppShuttleApplication.recentPredictionInfo == null)
-			return null;
-		
-		return AppShuttleApplication.recentPredictionInfo.get(uBhv);
-	}
+//	public PredictionInfo getCurrentPredictionInfo(UserBhv uBhv){
+//		if(AppShuttleApplication.recentPredictionInfo == null)
+//			return null;
+//		
+//		return AppShuttleApplication.recentPredictionInfo.get(uBhv);
+//	}
 }
