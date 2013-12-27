@@ -10,7 +10,6 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
-import android.util.Log;
 
 public class PresentBhv extends NormalBhv implements Comparable<PresentBhv> {
 
