@@ -162,6 +162,7 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		Map<MatcherGroupType, MatcherGroupResult> macherGroupResults = predictionInfo.getMatcherGroupResultMap();
 		List<MatcherGroupType> matcherGroupTypeList = new ArrayList<MatcherGroupType>(macherGroupResults.keySet());
 		Collections.sort(matcherGroupTypeList, new MatcherGroupTypeComparator());
+		Collections.reverse(matcherGroupTypeList);
 		
 		for (MatcherGroupType matcherGroupType : matcherGroupTypeList) {
 			msg.append(macherGroupResults.get(matcherGroupType).getViewMsg()).append(", ");
