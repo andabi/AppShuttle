@@ -42,13 +42,15 @@ public class AppBhvCollector extends BaseBhvCollector {
 	
 	@Override
 	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
-		List<String> recentApps = getRecentApp(Integer.MAX_VALUE, true);
+		int numBhv = preferenceSettings.getInt("collection.app.pre.num_bhv", 5);
+		List<String> recentApps = getRecentApp(numBhv, false);
 		if(recentApps.isEmpty())
 			return Collections.emptyList();
-
+		
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		long depreciation = preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR / 2)
-				/ recentApps.size();
+		long depreciation = preferenceSettings.getLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
+//		long depreciation = preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR / 2);
+//				/ recentApps.size();
 		for(int i=0;i<recentApps.size();i++){
 			Date time = new Date(currTimeDate.getTime() - i * depreciation);
 			res.add(new DurationUserBhv.Builder()

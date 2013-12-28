@@ -24,6 +24,9 @@ public class AppShuttlePreferences {
 		
 		editor.putInt("collection.place.num_address_prefix_words", 3);
 		
+		editor.putInt("collection.app.pre.num_bhv", 5);
+		editor.putLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
+		
 		editor.putLong("collection.call.initial_history.period", 6 * AlarmManager.INTERVAL_DAY);
 		
 		editor.putBoolean("collection.store_snapshot_cxt.enabled", false);
