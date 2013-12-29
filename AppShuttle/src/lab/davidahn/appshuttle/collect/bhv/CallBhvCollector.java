@@ -30,7 +30,7 @@ public class CallBhvCollector extends BaseBhvCollector {
 	
 	@Override
 	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
-		long historyAcceptance = preferenceSettings.getLong("collection.call.initial_history.period", 5 * AlarmManager.INTERVAL_DAY);
+		long historyAcceptance = preferenceSettings.getLong("collection.call.pre.period", 6 * AlarmManager.INTERVAL_DAY);
 		lastCallTimeDate = new Date(currTimeDate.getTime() - historyAcceptance);
 		List<DurationUserBhv> extractedCallBhvList = new ArrayList<DurationUserBhv>();
 		extractedCallBhvList = extractCallBhvDuring(lastCallTimeDate, currTimeDate);
