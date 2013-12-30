@@ -30,11 +30,12 @@ public class AppShuttleMainService extends Service {
 		super.onCreate();
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
+
 		registerReceivers();
 
-		startPeriodicPrediction();
 		startPeriodicCollection();
 		startPeriodicCompaction();
+		startPeriodicPrediction();
 	}
 	
 	private void startPeriodicCollection() {

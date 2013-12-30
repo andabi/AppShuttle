@@ -131,6 +131,8 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 				break;
 			case CALL:
 				bhvNameText = (String) (uBhv).getMeta("cachedName");
+				if(bhvNameText == null || bhvNameText.equals(""))
+					bhvNameText = uBhv.getBhvName();
 				break;
 			case SENSOR_ON:
 				if(bhvName.equals(SensorType.WIFI.name()))
