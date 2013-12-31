@@ -29,6 +29,7 @@ import lab.davidahn.appshuttle.collect.env.SpeedEnvSensor;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 
 public class CollectionService extends Service {
@@ -40,11 +41,12 @@ public class CollectionService extends Service {
     @Override
 	public void onCreate() {
 		super.onCreate();
-		
 		registerSensors();
 		registerCollectors();
-
-		preCollectCollectDurationUserContext();
+		if(!isDonePreCollection()){
+			preCollectCollectDurationUserContext();
+			setDonePreCollection();
+		}
 	}
 	
     private void registerSensors() {
@@ -59,6 +61,19 @@ public class CollectionService extends Service {
 		collectors.add(AppBhvCollector.getInstance());
 		collectors.add(CallBhvCollector.getInstance());
 		collectors.add(SensorOnCollector.getInstance());
+	}
+
+	private boolean isDonePreCollection() {
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		boolean isDone = pref.getBoolean("collection.pre.done", false);
+		return isDone;
+	}
+
+	private void setDonePreCollection(){
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		SharedPreferences.Editor editor = pref.edit();
+		editor.putBoolean("collection.pre.done", true);
+		editor.commit();
 	}
 
 	@Override

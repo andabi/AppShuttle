@@ -65,11 +65,12 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		AppShuttlePreferences.setDefaultPreferences();
+
 		if(!AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
 
-		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-		AppShuttlePreferences.setDefaultPreferences();
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
