@@ -1,16 +1,20 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.view.BlockedBhv;
-import lab.davidahn.appshuttle.view.FavoriteBhvFragment;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhvFragment;
 import lab.davidahn.appshuttle.view.NormalBhv;
 import lab.davidahn.appshuttle.view.ViewableUserBhv;
 
+/*
+ * Thread-safe
+ */
 public class UserBhvManager {
 	private Map<UserBhv, ViewableUserBhv> viewableUserBhvs;
 	private Set<NormalBhv> normalBhvs;	//normal = unfavorite && unblocked
@@ -50,19 +54,19 @@ public class UserBhvManager {
 	}
 	
 	public Set<UserBhv> getBhvSet(){
-		return viewableUserBhvs.keySet();
+		return Collections.unmodifiableSet(viewableUserBhvs.keySet());
 	}
 	
 	public Set<NormalBhv> getNormalBhvSet(){
-		return normalBhvs;
+		return Collections.unmodifiableSet(normalBhvs);
 	}
 	
 	public Set<FavoriteBhv> getFavoriteBhvSet(){
-		return favoriteBhvs;
+		return Collections.unmodifiableSet(favoriteBhvs);
 	}
 	
 	public Set<BlockedBhv> getBlockedBhvSet(){
-		return blockedBhvs;
+		return Collections.unmodifiableSet(blockedBhvs);
 	}
 	
 	public synchronized void registerBhv(UserBhv uBhv){
