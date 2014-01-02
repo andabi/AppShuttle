@@ -123,13 +123,16 @@ public class AppBhvCollector extends BaseBhvCollector {
 		if(max == 0) max = Integer.MAX_VALUE;
 		
 		List<String> res = new ArrayList<String>();
-		String packageName = "";
 		for(ActivityManager.RecentTaskInfo recentInfo : activityManager.getRecentTasks(Integer.MAX_VALUE, ActivityManager.RECENT_IGNORE_UNAVAILABLE)){
 			Intent intent = new Intent(recentInfo.baseIntent);
             if(recentInfo.origActivity != null)
                 intent.setComponent(recentInfo.origActivity);
-
-            packageName = packageManager.resolveActivity(intent, 0).activityInfo.packageName;
+            
+            ResolveInfo resolveInfo = packageManager.resolveActivity(intent, 0);
+            if(resolveInfo == null)
+            	continue;
+            
+            String packageName = resolveInfo.activityInfo.packageName;
 			try {
 				if(!includeSystemApp && isSystemApp(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)))
 					continue;
