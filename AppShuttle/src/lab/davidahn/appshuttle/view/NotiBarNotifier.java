@@ -54,8 +54,8 @@ public class NotiBarNotifier {
 		int numFavoriteElem = Math.min(notifiableFavoriteBhvList.size(), numElem);
 		int numPredictedElem = numElem - numFavoriteElem;
 		
-		viewableUserBhvList.addAll(PresentBhvFragment.getPresentUserBhvSorted(numPredictedElem));
 		viewableUserBhvList.addAll(notifiableFavoriteBhvList.subList(0, numFavoriteElem));
+		viewableUserBhvList.addAll(PresentBhvFragment.getPresentUserBhvSorted(numPredictedElem));
 		
 		updateNotiView(viewableUserBhvList);
 	}
@@ -92,8 +92,8 @@ public class NotiBarNotifier {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 
 		//clean
-		notiRemoteView.removeAllViews(R.id.noti_predicted_container);
 		notiRemoteView.removeAllViews(R.id.noti_favorite_container);
+		notiRemoteView.removeAllViews(R.id.noti_predicted_container);
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 
