@@ -11,16 +11,32 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
-# For classes referenced in xml
+## For classes referenced in xml
 -keepattributes InnerClasses
 -keep public class lab.davidahn.appshuttle.view.AppShuttleMainActivity$* { *; }
 
-# For gson
+## For gson
 -keepattributes Signature
 -keepattributes *Annotation*
 -keep class sun.misc.Unsafe { *; }
 -keepclassmembers enum * { *; }
 -keep public class * extends lab.davidahn.appshuttle.collect.env.UserEnv { *; }
+
+## For mail
+#-keep public class lab.davidahn.appshuttle.report.Mail { *; }
+-keep class javamail.** {*;}
+-keep class javax.mail.** {*;}
+-keep class javax.activation.** {*;}
+
+-keep class com.sun.mail.dsn.** {*;}
+-keep class com.sun.mail.handlers.** {*;}
+-keep class com.sun.mail.smtp.** {*;}
+-keep class com.sun.mail.util.** {*;}
+-keep class mailcap.** {*;}
+-keep class mimetypes.** {*;}
+-keep class myjava.awt.datatransfer.** {*;}
+-keep class org.apache.harmony.awt.** {*;}
+-keep class org.apache.harmony.misc.** {*;}
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
