@@ -97,7 +97,7 @@ public class PresentBhvFragment extends ListFragment {
 		return res.subList(0, Math.min(res.size(), topN));
 	}
 	
-	private static boolean isCandidatePresentUserBhv(UserBhv uBhv){
+	public static boolean isCandidatePresentUserBhv(UserBhv uBhv){
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		if(userBhvManager.getNormalBhvSet().contains(uBhv))
 			return true;

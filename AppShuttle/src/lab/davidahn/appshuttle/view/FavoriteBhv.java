@@ -65,6 +65,9 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 	
 	@Override
 	public Integer getNotibarContainerId() {
-		return R.id.noti_favorite_container;
+		if(isNotifiable())
+			return R.id.noti_favorite_container;
+		else
+			return R.id.noti_present_container;
 	}
 }

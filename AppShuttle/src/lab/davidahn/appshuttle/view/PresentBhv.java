@@ -7,16 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictionInfo;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-public class PresentBhv extends NormalBhv implements Comparable<PresentBhv> {
+public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 
 	private EnumMap<MatcherType, PredictionInfo> initialPredictionInfoByMatcherType;
 
 	public PresentBhv(UserBhv uBhv) {
-		super(uBhv);
+		super(uBhv.getBhvType(), uBhv.getBhvName());
 		initialPredictionInfoByMatcherType = new EnumMap<MatcherType, PredictionInfo>(
 				MatcherType.class);
 	}

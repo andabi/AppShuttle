@@ -11,6 +11,6 @@ public class NormalBhv extends ViewableUserBhv {
 	
 	@Override
 	public Integer getNotibarContainerId() {
-		return R.id.noti_predicted_container;
+		return R.id.noti_present_container;
 	}
 }

@@ -56,7 +56,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/noti_predicted_container"
+        android:id="@+id/noti_present_container"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_gravity="center"

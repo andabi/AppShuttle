@@ -93,14 +93,14 @@ public class NotiBarNotifier {
 
 		//clean
 		notiRemoteView.removeAllViews(R.id.noti_favorite_container);
-		notiRemoteView.removeAllViews(R.id.noti_predicted_container);
+		notiRemoteView.removeAllViews(R.id.noti_present_container);
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 
 		if(viewableUserBhvList.isEmpty()){
 			RemoteViews noResultRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_no_result);
-			notiRemoteView.addView(R.id.noti_predicted_container, noResultRemoteView);
-			notiRemoteView.setOnClickPendingIntent(R.id.noti_predicted_container, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
+			notiRemoteView.addView(R.id.noti_present_container, noResultRemoteView);
+			notiRemoteView.setOnClickPendingIntent(R.id.noti_present_container, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
 			return notiRemoteView;
 		}
 		
