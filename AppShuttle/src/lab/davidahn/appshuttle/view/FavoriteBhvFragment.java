@@ -240,12 +240,12 @@ public class FavoriteBhvFragment extends ListFragment {
 		case R.id.unfavorite:
 			UserBhvManager uBhvManager = UserBhvManager.getInstance();
 			uBhvManager.unfavorite(favoriteUserBhv);
-			return getResources().getString(R.string.action_msg_unfavorite);
+			return favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
 		case R.id.favorite_notify:
 			boolean isSuccess = trySetNotifiable(favoriteUserBhv);
 
 			if(isSuccess){
-				String msg = getResources().getString(R.string.action_msg_favorite_notifiable);
+				String msg = favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
 				if(isFullProperNumFavorite()){
 					msg += " " 
 						+ getProperNumFavorite() 
@@ -257,7 +257,7 @@ public class FavoriteBhvFragment extends ListFragment {
 			}
 		case R.id.favorite_unnotify:
 			setUnNotifiable(favoriteUserBhv);
-			return getResources().getString(R.string.action_msg_favorite_unnotifiable);
+			return favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
 		default:
 			return null;
 		}

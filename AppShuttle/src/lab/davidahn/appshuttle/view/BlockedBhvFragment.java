@@ -150,7 +150,7 @@ public class BlockedBhvFragment extends ListFragment {
 		case R.id.unblock:
 			UserBhvManager uBhvManager = UserBhvManager.getInstance();
 			uBhvManager.unblock(blockedUserBhv);
-			return getResources().getString(R.string.action_msg_unblock);
+			return blockedUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_unblock);
 		default:
 			return null;
 		}

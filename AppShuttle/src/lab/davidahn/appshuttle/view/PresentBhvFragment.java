@@ -172,14 +172,15 @@ public class PresentBhvFragment extends ListFragment {
 	
 	private String doActionAndGetMsg(int pos, int itemId) {
 		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-		
+
+		ViewableUserBhv presentBhv = presentBhvList.get(pos);
 		switch(itemId) {
 		case R.id.favorate:	
-			uBhvManager.favorite((presentBhvList.get(pos)));
-			return getResources().getString(R.string.action_msg_favorite);
+			uBhvManager.favorite(presentBhv);
+			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
 		case R.id.block:
-			uBhvManager.block((presentBhvList.get(pos)));
-			return getResources().getString(R.string.action_msg_block);
+			uBhvManager.block(presentBhv);
+			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_block);
 		default:
 			return null;
 		}
