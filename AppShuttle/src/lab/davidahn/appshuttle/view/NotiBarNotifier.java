@@ -82,7 +82,7 @@ public class NotiBarNotifier {
 				.setContent(notiView)
 				.setOngoing(true)
 				.setWhen(AppShuttleApplication.launchTime)
-				.setPriority(Notification.PRIORITY_MAX)
+				.setPriority(Notification.PRIORITY_MIN)
 				.build();
 		}
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
