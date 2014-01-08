@@ -22,9 +22,10 @@
     <string name="action_unfavorite">고정 안함</string>
     <string name="action_block">무시</string>
     <string name="action_unblock">무시 안함</string>
-    <string name="blocked_empty_msg">원하지 않는 앱은 무시할 수 있습니다. 현재 표시된 앱을 길게 눌러 설정하세요.</string>
-    <string name="favorite_empty_msg">자주 사용하는 앱은 고정할 수 있습니다. 현재 표시된 앱을 길게 눌러 설정하세요.</string>
-    <string name="present_empty_msg">지금은 표시할 앱이 없습니다. 계속 사용하세요.</string>
+    <string name="msg_wait">잠시만 기다리세요.</string>
+    <string name="msg_manual_blocked">원하지 않는 앱은 무시할 수 있습니다. 현재 표시된 앱을 길게 눌러 설정하세요.</string>
+    <string name="msg_manual_favorite">자주 사용하는 앱은 고정할 수 있습니다. 현재 표시된 앱을 길게 눌러 설정하세요.</string>
+    <string name="msg_no_results">지금은 표시할 앱이 없습니다. 계속 사용하세요.</string>
     <string name="action_msg_favorite">이(가) 고정됩니다</string>
     <string name="action_msg_unfavorite">이(가) 고정이 풀립니다</string>
     <string name="action_msg_block">은(는) 이제 무시됩니다.</string>

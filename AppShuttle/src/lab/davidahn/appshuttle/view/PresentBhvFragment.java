@@ -50,7 +50,10 @@ public class PresentBhvFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText(getResources().getString(R.string.present_empty_msg));
+		if(System.currentTimeMillis() - AppShuttleApplication.launchTime < 3000)
+			setEmptyText(getResources().getString(R.string.msg_wait));
+		else
+			setEmptyText(getResources().getString(R.string.msg_no_results));
 		
 		presentBhvList = getPresentUserBhvSorted(Integer.MAX_VALUE);
 		

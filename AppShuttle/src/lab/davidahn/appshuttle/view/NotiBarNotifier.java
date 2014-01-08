@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -64,27 +65,25 @@ public class NotiBarNotifier {
 		notificationManager.cancel(UPDATE_NOTI_VIEW);
 	}
 	
-	@SuppressWarnings("deprecation")
+//	@SuppressWarnings("deprecation")
 	private <T extends UserBhv & Viewable> void updateNotiView(List<T> viewableUserBhv) {
 		Notification noti;
 		RemoteViews notiView = createNotiRemoteViews(viewableUserBhv);
-		final int sdkVersion = android.os.Build.VERSION.SDK_INT;
-		if(sdkVersion < Build.VERSION_CODES.JELLY_BEAN) {
-			noti = new Notification.Builder(cxt)
-			.setSmallIcon(R.drawable.appshuttle)
-			.setContent(notiView)
-			.setOngoing(true)
-			.setWhen(AppShuttleApplication.launchTime)
-			.getNotification();
-		} else {
-			noti = new Notification.Builder(cxt)
+//		final int sdkVersion = android.os.Build.VERSION.SDK_INT;
+//		if(sdkVersion < Build.VERSION_CODES.JELLY_BEAN) {
+//			noti = new NotificationCompat.Builder(cxt)
+//			.setSmallIcon(R.drawable.appshuttle)
+//			.setContent(notiView)
+//			.setOngoing(true)
+//			.getNotification();
+//		} else {
+			noti = new NotificationCompat.Builder(cxt)
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiView)
 				.setOngoing(true)
-				.setWhen(AppShuttleApplication.launchTime)
 				.setPriority(Notification.PRIORITY_MIN)
 				.build();
-		}
+//		}
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
 	}
 
