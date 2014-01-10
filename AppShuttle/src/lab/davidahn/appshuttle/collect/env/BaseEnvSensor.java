@@ -10,12 +10,12 @@ import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
 public abstract class BaseEnvSensor implements EnvSensor {
-	protected AppShuttleApplication _appShuttleContext;
+	protected AppShuttleApplication cxt;
 	protected SharedPreferences preferenceSettings;
 
 	public BaseEnvSensor(){
-		_appShuttleContext = AppShuttleApplication.getContext();
-		preferenceSettings = _appShuttleContext.getPreferences();
+		cxt = AppShuttleApplication.getContext();
+		preferenceSettings = cxt.getPreferences();
 //		preferenceSettings = ((AppShuttleApplication)cxt.getApplicationContext()).getPreferenceSettings();
 	}
 	

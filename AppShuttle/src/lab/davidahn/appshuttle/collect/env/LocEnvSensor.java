@@ -30,39 +30,30 @@ public class LocEnvSensor extends BaseEnvSensor {
 	private LocEnvSensor(){
 		super();
 		
-		locationManager = (LocationManager) _appShuttleContext.getSystemService(Context.LOCATION_SERVICE);
-		
+		locationManager = (LocationManager) cxt.getSystemService(Context.LOCATION_SERVICE);
 		prevULoc = currULoc = InvalidUserLoc.getInstance();
 
-		Criteria crit = new Criteria();
-		crit.setAccuracy(Criteria.ACCURACY_COARSE);
-		crit.setCostAllowed(true);
-		crit.setPowerRequirement(Criteria.POWER_MEDIUM);
+		extractBestProvider();
+		extractLocation();
+	}
 
+	private void extractLocation() {
+		lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
+		
+		if(lastKnownLoc != null)
+			return;
+			
 		List<String> providers = locationManager.getProviders(true);
-
 		if(providers.isEmpty()){
 //			Log.i("loc provider", "null");
 			return;
 		}
 		
-		bestProvider = locationManager.getBestProvider(crit, true);
-// 		 Log.d("best provider", bestProvider);
-		
-		locationManager.requestLocationUpdates(bestProvider, 
-				preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
-				preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
-				locationListener);
-
-		lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
-		
-		if(lastKnownLoc == null){
-			for(String provider : providers) {
-//				Log.d("provider", provider);
-				lastKnownLoc = locationManager.getLastKnownLocation(provider);
-				if(lastKnownLoc != null) 
-					break;
-			}
+		for(String provider : providers) {
+//			Log.d("provider", provider);
+			lastKnownLoc = locationManager.getLastKnownLocation(provider);
+			if(lastKnownLoc != null) 
+				break;
 		}
 	}
 
@@ -74,14 +65,10 @@ public class LocEnvSensor extends BaseEnvSensor {
 		return prevULoc;
 	}
 	
-//	public Location getLastKnownLoc(){
-//		return _lastKnownLoc;
-//	}
-
 	@Override
 	public UserLoc sense(Date currTimeDate, TimeZone currTimeZone){
 		prevULoc = currULoc;
-
+		
 		if(lastKnownLoc == null) {
 			currULoc =  InvalidUserLoc.getInstance();
 //			Log.i("location", "sensing failure");
@@ -93,6 +80,22 @@ public class LocEnvSensor extends BaseEnvSensor {
 		return currULoc;
 	}
 	
+	private void extractBestProvider() {
+		Criteria crit = new Criteria();
+		crit.setAccuracy(Criteria.ACCURACY_FINE);
+		crit.setCostAllowed(true);
+		crit.setPowerRequirement(Criteria.POWER_MEDIUM);
+		
+		bestProvider = locationManager.getBestProvider(crit, true);
+		
+//		Log.d("best provider", bestProvider);
+		
+		locationManager.requestLocationUpdates(bestProvider, 
+				preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
+				preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
+				locationListener);
+	}
+
 	@Override
 	public boolean isChanged(){
 //		if(_prevULoc == null)
@@ -149,18 +152,17 @@ public class LocEnvSensor extends BaseEnvSensor {
 		}
 
 		public void onProviderDisabled(String provider) {
+			extractBestProvider();
+			extractLocation();
 		}
 
 		public void onProviderEnabled(String provider) {
-			locationManager.requestLocationUpdates(bestProvider, 
-					preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
-					preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
-					locationListener);
-			
-			lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
+			extractBestProvider();
+			extractLocation();
 		}
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {
+			;
 		}
 	};
 }

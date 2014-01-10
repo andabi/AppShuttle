@@ -8,6 +8,7 @@ import java.util.TimeZone;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 
 public class PlaceEnvSensor extends BaseEnvSensor {
 	private UserPlace prevUPlace;
@@ -53,8 +54,8 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		}
 
 		try {
-	    	Geocoder _geocoder = new Geocoder(_appShuttleContext);
-    		List<Address> geocoded = _geocoder.getFromLocation(currLocLatitude, currLocLongitude, 1);
+	    	Geocoder geocoder = new Geocoder(cxt);
+    		List<Address> geocoded = geocoder.getFromLocation(currLocLatitude, currLocLongitude, 1);
 			if(geocoded == null || geocoded.isEmpty()) {
 //				Log.d("place", "(geocode = null) "+currUPlace.toString());
 				return currUPlace;
@@ -72,6 +73,8 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			String subAdminArea = addr.getSubAdminArea();
 			String locality = addr.getLocality();
 			String subLocality = addr.getSubLocality();
+			String thoroughfare = addr.getThoroughfare();
+			String subThoroughfare = addr.getSubThoroughfare();
 			
 			StringBuilder sb = new StringBuilder();
 			if(adminArea != null)
@@ -82,6 +85,10 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 				sb.append(" ").append(locality);
 			if(subLocality != null)
 				sb.append(" ").append(subLocality);
+			if(thoroughfare != null)
+				sb.append(" ").append(thoroughfare);
+			if(subThoroughfare != null)
+				sb.append(" ").append(subThoroughfare);
 			
 			String placeName = sb.toString();
 
@@ -91,7 +98,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 
 			currUPlace = UserPlace.create(placeName, coordinates);
 			
-//			Log.i("place", currUPlace.toString());
+			Log.i("place", currUPlace.toString());
 			
 			return currUPlace;
 		} catch (IOException e) {
