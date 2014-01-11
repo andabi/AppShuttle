@@ -15,10 +15,10 @@
 
         <ImageView
             android:id="@+id/noti_icon"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:contentDescription="@string/app_icon"
             android:gravity="center"
             android:scaleType="centerInside"

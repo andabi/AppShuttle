@@ -64,6 +64,7 @@ public class BlockedBhvFragment extends ListFragment {
 	    			actionMode = getActivity().startActionMode(actionCallback);
 	    			actionMode.setTag(position);
 //	    			actionMode.setTitle();
+	    			AppShuttleMainActivity.doEmphasisChildViewInListView(getListView(), position);
 	    		}
 	            return true;
 	        }
@@ -124,6 +125,7 @@ public class BlockedBhvFragment extends ListFragment {
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			actionMode = null;
+			AppShuttleMainActivity.cancelEmphasisInListView(getListView());
 		}
 		
 		@Override

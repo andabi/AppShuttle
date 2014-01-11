@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -146,6 +147,21 @@ public class AppShuttleMainActivity extends Activity {
 		return true;
 	}
 		
+	public static void doEmphasisChildViewInListView(ListView listview, int position){
+		for(int i=0;i<listview.getChildCount();i++){
+			if(i == position)
+				listview.getChildAt(i).setAlpha(1);
+			else
+				listview.getChildAt(i).setAlpha(0.2f);
+		}
+	}
+
+	public static void cancelEmphasisInListView(ListView listview){
+		for(int i=0;i<listview.getChildCount();i++){
+			listview.getChildAt(i).setAlpha(1);
+		}
+	}
+
 	public static class TabsAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
 		private final Context mContext;

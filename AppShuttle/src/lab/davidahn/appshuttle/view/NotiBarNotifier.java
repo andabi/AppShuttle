@@ -81,7 +81,7 @@ public class NotiBarNotifier {
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiView)
 				.setOngoing(true)
-				.setPriority(Notification.PRIORITY_MIN)
+				.setPriority(Notification.PRIORITY_MAX)
 				.build();
 //		}
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);

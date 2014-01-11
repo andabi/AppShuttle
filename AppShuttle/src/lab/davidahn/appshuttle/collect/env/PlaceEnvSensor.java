@@ -8,7 +8,6 @@ import java.util.TimeZone;
 
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 
 public class PlaceEnvSensor extends BaseEnvSensor {
 	private UserPlace prevUPlace;
@@ -98,7 +97,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 
 			currUPlace = UserPlace.create(placeName, coordinates);
 			
-			Log.i("place", currUPlace.toString());
+//			Log.i("place", currUPlace.toString());
 			
 			return currUPlace;
 		} catch (IOException e) {
