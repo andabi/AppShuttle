@@ -82,7 +82,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 	
 	private void extractBestProvider() {
 		Criteria crit = new Criteria();
-		crit.setAccuracy(Criteria.ACCURACY_FINE);
+		crit.setAccuracy(Criteria.ACCURACY_COARSE);
 		crit.setCostAllowed(true);
 		crit.setPowerRequirement(Criteria.POWER_MEDIUM);
 		
