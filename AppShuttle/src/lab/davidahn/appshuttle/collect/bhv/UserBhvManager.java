@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -54,19 +53,20 @@ public class UserBhvManager {
 	}
 	
 	public Set<UserBhv> getBhvSet(){
-		return Collections.unmodifiableSet(viewableUserBhvs.keySet());
+		return new HashSet<UserBhv>(viewableUserBhvs.keySet());
+//		return Collections.unmodifiableSet(viewableUserBhvs.keySet());
 	}
 	
 	public Set<NormalBhv> getNormalBhvSet(){
-		return Collections.unmodifiableSet(normalBhvs);
+		return new HashSet<NormalBhv>(normalBhvs);
 	}
 	
 	public Set<FavoriteBhv> getFavoriteBhvSet(){
-		return Collections.unmodifiableSet(favoriteBhvs);
+		return new HashSet<FavoriteBhv>(favoriteBhvs);
 	}
 	
 	public Set<BlockedBhv> getBlockedBhvSet(){
-		return Collections.unmodifiableSet(blockedBhvs);
+		return new HashSet<BlockedBhv>(blockedBhvs);
 	}
 	
 	public synchronized void registerBhv(UserBhv uBhv){
