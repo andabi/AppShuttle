@@ -72,10 +72,7 @@ public class UserBhvManager {
 	public synchronized void registerBhv(UserBhv uBhv){
 		if(viewableUserBhvs.keySet().contains(uBhv))
 			return ;
-//		if(_normalBhvSet.contains(uBhv) || 
-//				_blockedBhvSet.contains(uBhv) || 
-//				_favoriteBhvSet.contains(uBhv))
-//			return ;
+
 		NormalBhv normalUserBhv = new NormalBhv(uBhv);
 
 		userBhvDao.storeUserBhv(normalUserBhv);
@@ -86,12 +83,8 @@ public class UserBhvManager {
 	}
 	
 	public synchronized void unregisterBhv(UserBhv uBhv){
-		if(!viewableUserBhvs.keySet().contains(uBhv))
+		if(!viewableUserBhvs.containsKey(uBhv))
 			return ;
-//		if(!_normalBhvSet.contains(uBhv) && 
-//				!_blockedBhvSet.contains(uBhv) || 
-//				!_favoriteBhvSet.contains(uBhv))
-//			return ;
 
 		userBhvDao.deleteUserBhv(uBhv);
 
