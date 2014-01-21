@@ -107,7 +107,12 @@ public class NotiBarNotifier {
 			UserBhvType bhvType = viewableUserBhv.getBhvType();
 			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_element);
 			
-			notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, PendingIntent.getActivity(cxt, 0, viewableUserBhv.getLaunchIntent(), 0));
+			Intent intent = viewableUserBhv.getLaunchIntent();
+			if(intent != null){
+				PendingIntent pendingIntent = PendingIntent.getActivity(cxt, 0, intent, 0);
+				if(pendingIntent != null)
+					notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, pendingIntent);
+			}
 
 			BitmapDrawable iconDrawable = (BitmapDrawable)viewableUserBhv.getIcon();
 			notiElemRemoteView.setImageViewBitmap(R.id.noti_elem_icon, iconDrawable.getBitmap());

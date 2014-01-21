@@ -80,7 +80,11 @@ public class FavoriteBhvFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		getActivity().startActivity(adapter.getItem(position).getLaunchIntent());
+		Intent intent = adapter.getItem(position).getLaunchIntent();
+		if(intent == null)
+			return;
+
+		getActivity().startActivity(intent);
 	}
 
 	public static List<FavoriteBhv> getFavoriteBhvListSorted(){
