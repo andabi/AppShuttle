@@ -110,14 +110,13 @@ public class AppShuttleMainActivity extends Activity {
 				.setText(" " + getResources().getString(R.string.actionbar_tab_text_blocked))
 				.setIcon(R.drawable.ignore),
 				BlockedBhvFragment.class, null);
-
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
 		
 		startService(new Intent(this, AppShuttleMainService.class));
 	}
-
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -187,7 +186,15 @@ public class AppShuttleMainActivity extends Activity {
 			mViewPager.setAdapter(this);
 			mViewPager.setOnPageChangeListener(this);
 		}
+		
+		public void hideTabs(){
+			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		}
 
+		public void showTabs(){
+			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		}
+		
 		public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
 			TabInfo info = new TabInfo(clss, args);
 			tab.setTag(info);

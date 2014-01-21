@@ -74,6 +74,7 @@ public class PresentBhvFragment extends ListFragment {
 	    			actionMode.setTag(position);
 //	    			actionMode.setTitle("")
 	    			AppShuttleMainActivity.doEmphasisChildViewInListView(getListView(), position);
+	    			
 	    		}
 	            return true;
 	        }
