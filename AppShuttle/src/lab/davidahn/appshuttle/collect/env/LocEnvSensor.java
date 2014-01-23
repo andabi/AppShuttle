@@ -38,11 +38,12 @@ public class LocEnvSensor extends BaseEnvSensor {
 	}
 
 	private void extractLocation() {
-		lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
-		
+		if(bestProvider != null)
+			lastKnownLoc = locationManager.getLastKnownLocation(bestProvider);
+			
 		if(lastKnownLoc != null)
 			return;
-			
+
 		List<String> providers = locationManager.getProviders(true);
 		if(providers.isEmpty()){
 //			Log.i("loc provider", "null");
@@ -89,6 +90,9 @@ public class LocEnvSensor extends BaseEnvSensor {
 		bestProvider = locationManager.getBestProvider(crit, true);
 		
 //		Log.d("best provider", bestProvider);
+		
+		if(bestProvider == null)
+			return;
 		
 		locationManager.requestLocationUpdates(bestProvider, 
 				preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
