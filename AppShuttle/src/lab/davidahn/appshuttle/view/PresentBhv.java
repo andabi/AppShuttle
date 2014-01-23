@@ -14,16 +14,16 @@ import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 
-	private EnumMap<MatcherType, PredictionInfo> initialPredictionInfoByMatcherType;
+	private EnumMap<MatcherType, PredictionInfo> startPredictionInfoByMatcherType;
 
 	public PresentBhv(UserBhv uBhv) {
 		super(uBhv.getBhvType(), uBhv.getBhvName());
-		initialPredictionInfoByMatcherType = new EnumMap<MatcherType, PredictionInfo>(
+		startPredictionInfoByMatcherType = new EnumMap<MatcherType, PredictionInfo>(
 				MatcherType.class);
 	}
 
 	public PredictionInfo getRecentPredictionInfo() {
-		return Collections.max(initialPredictionInfoByMatcherType.values());
+		return Collections.max(startPredictionInfoByMatcherType.values());
 	}
 
 	public static Map<UserBhv, PresentBhv> getRecentPresentBhvs() {
@@ -38,31 +38,33 @@ public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 		Map<UserBhv, PresentBhv> res = new HashMap<UserBhv, PresentBhv>();
 
 		for (UserBhv uBhv : currPredictionInfos.keySet()) {
-			PredictionInfo predictionInfo = currPredictionInfos.get(uBhv);
+			PredictionInfo currPredictionInfo = currPredictionInfos.get(uBhv);
 			PresentBhv recentPresentBhv = getRecentPresentBhvs().get(uBhv);
+			PresentBhv currPresentBhv = new PresentBhv(uBhv);
 			if (recentPresentBhv == null) {
-				PresentBhv presentBhv = new PresentBhv(uBhv);
-				for (MatcherType matcherType : predictionInfo
+				for (MatcherType matcherType : currPredictionInfo
 						.getMatcherResultMap().keySet())
-					presentBhv.setInitialPredictionInfoByMatcherType(
-							matcherType, predictionInfo);
-				res.put(uBhv, presentBhv);
+					currPresentBhv.setStartPredictionInfoByMatcherType(
+							matcherType, currPredictionInfo);
 			} else {
-				for (MatcherType matcherType : predictionInfo
+				for (MatcherType matcherType : currPredictionInfo
 						.getMatcherResultMap().keySet()) {
-					PredictionInfo initialPredictionInfo = recentPresentBhv
-							.getInitialPredictionInfoByMatcherType(matcherType);
-					if (initialPredictionInfo == null)
-						recentPresentBhv.setInitialPredictionInfoByMatcherType(
-								matcherType, predictionInfo);
+					PredictionInfo startPredictionInfo = recentPresentBhv
+							.getStartPredictionInfoByMatcherType(matcherType);
+					if (startPredictionInfo == null)
+						currPresentBhv.setStartPredictionInfoByMatcherType(
+								matcherType, currPredictionInfo);
 					else {
 						if (matcherType.isOverwritableForNewPrediction)
-							recentPresentBhv.setInitialPredictionInfoByMatcherType(
-									matcherType, predictionInfo);
+							currPresentBhv.setStartPredictionInfoByMatcherType(
+									matcherType, currPredictionInfo);
+						else
+							currPresentBhv.setStartPredictionInfoByMatcherType(
+									matcherType, startPredictionInfo);
 					}
 				}
-				res.put(uBhv, recentPresentBhv);
 			}
+			res.put(uBhv, currPresentBhv);
 		}
 
 		AppShuttleApplication.recentPresentBhvs = res;
@@ -70,14 +72,14 @@ public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 		return res;
 	}
 
-	private PredictionInfo getInitialPredictionInfoByMatcherType(
+	private PredictionInfo getStartPredictionInfoByMatcherType(
 			MatcherType matcherType) {
-		return initialPredictionInfoByMatcherType.get(matcherType);
+		return startPredictionInfoByMatcherType.get(matcherType);
 	}
 
-	private void setInitialPredictionInfoByMatcherType(MatcherType matcherType,
+	private void setStartPredictionInfoByMatcherType(MatcherType matcherType,
 			PredictionInfo info) {
-		initialPredictionInfoByMatcherType.put(matcherType, info);
+		startPredictionInfoByMatcherType.put(matcherType, info);
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 				.getTimeDate();
 
 		int comp = recentPredictionTime.compareTo(_recentPredictionTime);
-		if(comp != 0)
+		if (comp != 0)
 			return comp;
 		else {
 			double score = getRecentPredictionInfo().getScore();
