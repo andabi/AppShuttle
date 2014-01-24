@@ -35,7 +35,7 @@ public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 		if (currPredictionInfos == null || currPredictionInfos.isEmpty())
 			return Collections.emptyMap();
 
-		Map<UserBhv, PresentBhv> res = new HashMap<UserBhv, PresentBhv>();
+		Map<UserBhv, PresentBhv> currPresentBhvs = new HashMap<UserBhv, PresentBhv>();
 
 		for (UserBhv uBhv : currPredictionInfos.keySet()) {
 			PredictionInfo currPredictionInfo = currPredictionInfos.get(uBhv);
@@ -55,6 +55,10 @@ public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 						currPresentBhv.setStartPredictionInfoByMatcherType(
 								matcherType, currPredictionInfo);
 					else {
+//						if(uBhv.getBhvName().equals("com.android.chrome")){
+//							Log.d("test", matcherType + ", " + recentPresentBhv.getStartPredictionInfoByMatcherType(matcherType).getTimeDate().toString());
+//						}
+						
 						if (matcherType.isOverwritableForNewPrediction)
 							currPresentBhv.setStartPredictionInfoByMatcherType(
 									matcherType, currPredictionInfo);
@@ -64,12 +68,12 @@ public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 					}
 				}
 			}
-			res.put(uBhv, currPresentBhv);
+			currPresentBhvs.put(uBhv, currPresentBhv);
 		}
 
-		AppShuttleApplication.recentPresentBhvs = res;
+		AppShuttleApplication.recentPresentBhvs = currPresentBhvs;
 
-		return res;
+		return currPresentBhvs;
 	}
 
 	private PredictionInfo getStartPredictionInfoByMatcherType(
