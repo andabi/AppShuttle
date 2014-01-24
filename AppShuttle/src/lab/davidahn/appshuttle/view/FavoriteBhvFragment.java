@@ -1,17 +1,15 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvDao;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.bhv.FavoriteBhv;
+import lab.davidahn.appshuttle.bhv.FavoriteBhvManager;
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -53,7 +51,7 @@ public class FavoriteBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.msg_manual_favorite));
 
-		favoriteBhvList = new ArrayList<FavoriteBhv>(getFavoriteBhvListSorted());
+		favoriteBhvList = new ArrayList<FavoriteBhv>(FavoriteBhvManager.getFavoriteBhvListSorted());
 		
 		adapter = new FavoriteBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -87,51 +85,6 @@ public class FavoriteBhvFragment extends ListFragment {
 		getActivity().startActivity(intent);
 	}
 
-	public static List<FavoriteBhv> getFavoriteBhvListSorted(){
-		List<FavoriteBhv> favorateBhvList = new ArrayList<FavoriteBhv>(
-				UserBhvManager.getInstance().getFavoriteBhvSet());
-		Collections.sort(favorateBhvList);
-		return Collections.unmodifiableList(favorateBhvList);
-	}
-	
-	public static List<FavoriteBhv> getNotifiableFavoriteBhvList() {
-		List<FavoriteBhv> res = new ArrayList<FavoriteBhv>();
-		for(FavoriteBhv uBhv : getFavoriteBhvListSorted()) {
-			if(uBhv.isNotifiable())
-				res.add(uBhv);
-		}
-		return res;
-	}
-	
-	public synchronized static boolean trySetNotifiable(FavoriteBhv favoriteUserBhv) {
-		if(favoriteUserBhv.trySetNotifiable()) {
-			UserBhvDao.getInstance().updateNotifiable(favoriteUserBhv);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public synchronized static void setUnNotifiable(FavoriteBhv favoriteUserBhv) {
-		favoriteUserBhv.setUnNotifiable();
-		UserBhvDao.getInstance().updateUnNotifiable(favoriteUserBhv);
-	}
-
-	public static boolean isFullProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		int properNumFavorite = preferences.getInt("viewer.noti.proper_num_favorite", 3);
-
-		if(AppShuttleApplication.numFavoriteNotifiable >= properNumFavorite)
-			return true;
-		
-		return false;
-	}
-
-	public static int getProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		return preferences.getInt("viewer.noti.proper_num_favorite", 3);
-	}
-	
 	public class FavoriteBhvInfoAdapter extends ArrayAdapter<FavoriteBhv> {
 
 		public FavoriteBhvInfoAdapter() {
@@ -248,13 +201,13 @@ public class FavoriteBhvFragment extends ListFragment {
 			uBhvManager.unfavorite(favoriteUserBhv);
 			return favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
 		case R.id.favorite_notify:
-			boolean isSuccess = trySetNotifiable(favoriteUserBhv);
+			boolean isSuccess = FavoriteBhvManager.trySetNotifiable(favoriteUserBhv);
 
 			if(isSuccess){
 				String msg = favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
-				if(isFullProperNumFavorite()){
+				if(FavoriteBhvManager.isFullProperNumFavorite()){
 					msg += " " 
-						+ getProperNumFavorite() 
+						+ FavoriteBhvManager.getProperNumFavorite() 
 						+ getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
 				}
 				return msg;
@@ -262,7 +215,7 @@ public class FavoriteBhvFragment extends ListFragment {
 				return getResources().getString(R.string.action_msg_favorite_notifiable_failure);
 			}
 		case R.id.favorite_unnotify:
-			setUnNotifiable(favoriteUserBhv);
+			FavoriteBhvManager.setUnNotifiable(favoriteUserBhv);
 			return favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
 		default:
 			return null;

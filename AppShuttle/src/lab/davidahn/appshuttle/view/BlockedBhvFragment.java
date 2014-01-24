@@ -1,11 +1,12 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.bhv.BlockedBhv;
+import lab.davidahn.appshuttle.bhv.BlockedBhvManager;
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +51,7 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.msg_manual_blocked));
 
-		blockedBhvList = new ArrayList<BlockedBhv>(getBlockedBhvListSorted());
+		blockedBhvList = new ArrayList<BlockedBhv>(BlockedBhvManager.getBlockedBhvListSorted());
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -78,13 +79,6 @@ public class BlockedBhvFragment extends ListFragment {
 			return;
 
 		getActivity().startActivity(intent);
-	}
-
-	public static List<BlockedBhv> getBlockedBhvListSorted(){
-		List<BlockedBhv> blockedBhvList = new ArrayList<BlockedBhv>(
-				UserBhvManager.getInstance().getBlockedBhvSet());
-		Collections.sort(blockedBhvList, Collections.reverseOrder());
-		return Collections.unmodifiableList(blockedBhvList);
 	}
 
 	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedBhv> {

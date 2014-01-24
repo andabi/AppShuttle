@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.bhv;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

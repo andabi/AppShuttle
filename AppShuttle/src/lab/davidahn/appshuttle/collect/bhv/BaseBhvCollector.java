@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.bhv.UserBhv;
 import android.content.SharedPreferences;
 
 public class BaseBhvCollector implements BhvCollector {

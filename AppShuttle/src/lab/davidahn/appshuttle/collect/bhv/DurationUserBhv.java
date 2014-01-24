@@ -3,6 +3,8 @@ package lab.davidahn.appshuttle.collect.bhv;
 import java.util.Date;
 import java.util.TimeZone;
 
+import lab.davidahn.appshuttle.bhv.UserBhv;
+
 public class DurationUserBhv implements UserBhv {
 	private final Date timeDate;
 	private final long duration;

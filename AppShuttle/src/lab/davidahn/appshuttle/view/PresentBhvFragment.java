@@ -1,13 +1,12 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
+import lab.davidahn.appshuttle.predict.PresentBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +54,7 @@ public class PresentBhvFragment extends ListFragment {
 		else
 			setEmptyText(getResources().getString(R.string.msg_no_results));
 		
-		presentBhvList = getPresentUserBhvSorted(Integer.MAX_VALUE);
+		presentBhvList = PresentBhvManager.getPresentBhvListFilteredSorted(Integer.MAX_VALUE);
 		
 		adapter = new PresentBhvAdapter();
 		setListAdapter(adapter);
@@ -90,33 +89,6 @@ public class PresentBhvFragment extends ListFragment {
 		getActivity().startActivity(intent);
 	}
 	
-	public static List<ViewableUserBhv> getPresentUserBhvSorted(int topN) {
-		List<ViewableUserBhv> res = new ArrayList<ViewableUserBhv>();
-
-		List<PresentBhv> predictedPresent = new ArrayList<PresentBhv>();
-		for(PresentBhv predictedBhv : AppShuttleApplication.recentPresentBhvs.values())
-			if(isCandidatePresentUserBhv(predictedBhv))
-				predictedPresent.add(predictedBhv);
-
-		Collections.sort(predictedPresent, Collections.reverseOrder());
-		
-		for(PresentBhv uBhv : predictedPresent)
-			res.add(UserBhvManager.getInstance().getViewableUserBhv(uBhv));
-			
-		return res.subList(0, Math.min(res.size(), topN));
-	}
-	
-	public static boolean isCandidatePresentUserBhv(UserBhv uBhv){
-		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		if(userBhvManager.getNormalBhvSet().contains(uBhv))
-			return true;
-		else if(userBhvManager.getFavoriteBhvSet().contains(uBhv)
-				&& !((FavoriteBhv)userBhvManager.getViewableUserBhv(uBhv)).isNotifiable())
-			return true;
-		else
-			return false;
-	}
-
 	public class PresentBhvAdapter extends ArrayAdapter<ViewableUserBhv> {
 
 		public PresentBhvAdapter() {

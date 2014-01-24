@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.bhv;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,9 +8,10 @@ import java.util.Map;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
-import lab.davidahn.appshuttle.predict.PredictionInfo;
+import lab.davidahn.appshuttle.predict.PredictedBhvInfo;
+import lab.davidahn.appshuttle.predict.PresentBhv;
+import lab.davidahn.appshuttle.predict.PresentBhvManager;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
@@ -24,9 +25,7 @@ import android.net.Uri;
 import android.provider.Settings;
 
 public class ViewableUserBhv implements UserBhv, Viewable {
-
 	protected UserBhv uBhv;
-	
 	protected Drawable icon;
 	protected String bhvNameText;
 	protected String viewMsg;
@@ -155,11 +154,11 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		StringBuffer msg = new StringBuffer();
 		viewMsg = msg.toString();
 
-		PresentBhv recentPresentBhv = PresentBhv.getRecentPresentBhvs().get(uBhv);
+		PresentBhv recentPresentBhv = PresentBhvManager.getPresentBhvs().get(uBhv);
 		if(recentPresentBhv == null)
 			return viewMsg;
 
-		PredictionInfo predictionInfo = recentPresentBhv.getRecentPredictionInfo();
+		PredictedBhvInfo predictionInfo = recentPresentBhv.getRecentPredictionInfo();
 		if(predictionInfo == null)
 			return viewMsg;
 		

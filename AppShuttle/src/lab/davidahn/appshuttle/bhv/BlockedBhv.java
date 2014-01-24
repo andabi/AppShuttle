@@ -1,6 +1,5 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.bhv;
 
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import android.text.format.DateUtils;
 
 

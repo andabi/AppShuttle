@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.BhvCollector;
@@ -16,8 +18,6 @@ import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.SensorOnCollector;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;

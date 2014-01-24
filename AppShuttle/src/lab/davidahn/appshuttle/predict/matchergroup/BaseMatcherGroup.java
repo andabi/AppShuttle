@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
+import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
@@ -64,15 +64,13 @@ public abstract class BaseMatcherGroup implements MatcherGroup {
 	}
 
 	protected String extractViewMsg(List<MatcherResult> matcherResults) {
-		
 		assert(!matcherResults.isEmpty());
-		
+
 		MatcherResult maxPriority = Collections.max(matcherResults);
 		return maxPriority.getMatcherType().viewMsg;
 	}
 
 	protected double computeScore(List<MatcherResult> matcherResults) {
-		
 		assert(!matcherResults.isEmpty());
 		
 		MatcherResult maxPriority = Collections.max(matcherResults);

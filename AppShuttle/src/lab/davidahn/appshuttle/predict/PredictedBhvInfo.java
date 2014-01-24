@@ -5,7 +5,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
@@ -13,7 +13,7 @@ import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 
-public class PredictionInfo implements Comparable<PredictionInfo> {
+public class PredictedBhvInfo implements Comparable<PredictedBhvInfo> {
 	private final UserBhv uBhv;
 	private final Date timeDate;
 	private final TimeZone timeZone;
@@ -21,7 +21,7 @@ public class PredictionInfo implements Comparable<PredictionInfo> {
 	private final EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults;
 	private final double score;
 
-	public PredictionInfo(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnvs, UserBhv _uBhv, EnumMap<MatcherGroupType, MatcherGroupResult> _matcherGroupResults, double _score){
+	public PredictedBhvInfo(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnvs, UserBhv _uBhv, EnumMap<MatcherGroupType, MatcherGroupResult> _matcherGroupResults, double _score){
 		timeDate = _time;
 		timeZone = _timeZone;
 		uEnvs = _userEnvs;
@@ -66,7 +66,6 @@ public class PredictionInfo implements Comparable<PredictionInfo> {
 		EnumMap<MatcherType, MatcherResult> matcherResultMap = new EnumMap<MatcherType, MatcherResult>(MatcherType.class);
 		for(MatcherGroupType matcherGroupType : matcherGroupResults.keySet())
 			matcherResultMap.putAll(matcherGroupResults.get(matcherGroupType).getMatcherResultMap());
-
 		return matcherResultMap;
 	}
 	
@@ -87,8 +86,8 @@ public class PredictionInfo implements Comparable<PredictionInfo> {
 	}
 	
 	@Override
-	public int compareTo(PredictionInfo predictionInfo){
-		return timeDate.compareTo(predictionInfo.timeDate);
+	public int compareTo(PredictedBhvInfo predictedBhvInfo){
+		return timeDate.compareTo(predictedBhvInfo.timeDate);
 	}
 
 	@Override

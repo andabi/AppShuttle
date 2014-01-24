@@ -1,7 +1,6 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.bhv;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 
 public class NormalBhv extends ViewableUserBhv {
 

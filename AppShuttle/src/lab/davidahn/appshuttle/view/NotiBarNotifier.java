@@ -5,8 +5,13 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.bhv.FavoriteBhv;
+import lab.davidahn.appshuttle.bhv.FavoriteBhvManager;
+import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.bhv.Viewable;
+import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.predict.PresentBhvManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -51,12 +56,12 @@ public class NotiBarNotifier {
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
 		
 		int numElem = getNumElem();
-		List<FavoriteBhv> notifiableFavoriteBhvList = FavoriteBhvFragment.getNotifiableFavoriteBhvList();
+		List<FavoriteBhv> notifiableFavoriteBhvList = FavoriteBhvManager.getNotifiableFavoriteBhvList();
 		int numFavoriteElem = Math.min(notifiableFavoriteBhvList.size(), numElem);
 		int numPredictedElem = numElem - numFavoriteElem;
 		
 		viewableUserBhvList.addAll(notifiableFavoriteBhvList.subList(0, numFavoriteElem));
-		viewableUserBhvList.addAll(PresentBhvFragment.getPresentUserBhvSorted(numPredictedElem));
+		viewableUserBhvList.addAll(PresentBhvManager.getPresentBhvListFilteredSorted(numPredictedElem));
 		
 		updateNotiView(viewableUserBhvList);
 	}
@@ -65,25 +70,15 @@ public class NotiBarNotifier {
 		notificationManager.cancel(UPDATE_NOTI_VIEW);
 	}
 	
-//	@SuppressWarnings("deprecation")
 	private <T extends UserBhv & Viewable> void updateNotiView(List<T> viewableUserBhv) {
 		Notification noti;
 		RemoteViews notiView = createNotiRemoteViews(viewableUserBhv);
-//		final int sdkVersion = android.os.Build.VERSION.SDK_INT;
-//		if(sdkVersion < Build.VERSION_CODES.JELLY_BEAN) {
-//			noti = new NotificationCompat.Builder(cxt)
-//			.setSmallIcon(R.drawable.appshuttle)
-//			.setContent(notiView)
-//			.setOngoing(true)
-//			.getNotification();
-//		} else {
 			noti = new NotificationCompat.Builder(cxt)
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiView)
 				.setOngoing(true)
 				.setPriority(Notification.PRIORITY_MAX)
 				.build();
-//		}
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
 	}
 

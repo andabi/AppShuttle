@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import android.app.AlarmManager;
 import android.app.IntentService;

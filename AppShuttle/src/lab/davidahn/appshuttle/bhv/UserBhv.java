@@ -1,4 +1,6 @@
-package lab.davidahn.appshuttle.collect.bhv;
+package lab.davidahn.appshuttle.bhv;
+
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 
 public interface UserBhv {
 	public UserBhvType getBhvType();

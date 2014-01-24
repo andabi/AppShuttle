@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.matcher.DailyTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
@@ -27,7 +27,6 @@ import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.PositionMatcherGroup;
 import lab.davidahn.appshuttle.predict.matchergroup.RecentMatcherGroup;
 import lab.davidahn.appshuttle.predict.matchergroup.TimeMatcherGroup;
-import lab.davidahn.appshuttle.view.PresentBhv;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
@@ -164,15 +163,14 @@ public class Predictor {
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
-		Map<UserBhv, PredictionInfo> predictionInfo = doPredictAndExtractPredictionInfos(currUserCxt);
-		PresentBhv.extractPresentBhvs(predictionInfo);
+		PresentBhvManager.extractPresentBhvs(doPredictAndExtractPredictedBhvInfos(currUserCxt));
 	}
 	
-	private Map<UserBhv, PredictionInfo> doPredictAndExtractPredictionInfos(SnapshotUserCxt currUserCxt){
+	private Map<UserBhv, PredictedBhvInfo> doPredictAndExtractPredictedBhvInfos(SnapshotUserCxt currUserCxt){
 		if(currUserCxt == null)
 			return Collections.emptyMap();
 		
-		Map<UserBhv, PredictionInfo> predictionInfos = new HashMap<UserBhv, PredictionInfo>();
+		Map<UserBhv, PredictedBhvInfo> predictedBhvInfos = new HashMap<UserBhv, PredictedBhvInfo>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(UserBhv uBhv : userBhvManager.getBhvSet()){
 			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
@@ -186,15 +184,15 @@ public class Predictor {
 			if(matcherGroupMap.isEmpty())
 				continue;
 			
-			PredictionInfo predictionInfo = new PredictionInfo(currUserCxt.getTimeDate(), 
+			PredictedBhvInfo predictedBhvInfo = new PredictedBhvInfo(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
 					uBhv, matcherGroupMap, computePredictionScore(matcherGroupMap));
 			
-			predictionInfos.put(uBhv, predictionInfo);
+			predictedBhvInfos.put(uBhv, predictedBhvInfo);
 		}
 		
-		return predictionInfos;
+		return predictedBhvInfos;
 	}
 	
 	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults){
@@ -207,11 +205,4 @@ public class Predictor {
 		}
 		return PredictionScore;
 	}
-	
-//	public PredictionInfo getCurrentPredictionInfo(UserBhv uBhv){
-//		if(AppShuttleApplication.recentPredictionInfo == null)
-//			return null;
-//		
-//		return AppShuttleApplication.recentPredictionInfo.get(uBhv);
-//	}
 }

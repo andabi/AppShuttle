@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
+import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import android.app.IntentService;
 import android.content.Intent;
 

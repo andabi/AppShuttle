@@ -6,14 +6,4 @@ public class PositionMatcherGroup extends BaseMatcherGroup implements MatcherGro
 	public PositionMatcherGroup() {
 		super(MatcherGroupType.POSITION, MatcherGroupType.POSITION.priority);
 	}
-	
-//	@Override
-//	protected String extractViewMsg(List<MatcherResult> matcherResults) {
-//		return null;
-//	}
-//
-//	@Override
-//	protected double computeScore(List<MatcherResult> matcherResults) {
-//		return 0;
-//	}
 }
