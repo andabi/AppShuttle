@@ -46,6 +46,6 @@
     <string name="settings_info_feedback_failure_msg">건의사항이 보내지지 않았습니다. 잠시후 다시 시도해주세요.</string>
     <string name="settings_info_shared">앱셔틀 알려주기</string>
     <string name="settings_info_shared_summary">친구들에게 앱셔틀을 알려주세요.</string>
-    <string name="settings_info_shared_msg">앱셔틀 - \'지금 여기서\' 필요한 앱을 알아서 셔틀해드려요! http://goo.gl/XymWJ0</string>
+    <string name="settings_info_shared_msg">앱셔틀 -  앱, 통화.. 찾아 들어가기 힘드셨죠? 이제는 알아서 셔틀해드려요! http://goo.gl/XymWJ0</string>
 
 </resources>
