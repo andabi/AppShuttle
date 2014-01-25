@@ -101,7 +101,11 @@ public class MovePositionMatcher extends PositionMatcher {
 	protected double computeLikelihood(int numTotalHistory,
 			Map<MatcherCountUnit, Double> relatedHistoryMap,
 			SnapshotUserCxt uCxt) {	
-		return (double)relatedHistoryMap.size() / Integer.MAX_VALUE;
+//		return (double)relatedHistoryMap.size() / Integer.MAX_VALUE;
+		if(numTotalHistory <= 0)
+			return 0;
+		
+		return relatedHistoryMap.size() / numTotalHistory;
 	}
 	
 	@Override

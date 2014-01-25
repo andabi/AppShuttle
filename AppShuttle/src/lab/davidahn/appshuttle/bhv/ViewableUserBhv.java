@@ -155,10 +155,17 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		viewMsg = msg.toString();
 
 		PresentBhv recentPresentBhv = PresentBhvManager.getPresentBhvs().get(uBhv);
+		
 		if(recentPresentBhv == null)
 			return viewMsg;
 
 		PredictedBhvInfo predictionInfo = recentPresentBhv.getRecentPredictionInfo();
+		
+//		if(uBhv.getBhvName().equals("com.android.chrome")){
+//			Log.d("test", recentPresentBhv.hashCode() + "");
+//			Log.d("test", predictionInfo.getMatcherResultMap().keySet() + "");
+//		}
+		
 		if(predictionInfo == null)
 			return viewMsg;
 		
