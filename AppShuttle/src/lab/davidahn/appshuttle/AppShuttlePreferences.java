@@ -54,17 +54,17 @@ public class AppShuttlePreferences {
 		editor.putFloat("matcher.time.daily.min_likelihood", 0.5f);
 		editor.putFloat("matcher.time.daily.min_inverse_entropy", Float.MIN_VALUE);
 		editor.putInt("matcher.time.daily.min_num_history", 3);
-		editor.putLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HOUR);
+		editor.putLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR * 3);
 
 		editor.putLong("matcher.position.place.duration", 3 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.position.place.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.place.min_likelihood", 0.3f);
 		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.2f);
 		editor.putInt("matcher.position.place.min_num_history", 3);
 
 		editor.putLong("matcher.position.move.duration", 14 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2);
-		editor.putFloat("matcher.position.move.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.move.min_likelihood", 0.3f);
 		editor.putInt("matcher.position.move.min_num_history", 3);
 
 		//view
