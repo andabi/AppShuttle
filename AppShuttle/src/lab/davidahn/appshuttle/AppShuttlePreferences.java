@@ -64,7 +64,7 @@ public class AppShuttlePreferences {
 
 		editor.putLong("matcher.position.move.duration", 14 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2);
-		editor.putFloat("matcher.position.move.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.move.min_likelihood", 0.3f);
 		editor.putInt("matcher.position.move.min_num_history", 3);
 
 		//view
