@@ -52,4 +52,9 @@ public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
 				return -1;
 		}
 	}
+	
+	@Override
+	public String toString(){
+		return startPredictionInfoByMatcherType.toString();
+	}
 }

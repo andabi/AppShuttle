@@ -43,19 +43,19 @@ public class PresentBhvManager {
 						currPresentBhv.setStartPredictionInfoByMatcherType(
 								matcherType, currPredictionInfo);
 					else {
-						// if(uBhv.getBhvName().equals("com.android.chrome")){
-						// Log.d("test", matcherType + ", " +
-						// recentPresentBhv.getStartPredictionInfoByMatcherType(matcherType).getTimeDate().toString());
-						// }
-
 						if (matcherType.isOverwritableForNewPrediction)
 							currPresentBhv.setStartPredictionInfoByMatcherType(
 									matcherType, currPredictionInfo);
-						else
+						else {
 							currPresentBhv.setStartPredictionInfoByMatcherType(
 									matcherType, startPredictionInfo);
+						}
 					}
 				}
+//				if(uBhv.getBhvName().equals("com.android.chrome")){
+//					Log.d("test", currPresentBhv.hashCode() + "");
+//					Log.d("test", currPresentBhv.getRecentPredictionInfo().getMatcherResultMap().keySet() + "");
+//				}
 			}
 			currPresentBhvs.put(uBhv, currPresentBhv);
 		}
