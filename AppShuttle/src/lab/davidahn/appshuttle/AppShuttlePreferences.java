@@ -58,7 +58,7 @@ public class AppShuttlePreferences {
 
 		editor.putLong("matcher.position.place.duration", 3 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.position.place.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.place.min_likelihood", 0.3f);
 		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.2f);
 		editor.putInt("matcher.position.place.min_num_history", 3);
 
