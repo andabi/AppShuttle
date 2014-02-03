@@ -82,7 +82,7 @@ public class Predictor {
 		timeMatcherGroup.registerMatcher(new DailyTimeMatcher(
 			new TimeMatcherConf.Builder()
 			.setPeriod(AlarmManager.INTERVAL_DAY)
-			.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HOUR))
+			.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR * 3))
 			.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
@@ -93,7 +93,7 @@ public class Predictor {
 		timeMatcherGroup.registerMatcher(new DailyWeekdayTimeMatcher(
 			new TimeMatcherConf.Builder()
 			.setPeriod(AlarmManager.INTERVAL_DAY)
-			.setTolerance(preferenceSettings.getLong("matcher.time.daily_weekday.tolerance", AlarmManager.INTERVAL_HOUR))
+			.setTolerance(preferenceSettings.getLong("matcher.time.daily_weekday.tolerance", AlarmManager.INTERVAL_HALF_HOUR * 3))
 			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekday.duration", 7 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekday.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekday.min_inverse_entropy", 0.2f))
