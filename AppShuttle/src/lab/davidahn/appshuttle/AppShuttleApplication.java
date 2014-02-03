@@ -15,11 +15,11 @@ import android.preference.PreferenceManager;
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
 	public static long launchTime;
-	public static Map<BaseUserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
 	public static long lastPredictionTime;
-	public static SnapshotUserCxt currUserCxt;
-	public static Map<UserBhv, PresentBhv> presentBhvMap;
-	public static int numFavoriteNotifiable;
+	public volatile static Map<BaseUserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
+	public volatile static SnapshotUserCxt currUserCxt;
+	public volatile static Map<UserBhv, PresentBhv> presentBhvMap;
+	public volatile static int numFavoriteNotifiable;
 
 	public AppShuttleApplication(){}
 

@@ -18,8 +18,8 @@ public class AppShuttlePreferences {
 		
 		editor.putLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
 		
-		editor.putLong("collection.location.tolerance.time", 300000);
-		editor.putInt("collection.location.tolerance.distance", 500);
+		editor.putLong("collection.location.tolerance.time", 0);
+		editor.putInt("collection.location.tolerance.distance", 100);
 		editor.putInt("collection.place.num_address_prefix_words", 3);
 		
 		editor.putLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
@@ -59,21 +59,13 @@ public class AppShuttlePreferences {
 		editor.putLong("matcher.position.place.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.position.place.min_likelihood", 0.3f);
-<<<<<<< HEAD
-		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.2f);
-=======
 		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.1f);
->>>>>>> 885d19178712a0f728aff6060009d1e9268c52fd
 		editor.putInt("matcher.position.place.min_num_history", 3);
 
 		editor.putLong("matcher.position.move.duration", 14 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_HOUR / 2);
 		editor.putFloat("matcher.position.move.min_likelihood", 0.3f);
-<<<<<<< HEAD
 		editor.putInt("matcher.position.move.min_num_history", 3);
-=======
-		editor.putInt("matcher.position.move.min_num_history", 2);
->>>>>>> 885d19178712a0f728aff6060009d1e9268c52fd
 
 		//view
 		editor.putInt("viewer.noti.max_num", 12);
