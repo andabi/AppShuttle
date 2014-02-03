@@ -15,7 +15,7 @@ import android.preference.PreferenceManager;
 public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
 	public static long launchTime;
-	public static long lastPredictionTime;
+	public volatile static long lastPredictionTime;
 	public volatile static Map<BaseUserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
 	public volatile static SnapshotUserCxt currUserCxt;
 	public volatile static Map<UserBhv, PresentBhv> presentBhvMap;

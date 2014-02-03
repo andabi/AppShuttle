@@ -18,8 +18,8 @@ public class AppShuttlePreferences {
 		
 		editor.putLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
 		
-		editor.putLong("collection.location.tolerance.time", 0);
-		editor.putInt("collection.location.tolerance.distance", 100);
+		editor.putLong("collection.location.tolerance.time", 25000);
+		editor.putInt("collection.location.tolerance.distance", 500);
 		editor.putInt("collection.place.num_address_prefix_words", 3);
 		
 		editor.putLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
