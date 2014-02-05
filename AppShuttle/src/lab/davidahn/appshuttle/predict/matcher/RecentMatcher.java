@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.collect.bhv.SensorType;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 
 public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
@@ -16,15 +13,7 @@ public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
 	public RecentMatcher(RecentMatcherConf conf){
 		super(conf);
 	}
-	
-	@Override
-	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON && uBhv.getBhvName().equals(SensorType.WIFI.name())){
-			return false;
-		}
-		return true;
-	}
-	
+		
 	@Override
 	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();

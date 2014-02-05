@@ -119,15 +119,17 @@ public final class R {
         public static final int report_success_msg=0x7f070002;
         public static final int settings_category_info=0x7f070024;
         public static final int settings_category_setting=0x7f070023;
-        public static final int settings_info_feedback=0x7f070027;
-        public static final int settings_info_feedback_failure_msg=0x7f07002a;
-        public static final int settings_info_feedback_success_msg=0x7f070029;
-        public static final int settings_info_feedback_summary=0x7f070028;
-        public static final int settings_info_shared=0x7f07002b;
-        public static final int settings_info_shared_msg=0x7f07002d;
-        public static final int settings_info_shared_summary=0x7f07002c;
-        public static final int settings_pref_noti_view_enabled=0x7f070025;
-        public static final int settings_pref_noti_view_enabled_summary=0x7f070026;
+        public static final int settings_info_feedback=0x7f070029;
+        public static final int settings_info_feedback_failure_msg=0x7f07002c;
+        public static final int settings_info_feedback_success_msg=0x7f07002b;
+        public static final int settings_info_feedback_summary=0x7f07002a;
+        public static final int settings_info_shared=0x7f07002d;
+        public static final int settings_info_shared_msg=0x7f07002f;
+        public static final int settings_info_shared_summary=0x7f07002e;
+        public static final int settings_pref_noti_view_hide=0x7f070025;
+        public static final int settings_pref_noti_view_hide_summary=0x7f070026;
+        public static final int settings_pref_system_area_icon_hide=0x7f070027;
+        public static final int settings_pref_system_area_icon_hide_summary=0x7f070028;
     }
     public static final class style {
         /** 

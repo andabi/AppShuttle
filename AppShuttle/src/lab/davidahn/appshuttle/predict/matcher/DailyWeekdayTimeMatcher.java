@@ -27,7 +27,7 @@ public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	}
 	
 	@Override
-	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
+	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt) {
 		if(isWeekDay(currUCxt.getTimeDate()))
 			return true;
 		
