@@ -94,7 +94,7 @@ public class AppShuttleMainActivity extends Activity {
 		final ActionBar bar = getActionBar();
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
-
+		
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle(); 
 		bundle.putString("tag", "predicted");

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AppShuttle</string>
+    <string name="name">AppShuttle</string>
+    <string name="icon">AppShuttle icon</string>
+    <string name="activity_settings_label">Settings</string>
     <string name="action_settings">Settings</string>
     <string name="report_success_msg">Email was sent successfully.</string>
     <string name="report_failure_msg">Email was not sent.</string>
-    <string name="app_icon">AppShuttle icon</string>
     <string name="predict_frequently_recent_msg">used frequently</string>
     <string name="predict_instantly_recent_msg">used recently</string>
     <string name="predict_time_daily_msg">used at this time of day</string>
@@ -37,7 +38,8 @@
     <string name="msg_manual_favorite">No results. Try long click to register the app to favorite.</string>
     <string name="msg_no_results">No results. Just keep using this until the results show sooner or later.</string>
     <string name="settings_category_setting">Settings</string>
-    <string name="settings_category_info">Information</string>
+    <string name="settings_category_info">Info</string>
+    <string name="settings_category_share">Share</string>
     <string name="settings_pref_noti_view_enabled">Enable viewing on notification bar</string>
     <string name="settings_pref_noti_view_enabled_summary">To enable viewing apps on notification bar.</string>
     <string name="settings_info_feedback">Send user feedback</string>
@@ -47,5 +49,8 @@
     <string name="settings_info_shared">Share AppShuttle!</string>
     <string name="settings_info_shared_summary">Let three friends of yours know about AppShuttle.</string>
     <string name="settings_info_shared_msg">It guesses and shows apps which you are supposed to use now, AppShuttle! Download: https://db.tt/WIwHzcgz</string>
-
+    <string name="settings_info_version">Version</string>
+    <string name="settings_info_facebook">Facebook page</string>
+    <string name="settings_info_facebook_summary">Please click \'Like\' button. </string>
+    
 </resources>

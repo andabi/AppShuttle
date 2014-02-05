@@ -4,6 +4,7 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.Reporter;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -22,6 +23,9 @@ public class SettingsActivity extends PreferenceActivity {
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
+        
+        ActionBar bar = getActionBar();
+        bar.setDisplayHomeAsUpEnabled(true);
 	}
 	
 	public static class SettingsFragment extends PreferenceFragment

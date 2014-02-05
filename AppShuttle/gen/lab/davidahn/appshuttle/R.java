@@ -82,52 +82,57 @@ public final class R {
         public static final int unnotifiable_favorite_actionmode=0x7f090005;
     }
     public static final class string {
-        public static final int action_block=0x7f070013;
-        public static final int action_favorite=0x7f070011;
-        public static final int action_favorite_notify=0x7f070019;
-        public static final int action_favorite_unnotify=0x7f07001a;
-        public static final int action_msg_block=0x7f070017;
-        public static final int action_msg_favorite=0x7f070015;
-        public static final int action_msg_favorite_notifiable=0x7f07001b;
-        public static final int action_msg_favorite_notifiable_failure=0x7f07001e;
-        public static final int action_msg_favorite_notifiable_num_proper=0x7f07001c;
-        public static final int action_msg_favorite_unnotifiable=0x7f07001d;
-        public static final int action_msg_unblock=0x7f070018;
-        public static final int action_msg_unfavorite=0x7f070016;
-        public static final int action_settings=0x7f070001;
-        public static final int action_unblock=0x7f070014;
-        public static final int action_unfavorite=0x7f070012;
-        public static final int actionbar_tab_text_blocked=0x7f070010;
-        public static final int actionbar_tab_text_favorite=0x7f07000f;
-        public static final int actionbar_tab_text_predicted=0x7f07000e;
-        public static final int app_icon=0x7f070004;
-        public static final int app_name=0x7f070000;
-        public static final int msg_manual_blocked=0x7f070020;
-        public static final int msg_manual_favorite=0x7f070021;
-        public static final int msg_no_results=0x7f070022;
-        public static final int msg_wait=0x7f07001f;
-        public static final int predict_frequently_recent_msg=0x7f070005;
-        public static final int predict_gps_msg=0x7f07000b;
-        public static final int predict_instantly_recent_msg=0x7f070006;
-        public static final int predict_move_msg=0x7f07000c;
-        public static final int predict_notibar_msg_sensor_wifi=0x7f07000d;
-        public static final int predict_place_msg=0x7f07000a;
-        public static final int predict_time_daily_msg=0x7f070007;
-        public static final int predict_time_daily_weekday_msg=0x7f070008;
-        public static final int predict_time_daily_weekend_msg=0x7f070009;
-        public static final int report_failure_msg=0x7f070003;
-        public static final int report_success_msg=0x7f070002;
-        public static final int settings_category_info=0x7f070024;
-        public static final int settings_category_setting=0x7f070023;
-        public static final int settings_info_feedback=0x7f070027;
-        public static final int settings_info_feedback_failure_msg=0x7f07002a;
-        public static final int settings_info_feedback_success_msg=0x7f070029;
-        public static final int settings_info_feedback_summary=0x7f070028;
-        public static final int settings_info_shared=0x7f07002b;
-        public static final int settings_info_shared_msg=0x7f07002d;
-        public static final int settings_info_shared_summary=0x7f07002c;
-        public static final int settings_pref_noti_view_enabled=0x7f070025;
-        public static final int settings_pref_noti_view_enabled_summary=0x7f070026;
+        public static final int action_block=0x7f070014;
+        public static final int action_favorite=0x7f070012;
+        public static final int action_favorite_notify=0x7f07001a;
+        public static final int action_favorite_unnotify=0x7f07001b;
+        public static final int action_msg_block=0x7f070018;
+        public static final int action_msg_favorite=0x7f070016;
+        public static final int action_msg_favorite_notifiable=0x7f07001c;
+        public static final int action_msg_favorite_notifiable_failure=0x7f07001f;
+        public static final int action_msg_favorite_notifiable_num_proper=0x7f07001d;
+        public static final int action_msg_favorite_unnotifiable=0x7f07001e;
+        public static final int action_msg_unblock=0x7f070019;
+        public static final int action_msg_unfavorite=0x7f070017;
+        public static final int action_settings=0x7f070003;
+        public static final int action_unblock=0x7f070015;
+        public static final int action_unfavorite=0x7f070013;
+        public static final int actionbar_tab_text_blocked=0x7f070011;
+        public static final int actionbar_tab_text_favorite=0x7f070010;
+        public static final int actionbar_tab_text_predicted=0x7f07000f;
+        public static final int activity_settings_label=0x7f070002;
+        public static final int icon=0x7f070001;
+        public static final int msg_manual_blocked=0x7f070021;
+        public static final int msg_manual_favorite=0x7f070022;
+        public static final int msg_no_results=0x7f070023;
+        public static final int msg_wait=0x7f070020;
+        public static final int name=0x7f070000;
+        public static final int predict_frequently_recent_msg=0x7f070006;
+        public static final int predict_gps_msg=0x7f07000c;
+        public static final int predict_instantly_recent_msg=0x7f070007;
+        public static final int predict_move_msg=0x7f07000d;
+        public static final int predict_notibar_msg_sensor_wifi=0x7f07000e;
+        public static final int predict_place_msg=0x7f07000b;
+        public static final int predict_time_daily_msg=0x7f070008;
+        public static final int predict_time_daily_weekday_msg=0x7f070009;
+        public static final int predict_time_daily_weekend_msg=0x7f07000a;
+        public static final int report_failure_msg=0x7f070005;
+        public static final int report_success_msg=0x7f070004;
+        public static final int settings_category_info=0x7f070025;
+        public static final int settings_category_setting=0x7f070024;
+        public static final int settings_category_share=0x7f070026;
+        public static final int settings_info_facebook=0x7f070031;
+        public static final int settings_info_facebook_summary=0x7f070032;
+        public static final int settings_info_feedback=0x7f070029;
+        public static final int settings_info_feedback_failure_msg=0x7f07002c;
+        public static final int settings_info_feedback_success_msg=0x7f07002b;
+        public static final int settings_info_feedback_summary=0x7f07002a;
+        public static final int settings_info_shared=0x7f07002d;
+        public static final int settings_info_shared_msg=0x7f07002f;
+        public static final int settings_info_shared_summary=0x7f07002e;
+        public static final int settings_info_version=0x7f070030;
+        public static final int settings_pref_noti_view_enabled=0x7f070027;
+        public static final int settings_pref_noti_view_enabled_summary=0x7f070028;
     }
     public static final class style {
         /** 
@@ -159,6 +164,8 @@ public final class R {
         <item name="android:colorBackground">@color/semi_indigo</item>
     </style>
     
+         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
+ 
          */
         public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 

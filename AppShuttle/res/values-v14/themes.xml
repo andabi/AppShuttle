@@ -10,8 +10,8 @@
 
     <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
-    </style>
+<!--         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
+ -->    </style>
 
     <style name="NoCloseButton" parent="@android:style/Widget.ActionButton.CloseMode">
         <item name="android:visibility">gone</item>

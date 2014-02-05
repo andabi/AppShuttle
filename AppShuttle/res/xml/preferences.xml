@@ -8,10 +8,10 @@
             android:summary="@string/settings_pref_noti_view_enabled_summary"
             android:title="@string/settings_pref_noti_view_enabled" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/settings_category_info" >
-        <Preference 
-            android:title="@string/settings_info_shared"
-            android:summary="@string/settings_info_shared_summary">
+    <PreferenceCategory android:title="@string/settings_category_share" >
+        <Preference
+            android:summary="@string/settings_info_shared_summary"
+            android:title="@string/settings_info_shared" >
             <intent
                 android:action="android.intent.action.SEND"
                 android:mimeType="text/plain" >
@@ -20,6 +20,15 @@
                     android:value="@string/settings_info_shared_msg" />
             </intent>
         </Preference>
+        <Preference
+            android:summary="@string/settings_info_facebook_summary"
+            android:title="@string/settings_info_facebook" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.facebook.com/appshuttle" />
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_category_info" >
         <EditTextPreference
             android:defaultValue=""
             android:dialogTitle="@string/settings_info_feedback"
@@ -27,7 +36,8 @@
             android:summary="@string/settings_info_feedback_summary"
             android:title="@string/settings_info_feedback" >
         </EditTextPreference>
-
+        <lab.davidahn.appshuttle.view.VersionPreference 
+            android:title="@string/settings_info_version" />
     </PreferenceCategory>
 
 </PreferenceScreen>
