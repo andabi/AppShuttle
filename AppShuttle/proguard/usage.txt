@@ -1,0 +1,2940 @@
+android.support.v13.app.FragmentCompat:
+    25:45:public FragmentCompat()
+android.support.v13.app.FragmentCompatICS:
+    21:21:FragmentCompatICS()
+android.support.v13.app.FragmentCompatICSMR1:
+    21:21:FragmentCompatICSMR1()
+android.support.v13.app.FragmentStatePagerAdapter
+android.support.v13.app.FragmentTabHost:
+    private android.widget.FrameLayout mRealTabContent
+    122:124:public FragmentTabHost(android.content.Context)
+    127:129:public FragmentTabHost(android.content.Context,android.util.AttributeSet)
+    132:164:private void initFragmentTabHost(android.content.Context,android.util.AttributeSet)
+    178:182:public void setup(android.content.Context,android.app.FragmentManager)
+    185:197:public void setup(android.content.Context,android.app.FragmentManager,int)
+    200:207:private void ensureContent()
+    215:234:public void addTab(android.widget.TabHost$TabSpec,java.lang.Class,android.os.Bundle)
+android.support.v13.app.FragmentTabHost$DummyTabFactory
+android.support.v13.app.FragmentTabHost$TabInfo:
+    59:63:FragmentTabHost$TabInfo(java.lang.String,java.lang.Class,android.os.Bundle)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoJellyBeanMr2
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatJellyBeanMr2
+android.support.v4.app.ActionBarDrawerToggle
+android.support.v4.app.ActionBarDrawerToggle$1
+android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImpl
+android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImplBase
+android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImplHC
+android.support.v4.app.ActionBarDrawerToggle$Delegate
+android.support.v4.app.ActionBarDrawerToggle$DelegateProvider
+android.support.v4.app.ActionBarDrawerToggle$SlideDrawable
+android.support.v4.app.ActionBarDrawerToggleHoneycomb
+android.support.v4.app.ActionBarDrawerToggleHoneycomb$SetIndicatorInfo
+android.support.v4.app.ActivityCompat
+android.support.v4.app.ActivityCompatHoneycomb:
+    27:27:ActivityCompatHoneycomb()
+    34:35:static void dump(android.app.Activity,java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])
+android.support.v4.app.ActivityCompatJB
+android.support.v4.app.ActivityOptionsCompat
+android.support.v4.app.ActivityOptionsCompat$ActivityOptionsImplJB
+android.support.v4.app.ActivityOptionsCompatJB
+android.support.v4.app.BackStackRecord:
+    static final java.lang.String TAG
+    static final int OP_NULL
+    static final int OP_ADD
+    static final int OP_REPLACE
+    static final int OP_REMOVE
+    static final int OP_HIDE
+    static final int OP_SHOW
+    static final int OP_DETACH
+    static final int OP_ATTACH
+    338:338:public int getId()
+    342:342:public int getBreadCrumbTitleRes()
+    346:346:public int getBreadCrumbShortTitleRes()
+    350:353:public java.lang.CharSequence getBreadCrumbTitle()
+    357:360:public java.lang.CharSequence getBreadCrumbShortTitle()
+    379:380:public android.support.v4.app.FragmentTransaction add(android.support.v4.app.Fragment,java.lang.String)
+    384:385:public android.support.v4.app.FragmentTransaction add(int,android.support.v4.app.Fragment)
+    421:421:public android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment)
+    425:430:public android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment,java.lang.String)
+    434:439:public android.support.v4.app.FragmentTransaction remove(android.support.v4.app.Fragment)
+    443:448:public android.support.v4.app.FragmentTransaction hide(android.support.v4.app.Fragment)
+    452:457:public android.support.v4.app.FragmentTransaction show(android.support.v4.app.Fragment)
+    479:479:public android.support.v4.app.FragmentTransaction setCustomAnimations(int,int)
+    484:488:public android.support.v4.app.FragmentTransaction setCustomAnimations(int,int,int,int)
+    492:493:public android.support.v4.app.FragmentTransaction setTransition(int)
+    497:498:public android.support.v4.app.FragmentTransaction setTransitionStyle(int)
+    502:508:public android.support.v4.app.FragmentTransaction addToBackStack(java.lang.String)
+    512:512:public boolean isAddToBackStackAllowed()
+    516:521:public android.support.v4.app.FragmentTransaction disallowAddToBackStack()
+    525:527:public android.support.v4.app.FragmentTransaction setBreadCrumbTitle(int)
+    531:533:public android.support.v4.app.FragmentTransaction setBreadCrumbTitle(java.lang.CharSequence)
+    537:539:public android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(int)
+    543:545:public android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(java.lang.CharSequence)
+    578:578:public int commitAllowingStateLoss()
+    779:779:public int getTransition()
+    783:783:public int getTransitionStyle()
+    787:787:public boolean isEmpty()
+android.support.v4.app.DialogFragment
+android.support.v4.app.Fragment:
+    static final int INITIALIZING
+    static final int CREATED
+    static final int ACTIVITY_CREATED
+    static final int STOPPED
+    static final int STARTED
+    static final int RESUMED
+    489:489:public final int getId()
+    496:496:public final java.lang.String getTag()
+    507:511:public void setArguments(android.os.Bundle)
+    518:518:public final android.os.Bundle getArguments()
+    530:535:public void setInitialSavedState(android.support.v4.app.Fragment$SavedState)
+    549:551:public void setTargetFragment(android.support.v4.app.Fragment,int)
+    557:557:public final android.support.v4.app.Fragment getTargetFragment()
+    564:564:public final int getTargetRequestCode()
+    591:591:public final java.lang.CharSequence getText(int)
+    601:601:public final java.lang.String getString(int)
+    614:614:public final varargs java.lang.String getString(int,java.lang.Object[])
+    628:628:public final android.support.v4.app.FragmentManager getFragmentManager()
+    636:648:public final android.support.v4.app.FragmentManager getChildFragmentManager()
+    656:656:public final android.support.v4.app.Fragment getParentFragment()
+    663:663:public final boolean isAdded()
+    681:681:public final boolean isRemoving()
+    692:692:public final boolean isInLayout()
+    700:700:public final boolean isResumed()
+    709:709:public final boolean isVisible()
+    721:721:public final boolean isHidden()
+    726:726:public final boolean hasOptionsMenu()
+    731:731:public final boolean isMenuVisible()
+    759:764:public void setRetainInstance(boolean)
+    767:767:public final boolean getRetainInstance()
+    778:784:public void setHasOptionsMenu(boolean)
+    796:802:public void setMenuVisibility(boolean)
+    818:823:public void setUserVisibleHint(boolean)
+    830:830:public boolean getUserVisibleHint()
+    837:845:public android.support.v4.app.LoaderManager getLoaderManager()
+    853:857:public void startActivity(android.content.Intent)
+    864:868:public void startActivityForResult(android.content.Intent,int)
+    1019:1019:public android.view.View getView()
+    1306:1307:public void registerForContextMenu(android.view.View)
+    1317:1318:public void unregisterForContextMenu(android.view.View)
+    1428:1434:android.support.v4.app.Fragment findFragmentByWho(java.lang.String)
+android.support.v4.app.Fragment$SavedState:
+    309:311:Fragment$SavedState(android.os.Bundle)
+android.support.v4.app.FragmentActivity:
+    private static final java.lang.String TAG
+    static final java.lang.String FRAGMENTS_TAG
+    private static final int HONEYCOMB
+    static final int MSG_REALLY_STOPPED
+    static final int MSG_RESUME_PENDING
+    75:134:public FragmentActivity()
+    617:619:public java.lang.Object getLastCustomNonConfigurationInstance()
+    812:812:public android.support.v4.app.FragmentManager getSupportFragmentManager()
+    832:840:public void startActivityFromFragment(android.support.v4.app.Fragment,android.content.Intent,int)
+    861:866:public android.support.v4.app.LoaderManager getSupportLoaderManager()
+android.support.v4.app.FragmentActivity$1
+android.support.v4.app.FragmentActivity$2
+android.support.v4.app.FragmentActivity$FragmentTag:
+    public static final int Fragment_id
+    public static final int Fragment_name
+    public static final int Fragment_tag
+    134:134:FragmentActivity$FragmentTag()
+android.support.v4.app.FragmentManager:
+    public static final int POP_BACK_STACK_INCLUSIVE
+    142:142:public android.support.v4.app.FragmentTransaction openTransaction()
+    public abstract android.support.v4.app.Fragment findFragmentById(int)
+    public abstract void popBackStack()
+    public abstract boolean popBackStackImmediate()
+    public abstract void popBackStack(java.lang.String,int)
+    public abstract boolean popBackStackImmediate(java.lang.String,int)
+    public abstract void popBackStack(int,int)
+    public abstract boolean popBackStackImmediate(int,int)
+    public abstract int getBackStackEntryCount()
+    public abstract android.support.v4.app.FragmentManager$BackStackEntry getBackStackEntryAt(int)
+    public abstract void addOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
+    public abstract void removeOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
+    public abstract void putFragment(android.os.Bundle,java.lang.String,android.support.v4.app.Fragment)
+    public abstract android.support.v4.app.Fragment getFragment(android.os.Bundle,java.lang.String)
+    public abstract java.util.List getFragments()
+    public abstract android.support.v4.app.Fragment$SavedState saveFragmentInstanceState(android.support.v4.app.Fragment)
+    public abstract void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])
+    345:346:public static void enableDebugLogging(boolean)
+android.support.v4.app.FragmentManager$BackStackEntry
+android.support.v4.app.FragmentManagerImpl:
+    static final java.lang.String TAG
+    static final java.lang.String TARGET_REQUEST_CODE_STATE_TAG
+    static final java.lang.String TARGET_STATE_TAG
+    static final java.lang.String VIEW_STATE_TAG
+    static final java.lang.String USER_VISIBLE_HINT_TAG
+    static final int ANIM_DUR
+    public static final int ANIM_STYLE_OPEN_ENTER
+    public static final int ANIM_STYLE_OPEN_EXIT
+    public static final int ANIM_STYLE_CLOSE_ENTER
+    public static final int ANIM_STYLE_CLOSE_EXIT
+    public static final int ANIM_STYLE_FADE_ENTER
+    public static final int ANIM_STYLE_FADE_EXIT
+    477:482:public void popBackStack()
+    493:498:public void popBackStack(java.lang.String,int)
+    502:504:public boolean popBackStackImmediate(java.lang.String,int)
+    509:517:public void popBackStack(int,int)
+    521:526:public boolean popBackStackImmediate(int,int)
+    531:531:public int getBackStackEntryCount()
+    536:536:public android.support.v4.app.FragmentManager$BackStackEntry getBackStackEntryAt(int)
+    541:545:public void addOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
+    549:552:public void removeOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
+    583:583:public java.util.List getFragments()
+    588:596:public android.support.v4.app.Fragment$SavedState saveFragmentInstanceState(android.support.v4.app.Fragment)
+    1330:1338:public android.support.v4.app.Fragment findFragmentByWho(java.lang.String)
+android.support.v4.app.FragmentManagerImpl$2
+android.support.v4.app.FragmentManagerImpl$3
+android.support.v4.app.FragmentManagerImpl$4
+android.support.v4.app.FragmentPagerAdapter
+android.support.v4.app.FragmentStatePagerAdapter
+android.support.v4.app.FragmentTabHost:
+    private android.widget.FrameLayout mRealTabContent
+    130:132:public FragmentTabHost(android.content.Context)
+    135:137:public FragmentTabHost(android.content.Context,android.util.AttributeSet)
+    140:172:private void initFragmentTabHost(android.content.Context,android.util.AttributeSet)
+    186:190:public void setup(android.content.Context,android.support.v4.app.FragmentManager)
+    193:205:public void setup(android.content.Context,android.support.v4.app.FragmentManager,int)
+    208:215:private void ensureContent()
+    223:242:public void addTab(android.widget.TabHost$TabSpec,java.lang.Class,android.os.Bundle)
+android.support.v4.app.FragmentTabHost$DummyTabFactory
+android.support.v4.app.FragmentTabHost$TabInfo:
+    67:71:FragmentTabHost$TabInfo(java.lang.String,java.lang.Class,android.os.Bundle)
+android.support.v4.app.FragmentTransaction:
+    public static final int TRANSIT_ENTER_MASK
+    public static final int TRANSIT_EXIT_MASK
+    public static final int TRANSIT_UNSET
+    public static final int TRANSIT_NONE
+    public static final int TRANSIT_FRAGMENT_OPEN
+    public static final int TRANSIT_FRAGMENT_CLOSE
+    public static final int TRANSIT_FRAGMENT_FADE
+    public abstract android.support.v4.app.FragmentTransaction add(android.support.v4.app.Fragment,java.lang.String)
+    public abstract android.support.v4.app.FragmentTransaction add(int,android.support.v4.app.Fragment)
+    public abstract android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment)
+    public abstract android.support.v4.app.FragmentTransaction replace(int,android.support.v4.app.Fragment,java.lang.String)
+    public abstract android.support.v4.app.FragmentTransaction remove(android.support.v4.app.Fragment)
+    public abstract android.support.v4.app.FragmentTransaction hide(android.support.v4.app.Fragment)
+    public abstract android.support.v4.app.FragmentTransaction show(android.support.v4.app.Fragment)
+    public abstract boolean isEmpty()
+    public abstract android.support.v4.app.FragmentTransaction setCustomAnimations(int,int)
+    public abstract android.support.v4.app.FragmentTransaction setCustomAnimations(int,int,int,int)
+    public abstract android.support.v4.app.FragmentTransaction setTransition(int)
+    public abstract android.support.v4.app.FragmentTransaction setTransitionStyle(int)
+    public abstract android.support.v4.app.FragmentTransaction addToBackStack(java.lang.String)
+    public abstract boolean isAddToBackStackAllowed()
+    public abstract android.support.v4.app.FragmentTransaction disallowAddToBackStack()
+    public abstract android.support.v4.app.FragmentTransaction setBreadCrumbTitle(int)
+    public abstract android.support.v4.app.FragmentTransaction setBreadCrumbTitle(java.lang.CharSequence)
+    public abstract android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(int)
+    public abstract android.support.v4.app.FragmentTransaction setBreadCrumbShortTitle(java.lang.CharSequence)
+    public abstract int commitAllowingStateLoss()
+android.support.v4.app.ListFragment
+android.support.v4.app.ListFragment$1
+android.support.v4.app.ListFragment$2
+android.support.v4.app.LoaderManager:
+    public abstract android.support.v4.content.Loader initLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
+    public abstract android.support.v4.content.Loader restartLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
+    public abstract void destroyLoader(int)
+    public abstract android.support.v4.content.Loader getLoader(int)
+    public abstract void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])
+    177:178:public static void enableDebugLogging(boolean)
+android.support.v4.app.LoaderManagerImpl:
+    static final java.lang.String TAG
+    boolean mRetainingStarted
+    boolean mCreatingLoader
+    489:492:private android.support.v4.app.LoaderManagerImpl$LoaderInfo createLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
+    498:503:private android.support.v4.app.LoaderManagerImpl$LoaderInfo createAndInstallLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
+    508:515:void installLoader(android.support.v4.app.LoaderManagerImpl$LoaderInfo)
+    543:565:public android.support.v4.content.Loader initLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
+    593:647:public android.support.v4.content.Loader restartLoader(int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
+    658:678:public void destroyLoader(int)
+    686:697:public android.support.v4.content.Loader getLoader(int)
+android.support.v4.app.LoaderManagerImpl$LoaderInfo:
+    228:232:public LoaderManagerImpl$LoaderInfo(android.support.v4.app.LoaderManagerImpl,int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
+    362:415:public void onLoadComplete(android.support.v4.content.Loader,java.lang.Object)
+android.support.v4.app.NavUtils
+android.support.v4.app.NavUtils$NavUtilsImpl
+android.support.v4.app.NavUtils$NavUtilsImplBase
+android.support.v4.app.NavUtils$NavUtilsImplJB
+android.support.v4.app.NavUtilsJB
+android.support.v4.app.NotificationCompat:
+    public static final int FLAG_HIGH_PRIORITY
+    public static final int PRIORITY_DEFAULT
+    public static final int PRIORITY_LOW
+    public static final int PRIORITY_MIN
+    public static final int PRIORITY_HIGH
+    public static final int PRIORITY_MAX
+    34:819:public NotificationCompat()
+android.support.v4.app.NotificationCompat$Action:
+    824:828:public NotificationCompat$Action(int,java.lang.CharSequence,android.app.PendingIntent)
+android.support.v4.app.NotificationCompat$BigPictureStyle:
+    659:661:public NotificationCompat$BigPictureStyle(android.support.v4.app.NotificationCompat$Builder)
+    668:669:public android.support.v4.app.NotificationCompat$BigPictureStyle setBigContentTitle(java.lang.CharSequence)
+    676:678:public android.support.v4.app.NotificationCompat$BigPictureStyle setSummaryText(java.lang.CharSequence)
+    685:686:public android.support.v4.app.NotificationCompat$BigPictureStyle bigPicture(android.graphics.Bitmap)
+    693:695:public android.support.v4.app.NotificationCompat$BigPictureStyle bigLargeIcon(android.graphics.Bitmap)
+android.support.v4.app.NotificationCompat$BigTextStyle:
+    726:728:public NotificationCompat$BigTextStyle(android.support.v4.app.NotificationCompat$Builder)
+    735:736:public android.support.v4.app.NotificationCompat$BigTextStyle setBigContentTitle(java.lang.CharSequence)
+    743:745:public android.support.v4.app.NotificationCompat$BigTextStyle setSummaryText(java.lang.CharSequence)
+    753:754:public android.support.v4.app.NotificationCompat$BigTextStyle bigText(java.lang.CharSequence)
+android.support.v4.app.NotificationCompat$Builder:
+    231:232:public android.support.v4.app.NotificationCompat$Builder setWhen(long)
+    247:248:public android.support.v4.app.NotificationCompat$Builder setUsesChronometer(boolean)
+    274:276:public android.support.v4.app.NotificationCompat$Builder setSmallIcon(int,int)
+    283:284:public android.support.v4.app.NotificationCompat$Builder setContentTitle(java.lang.CharSequence)
+    291:292:public android.support.v4.app.NotificationCompat$Builder setContentText(java.lang.CharSequence)
+    305:306:public android.support.v4.app.NotificationCompat$Builder setSubText(java.lang.CharSequence)
+    315:316:public android.support.v4.app.NotificationCompat$Builder setNumber(int)
+    323:324:public android.support.v4.app.NotificationCompat$Builder setContentInfo(java.lang.CharSequence)
+    332:335:public android.support.v4.app.NotificationCompat$Builder setProgress(int,int,boolean)
+    355:356:public android.support.v4.app.NotificationCompat$Builder setContentIntent(android.app.PendingIntent)
+    367:368:public android.support.v4.app.NotificationCompat$Builder setDeleteIntent(android.app.PendingIntent)
+    385:387:public android.support.v4.app.NotificationCompat$Builder setFullScreenIntent(android.app.PendingIntent,boolean)
+    395:396:public android.support.v4.app.NotificationCompat$Builder setTicker(java.lang.CharSequence)
+    405:407:public android.support.v4.app.NotificationCompat$Builder setTicker(java.lang.CharSequence,android.widget.RemoteViews)
+    414:415:public android.support.v4.app.NotificationCompat$Builder setLargeIcon(android.graphics.Bitmap)
+    422:424:public android.support.v4.app.NotificationCompat$Builder setSound(android.net.Uri)
+    434:436:public android.support.v4.app.NotificationCompat$Builder setSound(android.net.Uri,int)
+    446:447:public android.support.v4.app.NotificationCompat$Builder setVibrate(long[])
+    456:462:public android.support.v4.app.NotificationCompat$Builder setLights(int,int,int)
+    486:487:public android.support.v4.app.NotificationCompat$Builder setOnlyAlertOnce(boolean)
+    497:498:public android.support.v4.app.NotificationCompat$Builder setAutoCancel(boolean)
+    512:516:public android.support.v4.app.NotificationCompat$Builder setDefaults(int)
+    560:561:public android.support.v4.app.NotificationCompat$Builder addAction(int,java.lang.CharSequence,android.app.PendingIntent)
+    573:579:public android.support.v4.app.NotificationCompat$Builder setStyle(android.support.v4.app.NotificationCompat$Style)
+    587:587:public android.app.Notification getNotification()
+android.support.v4.app.NotificationCompat$InboxStyle:
+    788:790:public NotificationCompat$InboxStyle(android.support.v4.app.NotificationCompat$Builder)
+    797:798:public android.support.v4.app.NotificationCompat$InboxStyle setBigContentTitle(java.lang.CharSequence)
+    805:807:public android.support.v4.app.NotificationCompat$InboxStyle setSummaryText(java.lang.CharSequence)
+    814:815:public android.support.v4.app.NotificationCompat$InboxStyle addLine(java.lang.CharSequence)
+android.support.v4.app.NotificationCompat$Style:
+    android.support.v4.app.NotificationCompat$Builder mBuilder
+    614:620:public void setBuilder(android.support.v4.app.NotificationCompat$Builder)
+    623:627:public android.app.Notification build()
+android.support.v4.app.NotificationCompatHoneycomb:
+    25:25:NotificationCompatHoneycomb()
+android.support.v4.app.NotificationCompatIceCreamSandwich:
+    25:25:NotificationCompatIceCreamSandwich()
+android.support.v4.app.ServiceCompat
+android.support.v4.app.ShareCompat
+android.support.v4.app.ShareCompat$IntentBuilder
+android.support.v4.app.ShareCompat$IntentReader
+android.support.v4.app.ShareCompat$ShareCompatImpl
+android.support.v4.app.ShareCompat$ShareCompatImplBase
+android.support.v4.app.ShareCompat$ShareCompatImplICS
+android.support.v4.app.ShareCompat$ShareCompatImplJB
+android.support.v4.app.ShareCompatICS
+android.support.v4.app.ShareCompatJB
+android.support.v4.app.TaskStackBuilder
+android.support.v4.app.TaskStackBuilder$SupportParentable
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplBase
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplHoneycomb
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplJellybean
+android.support.v4.app.TaskStackBuilderHoneycomb
+android.support.v4.app.TaskStackBuilderJellybean
+android.support.v4.content.AsyncTaskLoader
+android.support.v4.content.AsyncTaskLoader$LoadTask
+android.support.v4.content.ContextCompat
+android.support.v4.content.ContextCompatHoneycomb
+android.support.v4.content.ContextCompatJellybean
+android.support.v4.content.CursorLoader
+android.support.v4.content.FileProvider
+android.support.v4.content.FileProvider$PathStrategy
+android.support.v4.content.FileProvider$SimplePathStrategy
+android.support.v4.content.IntentCompat
+android.support.v4.content.IntentCompat$IntentCompatImpl
+android.support.v4.content.IntentCompat$IntentCompatImplBase
+android.support.v4.content.IntentCompat$IntentCompatImplHC
+android.support.v4.content.IntentCompat$IntentCompatImplIcsMr1
+android.support.v4.content.IntentCompatHoneycomb
+android.support.v4.content.IntentCompatIcsMr1
+android.support.v4.content.Loader:
+    android.content.Context mContext
+    91:93:public Loader(android.content.Context)
+    103:106:public void deliverResult(java.lang.Object)
+    112:112:public android.content.Context getContext()
+    119:119:public int getId()
+    158:158:public boolean isStarted()
+    167:167:public boolean isAbandoned()
+    176:176:public boolean isReset()
+    218:219:public void forceLoad()
+    226:226:protected void onForceLoad()
+    262:264:public void abandon()
+    276:276:protected void onAbandon()
+    314:317:public boolean takeContentChanged()
+    328:329:public void commitContentChanged()
+    339:342:public void rollbackContentChanged()
+    353:361:public void onContentChanged()
+android.support.v4.content.Loader$ForceLoadContentObserver
+android.support.v4.content.Loader$OnLoadCompleteListener:
+    public abstract void onLoadComplete(android.support.v4.content.Loader,java.lang.Object)
+android.support.v4.content.LocalBroadcastManager
+android.support.v4.content.LocalBroadcastManager$1
+android.support.v4.content.LocalBroadcastManager$BroadcastRecord
+android.support.v4.content.LocalBroadcastManager$ReceiverRecord
+android.support.v4.content.ModernAsyncTask
+android.support.v4.content.ModernAsyncTask$1
+android.support.v4.content.ModernAsyncTask$2
+android.support.v4.content.ModernAsyncTask$3
+android.support.v4.content.ModernAsyncTask$4
+android.support.v4.content.ModernAsyncTask$AsyncTaskResult
+android.support.v4.content.ModernAsyncTask$InternalHandler
+android.support.v4.content.ModernAsyncTask$Status
+android.support.v4.content.ModernAsyncTask$WorkerRunnable
+android.support.v4.content.WakefulBroadcastReceiver
+android.support.v4.content.pm.ActivityInfoCompat
+android.support.v4.database.DatabaseUtilsCompat
+android.support.v4.graphics.drawable.DrawableCompat
+android.support.v4.graphics.drawable.DrawableCompat$BaseDrawableImpl
+android.support.v4.graphics.drawable.DrawableCompat$DrawableImpl
+android.support.v4.graphics.drawable.DrawableCompat$HoneycombDrawableImpl
+android.support.v4.graphics.drawable.DrawableCompatHoneycomb
+android.support.v4.hardware.display.DisplayManagerCompat
+android.support.v4.hardware.display.DisplayManagerCompat$JellybeanMr1Impl
+android.support.v4.hardware.display.DisplayManagerCompat$LegacyImpl
+android.support.v4.hardware.display.DisplayManagerJellybeanMr1
+android.support.v4.internal.view.SupportMenu
+android.support.v4.internal.view.SupportMenuItem
+android.support.v4.internal.view.SupportSubMenu
+android.support.v4.media.TransportController
+android.support.v4.media.TransportMediator
+android.support.v4.media.TransportMediator$1
+android.support.v4.media.TransportMediator$2
+android.support.v4.media.TransportMediatorCallback
+android.support.v4.media.TransportMediatorJellybeanMR2
+android.support.v4.media.TransportMediatorJellybeanMR2$1
+android.support.v4.media.TransportMediatorJellybeanMR2$2
+android.support.v4.media.TransportMediatorJellybeanMR2$3
+android.support.v4.media.TransportMediatorJellybeanMR2$4
+android.support.v4.media.TransportPerformer
+android.support.v4.media.TransportStateListener
+android.support.v4.net.ConnectivityManagerCompat
+android.support.v4.net.ConnectivityManagerCompat$BaseConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$ConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$GingerbreadConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$HoneycombMR2ConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompat$JellyBeanConnectivityManagerCompatImpl
+android.support.v4.net.ConnectivityManagerCompatGingerbread
+android.support.v4.net.ConnectivityManagerCompatHoneycombMR2
+android.support.v4.net.ConnectivityManagerCompatJellyBean
+android.support.v4.net.TrafficStatsCompat
+android.support.v4.net.TrafficStatsCompat$1
+android.support.v4.net.TrafficStatsCompat$BaseTrafficStatsCompatImpl
+android.support.v4.net.TrafficStatsCompat$BaseTrafficStatsCompatImpl$1
+android.support.v4.net.TrafficStatsCompat$BaseTrafficStatsCompatImpl$SocketTags
+android.support.v4.net.TrafficStatsCompat$IcsTrafficStatsCompatImpl
+android.support.v4.net.TrafficStatsCompat$TrafficStatsCompatImpl
+android.support.v4.net.TrafficStatsCompatIcs
+android.support.v4.os.ParcelableCompat:
+    26:42:public ParcelableCompat()
+android.support.v4.os.ParcelableCompatCreatorHoneycombMR2Stub:
+    22:22:ParcelableCompatCreatorHoneycombMR2Stub()
+android.support.v4.text.BidiFormatter
+android.support.v4.text.BidiFormatter$1
+android.support.v4.text.BidiFormatter$Builder
+android.support.v4.text.BidiFormatter$DirectionalityEstimator
+android.support.v4.text.ICUCompat
+android.support.v4.text.ICUCompat$ICUCompatImpl
+android.support.v4.text.ICUCompat$ICUCompatImplBase
+android.support.v4.text.ICUCompat$ICUCompatImplIcs
+android.support.v4.text.ICUCompatIcs
+android.support.v4.text.TextDirectionHeuristicCompat
+android.support.v4.text.TextDirectionHeuristicsCompat
+android.support.v4.text.TextDirectionHeuristicsCompat$1
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong
+android.support.v4.text.TextDirectionHeuristicsCompat$FirstStrong
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionAlgorithm
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale
+android.support.v4.text.TextUtilsCompat
+android.support.v4.util.AtomicFile
+android.support.v4.util.DebugUtils:
+    25:25:public DebugUtils()
+android.support.v4.util.LongSparseArray
+android.support.v4.util.LruCache
+android.support.v4.util.SparseArrayCompat:
+    52:52:public java.lang.Object get(int)
+    60:65:public java.lang.Object get(int,java.lang.Object)
+    73:81:public void delete(int)
+    87:88:public void remove(int)
+    94:98:public void removeAt(int)
+    107:111:public void removeAtRange(int,int)
+    146:190:public void put(int,java.lang.Object)
+    236:241:public void setValueAt(int,java.lang.Object)
+    249:253:public int indexOfKey(int)
+    265:273:public int indexOfValue(java.lang.Object)
+    296:323:public void append(int,java.lang.Object)
+    326:342:private static int binarySearch(int[],int,int,int)
+android.support.v4.util.TimeUtils
+android.support.v4.view.AccessibilityDelegateCompatIcs:
+    28:30:AccessibilityDelegateCompatIcs()
+android.support.v4.view.AccessibilityDelegateCompatJellyBean:
+    30:32:AccessibilityDelegateCompatJellyBean()
+android.support.v4.view.ActionProvider
+android.support.v4.view.ActionProvider$SubUiVisibilityListener
+android.support.v4.view.ActionProvider$VisibilityListener
+android.support.v4.view.GestureDetectorCompat
+android.support.v4.view.GestureDetectorCompat$GestureDetectorCompatImpl
+android.support.v4.view.GestureDetectorCompat$GestureDetectorCompatImplBase
+android.support.v4.view.GestureDetectorCompat$GestureDetectorCompatImplBase$GestureHandler
+android.support.v4.view.GestureDetectorCompat$GestureDetectorCompatImplJellybeanMr2
+android.support.v4.view.GravityCompat:
+    public static final int RELATIVE_LAYOUT_DIRECTION
+    public static final int START
+    public static final int END
+    public static final int RELATIVE_HORIZONTAL_GRAVITY_MASK
+    27:62:public GravityCompat()
+    132:133:public static void apply(int,int,int,android.graphics.Rect,android.graphics.Rect,int)
+    162:163:public static void apply(int,int,int,android.graphics.Rect,int,int,android.graphics.Rect,int)
+    186:187:public static void applyDisplay(int,android.graphics.Rect,android.graphics.Rect,int)
+android.support.v4.view.GravityCompat$GravityCompatImpl:
+    public abstract void apply(int,int,int,android.graphics.Rect,android.graphics.Rect,int)
+    public abstract void apply(int,int,int,android.graphics.Rect,int,int,android.graphics.Rect,int)
+    public abstract void applyDisplay(int,android.graphics.Rect,android.graphics.Rect,int)
+android.support.v4.view.GravityCompat$GravityCompatImplBase:
+    46:47:public void apply(int,int,int,android.graphics.Rect,android.graphics.Rect,int)
+    52:53:public void apply(int,int,int,android.graphics.Rect,int,int,android.graphics.Rect,int)
+    58:59:public void applyDisplay(int,android.graphics.Rect,android.graphics.Rect,int)
+android.support.v4.view.GravityCompat$GravityCompatImplJellybeanMr1:
+    71:72:public void apply(int,int,int,android.graphics.Rect,android.graphics.Rect,int)
+    77:79:public void apply(int,int,int,android.graphics.Rect,int,int,android.graphics.Rect,int)
+    83:84:public void applyDisplay(int,android.graphics.Rect,android.graphics.Rect,int)
+android.support.v4.view.GravityCompatJellybeanMr1:
+    23:23:GravityCompatJellybeanMr1()
+    31:32:public static void apply(int,int,int,android.graphics.Rect,android.graphics.Rect,int)
+    36:37:public static void apply(int,int,int,android.graphics.Rect,int,int,android.graphics.Rect,int)
+    40:41:public static void applyDisplay(int,android.graphics.Rect,android.graphics.Rect,int)
+android.support.v4.view.KeyEventCompat:
+    26:144:public KeyEventCompat()
+    176:176:public static int normalizeMetaState(int)
+    180:180:public static boolean metaStateHasModifiers(int,int)
+    184:184:public static boolean metaStateHasNoModifiers(int)
+    200:200:public static boolean isTracking(android.view.KeyEvent)
+    204:204:public static java.lang.Object getKeyDispatcherState(android.view.View)
+    209:209:public static boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
+android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl:
+    private static final int META_MODIFIER_MASK
+    private static final int META_ALL_MASK
+    103:103:public boolean isTracking(android.view.KeyEvent)
+    108:108:public java.lang.Object getKeyDispatcherState(android.view.View)
+    114:114:public boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
+android.support.v4.view.KeyEventCompat$EclairKeyEventVersionImpl:
+    126:126:public boolean isTracking(android.view.KeyEvent)
+    131:131:public java.lang.Object getKeyDispatcherState(android.view.View)
+    137:137:public boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
+android.support.v4.view.KeyEventCompat$KeyEventVersionImpl:
+    public abstract int normalizeMetaState(int)
+    public abstract boolean isTracking(android.view.KeyEvent)
+    public abstract java.lang.Object getKeyDispatcherState(android.view.View)
+    public abstract boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
+android.support.v4.view.KeyEventCompatEclair:
+    23:23:KeyEventCompatEclair()
+    25:25:public static java.lang.Object getKeyDispatcherState(android.view.View)
+    30:30:public static boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
+    38:38:public static boolean isTracking(android.view.KeyEvent)
+android.support.v4.view.KeyEventCompatHoneycomb:
+    24:24:KeyEventCompatHoneycomb()
+android.support.v4.view.MarginLayoutParamsCompat
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1
+android.support.v4.view.MenuCompat
+android.support.v4.view.MenuItemCompat
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl$1
+android.support.v4.view.MenuItemCompat$MenuVersionImpl
+android.support.v4.view.MenuItemCompat$OnActionExpandListener
+android.support.v4.view.MenuItemCompatHoneycomb
+android.support.v4.view.MenuItemCompatIcs
+android.support.v4.view.MenuItemCompatIcs$OnActionExpandListenerWrapper
+android.support.v4.view.MenuItemCompatIcs$SupportActionExpandProxy
+android.support.v4.view.MotionEventCompat:
+    public static final int ACTION_MASK
+    public static final int ACTION_POINTER_DOWN
+    public static final int ACTION_POINTER_UP
+    public static final int ACTION_HOVER_MOVE
+    public static final int ACTION_SCROLL
+    public static final int ACTION_POINTER_INDEX_MASK
+    public static final int ACTION_POINTER_INDEX_SHIFT
+    public static final int ACTION_HOVER_ENTER
+    public static final int ACTION_HOVER_EXIT
+    25:80:public MotionEventCompat()
+android.support.v4.view.MotionEventCompatEclair:
+    24:24:MotionEventCompatEclair()
+android.support.v4.view.PagerTabStrip
+android.support.v4.view.PagerTabStrip$1
+android.support.v4.view.PagerTabStrip$2
+android.support.v4.view.PagerTitleStrip
+android.support.v4.view.PagerTitleStrip$1
+android.support.v4.view.PagerTitleStrip$PageListener
+android.support.v4.view.PagerTitleStrip$PagerTitleStripImpl
+android.support.v4.view.PagerTitleStrip$PagerTitleStripImplBase
+android.support.v4.view.PagerTitleStrip$PagerTitleStripImplIcs
+android.support.v4.view.PagerTitleStripIcs
+android.support.v4.view.PagerTitleStripIcs$SingleLineAllCapsTransform
+android.support.v4.view.VelocityTrackerCompat:
+    25:51:public VelocityTrackerCompat()
+android.support.v4.view.VelocityTrackerCompatHoneycomb:
+    24:24:VelocityTrackerCompatHoneycomb()
+android.support.v4.view.ViewCompat:
+    public static final int OVER_SCROLL_ALWAYS
+    public static final int OVER_SCROLL_IF_CONTENT_SCROLLS
+    public static final int OVER_SCROLL_NEVER
+    private static final long FAKE_FRAME_TIME
+    public static final int IMPORTANT_FOR_ACCESSIBILITY_AUTO
+    public static final int IMPORTANT_FOR_ACCESSIBILITY_YES
+    public static final int IMPORTANT_FOR_ACCESSIBILITY_NO
+    public static final int LAYER_TYPE_NONE
+    public static final int LAYER_TYPE_SOFTWARE
+    public static final int LAYER_TYPE_HARDWARE
+    public static final int LAYOUT_DIRECTION_LTR
+    public static final int LAYOUT_DIRECTION_RTL
+    public static final int LAYOUT_DIRECTION_INHERIT
+    public static final int LAYOUT_DIRECTION_LOCALE
+    34:397:public ViewCompat()
+    462:462:public static boolean canScrollVertically(android.view.View,int)
+    491:492:public static void setOverScrollMode(android.view.View,int)
+    528:529:public static void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    561:562:public static void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    597:598:public static void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    624:624:public static boolean hasTransientState(android.view.View)
+    635:636:public static void setHasTransientState(android.view.View,boolean)
+    697:698:public static void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    747:747:public static boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
+    774:774:public static android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+    785:785:public static float getAlpha(android.view.View)
+    859:859:public static int getLabelFor(android.view.View)
+    870:871:public static void setLabelFor(android.view.View,int)
+    938:939:public static void setLayoutDirection(android.view.View,int)
+    950:950:public static android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompat$BaseViewCompatImpl:
+    175:175:public boolean canScrollVertically(android.view.View,int)
+    182:182:public void setOverScrollMode(android.view.View,int)
+    188:188:public void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    191:191:public void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    194:194:public void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    197:197:public boolean hasTransientState(android.view.View)
+    201:201:public void setHasTransientState(android.view.View,boolean)
+    212:213:public void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    224:224:public boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
+    227:227:public android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+    230:230:public float getAlpha(android.view.View)
+    239:239:public int getLabelFor(android.view.View)
+    243:243:public void setLabelFor(android.view.View,int)
+    256:256:public void setLayoutDirection(android.view.View,int)
+    260:260:public android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompat$GBViewCompatImpl:
+    287:288:public void setOverScrollMode(android.view.View,int)
+android.support.v4.view.ViewCompat$HCViewCompatImpl:
+    298:298:public float getAlpha(android.view.View)
+android.support.v4.view.ViewCompat$ICSViewCompatImpl:
+    325:325:public boolean canScrollVertically(android.view.View,int)
+    329:330:public void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    333:334:public void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    337:338:public void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+android.support.v4.view.ViewCompat$JBViewCompatImpl:
+    348:348:public boolean hasTransientState(android.view.View)
+    352:353:public void setHasTransientState(android.view.View,boolean)
+    368:369:public void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    380:380:public boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
+    384:388:public android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+    393:393:public android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompat$JbMr1ViewCompatImpl:
+    401:401:public int getLabelFor(android.view.View)
+    406:407:public void setLabelFor(android.view.View,int)
+    421:422:public void setLayoutDirection(android.view.View,int)
+android.support.v4.view.ViewCompat$ViewCompatImpl:
+    public abstract boolean canScrollVertically(android.view.View,int)
+    public abstract void setOverScrollMode(android.view.View,int)
+    public abstract void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    public abstract void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    public abstract void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    public abstract boolean hasTransientState(android.view.View)
+    public abstract void setHasTransientState(android.view.View,boolean)
+    public abstract void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    public abstract boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
+    public abstract android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+    public abstract float getAlpha(android.view.View)
+    public abstract int getLabelFor(android.view.View)
+    public abstract void setLabelFor(android.view.View,int)
+    public abstract void setLayoutDirection(android.view.View,int)
+    public abstract android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompatEclairMr1:
+    22:22:ViewCompatEclairMr1()
+android.support.v4.view.ViewCompatGingerbread:
+    21:21:ViewCompatGingerbread()
+    27:28:public static void setOverScrollMode(android.view.View,int)
+android.support.v4.view.ViewCompatHC:
+    23:23:ViewCompatHC()
+    29:29:public static float getAlpha(android.view.View)
+android.support.v4.view.ViewCompatICS:
+    27:27:ViewCompatICS()
+    34:34:public static boolean canScrollVertically(android.view.View,int)
+    42:43:public static void onPopulateAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    46:47:public static void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
+    50:51:public static void onInitializeAccessibilityNodeInfo(android.view.View,java.lang.Object)
+android.support.v4.view.ViewCompatJB:
+    26:26:ViewCompatJB()
+    29:29:public static boolean hasTransientState(android.view.View)
+    33:34:public static void setHasTransientState(android.view.View,boolean)
+    50:51:public static void postOnAnimationDelayed(android.view.View,java.lang.Runnable,long)
+    62:62:public static boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
+    66:66:public static java.lang.Object getAccessibilityNodeProvider(android.view.View)
+    70:70:public static android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompatJellybeanMr1:
+    25:25:ViewCompatJellybeanMr1()
+    28:28:public static int getLabelFor(android.view.View)
+    32:33:public static void setLabelFor(android.view.View,int)
+    44:45:public static void setLayoutDirection(android.view.View,int)
+android.support.v4.view.ViewConfigurationCompat:
+    25:46:public ViewConfigurationCompat()
+android.support.v4.view.ViewConfigurationCompatFroyo:
+    24:24:ViewConfigurationCompatFroyo()
+android.support.v4.view.ViewGroupCompat
+android.support.v4.view.ViewGroupCompat$ViewGroupCompatHCImpl
+android.support.v4.view.ViewGroupCompat$ViewGroupCompatIcsImpl
+android.support.v4.view.ViewGroupCompat$ViewGroupCompatImpl
+android.support.v4.view.ViewGroupCompat$ViewGroupCompatStubImpl
+android.support.v4.view.ViewGroupCompatHC
+android.support.v4.view.ViewGroupCompatIcs
+android.support.v4.view.ViewPager:
+    private static final java.lang.String TAG
+    private static final boolean DEBUG
+    private static final boolean USE_CACHE
+    private static final int DEFAULT_OFFSCREEN_PAGES
+    private static final int MAX_SETTLE_DURATION
+    private static final int MIN_DISTANCE_FOR_FLING
+    private static final int DEFAULT_GUTTER_SIZE
+    private static final int MIN_FLING_VELOCITY
+    private boolean mIgnoreGutter
+    private static final int INVALID_POINTER
+    private static final int CLOSE_ENOUGH
+    private long mFakeDragBeginTime
+    private static final int DRAW_ORDER_DEFAULT
+    private static final int DRAW_ORDER_FORWARD
+    private static final int DRAW_ORDER_REVERSE
+    public static final int SCROLL_STATE_IDLE
+    public static final int SCROLL_STATE_DRAGGING
+    public static final int SCROLL_STATE_SETTLING
+    608:620:public void setPageTransformer(boolean,android.support.v4.view.ViewPager$PageTransformer)
+    654:656:android.support.v4.view.ViewPager$OnPageChangeListener setInternalPageChangeListener(android.support.v4.view.ViewPager$OnPageChangeListener)
+    778:779:void smoothScrollTo(int,int)
+    2259:2275:public boolean beginFakeDrag()
+    2285:2306:public void endFakeDrag()
+    2316:2354:public void fakeDragBy(float)
+    2366:2366:public boolean isFakeDragging()
+android.support.v4.view.ViewPager$SimpleOnPageChangeListener
+android.support.v4.view.ViewParentCompat
+android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl
+android.support.v4.view.ViewParentCompat$ViewParentCompatImpl
+android.support.v4.view.ViewParentCompat$ViewParentCompatStubImpl
+android.support.v4.view.ViewParentCompatICS
+android.support.v4.view.WindowCompat
+android.support.v4.view.accessibility.AccessibilityEventCompat
+android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl
+android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventStubImpl
+android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventVersionImpl
+android.support.v4.view.accessibility.AccessibilityEventCompatIcs
+android.support.v4.view.accessibility.AccessibilityManagerCompat
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerIcsImpl
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerIcsImpl$1
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerStubImpl
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityManagerVersionImpl
+android.support.v4.view.accessibility.AccessibilityManagerCompat$AccessibilityStateChangeListenerCompat
+android.support.v4.view.accessibility.AccessibilityManagerCompatIcs
+android.support.v4.view.accessibility.AccessibilityManagerCompatIcs$1
+android.support.v4.view.accessibility.AccessibilityManagerCompatIcs$AccessibilityStateChangeListenerBridge
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat:
+    public static final int ACTION_FOCUS
+    public static final int ACTION_CLEAR_FOCUS
+    public static final int ACTION_SELECT
+    public static final int ACTION_CLEAR_SELECTION
+    public static final int ACTION_CLICK
+    public static final int ACTION_LONG_CLICK
+    public static final int ACTION_ACCESSIBILITY_FOCUS
+    public static final int ACTION_CLEAR_ACCESSIBILITY_FOCUS
+    public static final int ACTION_NEXT_AT_MOVEMENT_GRANULARITY
+    public static final int ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY
+    public static final int ACTION_NEXT_HTML_ELEMENT
+    public static final int ACTION_PREVIOUS_HTML_ELEMENT
+    public static final int ACTION_SCROLL_FORWARD
+    public static final int ACTION_SCROLL_BACKWARD
+    public static final int ACTION_COPY
+    public static final int ACTION_PASTE
+    public static final int ACTION_CUT
+    public static final int ACTION_SET_SELECTION
+    public static final java.lang.String ACTION_ARGUMENT_MOVEMENT_GRANULARITY_INT
+    public static final java.lang.String ACTION_ARGUMENT_HTML_ELEMENT_STRING
+    public static final java.lang.String ACTION_ARGUMENT_EXTEND_SELECTION_BOOLEAN
+    public static final java.lang.String ACTION_ARGUMENT_SELECTION_START_INT
+    public static final java.lang.String ACTION_ARGUMENT_SELECTION_END_INT
+    public static final int FOCUS_INPUT
+    public static final int FOCUS_ACCESSIBILITY
+    public static final int MOVEMENT_GRANULARITY_CHARACTER
+    public static final int MOVEMENT_GRANULARITY_WORD
+    public static final int MOVEMENT_GRANULARITY_LINE
+    public static final int MOVEMENT_GRANULARITY_PARAGRAPH
+    public static final int MOVEMENT_GRANULARITY_PAGE
+    1041:1044:static android.support.v4.view.accessibility.AccessibilityNodeInfoCompat wrapNonNullInstance(java.lang.Object)
+    1072:1072:public static android.support.v4.view.accessibility.AccessibilityNodeInfoCompat obtain(android.view.View)
+    1086:1086:public static android.support.v4.view.accessibility.AccessibilityNodeInfoCompat obtain(android.view.View,int)
+    1096:1096:public static android.support.v4.view.accessibility.AccessibilityNodeInfoCompat obtain()
+    1107:1107:public static android.support.v4.view.accessibility.AccessibilityNodeInfoCompat obtain(android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+    1116:1117:public void setSource(android.view.View)
+    1139:1140:public void setSource(android.view.View,int)
+    1154:1154:public android.support.v4.view.accessibility.AccessibilityNodeInfoCompat findFocus(int)
+    1172:1172:public android.support.v4.view.accessibility.AccessibilityNodeInfoCompat focusSearch(int)
+    1181:1181:public int getWindowId()
+    1190:1190:public int getChildCount()
+    1207:1207:public android.support.v4.view.accessibility.AccessibilityNodeInfoCompat getChild(int)
+    1222:1223:public void addChild(android.view.View)
+    1240:1241:public void addChild(android.view.View,int)
+    1284:1284:public boolean performAction(int)
+    1301:1301:public boolean performAction(int,android.os.Bundle)
+    1317:1318:public void setMovementGranularities(int)
+    1326:1326:public int getMovementGranularities()
+    1343:1350:public java.util.List findAccessibilityNodeInfosByText(java.lang.String)
+    1364:1364:public android.support.v4.view.accessibility.AccessibilityNodeInfoCompat getParent()
+    1379:1380:public void setParent(android.view.View)
+    1402:1403:public void setParent(android.view.View,int)
+    1426:1427:public void setBoundsInParent(android.graphics.Rect)
+    1450:1451:public void setBoundsInScreen(android.graphics.Rect)
+    1474:1475:public void setCheckable(boolean)
+    1498:1499:public void setChecked(boolean)
+    1522:1523:public void setFocusable(boolean)
+    1546:1547:public void setFocused(boolean)
+    1555:1555:public boolean isVisibleToUser()
+    1571:1572:public void setVisibleToUser(boolean)
+    1580:1580:public boolean isAccessibilityFocused()
+    1596:1597:public void setAccessibilityFocused(boolean)
+    1620:1621:public void setSelected(boolean)
+    1644:1645:public void setClickable(boolean)
+    1668:1669:public void setLongClickable(boolean)
+    1692:1693:public void setEnabled(boolean)
+    1716:1717:public void setPassword(boolean)
+    1764:1765:public void setPackageName(java.lang.CharSequence)
+    1812:1813:public void setText(java.lang.CharSequence)
+    1836:1837:public void setContentDescription(java.lang.CharSequence)
+    1847:1848:public void recycle()
+    1862:1863:public void setViewIdResourceName(java.lang.String)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoIcsImpl:
+    415:415:public java.lang.Object obtain()
+    420:420:public java.lang.Object obtain(android.view.View)
+    425:425:public java.lang.Object obtain(java.lang.Object)
+    435:436:public void addChild(java.lang.Object,android.view.View)
+    440:440:public java.util.List findAccessibilityNodeInfosByText(java.lang.Object,java.lang.String)
+    460:460:public java.lang.Object getChild(java.lang.Object,int)
+    465:465:public int getChildCount(java.lang.Object)
+    485:485:public java.lang.Object getParent(java.lang.Object)
+    495:495:public int getWindowId(java.lang.Object)
+    550:550:public boolean performAction(java.lang.Object,int)
+    555:556:public void setBoundsInParent(java.lang.Object,android.graphics.Rect)
+    560:561:public void setBoundsInScreen(java.lang.Object,android.graphics.Rect)
+    565:566:public void setCheckable(java.lang.Object,boolean)
+    570:571:public void setChecked(java.lang.Object,boolean)
+    580:581:public void setClickable(java.lang.Object,boolean)
+    585:586:public void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    590:591:public void setEnabled(java.lang.Object,boolean)
+    595:596:public void setFocusable(java.lang.Object,boolean)
+    600:601:public void setFocused(java.lang.Object,boolean)
+    605:606:public void setLongClickable(java.lang.Object,boolean)
+    610:611:public void setPackageName(java.lang.Object,java.lang.CharSequence)
+    615:616:public void setParent(java.lang.Object,android.view.View)
+    620:621:public void setPassword(java.lang.Object,boolean)
+    630:631:public void setSelected(java.lang.Object,boolean)
+    635:636:public void setSource(java.lang.Object,android.view.View)
+    640:641:public void setText(java.lang.Object,java.lang.CharSequence)
+    645:646:public void recycle(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoImpl:
+    public abstract java.lang.Object obtain()
+    public abstract java.lang.Object obtain(android.view.View)
+    public abstract java.lang.Object obtain(java.lang.Object)
+    public abstract java.lang.Object obtain(android.view.View,int)
+    public abstract void setSource(java.lang.Object,android.view.View)
+    public abstract void setSource(java.lang.Object,android.view.View,int)
+    public abstract java.lang.Object findFocus(java.lang.Object,int)
+    public abstract java.lang.Object focusSearch(java.lang.Object,int)
+    public abstract int getWindowId(java.lang.Object)
+    public abstract int getChildCount(java.lang.Object)
+    public abstract java.lang.Object getChild(java.lang.Object,int)
+    public abstract void addChild(java.lang.Object,android.view.View)
+    public abstract void addChild(java.lang.Object,android.view.View,int)
+    public abstract boolean performAction(java.lang.Object,int)
+    public abstract boolean performAction(java.lang.Object,int,android.os.Bundle)
+    public abstract void setMovementGranularities(java.lang.Object,int)
+    public abstract int getMovementGranularities(java.lang.Object)
+    public abstract java.util.List findAccessibilityNodeInfosByText(java.lang.Object,java.lang.String)
+    public abstract java.lang.Object getParent(java.lang.Object)
+    public abstract void setParent(java.lang.Object,android.view.View,int)
+    public abstract void setParent(java.lang.Object,android.view.View)
+    public abstract void setBoundsInParent(java.lang.Object,android.graphics.Rect)
+    public abstract void setBoundsInScreen(java.lang.Object,android.graphics.Rect)
+    public abstract void setCheckable(java.lang.Object,boolean)
+    public abstract void setChecked(java.lang.Object,boolean)
+    public abstract void setFocusable(java.lang.Object,boolean)
+    public abstract void setFocused(java.lang.Object,boolean)
+    public abstract boolean isVisibleToUser(java.lang.Object)
+    public abstract void setVisibleToUser(java.lang.Object,boolean)
+    public abstract boolean isAccessibilityFocused(java.lang.Object)
+    public abstract void setAccessibilityFocused(java.lang.Object,boolean)
+    public abstract void setSelected(java.lang.Object,boolean)
+    public abstract void setClickable(java.lang.Object,boolean)
+    public abstract void setLongClickable(java.lang.Object,boolean)
+    public abstract void setEnabled(java.lang.Object,boolean)
+    public abstract void setPassword(java.lang.Object,boolean)
+    public abstract void setPackageName(java.lang.Object,java.lang.CharSequence)
+    public abstract void setText(java.lang.Object,java.lang.CharSequence)
+    public abstract void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    public abstract void recycle(java.lang.Object)
+    public abstract void setViewIdResourceName(java.lang.Object,java.lang.String)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl:
+    652:652:public java.lang.Object obtain(android.view.View,int)
+    657:657:public java.lang.Object findFocus(java.lang.Object,int)
+    662:662:public java.lang.Object focusSearch(java.lang.Object,int)
+    667:668:public void addChild(java.lang.Object,android.view.View,int)
+    672:673:public void setSource(java.lang.Object,android.view.View,int)
+    677:677:public boolean isVisibleToUser(java.lang.Object)
+    682:683:public void setVisibleToUser(java.lang.Object,boolean)
+    687:687:public boolean isAccessibilityFocused(java.lang.Object)
+    692:693:public void setAccessibilityFocused(java.lang.Object,boolean)
+    697:697:public boolean performAction(java.lang.Object,int,android.os.Bundle)
+    702:703:public void setMovementGranularities(java.lang.Object,int)
+    707:707:public int getMovementGranularities(java.lang.Object)
+    712:713:public void setParent(java.lang.Object,android.view.View,int)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanMr2Impl:
+    725:726:public void setViewIdResourceName(java.lang.Object,java.lang.String)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl:
+    103:103:public java.lang.Object obtain()
+    108:108:public java.lang.Object obtain(android.view.View)
+    113:113:public java.lang.Object obtain(android.view.View,int)
+    118:118:public java.lang.Object obtain(java.lang.Object)
+    129:129:public void addChild(java.lang.Object,android.view.View)
+    134:134:public void addChild(java.lang.Object,android.view.View,int)
+    138:138:public java.util.List findAccessibilityNodeInfosByText(java.lang.Object,java.lang.String)
+    158:158:public java.lang.Object getChild(java.lang.Object,int)
+    163:163:public int getChildCount(java.lang.Object)
+    183:183:public java.lang.Object getParent(java.lang.Object)
+    193:193:public int getWindowId(java.lang.Object)
+    228:228:public boolean isVisibleToUser(java.lang.Object)
+    233:233:public boolean isAccessibilityFocused(java.lang.Object)
+    258:258:public boolean performAction(java.lang.Object,int)
+    263:263:public boolean performAction(java.lang.Object,int,android.os.Bundle)
+    269:269:public void setMovementGranularities(java.lang.Object,int)
+    273:273:public int getMovementGranularities(java.lang.Object)
+    279:279:public void setBoundsInParent(java.lang.Object,android.graphics.Rect)
+    284:284:public void setBoundsInScreen(java.lang.Object,android.graphics.Rect)
+    289:289:public void setCheckable(java.lang.Object,boolean)
+    294:294:public void setChecked(java.lang.Object,boolean)
+    304:304:public void setClickable(java.lang.Object,boolean)
+    309:309:public void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    314:314:public void setEnabled(java.lang.Object,boolean)
+    319:319:public void setFocusable(java.lang.Object,boolean)
+    324:324:public void setFocused(java.lang.Object,boolean)
+    329:329:public void setVisibleToUser(java.lang.Object,boolean)
+    334:334:public void setAccessibilityFocused(java.lang.Object,boolean)
+    339:339:public void setLongClickable(java.lang.Object,boolean)
+    344:344:public void setPackageName(java.lang.Object,java.lang.CharSequence)
+    349:349:public void setParent(java.lang.Object,android.view.View)
+    354:354:public void setPassword(java.lang.Object,boolean)
+    364:364:public void setSelected(java.lang.Object,boolean)
+    369:369:public void setSource(java.lang.Object,android.view.View)
+    374:374:public void setSource(java.lang.Object,android.view.View,int)
+    378:378:public java.lang.Object findFocus(java.lang.Object,int)
+    383:383:public java.lang.Object focusSearch(java.lang.Object,int)
+    389:389:public void setText(java.lang.Object,java.lang.CharSequence)
+    394:394:public void recycle(java.lang.Object)
+    399:399:public void setParent(java.lang.Object,android.view.View,int)
+    409:409:public void setViewIdResourceName(java.lang.Object,java.lang.String)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatIcs:
+    28:28:AccessibilityNodeInfoCompatIcs()
+    31:31:public static java.lang.Object obtain()
+    35:35:public static java.lang.Object obtain(android.view.View)
+    39:39:public static java.lang.Object obtain(java.lang.Object)
+    47:48:public static void addChild(java.lang.Object,android.view.View)
+    52:53:public static java.util.List findAccessibilityNodeInfosByText(java.lang.Object,java.lang.String)
+    69:69:public static java.lang.Object getChild(java.lang.Object,int)
+    73:73:public static int getChildCount(java.lang.Object)
+    89:89:public static java.lang.Object getParent(java.lang.Object)
+    97:97:public static int getWindowId(java.lang.Object)
+    141:141:public static boolean performAction(java.lang.Object,int)
+    145:146:public static void setBoundsInParent(java.lang.Object,android.graphics.Rect)
+    149:150:public static void setBoundsInScreen(java.lang.Object,android.graphics.Rect)
+    153:154:public static void setCheckable(java.lang.Object,boolean)
+    157:158:public static void setChecked(java.lang.Object,boolean)
+    165:166:public static void setClickable(java.lang.Object,boolean)
+    169:170:public static void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    173:174:public static void setEnabled(java.lang.Object,boolean)
+    177:178:public static void setFocusable(java.lang.Object,boolean)
+    181:182:public static void setFocused(java.lang.Object,boolean)
+    185:186:public static void setLongClickable(java.lang.Object,boolean)
+    189:190:public static void setPackageName(java.lang.Object,java.lang.CharSequence)
+    193:194:public static void setParent(java.lang.Object,android.view.View)
+    197:198:public static void setPassword(java.lang.Object,boolean)
+    205:206:public static void setSelected(java.lang.Object,boolean)
+    209:210:public static void setSource(java.lang.Object,android.view.View)
+    213:214:public static void setText(java.lang.Object,java.lang.CharSequence)
+    217:218:public static void recycle(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellyBean
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellybeanMr2:
+    21:21:AccessibilityNodeInfoCompatJellybeanMr2()
+    24:25:public static void setViewIdResourceName(java.lang.Object,java.lang.String)
+android.support.v4.view.accessibility.AccessibilityNodeProviderCompatJellyBean:
+    28:29:AccessibilityNodeProviderCompatJellyBean()
+android.support.v4.view.accessibility.AccessibilityRecordCompat:
+    539:539:public java.lang.Object getImpl()
+    550:550:public static android.support.v4.view.accessibility.AccessibilityRecordCompat obtain(android.support.v4.view.accessibility.AccessibilityRecordCompat)
+    571:572:public void setSource(android.view.View)
+    589:590:public void setSource(android.view.View,int)
+    605:605:public android.support.v4.view.accessibility.AccessibilityNodeInfoCompat getSource()
+    614:614:public int getWindowId()
+    623:623:public boolean isChecked()
+    634:635:public void setChecked(boolean)
+    643:643:public boolean isEnabled()
+    654:655:public void setEnabled(boolean)
+    663:663:public boolean isPassword()
+    674:675:public void setPassword(boolean)
+    683:683:public boolean isFullScreen()
+    694:695:public void setFullScreen(boolean)
+    703:703:public boolean isScrollable()
+    723:723:public int getItemCount()
+    743:743:public int getCurrentItemIndex()
+    754:755:public void setCurrentItemIndex(int)
+    766:766:public int getFromIndex()
+    790:790:public int getToIndex()
+    809:809:public int getScrollX()
+    818:819:public void setScrollX(int)
+    827:827:public int getScrollY()
+    836:837:public void setScrollY(int)
+    845:845:public int getMaxScrollX()
+    853:854:public void setMaxScrollX(int)
+    862:862:public int getMaxScrollY()
+    871:872:public void setMaxScrollY(int)
+    880:880:public int getAddedCount()
+    891:892:public void setAddedCount(int)
+    900:900:public int getRemovedCount()
+    911:912:public void setRemovedCount(int)
+    920:920:public java.lang.CharSequence getClassName()
+    931:932:public void setClassName(java.lang.CharSequence)
+    941:941:public java.util.List getText()
+    950:950:public java.lang.CharSequence getBeforeText()
+    961:962:public void setBeforeText(java.lang.CharSequence)
+    970:970:public java.lang.CharSequence getContentDescription()
+    981:982:public void setContentDescription(java.lang.CharSequence)
+    990:990:public android.os.Parcelable getParcelableData()
+    1001:1002:public void setParcelableData(android.os.Parcelable)
+    1014:1015:public void recycle()
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordIcsImpl:
+    276:276:public java.lang.Object obtain(java.lang.Object)
+    281:281:public int getAddedCount(java.lang.Object)
+    286:286:public java.lang.CharSequence getBeforeText(java.lang.Object)
+    291:291:public java.lang.CharSequence getClassName(java.lang.Object)
+    296:296:public java.lang.CharSequence getContentDescription(java.lang.Object)
+    301:301:public int getCurrentItemIndex(java.lang.Object)
+    306:306:public int getFromIndex(java.lang.Object)
+    311:311:public int getItemCount(java.lang.Object)
+    316:316:public android.os.Parcelable getParcelableData(java.lang.Object)
+    321:321:public int getRemovedCount(java.lang.Object)
+    326:326:public int getScrollX(java.lang.Object)
+    331:331:public int getScrollY(java.lang.Object)
+    336:336:public android.support.v4.view.accessibility.AccessibilityNodeInfoCompat getSource(java.lang.Object)
+    342:342:public java.util.List getText(java.lang.Object)
+    347:347:public int getToIndex(java.lang.Object)
+    352:352:public int getWindowId(java.lang.Object)
+    357:357:public boolean isChecked(java.lang.Object)
+    362:362:public boolean isEnabled(java.lang.Object)
+    367:367:public boolean isFullScreen(java.lang.Object)
+    372:372:public boolean isPassword(java.lang.Object)
+    377:377:public boolean isScrollable(java.lang.Object)
+    382:383:public void recycle(java.lang.Object)
+    387:388:public void setAddedCount(java.lang.Object,int)
+    392:393:public void setBeforeText(java.lang.Object,java.lang.CharSequence)
+    397:398:public void setChecked(java.lang.Object,boolean)
+    402:403:public void setClassName(java.lang.Object,java.lang.CharSequence)
+    407:408:public void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    412:413:public void setCurrentItemIndex(java.lang.Object,int)
+    417:418:public void setEnabled(java.lang.Object,boolean)
+    427:428:public void setFullScreen(java.lang.Object,boolean)
+    437:438:public void setParcelableData(java.lang.Object,android.os.Parcelable)
+    442:443:public void setPassword(java.lang.Object,boolean)
+    447:448:public void setRemovedCount(java.lang.Object,int)
+    452:453:public void setScrollX(java.lang.Object,int)
+    457:458:public void setScrollY(java.lang.Object,int)
+    467:468:public void setSource(java.lang.Object,android.view.View)
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordIcsMr1Impl:
+    479:479:public int getMaxScrollX(java.lang.Object)
+    484:484:public int getMaxScrollY(java.lang.Object)
+    489:490:public void setMaxScrollX(java.lang.Object,int)
+    494:495:public void setMaxScrollY(java.lang.Object,int)
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordImpl:
+    public abstract java.lang.Object obtain(java.lang.Object)
+    public abstract void setSource(java.lang.Object,android.view.View)
+    public abstract void setSource(java.lang.Object,android.view.View,int)
+    public abstract android.support.v4.view.accessibility.AccessibilityNodeInfoCompat getSource(java.lang.Object)
+    public abstract int getWindowId(java.lang.Object)
+    public abstract boolean isChecked(java.lang.Object)
+    public abstract void setChecked(java.lang.Object,boolean)
+    public abstract boolean isEnabled(java.lang.Object)
+    public abstract void setEnabled(java.lang.Object,boolean)
+    public abstract boolean isPassword(java.lang.Object)
+    public abstract void setPassword(java.lang.Object,boolean)
+    public abstract boolean isFullScreen(java.lang.Object)
+    public abstract void setFullScreen(java.lang.Object,boolean)
+    public abstract boolean isScrollable(java.lang.Object)
+    public abstract int getItemCount(java.lang.Object)
+    public abstract int getCurrentItemIndex(java.lang.Object)
+    public abstract void setCurrentItemIndex(java.lang.Object,int)
+    public abstract int getFromIndex(java.lang.Object)
+    public abstract int getToIndex(java.lang.Object)
+    public abstract int getScrollX(java.lang.Object)
+    public abstract void setScrollX(java.lang.Object,int)
+    public abstract int getScrollY(java.lang.Object)
+    public abstract void setScrollY(java.lang.Object,int)
+    public abstract int getMaxScrollX(java.lang.Object)
+    public abstract void setMaxScrollX(java.lang.Object,int)
+    public abstract int getMaxScrollY(java.lang.Object)
+    public abstract void setMaxScrollY(java.lang.Object,int)
+    public abstract int getAddedCount(java.lang.Object)
+    public abstract void setAddedCount(java.lang.Object,int)
+    public abstract int getRemovedCount(java.lang.Object)
+    public abstract void setRemovedCount(java.lang.Object,int)
+    public abstract java.lang.CharSequence getClassName(java.lang.Object)
+    public abstract void setClassName(java.lang.Object,java.lang.CharSequence)
+    public abstract java.util.List getText(java.lang.Object)
+    public abstract java.lang.CharSequence getBeforeText(java.lang.Object)
+    public abstract void setBeforeText(java.lang.Object,java.lang.CharSequence)
+    public abstract java.lang.CharSequence getContentDescription(java.lang.Object)
+    public abstract void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    public abstract android.os.Parcelable getParcelableData(java.lang.Object)
+    public abstract void setParcelableData(java.lang.Object,android.os.Parcelable)
+    public abstract void recycle(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordJellyBeanImpl:
+    501:502:public void setSource(java.lang.Object,android.view.View,int)
+android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordStubImpl:
+    88:88:public java.lang.Object obtain(java.lang.Object)
+    92:92:public int getAddedCount(java.lang.Object)
+    96:96:public java.lang.CharSequence getBeforeText(java.lang.Object)
+    100:100:public java.lang.CharSequence getClassName(java.lang.Object)
+    104:104:public java.lang.CharSequence getContentDescription(java.lang.Object)
+    108:108:public int getCurrentItemIndex(java.lang.Object)
+    112:112:public int getFromIndex(java.lang.Object)
+    116:116:public int getItemCount(java.lang.Object)
+    120:120:public int getMaxScrollX(java.lang.Object)
+    124:124:public int getMaxScrollY(java.lang.Object)
+    128:128:public android.os.Parcelable getParcelableData(java.lang.Object)
+    132:132:public int getRemovedCount(java.lang.Object)
+    136:136:public int getScrollX(java.lang.Object)
+    140:140:public int getScrollY(java.lang.Object)
+    144:144:public android.support.v4.view.accessibility.AccessibilityNodeInfoCompat getSource(java.lang.Object)
+    148:148:public java.util.List getText(java.lang.Object)
+    152:152:public int getToIndex(java.lang.Object)
+    156:156:public int getWindowId(java.lang.Object)
+    160:160:public boolean isChecked(java.lang.Object)
+    164:164:public boolean isEnabled(java.lang.Object)
+    168:168:public boolean isFullScreen(java.lang.Object)
+    172:172:public boolean isPassword(java.lang.Object)
+    176:176:public boolean isScrollable(java.lang.Object)
+    181:181:public void recycle(java.lang.Object)
+    185:185:public void setAddedCount(java.lang.Object,int)
+    189:189:public void setBeforeText(java.lang.Object,java.lang.CharSequence)
+    193:193:public void setChecked(java.lang.Object,boolean)
+    197:197:public void setClassName(java.lang.Object,java.lang.CharSequence)
+    201:201:public void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    205:205:public void setCurrentItemIndex(java.lang.Object,int)
+    209:209:public void setEnabled(java.lang.Object,boolean)
+    217:217:public void setFullScreen(java.lang.Object,boolean)
+    225:225:public void setMaxScrollX(java.lang.Object,int)
+    229:229:public void setMaxScrollY(java.lang.Object,int)
+    233:233:public void setParcelableData(java.lang.Object,android.os.Parcelable)
+    237:237:public void setPassword(java.lang.Object,boolean)
+    241:241:public void setRemovedCount(java.lang.Object,int)
+    245:245:public void setScrollX(java.lang.Object,int)
+    249:249:public void setScrollY(java.lang.Object,int)
+    257:257:public void setSource(java.lang.Object,android.view.View)
+    261:261:public void setSource(java.lang.Object,android.view.View,int)
+android.support.v4.view.accessibility.AccessibilityRecordCompatIcs:
+    28:28:AccessibilityRecordCompatIcs()
+    35:35:public static java.lang.Object obtain(java.lang.Object)
+    39:39:public static int getAddedCount(java.lang.Object)
+    43:43:public static java.lang.CharSequence getBeforeText(java.lang.Object)
+    47:47:public static java.lang.CharSequence getClassName(java.lang.Object)
+    51:51:public static java.lang.CharSequence getContentDescription(java.lang.Object)
+    55:55:public static int getCurrentItemIndex(java.lang.Object)
+    59:59:public static int getFromIndex(java.lang.Object)
+    63:63:public static int getItemCount(java.lang.Object)
+    67:67:public static android.os.Parcelable getParcelableData(java.lang.Object)
+    71:71:public static int getRemovedCount(java.lang.Object)
+    75:75:public static int getScrollX(java.lang.Object)
+    79:79:public static int getScrollY(java.lang.Object)
+    83:83:public static java.lang.Object getSource(java.lang.Object)
+    87:87:public static java.util.List getText(java.lang.Object)
+    91:91:public static int getToIndex(java.lang.Object)
+    95:95:public static int getWindowId(java.lang.Object)
+    99:99:public static boolean isChecked(java.lang.Object)
+    103:103:public static boolean isEnabled(java.lang.Object)
+    107:107:public static boolean isFullScreen(java.lang.Object)
+    111:111:public static boolean isPassword(java.lang.Object)
+    115:115:public static boolean isScrollable(java.lang.Object)
+    119:120:public static void recycle(java.lang.Object)
+    123:124:public static void setAddedCount(java.lang.Object,int)
+    127:128:public static void setBeforeText(java.lang.Object,java.lang.CharSequence)
+    131:132:public static void setChecked(java.lang.Object,boolean)
+    135:136:public static void setClassName(java.lang.Object,java.lang.CharSequence)
+    139:140:public static void setContentDescription(java.lang.Object,java.lang.CharSequence)
+    143:144:public static void setCurrentItemIndex(java.lang.Object,int)
+    147:148:public static void setEnabled(java.lang.Object,boolean)
+    155:156:public static void setFullScreen(java.lang.Object,boolean)
+    163:164:public static void setParcelableData(java.lang.Object,android.os.Parcelable)
+    167:168:public static void setPassword(java.lang.Object,boolean)
+    171:172:public static void setRemovedCount(java.lang.Object,int)
+    175:176:public static void setScrollX(java.lang.Object,int)
+    179:180:public static void setScrollY(java.lang.Object,int)
+    187:188:public static void setSource(java.lang.Object,android.view.View)
+android.support.v4.view.accessibility.AccessibilityRecordCompatIcsMr1
+android.support.v4.view.accessibility.AccessibilityRecordCompatJellyBean
+android.support.v4.widget.CursorAdapter
+android.support.v4.widget.CursorAdapter$1
+android.support.v4.widget.CursorAdapter$ChangeObserver
+android.support.v4.widget.CursorAdapter$MyDataSetObserver
+android.support.v4.widget.CursorFilter
+android.support.v4.widget.CursorFilter$CursorFilterClient
+android.support.v4.widget.DrawerLayout:
+    private static final java.lang.String TAG
+    public static final int STATE_IDLE
+    public static final int STATE_DRAGGING
+    public static final int STATE_SETTLING
+    public static final int LOCK_MODE_UNLOCKED
+    public static final int LOCK_MODE_LOCKED_CLOSED
+    public static final int LOCK_MODE_LOCKED_OPEN
+    private static final int MIN_DRAWER_MARGIN
+    private static final int DEFAULT_SCRIM_COLOR
+    private static final int PEEK_DELAY
+    private static final int MIN_FLING_VELOCITY
+    private static final boolean ALLOW_EDGE_LOCK
+    private static final boolean CHILDREN_DISALLOW_INTERCEPT
+    private static final float TOUCH_SLOP_SENSITIVITY
+    217:218:public DrawerLayout(android.content.Context)
+    221:222:public DrawerLayout(android.content.Context,android.util.AttributeSet)
+    225:249:public DrawerLayout(android.content.Context,android.util.AttributeSet,int)
+    265:275:public void setDrawerShadow(android.graphics.drawable.Drawable,int)
+    285:286:public void setDrawerShadow(int,int)
+    394:399:public void setDrawerLockMode(int,android.view.View)
+    409:416:public int getDrawerLockMode(int)
+    536:544:void moveDrawerToOffset(android.view.View,float)
+    1031:1040:public void openDrawer(int)
+    1074:1083:public void closeDrawer(int)
+    1096:1099:public boolean isDrawerOpen(android.view.View)
+    1112:1116:public boolean isDrawerOpen(int)
+    1143:1147:public boolean isDrawerVisible(int)
+    1202:1213:void cancelChildViewTouch()
+android.support.v4.widget.DrawerLayout$AccessibilityDelegate
+android.support.v4.widget.DrawerLayout$LayoutParams:
+    1502:1504:public DrawerLayout$LayoutParams(int,int,int)
+android.support.v4.widget.DrawerLayout$SimpleDrawerListener
+android.support.v4.widget.DrawerLayout$ViewDragCallback:
+    1326:1328:public DrawerLayout$ViewDragCallback(android.support.v4.widget.DrawerLayout,int)
+    1331:1332:public void setDragger(android.support.v4.widget.ViewDragHelper)
+    1411:1433:private void peekDrawer()
+    1316:1316:static synthetic void access$000(android.support.v4.widget.DrawerLayout$ViewDragCallback)
+android.support.v4.widget.DrawerLayout$ViewDragCallback$1
+android.support.v4.widget.EdgeEffectCompat:
+    204:204:public boolean onAbsorb(int)
+android.support.v4.widget.EdgeEffectCompat$BaseEdgeEffectImpl:
+    82:82:public boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.EdgeEffectCompat$EdgeEffectIcsImpl:
+    116:116:public boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.EdgeEffectCompat$EdgeEffectImpl:
+    public abstract boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.EdgeEffectCompatIcs:
+    28:28:EdgeEffectCompatIcs()
+    57:58:public static boolean onAbsorb(java.lang.Object,int)
+android.support.v4.widget.ExploreByTouchHelper
+android.support.v4.widget.ExploreByTouchHelper$1
+android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider
+android.support.v4.widget.ResourceCursorAdapter
+android.support.v4.widget.ScrollerCompat:
+    251:251:public static android.support.v4.widget.ScrollerCompat create(android.content.Context)
+    255:255:public static android.support.v4.widget.ScrollerCompat create(android.content.Context,android.view.animation.Interpolator)
+    258:260:ScrollerCompat(android.content.Context,android.view.animation.Interpolator)
+    314:314:public float getCurrVelocity()
+    341:342:public void startScroll(int,int,int,int)
+    382:383:public void fling(int,int,int,int,int,int,int,int)
+    410:412:public void fling(int,int,int,int,int,int,int,int,int,int)
+    437:438:public void notifyHorizontalEdgeReached(int,int,int)
+    454:455:public void notifyVerticalEdgeReached(int,int,int)
+    471:471:public boolean isOverScrolled()
+android.support.v4.widget.ScrollerCompat$ScrollerCompatImpl:
+    public abstract java.lang.Object createScroller(android.content.Context,android.view.animation.Interpolator)
+    public abstract float getCurrVelocity(java.lang.Object)
+    public abstract void startScroll(java.lang.Object,int,int,int,int)
+    public abstract void fling(java.lang.Object,int,int,int,int,int,int,int,int)
+    public abstract void fling(java.lang.Object,int,int,int,int,int,int,int,int,int,int)
+    public abstract void notifyHorizontalEdgeReached(java.lang.Object,int,int,int)
+    public abstract void notifyVerticalEdgeReached(java.lang.Object,int,int,int)
+    public abstract boolean isOverScrolled(java.lang.Object)
+android.support.v4.widget.ScrollerCompat$ScrollerCompatImplBase:
+    58:58:public java.lang.Object createScroller(android.content.Context,android.view.animation.Interpolator)
+    79:79:public float getCurrVelocity(java.lang.Object)
+    89:90:public void startScroll(java.lang.Object,int,int,int,int)
+    101:102:public void fling(java.lang.Object,int,int,int,int,int,int,int,int)
+    107:108:public void fling(java.lang.Object,int,int,int,int,int,int,int,int,int,int)
+    119:119:public void notifyHorizontalEdgeReached(java.lang.Object,int,int,int)
+    124:124:public void notifyVerticalEdgeReached(java.lang.Object,int,int,int)
+    129:129:public boolean isOverScrolled(java.lang.Object)
+android.support.v4.widget.ScrollerCompat$ScrollerCompatImplGingerbread:
+    146:146:public java.lang.Object createScroller(android.content.Context,android.view.animation.Interpolator)
+    166:166:public float getCurrVelocity(java.lang.Object)
+    176:177:public void startScroll(java.lang.Object,int,int,int,int)
+    188:190:public void fling(java.lang.Object,int,int,int,int,int,int,int,int)
+    195:197:public void fling(java.lang.Object,int,int,int,int,int,int,int,int,int,int)
+    207:208:public void notifyHorizontalEdgeReached(java.lang.Object,int,int,int)
+    212:213:public void notifyVerticalEdgeReached(java.lang.Object,int,int,int)
+    217:217:public boolean isOverScrolled(java.lang.Object)
+android.support.v4.widget.ScrollerCompat$ScrollerCompatImplIcs:
+    234:234:public float getCurrVelocity(java.lang.Object)
+android.support.v4.widget.ScrollerCompatGingerbread:
+    24:24:ScrollerCompatGingerbread()
+    26:26:public static java.lang.Object createScroller(android.content.Context,android.view.animation.Interpolator)
+    47:48:public static void startScroll(java.lang.Object,int,int,int,int)
+    57:58:public static void fling(java.lang.Object,int,int,int,int,int,int,int,int)
+    62:64:public static void fling(java.lang.Object,int,int,int,int,int,int,int,int,int,int)
+    72:73:public static void notifyHorizontalEdgeReached(java.lang.Object,int,int,int)
+    76:77:public static void notifyVerticalEdgeReached(java.lang.Object,int,int,int)
+    80:80:public static boolean isOverScrolled(java.lang.Object)
+android.support.v4.widget.ScrollerCompatIcs
+android.support.v4.widget.SearchViewCompat
+android.support.v4.widget.SearchViewCompat$OnCloseListenerCompat
+android.support.v4.widget.SearchViewCompat$OnQueryTextListenerCompat
+android.support.v4.widget.SearchViewCompat$SearchViewCompatHoneycombImpl
+android.support.v4.widget.SearchViewCompat$SearchViewCompatHoneycombImpl$1
+android.support.v4.widget.SearchViewCompat$SearchViewCompatHoneycombImpl$2
+android.support.v4.widget.SearchViewCompat$SearchViewCompatIcsImpl
+android.support.v4.widget.SearchViewCompat$SearchViewCompatImpl
+android.support.v4.widget.SearchViewCompat$SearchViewCompatStubImpl
+android.support.v4.widget.SearchViewCompatHoneycomb
+android.support.v4.widget.SearchViewCompatHoneycomb$1
+android.support.v4.widget.SearchViewCompatHoneycomb$2
+android.support.v4.widget.SearchViewCompatHoneycomb$OnCloseListenerCompatBridge
+android.support.v4.widget.SearchViewCompatHoneycomb$OnQueryTextListenerCompatBridge
+android.support.v4.widget.SearchViewCompatIcs
+android.support.v4.widget.SearchViewCompatIcs$MySearchView
+android.support.v4.widget.SimpleCursorAdapter
+android.support.v4.widget.SimpleCursorAdapter$CursorToStringConverter
+android.support.v4.widget.SimpleCursorAdapter$ViewBinder
+android.support.v4.widget.SlidingPaneLayout:
+    private static final java.lang.String TAG
+    private static final int DEFAULT_OVERHANG_SIZE
+    private static final int DEFAULT_FADE_COLOR
+    private static final int MIN_FLING_VELOCITY
+    244:245:public SlidingPaneLayout(android.content.Context)
+    248:249:public SlidingPaneLayout(android.content.Context,android.util.AttributeSet)
+    252:267:public SlidingPaneLayout(android.content.Context,android.util.AttributeSet,int)
+    328:331:void dispatchOnPanelSlide(android.view.View)
+    334:338:void dispatchOnPanelOpened(android.view.View)
+    341:345:void dispatchOnPanelClosed(android.view.View)
+    848:849:public void smoothSlideOpen()
+    866:867:public void smoothSlideClosed()
+    895:895:public boolean canSlide()
+    909:922:private void onPanelDragged(int)
+    1103:1122:protected boolean canScroll(android.view.View,boolean,int,int,int)
+    88:88:static synthetic boolean access$100(android.support.v4.widget.SlidingPaneLayout)
+    88:88:static synthetic android.support.v4.widget.ViewDragHelper access$200(android.support.v4.widget.SlidingPaneLayout)
+    88:88:static synthetic float access$300(android.support.v4.widget.SlidingPaneLayout)
+    88:88:static synthetic android.view.View access$400(android.support.v4.widget.SlidingPaneLayout)
+    88:88:static synthetic boolean access$502(android.support.v4.widget.SlidingPaneLayout,boolean)
+    88:88:static synthetic void access$600(android.support.v4.widget.SlidingPaneLayout,int)
+    88:88:static synthetic int access$700(android.support.v4.widget.SlidingPaneLayout)
+android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate
+android.support.v4.widget.SlidingPaneLayout$DragHelperCallback
+android.support.v4.widget.SlidingPaneLayout$LayoutParams:
+    1277:1278:public SlidingPaneLayout$LayoutParams(int,int)
+    1289:1291:public SlidingPaneLayout$LayoutParams(android.support.v4.widget.SlidingPaneLayout$LayoutParams)
+android.support.v4.widget.SlidingPaneLayout$PanelSlideListener:
+    public abstract void onPanelSlide(android.view.View,float)
+    public abstract void onPanelOpened(android.view.View)
+    public abstract void onPanelClosed(android.view.View)
+android.support.v4.widget.SlidingPaneLayout$SimplePanelSlideListener
+android.support.v4.widget.ViewDragHelper:
+    private static final java.lang.String TAG
+    public static final int INVALID_POINTER
+    public static final int STATE_IDLE
+    public static final int STATE_DRAGGING
+    public static final int STATE_SETTLING
+    public static final int EDGE_LEFT
+    public static final int EDGE_RIGHT
+    public static final int EDGE_TOP
+    public static final int EDGE_BOTTOM
+    public static final int EDGE_ALL
+    public static final int DIRECTION_HORIZONTAL
+    public static final int DIRECTION_VERTICAL
+    public static final int DIRECTION_ALL
+    private static final int EDGE_SIZE
+    private static final int BASE_SETTLE_DURATION
+    private static final int MAX_SETTLE_DURATION
+    347:347:public static android.support.v4.widget.ViewDragHelper create(android.view.ViewGroup,android.support.v4.widget.ViewDragHelper$Callback)
+    360:362:public static android.support.v4.widget.ViewDragHelper create(android.view.ViewGroup,float,android.support.v4.widget.ViewDragHelper$Callback)
+    373:392:private ViewDragHelper(android.content.Context,android.view.ViewGroup,android.support.v4.widget.ViewDragHelper$Callback)
+    401:402:public void setMinVelocity(float)
+    412:412:public float getMinVelocity()
+    437:438:public void setEdgeTrackingEnabled(int)
+    483:483:public int getActivePointerId()
+    690:701:public void flingCapturedView(int,int,int,int)
+    908:927:protected boolean canScroll(android.view.View,boolean,int,int,int,int)
+    1331:1337:public boolean isEdgeTouched(int)
+    1351:1351:public boolean isEdgeTouched(int,int)
+android.support.v4.widget.ViewDragHelper$2
+android.support.v4.widget.ViewDragHelper$Callback:
+    148:148:public ViewDragHelper$Callback()
+biz.source_code.base64Coder.Base64Coder:
+    public static java.lang.String encodeString(java.lang.String)
+    public static java.lang.String encodeLines(byte[])
+    public static java.lang.String encodeLines(byte[],int,int,int,java.lang.String)
+    public static char[] encode(byte[])
+    public static char[] encode(byte[],int)
+    public static char[] encode(byte[],int,int)
+    public static java.lang.String decodeString(java.lang.String)
+    public static byte[] decodeLines(java.lang.String)
+    private Base64Coder()
+com.bugsense.trace.BugProfiler
+com.bugsense.trace.BugProfiler$1
+com.bugsense.trace.BugSense:
+    public BugSense()
+com.bugsense.trace.BugSenseHandler:
+    public BugSenseHandler()
+    public static void sendDataOverWiFiOnly()
+    public static int getTotalCrashesNum()
+    public static void clearTotalCrashesNum()
+    public static java.lang.String getLastCrashID()
+    public static void setExceptionCallback(com.bugsense.trace.ExceptionCallback)
+    public static void leaveBreadcrumb(java.lang.String)
+    public static void closeSession(android.content.Context)
+    public static void sendEvent(java.lang.String)
+    public static void setUserIdentifier(java.lang.String)
+    public static void sendExceptionMap(java.util.HashMap,java.lang.Exception)
+    public static void sendException(java.lang.Exception)
+    public static void sendExceptionMessage(java.lang.String,java.lang.String,java.lang.Exception)
+    public static void setLogging(boolean)
+    public static void setLogging(int)
+    public static void setLogging(java.lang.String)
+    public static void setLogging(int,java.lang.String)
+    public static void setLocalizedNotification(java.lang.String,java.lang.String,java.lang.String)
+    public static void addCrashExtraData(java.lang.String,java.lang.String)
+    public static void addCrashExtraMap(java.util.HashMap)
+    public static void removeCrashExtraData(java.lang.String)
+    public static void clearCrashExtraData()
+    public static void useProxy(boolean)
+com.bugsense.trace.CrashMechanism:
+    private static final int MAX_CRASHES
+    private static final int MAX_EXCEPTIONS
+    public static final int HANDLEDEXCEPTION
+    protected static final int CRASH
+    static final java.lang.String fixfilename
+com.bugsense.trace.CryptoHttpClient:
+    private static final java.lang.String BASE64KEYANALYTICS
+    private static final java.lang.String BASE64KEYERRORS
+    protected static final int ANALYTICS
+    protected static final int ERRORS
+com.bugsense.trace.EventsMechanism:
+    private static final int MAX_EVENTS_SIZE
+    private static final int MAX_BYTES
+    protected static java.lang.String getFlatLine(java.lang.String)
+    protected static void saveEvent(java.lang.String)
+com.bugsense.trace.EventsMechanism$2
+com.bugsense.trace.G:
+    protected static final java.lang.String BUGSENSE_VERSION
+    protected static final int MAX_BREADCRUMBS
+    public G()
+com.bugsense.trace.PingsMechanism:
+    private static final int MAX_PINGS_SIZE
+    private static final int MAX_GNIPS_SIZE
+    private static final int MAX_PERFS_SIZE
+    protected static final int PING
+    protected static final int GNIP
+    protected static final int TRANS_START
+    protected static final int TRANS_END
+com.bugsense.trace.UidManager:
+    private static final java.lang.String UID_PREFERENCES
+    private static final java.lang.String UID_FIELD
+    private static final java.lang.String UID_ERROR_ID
+    private static final java.lang.String UID_NOSAVED
+    private static final int UID_CORRECT_LENTH
+    public UidManager()
+com.bugsense.trace.Utils:
+    public static final int STATE_OFF
+    public static final int STATE_ON
+    public static final int STATE_DONT_KNOW
+    static final java.lang.String crashCounterFile
+    static final java.lang.String lastCrashIDFile
+    public Utils()
+    public static final java.lang.String exceedLimitString(java.lang.String)
+    public static java.lang.String MD5(java.lang.String)
+    public static boolean isOnWifi(android.content.Context)
+    protected static int getCrashCounter()
+    protected static void clearCrashCounter()
+    public static java.lang.String getLastCrashID()
+com.bugsense.trace.Utils$1
+com.google.gson.DefaultDateTypeAdapter
+com.google.gson.FieldAttributes:
+    53:53:public java.lang.Class getDeclaringClass()
+    60:60:public java.lang.String getName()
+    80:80:public java.lang.reflect.Type getDeclaredType()
+    100:100:public java.lang.Class getDeclaredClass()
+    111:111:public java.lang.annotation.Annotation getAnnotation(java.lang.Class)
+    121:121:public java.util.Collection getAnnotations()
+    135:135:public boolean hasModifier(int)
+    146:146:java.lang.Object get(java.lang.Object)
+    155:155:boolean isSynthetic()
+com.google.gson.Gson:
+    static final boolean DEFAULT_JSON_NON_EXECUTABLE
+    private static final java.lang.String JSON_NON_EXECUTABLE_PREFIX
+    462:465:public com.google.gson.JsonElement toJsonTree(java.lang.Object)
+    485:487:public com.google.gson.JsonElement toJsonTree(java.lang.Object,java.lang.reflect.Type)
+    546:551:public void toJson(java.lang.Object,java.lang.Appendable)
+    740:743:public java.lang.Object fromJson(java.io.Reader,java.lang.Class)
+    841:842:public java.lang.Object fromJson(com.google.gson.JsonElement,java.lang.Class)
+    865:868:public java.lang.Object fromJson(com.google.gson.JsonElement,java.lang.reflect.Type)
+com.google.gson.Gson$1:
+    126:126:public java.lang.Object deserialize(com.google.gson.JsonElement,java.lang.reflect.Type)
+com.google.gson.Gson$2:
+    132:132:public com.google.gson.JsonElement serialize(java.lang.Object)
+    135:135:public com.google.gson.JsonElement serialize(java.lang.Object,java.lang.reflect.Type)
+com.google.gson.GsonBuilder
+com.google.gson.JsonArray:
+    45:49:com.google.gson.JsonArray deepCopy()
+    70:71:public void addAll(com.google.gson.JsonArray)
+    79:79:public int size()
+    101:101:public com.google.gson.JsonElement get(int)
+    163:166:public java.math.BigDecimal getAsBigDecimal()
+    180:183:public java.math.BigInteger getAsBigInteger()
+    196:199:public float getAsFloat()
+    236:239:public byte getAsByte()
+    244:247:public char getAsCharacter()
+    260:263:public short getAsShort()
+    33:33:bridge synthetic com.google.gson.JsonElement deepCopy()
+com.google.gson.JsonDeserializationContext:
+    public abstract java.lang.Object deserialize(com.google.gson.JsonElement,java.lang.reflect.Type)
+com.google.gson.JsonDeserializer
+com.google.gson.JsonElement:
+    abstract com.google.gson.JsonElement deepCopy()
+    136:139:public com.google.gson.JsonNull getAsJsonNull()
+    217:217:public float getAsFloat()
+    257:257:public byte getAsByte()
+    271:271:public char getAsCharacter()
+    285:285:public java.math.BigDecimal getAsBigDecimal()
+    299:299:public java.math.BigInteger getAsBigInteger()
+    312:312:public short getAsShort()
+com.google.gson.JsonIOException:
+    private static final long serialVersionUID
+    33:34:public JsonIOException(java.lang.String,java.lang.Throwable)
+com.google.gson.JsonNull:
+    45:45:com.google.gson.JsonNull deepCopy()
+    26:26:bridge synthetic com.google.gson.JsonElement deepCopy()
+com.google.gson.JsonObject:
+    38:42:com.google.gson.JsonObject deepCopy()
+    68:68:public com.google.gson.JsonElement remove(java.lang.String)
+    79:80:public void addProperty(java.lang.String,java.lang.String)
+    90:91:public void addProperty(java.lang.String,java.lang.Number)
+    101:102:public void addProperty(java.lang.String,java.lang.Boolean)
+    112:113:public void addProperty(java.lang.String,java.lang.Character)
+    122:122:private com.google.gson.JsonElement createJsonElement(java.lang.Object)
+    142:142:public boolean has(java.lang.String)
+    152:152:public com.google.gson.JsonElement get(java.lang.String)
+    162:162:public com.google.gson.JsonPrimitive getAsJsonPrimitive(java.lang.String)
+    172:172:public com.google.gson.JsonArray getAsJsonArray(java.lang.String)
+    182:182:public com.google.gson.JsonObject getAsJsonObject(java.lang.String)
+    32:32:bridge synthetic com.google.gson.JsonElement deepCopy()
+com.google.gson.JsonParseException:
+    static final long serialVersionUID
+com.google.gson.JsonParser
+com.google.gson.JsonPrimitive:
+    74:76:public JsonPrimitive(java.lang.Character)
+    84:86:JsonPrimitive(java.lang.Object)
+    90:90:com.google.gson.JsonPrimitive deepCopy()
+    204:204:public java.math.BigDecimal getAsBigDecimal()
+    215:215:public java.math.BigInteger getAsBigInteger()
+    227:227:public float getAsFloat()
+    249:249:public short getAsShort()
+    265:265:public byte getAsByte()
+    270:270:public char getAsCharacter()
+    33:33:bridge synthetic com.google.gson.JsonElement deepCopy()
+com.google.gson.JsonSerializationContext:
+    public abstract com.google.gson.JsonElement serialize(java.lang.Object)
+    public abstract com.google.gson.JsonElement serialize(java.lang.Object,java.lang.reflect.Type)
+com.google.gson.JsonSerializer
+com.google.gson.JsonStreamParser
+com.google.gson.JsonSyntaxException:
+    private static final long serialVersionUID
+com.google.gson.TreeTypeAdapter
+com.google.gson.TreeTypeAdapter$1
+com.google.gson.TreeTypeAdapter$SingleTypeFactory
+com.google.gson.TypeAdapter:
+    141:143:public final void toJson(java.io.Writer,java.lang.Object)
+    186:186:public final com.google.gson.TypeAdapter nullSafe()
+    215:217:public final java.lang.String toJson(java.lang.Object)
+    255:256:public final java.lang.Object fromJson(java.io.Reader)
+    269:269:public final java.lang.Object fromJson(java.lang.String)
+    280:283:public final java.lang.Object fromJsonTree(com.google.gson.JsonElement)
+com.google.gson.TypeAdapter$1
+com.google.gson.internal.$Gson$Preconditions:
+    32:32:public $Gson$Preconditions()
+com.google.gson.internal.$Gson$Types:
+    45:45:private $Gson$Types()
+com.google.gson.internal.$Gson$Types$GenericArrayTypeImpl:
+    private static final long serialVersionUID
+com.google.gson.internal.$Gson$Types$ParameterizedTypeImpl:
+    private static final long serialVersionUID
+com.google.gson.internal.$Gson$Types$WildcardTypeImpl:
+    private static final long serialVersionUID
+com.google.gson.internal.Excluder:
+    private static final double IGNORE_VERSIONS
+    70:72:public com.google.gson.internal.Excluder withVersion(double)
+    76:81:public varargs com.google.gson.internal.Excluder withModifiers(int[])
+    85:87:public com.google.gson.internal.Excluder disableInnerClassSerialization()
+    91:93:public com.google.gson.internal.Excluder excludeFieldsWithoutExposeAnnotation()
+    98:108:public com.google.gson.internal.Excluder withExclusionStrategy(com.google.gson.ExclusionStrategy,boolean,boolean)
+com.google.gson.internal.LazilyParsedNumber:
+    76:76:private java.lang.Object writeReplace()
+com.google.gson.internal.LinkedTreeMap:
+    625:625:private java.lang.Object writeReplace()
+com.google.gson.internal.Primitives:
+    32:32:private Primitives()
+    80:80:public static boolean isWrapperType(java.lang.reflect.Type)
+    113:115:public static java.lang.Class unwrap(java.lang.Class)
+com.google.gson.internal.Streams:
+    35:79:public Streams()
+    40:60:public static com.google.gson.JsonElement parse(com.google.gson.stream.JsonReader)
+com.google.gson.internal.bind.JsonTreeReader:
+    53:55:public JsonTreeReader(com.google.gson.JsonElement)
+com.google.gson.internal.bind.JsonTreeWriter:
+    163:167:public com.google.gson.stream.JsonWriter value(double)
+com.google.gson.internal.bind.TypeAdapters:
+    58:58:private TypeAdapters()
+    769:769:public static com.google.gson.TypeAdapterFactory newFactory(com.google.gson.reflect.TypeToken,com.google.gson.TypeAdapter)
+com.google.gson.internal.bind.TypeAdapters$23:
+    private static final java.lang.String YEAR
+    private static final java.lang.String MONTH
+    private static final java.lang.String DAY_OF_MONTH
+    private static final java.lang.String HOUR_OF_DAY
+    private static final java.lang.String MINUTE
+    private static final java.lang.String SECOND
+com.google.gson.internal.bind.TypeAdapters$27
+com.google.gson.reflect.TypeToken:
+    112:112:public boolean isAssignableFrom(java.lang.Class)
+    123:140:public boolean isAssignableFrom(java.lang.reflect.Type)
+    153:153:public boolean isAssignableFrom(com.google.gson.reflect.TypeToken)
+    161:178:private static boolean isAssignableFrom(java.lang.reflect.Type,java.lang.reflect.GenericArrayType)
+    188:231:private static boolean isAssignableFrom(java.lang.reflect.Type,java.lang.reflect.ParameterizedType,java.util.Map)
+    240:250:private static boolean typeEquals(java.lang.reflect.ParameterizedType,java.lang.reflect.ParameterizedType,java.util.Map)
+    257:265:private static varargs java.lang.AssertionError buildUnexpectedTypeError(java.lang.reflect.Type,java.lang.Class[])
+    273:273:private static boolean matches(java.lang.reflect.Type,java.lang.reflect.Type,java.util.Map)
+com.google.gson.stream.JsonReader:
+    private static final long MIN_INCOMPLETE_INTEGER
+    private static final int PEEKED_NONE
+    private static final int PEEKED_BEGIN_OBJECT
+    private static final int PEEKED_END_OBJECT
+    private static final int PEEKED_BEGIN_ARRAY
+    private static final int PEEKED_END_ARRAY
+    private static final int PEEKED_TRUE
+    private static final int PEEKED_FALSE
+    private static final int PEEKED_NULL
+    private static final int PEEKED_SINGLE_QUOTED
+    private static final int PEEKED_DOUBLE_QUOTED
+    private static final int PEEKED_UNQUOTED
+    private static final int PEEKED_BUFFERED
+    private static final int PEEKED_SINGLE_QUOTED_NAME
+    private static final int PEEKED_DOUBLE_QUOTED_NAME
+    private static final int PEEKED_UNQUOTED_NAME
+    private static final int PEEKED_LONG
+    private static final int PEEKED_NUMBER
+    private static final int PEEKED_EOF
+    private static final int NUMBER_CHAR_NONE
+    private static final int NUMBER_CHAR_SIGN
+    private static final int NUMBER_CHAR_DIGIT
+    private static final int NUMBER_CHAR_DECIMAL
+    private static final int NUMBER_CHAR_FRACTION_DIGIT
+    private static final int NUMBER_CHAR_EXP_E
+    private static final int NUMBER_CHAR_EXP_SIGN
+    private static final int NUMBER_CHAR_EXP_DIGIT
+com.google.gson.stream.JsonScope
+com.google.gson.stream.JsonWriter:
+    462:468:public com.google.gson.stream.JsonWriter value(double)
+com.google.gson.stream.MalformedJsonException:
+    private static final long serialVersionUID
+    33:37:public MalformedJsonException(java.lang.String,java.lang.Throwable)
+    39:43:public MalformedJsonException(java.lang.Throwable)
+com.sun.activation.registries.LineTokenizer:
+    private static final java.lang.String singles
+    330:331:public void pushToken(java.lang.String)
+com.sun.activation.registries.LogSupport:
+    66:68:private LogSupport()
+com.sun.activation.registries.MailcapTokenizer:
+    public static final int UNKNOWN_TOKEN
+    public static final int START_TOKEN
+    public static final int STRING_TOKEN
+    public static final int EOI_TOKEN
+    public static final int SLASH_TOKEN
+    public static final int SEMICOLON_TOKEN
+    public static final int EQUALS_TOKEN
+    94:94:public int getCurrentToken()
+com.sun.activation.registries.MimeTypeEntry:
+    59:59:public java.lang.String getFileExtension()
+com.sun.mail.iap.AString
+com.sun.mail.iap.Argument
+com.sun.mail.iap.Atom
+com.sun.mail.iap.BadCommandException
+com.sun.mail.iap.ByteArray
+com.sun.mail.iap.CommandFailedException
+com.sun.mail.iap.ConnectionException
+com.sun.mail.iap.Literal
+com.sun.mail.iap.LiteralException
+com.sun.mail.iap.ParsingException
+com.sun.mail.iap.Protocol
+com.sun.mail.iap.ProtocolException
+com.sun.mail.iap.Response
+com.sun.mail.iap.ResponseHandler
+com.sun.mail.iap.ResponseInputStream
+com.sun.mail.imap.ACL
+com.sun.mail.imap.AppendUID
+com.sun.mail.imap.DefaultFolder
+com.sun.mail.imap.DefaultFolder$1
+com.sun.mail.imap.DefaultFolder$2
+com.sun.mail.imap.IMAPBodyPart
+com.sun.mail.imap.IMAPFolder
+com.sun.mail.imap.IMAPFolder$1
+com.sun.mail.imap.IMAPFolder$10
+com.sun.mail.imap.IMAPFolder$11
+com.sun.mail.imap.IMAPFolder$12
+com.sun.mail.imap.IMAPFolder$13
+com.sun.mail.imap.IMAPFolder$14
+com.sun.mail.imap.IMAPFolder$15
+com.sun.mail.imap.IMAPFolder$16
+com.sun.mail.imap.IMAPFolder$17
+com.sun.mail.imap.IMAPFolder$18
+com.sun.mail.imap.IMAPFolder$19
+com.sun.mail.imap.IMAPFolder$2
+com.sun.mail.imap.IMAPFolder$3
+com.sun.mail.imap.IMAPFolder$4
+com.sun.mail.imap.IMAPFolder$5
+com.sun.mail.imap.IMAPFolder$6
+com.sun.mail.imap.IMAPFolder$7
+com.sun.mail.imap.IMAPFolder$8
+com.sun.mail.imap.IMAPFolder$9
+com.sun.mail.imap.IMAPFolder$FetchProfileItem
+com.sun.mail.imap.IMAPFolder$ProtocolCommand
+com.sun.mail.imap.IMAPInputStream
+com.sun.mail.imap.IMAPMessage
+com.sun.mail.imap.IMAPMessage$1FetchProfileCondition
+com.sun.mail.imap.IMAPMultipartDataSource
+com.sun.mail.imap.IMAPNestedMessage
+com.sun.mail.imap.IMAPSSLStore
+com.sun.mail.imap.IMAPStore
+com.sun.mail.imap.IMAPStore$ConnectionPool
+com.sun.mail.imap.LengthCounter
+com.sun.mail.imap.MessageLiteral
+com.sun.mail.imap.Rights
+com.sun.mail.imap.Rights$Right
+com.sun.mail.imap.Utility
+com.sun.mail.imap.Utility$Condition
+com.sun.mail.imap.protocol.BASE64MailboxDecoder
+com.sun.mail.imap.protocol.BASE64MailboxEncoder
+com.sun.mail.imap.protocol.BODY
+com.sun.mail.imap.protocol.BODYSTRUCTURE
+com.sun.mail.imap.protocol.ENVELOPE
+com.sun.mail.imap.protocol.FLAGS
+com.sun.mail.imap.protocol.FetchResponse
+com.sun.mail.imap.protocol.IMAPAddress
+com.sun.mail.imap.protocol.IMAPProtocol
+com.sun.mail.imap.protocol.IMAPResponse
+com.sun.mail.imap.protocol.IMAPSaslAuthenticator
+com.sun.mail.imap.protocol.IMAPSaslAuthenticator$1
+com.sun.mail.imap.protocol.INTERNALDATE
+com.sun.mail.imap.protocol.Item
+com.sun.mail.imap.protocol.ListInfo
+com.sun.mail.imap.protocol.MailboxInfo
+com.sun.mail.imap.protocol.MessageSet
+com.sun.mail.imap.protocol.Namespaces
+com.sun.mail.imap.protocol.Namespaces$Namespace
+com.sun.mail.imap.protocol.RFC822DATA
+com.sun.mail.imap.protocol.RFC822SIZE
+com.sun.mail.imap.protocol.SaslAuthenticator
+com.sun.mail.imap.protocol.SearchSequence
+com.sun.mail.imap.protocol.Status
+com.sun.mail.imap.protocol.UID
+com.sun.mail.imap.protocol.UIDSet
+com.sun.mail.pop3.DefaultFolder
+com.sun.mail.pop3.POP3Folder
+com.sun.mail.pop3.POP3Message
+com.sun.mail.pop3.POP3SSLStore
+com.sun.mail.pop3.POP3Store
+com.sun.mail.pop3.Protocol
+com.sun.mail.pop3.Response
+com.sun.mail.pop3.SharedByteArrayOutputStream
+com.sun.mail.pop3.Status
+lab.davidahn.appshuttle.AppShuttleDBHelper:
+    private static final int DB_VERSION
+lab.davidahn.appshuttle.AppShuttlePreferences:
+    6:6:public AppShuttlePreferences()
+lab.davidahn.appshuttle.BuildConfig
+lab.davidahn.appshuttle.R
+lab.davidahn.appshuttle.R$attr
+lab.davidahn.appshuttle.R$color
+lab.davidahn.appshuttle.R$dimen
+lab.davidahn.appshuttle.R$drawable
+lab.davidahn.appshuttle.R$id
+lab.davidahn.appshuttle.R$layout
+lab.davidahn.appshuttle.R$menu
+lab.davidahn.appshuttle.R$string
+lab.davidahn.appshuttle.R$style
+lab.davidahn.appshuttle.R$xml
+lab.davidahn.appshuttle.collect.SnapshotUserCxt:
+    25:30:public SnapshotUserCxt(java.util.Date,java.util.TimeZone)
+    55:56:public void setUserEnvs(java.util.Map)
+    62:63:public void addUserBhv(lab.davidahn.appshuttle.collect.bhv.BaseUserBhv)
+lab.davidahn.appshuttle.collect.bhv.AppBhvCollector:
+    87:93:private java.util.List getInstalledAppList(boolean)
+lab.davidahn.appshuttle.collect.bhv.BaseUserBhv:
+    40:41:public void setBhvType(lab.davidahn.appshuttle.collect.bhv.UserBhvType)
+    50:51:public void setBhvName(java.lang.String)
+lab.davidahn.appshuttle.collect.bhv.DurationUserBhv:
+    26:27:public void setBhvType(lab.davidahn.appshuttle.collect.bhv.UserBhvType)
+    34:35:public void setBhvName(java.lang.String)
+    42:43:public void setMeta(java.lang.String,java.lang.Object)
+lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao:
+    39:64:public java.util.List retrieve(long,long)
+    68:73:public void delete(java.util.Date,java.util.Date)
+lab.davidahn.appshuttle.collect.bhv.UserBhv:
+    public abstract void setBhvType(lab.davidahn.appshuttle.collect.bhv.UserBhvType)
+    public abstract void setBhvName(java.lang.String)
+    public abstract void setMeta(java.lang.String,java.lang.Object)
+lab.davidahn.appshuttle.collect.env.BaseEnvSensor:
+    public abstract boolean isChanged()
+lab.davidahn.appshuttle.collect.env.DurationUserEnv:
+    34:35:public void setDuration(long)
+    47:48:public void setTimeZone(java.util.TimeZone)
+    53:54:public void setEnvType(lab.davidahn.appshuttle.collect.env.EnvType)
+    59:60:public void setUserEnv(lab.davidahn.appshuttle.collect.env.UserEnv)
+lab.davidahn.appshuttle.collect.env.DurationUserEnv$Builder:
+    131:131:public lab.davidahn.appshuttle.collect.env.UserEnv getUserEnv()
+lab.davidahn.appshuttle.collect.env.DurationUserEnvDao:
+    165:169:public void deleteBetween(java.util.Date,java.util.Date)
+lab.davidahn.appshuttle.collect.env.DurationUserEnvManager:
+    94:95:public void deleteAllBetween(java.util.Date,java.util.Date)
+lab.davidahn.appshuttle.collect.env.EnvSensor:
+    public abstract boolean isChanged()
+lab.davidahn.appshuttle.collect.env.InvalidUserEnvException:
+    private static final long serialVersionUID
+lab.davidahn.appshuttle.collect.env.SpeedEnvSensor:
+    66:70:public boolean isChanged()
+lab.davidahn.appshuttle.predict.PredictionInfo:
+    38:38:public java.util.TimeZone getTimeZone()
+    42:42:public java.util.Map getUserEnvMap()
+    46:46:public lab.davidahn.appshuttle.collect.env.UserEnv getUserEnv(lab.davidahn.appshuttle.collect.env.EnvType)
+    50:50:public lab.davidahn.appshuttle.collect.bhv.UserBhv getUserBhv()
+    58:58:public lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult getMatcherGroupResult(lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType)
+lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher:
+    private static final long INTERVAL_WEEK
+lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher:
+    private static final long INTERVAL_WEEK
+lab.davidahn.appshuttle.predict.matcher.LocationPositionMatcher
+lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit:
+    29:29:public lab.davidahn.appshuttle.collect.bhv.UserBhv getUBhv()
+    41:41:public java.util.Map getProperties()
+lab.davidahn.appshuttle.predict.matcher.MatcherResult:
+    32:32:public java.util.Date getTime()
+    36:37:public void setTime(java.util.Date)
+    40:40:public java.util.TimeZone getTimeZone()
+    44:45:public void setTimeZone(java.util.TimeZone)
+    48:48:public java.util.Map getUserEnv()
+    51:52:public void setUserEnv(java.util.Map)
+    71:71:public lab.davidahn.appshuttle.collect.bhv.UserBhv getUserBhvs()
+    75:75:public lab.davidahn.appshuttle.collect.env.UserEnv getUserEnv(lab.davidahn.appshuttle.collect.env.EnvType)
+    83:83:public int getNumTotalCxt()
+    99:99:public java.util.Map getRelatedCxt()
+    107:109:public void addRelatedCxt(lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit,double)
+lab.davidahn.appshuttle.predict.matcher.TimeMatcher:
+    public abstract lab.davidahn.appshuttle.predict.matcher.MatcherType getMatcherType()
+lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf:
+    12:12:public int getToleranceInMeter()
+lab.davidahn.appshuttle.predict.matchergroup.BaseMatcherGroup:
+    32:32:public int getPriority()
+lab.davidahn.appshuttle.predict.matchergroup.MatcherGroup:
+    public abstract int getPriority()
+lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult:
+    32:32:public java.util.Date getTime()
+    36:37:public void setTime(java.util.Date)
+    40:40:public java.util.TimeZone getTimeZone()
+    44:45:public void setTimeZone(java.util.TimeZone)
+    48:48:public java.util.Map getUserEnv()
+    52:53:public void setUserEnv(java.util.Map)
+    56:56:public lab.davidahn.appshuttle.collect.bhv.UserBhv getUserBhvs()
+    60:60:public lab.davidahn.appshuttle.collect.env.UserEnv getTargetUserEnv(lab.davidahn.appshuttle.collect.env.EnvType)
+    68:68:public lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType getMatcherGroupType()
+lab.davidahn.appshuttle.report.Mail:
+    153:153:public java.lang.String getBody()
+    161:161:public java.lang.String[] getTo()
+    169:169:public java.lang.String getFrom()
+    177:177:public java.lang.String getSubject()
+lab.davidahn.appshuttle.report.Reporter:
+    29:30:public void addAttach(java.io.File)
+lab.davidahn.appshuttle.utils.Time:
+    4:4:public Time()
+lab.davidahn.appshuttle.view.AppShuttleMainActivity:
+    150:156:public static void doEmphasisChildViewInListView(android.widget.ListView,int)
+    159:162:public static void cancelEmphasisInListView(android.widget.ListView)
+lab.davidahn.appshuttle.view.NotiBarNotifier:
+    private static final int UPDATE_NOTI_VIEW
+lab.davidahn.appshuttle.view.Viewable:
+    public abstract java.lang.String getViewMsg()
+lab.davidahn.appshuttle.view.ViewableUserBhv:
+    49:50:public void setBhvType(lab.davidahn.appshuttle.collect.bhv.UserBhvType)
+    57:58:public void setBhvName(java.lang.String)
+    65:66:public void setMeta(java.lang.String,java.lang.Object)
+org.apache.commons.math3.Field
+org.apache.commons.math3.FieldElement
+org.apache.commons.math3.analysis.BivariateFunction
+org.apache.commons.math3.analysis.DifferentiableMultivariateFunction
+org.apache.commons.math3.analysis.DifferentiableMultivariateVectorFunction
+org.apache.commons.math3.analysis.DifferentiableUnivariateFunction
+org.apache.commons.math3.analysis.DifferentiableUnivariateMatrixFunction
+org.apache.commons.math3.analysis.DifferentiableUnivariateVectorFunction
+org.apache.commons.math3.analysis.FunctionUtils
+org.apache.commons.math3.analysis.FunctionUtils$1
+org.apache.commons.math3.analysis.FunctionUtils$10
+org.apache.commons.math3.analysis.FunctionUtils$2
+org.apache.commons.math3.analysis.FunctionUtils$2$1
+org.apache.commons.math3.analysis.FunctionUtils$3
+org.apache.commons.math3.analysis.FunctionUtils$4
+org.apache.commons.math3.analysis.FunctionUtils$4$1
+org.apache.commons.math3.analysis.FunctionUtils$5
+org.apache.commons.math3.analysis.FunctionUtils$6
+org.apache.commons.math3.analysis.FunctionUtils$6$1
+org.apache.commons.math3.analysis.FunctionUtils$7
+org.apache.commons.math3.analysis.FunctionUtils$8
+org.apache.commons.math3.analysis.FunctionUtils$9
+org.apache.commons.math3.analysis.MultivariateFunction
+org.apache.commons.math3.analysis.MultivariateMatrixFunction
+org.apache.commons.math3.analysis.MultivariateVectorFunction
+org.apache.commons.math3.analysis.ParametricUnivariateFunction
+org.apache.commons.math3.analysis.TrivariateFunction
+org.apache.commons.math3.analysis.UnivariateFunction
+org.apache.commons.math3.analysis.UnivariateMatrixFunction
+org.apache.commons.math3.analysis.UnivariateVectorFunction
+org.apache.commons.math3.analysis.function.Abs
+org.apache.commons.math3.analysis.function.Acos
+org.apache.commons.math3.analysis.function.Acos$1
+org.apache.commons.math3.analysis.function.Acosh
+org.apache.commons.math3.analysis.function.Acosh$1
+org.apache.commons.math3.analysis.function.Add
+org.apache.commons.math3.analysis.function.Asin
+org.apache.commons.math3.analysis.function.Asin$1
+org.apache.commons.math3.analysis.function.Asinh
+org.apache.commons.math3.analysis.function.Asinh$1
+org.apache.commons.math3.analysis.function.Atan
+org.apache.commons.math3.analysis.function.Atan$1
+org.apache.commons.math3.analysis.function.Atan2
+org.apache.commons.math3.analysis.function.Atanh
+org.apache.commons.math3.analysis.function.Atanh$1
+org.apache.commons.math3.analysis.function.Cbrt
+org.apache.commons.math3.analysis.function.Cbrt$1
+org.apache.commons.math3.analysis.function.Ceil
+org.apache.commons.math3.analysis.function.Constant
+org.apache.commons.math3.analysis.function.Cos
+org.apache.commons.math3.analysis.function.Cos$1
+org.apache.commons.math3.analysis.function.Cosh
+org.apache.commons.math3.analysis.function.Divide
+org.apache.commons.math3.analysis.function.Exp
+org.apache.commons.math3.analysis.function.Exp$1
+org.apache.commons.math3.analysis.function.Expm1
+org.apache.commons.math3.analysis.function.Expm1$1
+org.apache.commons.math3.analysis.function.Floor
+org.apache.commons.math3.analysis.function.Gaussian
+org.apache.commons.math3.analysis.function.Gaussian$1
+org.apache.commons.math3.analysis.function.Gaussian$Parametric
+org.apache.commons.math3.analysis.function.HarmonicOscillator
+org.apache.commons.math3.analysis.function.HarmonicOscillator$1
+org.apache.commons.math3.analysis.function.HarmonicOscillator$Parametric
+org.apache.commons.math3.analysis.function.Identity
+org.apache.commons.math3.analysis.function.Inverse
+org.apache.commons.math3.analysis.function.Inverse$1
+org.apache.commons.math3.analysis.function.Log
+org.apache.commons.math3.analysis.function.Log$1
+org.apache.commons.math3.analysis.function.Log10
+org.apache.commons.math3.analysis.function.Log10$1
+org.apache.commons.math3.analysis.function.Log1p
+org.apache.commons.math3.analysis.function.Log1p$1
+org.apache.commons.math3.analysis.function.Logistic
+org.apache.commons.math3.analysis.function.Logistic$1
+org.apache.commons.math3.analysis.function.Logistic$Parametric
+org.apache.commons.math3.analysis.function.Logit
+org.apache.commons.math3.analysis.function.Logit$1
+org.apache.commons.math3.analysis.function.Logit$Parametric
+org.apache.commons.math3.analysis.function.Max
+org.apache.commons.math3.analysis.function.Min
+org.apache.commons.math3.analysis.function.Minus
+org.apache.commons.math3.analysis.function.Multiply
+org.apache.commons.math3.analysis.function.Pow
+org.apache.commons.math3.analysis.function.Power
+org.apache.commons.math3.analysis.function.Power$1
+org.apache.commons.math3.analysis.function.Rint
+org.apache.commons.math3.analysis.function.Sigmoid
+org.apache.commons.math3.analysis.function.Sigmoid$1
+org.apache.commons.math3.analysis.function.Sigmoid$Parametric
+org.apache.commons.math3.analysis.function.Signum
+org.apache.commons.math3.analysis.function.Sin
+org.apache.commons.math3.analysis.function.Sinc
+org.apache.commons.math3.analysis.function.Sinc$1
+org.apache.commons.math3.analysis.function.Sinc$2
+org.apache.commons.math3.analysis.function.Sinh
+org.apache.commons.math3.analysis.function.Sqrt
+org.apache.commons.math3.analysis.function.Sqrt$1
+org.apache.commons.math3.analysis.function.StepFunction
+org.apache.commons.math3.analysis.function.Subtract
+org.apache.commons.math3.analysis.function.Tan
+org.apache.commons.math3.analysis.function.Tan$1
+org.apache.commons.math3.analysis.function.Tanh
+org.apache.commons.math3.analysis.function.Tanh$1
+org.apache.commons.math3.analysis.function.Ulp
+org.apache.commons.math3.analysis.integration.BaseAbstractUnivariateIntegrator
+org.apache.commons.math3.analysis.integration.LegendreGaussIntegrator
+org.apache.commons.math3.analysis.integration.RombergIntegrator
+org.apache.commons.math3.analysis.integration.SimpsonIntegrator
+org.apache.commons.math3.analysis.integration.TrapezoidIntegrator
+org.apache.commons.math3.analysis.integration.UnivariateIntegrator
+org.apache.commons.math3.analysis.interpolation.BicubicSplineFunction
+org.apache.commons.math3.analysis.interpolation.BicubicSplineFunction$1
+org.apache.commons.math3.analysis.interpolation.BicubicSplineFunction$2
+org.apache.commons.math3.analysis.interpolation.BicubicSplineFunction$3
+org.apache.commons.math3.analysis.interpolation.BicubicSplineFunction$4
+org.apache.commons.math3.analysis.interpolation.BicubicSplineFunction$5
+org.apache.commons.math3.analysis.interpolation.BicubicSplineInterpolatingFunction
+org.apache.commons.math3.analysis.interpolation.BicubicSplineInterpolator
+org.apache.commons.math3.analysis.interpolation.BivariateGridInterpolator
+org.apache.commons.math3.analysis.interpolation.DividedDifferenceInterpolator
+org.apache.commons.math3.analysis.interpolation.LinearInterpolator
+org.apache.commons.math3.analysis.interpolation.LoessInterpolator
+org.apache.commons.math3.analysis.interpolation.MicrosphereInterpolatingFunction
+org.apache.commons.math3.analysis.interpolation.MicrosphereInterpolatingFunction$MicrosphereSurfaceElement
+org.apache.commons.math3.analysis.interpolation.MicrosphereInterpolator
+org.apache.commons.math3.analysis.interpolation.MultivariateInterpolator
+org.apache.commons.math3.analysis.interpolation.NevilleInterpolator
+org.apache.commons.math3.analysis.interpolation.SmoothingPolynomialBicubicSplineInterpolator
+org.apache.commons.math3.analysis.interpolation.SplineInterpolator
+org.apache.commons.math3.analysis.interpolation.TricubicSplineFunction
+org.apache.commons.math3.analysis.interpolation.TricubicSplineInterpolatingFunction
+org.apache.commons.math3.analysis.interpolation.TricubicSplineInterpolator
+org.apache.commons.math3.analysis.interpolation.TrivariateGridInterpolator
+org.apache.commons.math3.analysis.interpolation.UnivariateInterpolator
+org.apache.commons.math3.analysis.interpolation.UnivariatePeriodicInterpolator
+org.apache.commons.math3.analysis.interpolation.UnivariatePeriodicInterpolator$1
+org.apache.commons.math3.analysis.polynomials.PolynomialFunction
+org.apache.commons.math3.analysis.polynomials.PolynomialFunction$Parametric
+org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm
+org.apache.commons.math3.analysis.polynomials.PolynomialFunctionNewtonForm
+org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils$1
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils$2
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils$3
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils$4
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils$5
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils$JacobiKey
+org.apache.commons.math3.analysis.polynomials.PolynomialsUtils$RecurrenceCoefficientsGenerator
+org.apache.commons.math3.analysis.solvers.AbstractDifferentiableUnivariateSolver
+org.apache.commons.math3.analysis.solvers.AbstractPolynomialSolver
+org.apache.commons.math3.analysis.solvers.AbstractUnivariateSolver
+org.apache.commons.math3.analysis.solvers.AllowedSolution
+org.apache.commons.math3.analysis.solvers.BaseAbstractUnivariateSolver
+org.apache.commons.math3.analysis.solvers.BaseSecantSolver
+org.apache.commons.math3.analysis.solvers.BaseSecantSolver$1
+org.apache.commons.math3.analysis.solvers.BaseSecantSolver$Method
+org.apache.commons.math3.analysis.solvers.BaseUnivariateSolver
+org.apache.commons.math3.analysis.solvers.BisectionSolver
+org.apache.commons.math3.analysis.solvers.BracketedUnivariateSolver
+org.apache.commons.math3.analysis.solvers.BracketingNthOrderBrentSolver
+org.apache.commons.math3.analysis.solvers.BracketingNthOrderBrentSolver$1
+org.apache.commons.math3.analysis.solvers.BrentSolver
+org.apache.commons.math3.analysis.solvers.DifferentiableUnivariateSolver
+org.apache.commons.math3.analysis.solvers.IllinoisSolver
+org.apache.commons.math3.analysis.solvers.LaguerreSolver
+org.apache.commons.math3.analysis.solvers.LaguerreSolver$1
+org.apache.commons.math3.analysis.solvers.LaguerreSolver$ComplexSolver
+org.apache.commons.math3.analysis.solvers.MullerSolver
+org.apache.commons.math3.analysis.solvers.MullerSolver2
+org.apache.commons.math3.analysis.solvers.NewtonSolver
+org.apache.commons.math3.analysis.solvers.PegasusSolver
+org.apache.commons.math3.analysis.solvers.PolynomialSolver
+org.apache.commons.math3.analysis.solvers.RegulaFalsiSolver
+org.apache.commons.math3.analysis.solvers.RiddersSolver
+org.apache.commons.math3.analysis.solvers.SecantSolver
+org.apache.commons.math3.analysis.solvers.UnivariateSolver
+org.apache.commons.math3.analysis.solvers.UnivariateSolverUtils
+org.apache.commons.math3.complex.Complex
+org.apache.commons.math3.complex.ComplexField
+org.apache.commons.math3.complex.ComplexField$1
+org.apache.commons.math3.complex.ComplexField$LazyHolder
+org.apache.commons.math3.complex.ComplexFormat
+org.apache.commons.math3.complex.ComplexUtils
+org.apache.commons.math3.complex.RootsOfUnity
+org.apache.commons.math3.dfp.BracketingNthOrderBrentSolverDFP
+org.apache.commons.math3.dfp.BracketingNthOrderBrentSolverDFP$1
+org.apache.commons.math3.dfp.Dfp
+org.apache.commons.math3.dfp.Dfp$1
+org.apache.commons.math3.dfp.DfpDec
+org.apache.commons.math3.dfp.DfpDec$1
+org.apache.commons.math3.dfp.DfpField
+org.apache.commons.math3.dfp.DfpField$RoundingMode
+org.apache.commons.math3.dfp.DfpMath
+org.apache.commons.math3.dfp.UnivariateDfpFunction
+org.apache.commons.math3.distribution.AbstractIntegerDistribution
+org.apache.commons.math3.distribution.AbstractRealDistribution:
+    public static final double SOLVER_DEFAULT_ABSOLUTE_ACCURACY
+    private static final long serialVersionUID
+    62:66:public double cumulativeProbability(double,double)
+    107:180:public double inverseCumulativeProbability(double)
+    191:191:protected double getSolverAbsoluteAccuracy()
+    196:197:public void reseedRandomGenerator(long)
+    208:208:public double sample()
+    218:226:public double[] sample(int)
+org.apache.commons.math3.distribution.AbstractRealDistribution$1
+org.apache.commons.math3.distribution.BetaDistribution
+org.apache.commons.math3.distribution.BinomialDistribution
+org.apache.commons.math3.distribution.CauchyDistribution
+org.apache.commons.math3.distribution.ChiSquaredDistribution
+org.apache.commons.math3.distribution.ExponentialDistribution
+org.apache.commons.math3.distribution.FDistribution
+org.apache.commons.math3.distribution.GammaDistribution
+org.apache.commons.math3.distribution.HypergeometricDistribution
+org.apache.commons.math3.distribution.IntegerDistribution
+org.apache.commons.math3.distribution.KolmogorovSmirnovDistribution
+org.apache.commons.math3.distribution.LogNormalDistribution
+org.apache.commons.math3.distribution.NormalDistribution:
+    public static final double DEFAULT_INVERSE_ABSOLUTE_ACCURACY
+    private static final long serialVersionUID
+    99:99:public double getMean()
+    108:108:public double getStandardDeviation()
+    119:119:public double probability(double)
+    137:141:public double cumulativeProbability(double)
+    148:155:public double cumulativeProbability(double,double)
+    161:161:protected double getSolverAbsoluteAccuracy()
+    170:170:public double getNumericalMean()
+    179:180:public double getNumericalVariance()
+    193:193:public double getSupportLowerBound()
+    206:206:public double getSupportUpperBound()
+    211:211:public boolean isSupportLowerBoundInclusive()
+    216:216:public boolean isSupportUpperBoundInclusive()
+    227:227:public boolean isSupportConnected()
+    233:233:public double sample()
+org.apache.commons.math3.distribution.PascalDistribution
+org.apache.commons.math3.distribution.PoissonDistribution
+org.apache.commons.math3.distribution.RealDistribution
+org.apache.commons.math3.distribution.SaddlePointExpansion
+org.apache.commons.math3.distribution.TDistribution
+org.apache.commons.math3.distribution.TriangularDistribution
+org.apache.commons.math3.distribution.UniformIntegerDistribution
+org.apache.commons.math3.distribution.UniformRealDistribution
+org.apache.commons.math3.distribution.WeibullDistribution
+org.apache.commons.math3.distribution.ZipfDistribution
+org.apache.commons.math3.exception.ConvergenceException
+org.apache.commons.math3.exception.DimensionMismatchException
+org.apache.commons.math3.exception.MathArithmeticException:
+    private static final long serialVersionUID
+    56:59:public varargs MathArithmeticException(org.apache.commons.math3.exception.util.Localizable,java.lang.Object[])
+    63:63:public org.apache.commons.math3.exception.util.ExceptionContext getContext()
+org.apache.commons.math3.exception.MathIllegalArgumentException:
+    private static final long serialVersionUID
+    51:51:public org.apache.commons.math3.exception.util.ExceptionContext getContext()
+org.apache.commons.math3.exception.MathIllegalNumberException:
+    private static final long serialVersionUID
+    54:54:public java.lang.Number getArgument()
+org.apache.commons.math3.exception.MathIllegalStateException
+org.apache.commons.math3.exception.MathInternalError
+org.apache.commons.math3.exception.MathParseException
+org.apache.commons.math3.exception.MathUnsupportedOperationException
+org.apache.commons.math3.exception.MaxCountExceededException
+org.apache.commons.math3.exception.MultiDimensionMismatchException
+org.apache.commons.math3.exception.NoBracketingException
+org.apache.commons.math3.exception.NoDataException
+org.apache.commons.math3.exception.NonMonotonicSequenceException
+org.apache.commons.math3.exception.NotFiniteNumberException
+org.apache.commons.math3.exception.NotPositiveException:
+    private static final long serialVersionUID
+    37:38:public NotPositiveException(java.lang.Number)
+org.apache.commons.math3.exception.NotStrictlyPositiveException:
+    private static final long serialVersionUID
+    38:39:public NotStrictlyPositiveException(java.lang.Number)
+org.apache.commons.math3.exception.NullArgumentException
+org.apache.commons.math3.exception.NumberIsTooLargeException
+org.apache.commons.math3.exception.NumberIsTooSmallException:
+    private static final long serialVersionUID
+    50:54:public NumberIsTooSmallException(java.lang.Number,java.lang.Number,boolean)
+    78:78:public boolean getBoundIsAllowed()
+    85:85:public java.lang.Number getMin()
+org.apache.commons.math3.exception.OutOfRangeException
+org.apache.commons.math3.exception.TooManyEvaluationsException
+org.apache.commons.math3.exception.ZeroException
+org.apache.commons.math3.exception.util.ArgUtils:
+    32:32:private ArgUtils()
+org.apache.commons.math3.exception.util.DummyLocalizable
+org.apache.commons.math3.exception.util.ExceptionContext:
+    private static final long serialVersionUID
+    75:75:public java.lang.Throwable getThrowable()
+    100:101:public void setValue(java.lang.String,java.lang.Object)
+    110:110:public java.lang.Object getValue(java.lang.String)
+    119:119:public java.util.Set getKeys()
+    159:159:public java.lang.String getMessage(java.util.Locale,java.lang.String)
+    197:200:private void writeObject(java.io.ObjectOutputStream)
+    211:214:private void readObject(java.io.ObjectInputStream)
+    225:246:private void serializeMessages(java.io.ObjectOutputStream)
+    259:276:private void deSerializeMessages(java.io.ObjectInputStream)
+    287:301:private void serializeContext(java.io.ObjectOutputStream)
+    314:323:private void deSerializeContext(java.io.ObjectInputStream)
+    333:333:private java.lang.String nonSerializableReplacement(java.lang.Object)
+org.apache.commons.math3.exception.util.ExceptionContextProvider
+org.apache.commons.math3.exception.util.Localizable:
+    public abstract java.lang.String getSourceString()
+org.apache.commons.math3.filter.DefaultMeasurementModel
+org.apache.commons.math3.filter.DefaultProcessModel
+org.apache.commons.math3.filter.KalmanFilter
+org.apache.commons.math3.filter.MeasurementModel
+org.apache.commons.math3.filter.ProcessModel
+org.apache.commons.math3.fraction.AbstractFormat
+org.apache.commons.math3.fraction.BigFraction
+org.apache.commons.math3.fraction.BigFractionField
+org.apache.commons.math3.fraction.BigFractionField$1
+org.apache.commons.math3.fraction.BigFractionField$LazyHolder
+org.apache.commons.math3.fraction.BigFractionFormat
+org.apache.commons.math3.fraction.Fraction
+org.apache.commons.math3.fraction.FractionConversionException
+org.apache.commons.math3.fraction.FractionField
+org.apache.commons.math3.fraction.FractionField$1
+org.apache.commons.math3.fraction.FractionField$LazyHolder
+org.apache.commons.math3.fraction.FractionFormat
+org.apache.commons.math3.fraction.ProperBigFractionFormat
+org.apache.commons.math3.fraction.ProperFractionFormat
+org.apache.commons.math3.genetics.AbstractListChromosome
+org.apache.commons.math3.genetics.BinaryChromosome
+org.apache.commons.math3.genetics.BinaryMutation
+org.apache.commons.math3.genetics.Chromosome
+org.apache.commons.math3.genetics.ChromosomePair
+org.apache.commons.math3.genetics.CrossoverPolicy
+org.apache.commons.math3.genetics.ElitisticListPopulation
+org.apache.commons.math3.genetics.Fitness
+org.apache.commons.math3.genetics.FixedGenerationCount
+org.apache.commons.math3.genetics.GeneticAlgorithm
+org.apache.commons.math3.genetics.InvalidRepresentationException
+org.apache.commons.math3.genetics.ListPopulation
+org.apache.commons.math3.genetics.MutationPolicy
+org.apache.commons.math3.genetics.OnePointCrossover
+org.apache.commons.math3.genetics.PermutationChromosome
+org.apache.commons.math3.genetics.Population
+org.apache.commons.math3.genetics.RandomKey
+org.apache.commons.math3.genetics.RandomKeyMutation
+org.apache.commons.math3.genetics.SelectionPolicy
+org.apache.commons.math3.genetics.StoppingCondition
+org.apache.commons.math3.genetics.TournamentSelection
+org.apache.commons.math3.genetics.TournamentSelection$1
+org.apache.commons.math3.geometry.Space
+org.apache.commons.math3.geometry.Vector
+org.apache.commons.math3.geometry.VectorFormat
+org.apache.commons.math3.geometry.euclidean.oned.Euclidean1D
+org.apache.commons.math3.geometry.euclidean.oned.Euclidean1D$1
+org.apache.commons.math3.geometry.euclidean.oned.Euclidean1D$LazyHolder
+org.apache.commons.math3.geometry.euclidean.oned.Interval
+org.apache.commons.math3.geometry.euclidean.oned.IntervalsSet
+org.apache.commons.math3.geometry.euclidean.oned.OrientedPoint
+org.apache.commons.math3.geometry.euclidean.oned.SubOrientedPoint
+org.apache.commons.math3.geometry.euclidean.oned.Vector1D
+org.apache.commons.math3.geometry.euclidean.oned.Vector1DFormat
+org.apache.commons.math3.geometry.euclidean.threed.CardanEulerSingularityException
+org.apache.commons.math3.geometry.euclidean.threed.Euclidean3D
+org.apache.commons.math3.geometry.euclidean.threed.Euclidean3D$1
+org.apache.commons.math3.geometry.euclidean.threed.Euclidean3D$LazyHolder
+org.apache.commons.math3.geometry.euclidean.threed.Line
+org.apache.commons.math3.geometry.euclidean.threed.NotARotationMatrixException
+org.apache.commons.math3.geometry.euclidean.threed.OutlineExtractor
+org.apache.commons.math3.geometry.euclidean.threed.OutlineExtractor$BoundaryProjector
+org.apache.commons.math3.geometry.euclidean.threed.Plane
+org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet
+org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet$FacetsContributionVisitor
+org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet$RotationTransform
+org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet$TranslationTransform
+org.apache.commons.math3.geometry.euclidean.threed.Rotation
+org.apache.commons.math3.geometry.euclidean.threed.RotationOrder
+org.apache.commons.math3.geometry.euclidean.threed.Segment
+org.apache.commons.math3.geometry.euclidean.threed.SubLine
+org.apache.commons.math3.geometry.euclidean.threed.SubPlane
+org.apache.commons.math3.geometry.euclidean.threed.Vector3D
+org.apache.commons.math3.geometry.euclidean.threed.Vector3DFormat
+org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D
+org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D$1
+org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D$LazyHolder
+org.apache.commons.math3.geometry.euclidean.twod.Line
+org.apache.commons.math3.geometry.euclidean.twod.Line$1
+org.apache.commons.math3.geometry.euclidean.twod.Line$LineTransform
+org.apache.commons.math3.geometry.euclidean.twod.NestedLoops
+org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet
+org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet$ComparableSegment
+org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet$SegmentsBuilder
+org.apache.commons.math3.geometry.euclidean.twod.Segment
+org.apache.commons.math3.geometry.euclidean.twod.SubLine
+org.apache.commons.math3.geometry.euclidean.twod.Vector2D
+org.apache.commons.math3.geometry.euclidean.twod.Vector2DFormat
+org.apache.commons.math3.geometry.partitioning.AbstractRegion
+org.apache.commons.math3.geometry.partitioning.AbstractRegion$1
+org.apache.commons.math3.geometry.partitioning.AbstractRegion$2
+org.apache.commons.math3.geometry.partitioning.AbstractRegion$3
+org.apache.commons.math3.geometry.partitioning.AbstractRegion$Sides
+org.apache.commons.math3.geometry.partitioning.AbstractSubHyperplane
+org.apache.commons.math3.geometry.partitioning.BSPTree
+org.apache.commons.math3.geometry.partitioning.BSPTree$1
+org.apache.commons.math3.geometry.partitioning.BSPTree$LeafMerger
+org.apache.commons.math3.geometry.partitioning.BSPTreeVisitor
+org.apache.commons.math3.geometry.partitioning.BSPTreeVisitor$Order
+org.apache.commons.math3.geometry.partitioning.BoundaryAttribute
+org.apache.commons.math3.geometry.partitioning.BoundarySizeVisitor
+org.apache.commons.math3.geometry.partitioning.Characterization
+org.apache.commons.math3.geometry.partitioning.Embedding
+org.apache.commons.math3.geometry.partitioning.Hyperplane
+org.apache.commons.math3.geometry.partitioning.Region
+org.apache.commons.math3.geometry.partitioning.Region$Location
+org.apache.commons.math3.geometry.partitioning.RegionFactory
+org.apache.commons.math3.geometry.partitioning.RegionFactory$1
+org.apache.commons.math3.geometry.partitioning.RegionFactory$DifferenceMerger
+org.apache.commons.math3.geometry.partitioning.RegionFactory$IntersectionMerger
+org.apache.commons.math3.geometry.partitioning.RegionFactory$NodesCleaner
+org.apache.commons.math3.geometry.partitioning.RegionFactory$UnionMerger
+org.apache.commons.math3.geometry.partitioning.RegionFactory$XorMerger
+org.apache.commons.math3.geometry.partitioning.Side
+org.apache.commons.math3.geometry.partitioning.SubHyperplane
+org.apache.commons.math3.geometry.partitioning.SubHyperplane$SplitSubHyperplane
+org.apache.commons.math3.geometry.partitioning.Transform
+org.apache.commons.math3.geometry.partitioning.utilities.AVLTree
+org.apache.commons.math3.geometry.partitioning.utilities.AVLTree$1
+org.apache.commons.math3.geometry.partitioning.utilities.AVLTree$Node
+org.apache.commons.math3.geometry.partitioning.utilities.AVLTree$Skew
+org.apache.commons.math3.geometry.partitioning.utilities.OrderedTuple
+org.apache.commons.math3.linear.AbstractFieldMatrix
+org.apache.commons.math3.linear.AbstractFieldMatrix$1
+org.apache.commons.math3.linear.AbstractFieldMatrix$2
+org.apache.commons.math3.linear.AbstractFieldMatrix$3
+org.apache.commons.math3.linear.AbstractRealMatrix
+org.apache.commons.math3.linear.AbstractRealMatrix$1
+org.apache.commons.math3.linear.AbstractRealMatrix$2
+org.apache.commons.math3.linear.AbstractRealMatrix$3
+org.apache.commons.math3.linear.AbstractRealMatrix$4
+org.apache.commons.math3.linear.AbstractRealMatrix$5
+org.apache.commons.math3.linear.AnyMatrix
+org.apache.commons.math3.linear.Array2DRowFieldMatrix
+org.apache.commons.math3.linear.Array2DRowRealMatrix
+org.apache.commons.math3.linear.ArrayFieldVector
+org.apache.commons.math3.linear.ArrayRealVector
+org.apache.commons.math3.linear.BiDiagonalTransformer
+org.apache.commons.math3.linear.BlockFieldMatrix
+org.apache.commons.math3.linear.BlockRealMatrix
+org.apache.commons.math3.linear.CholeskyDecomposition
+org.apache.commons.math3.linear.CholeskyDecomposition$1
+org.apache.commons.math3.linear.CholeskyDecomposition$Solver
+org.apache.commons.math3.linear.ConjugateGradient
+org.apache.commons.math3.linear.DecompositionSolver
+org.apache.commons.math3.linear.DefaultFieldMatrixChangingVisitor
+org.apache.commons.math3.linear.DefaultFieldMatrixPreservingVisitor
+org.apache.commons.math3.linear.DefaultIterativeLinearSolverEvent
+org.apache.commons.math3.linear.DefaultRealMatrixChangingVisitor
+org.apache.commons.math3.linear.DefaultRealMatrixPreservingVisitor
+org.apache.commons.math3.linear.EigenDecomposition
+org.apache.commons.math3.linear.EigenDecomposition$1
+org.apache.commons.math3.linear.EigenDecomposition$Solver
+org.apache.commons.math3.linear.FieldDecompositionSolver
+org.apache.commons.math3.linear.FieldLUDecomposition
+org.apache.commons.math3.linear.FieldLUDecomposition$1
+org.apache.commons.math3.linear.FieldLUDecomposition$Solver
+org.apache.commons.math3.linear.FieldMatrix
+org.apache.commons.math3.linear.FieldMatrixChangingVisitor
+org.apache.commons.math3.linear.FieldMatrixPreservingVisitor
+org.apache.commons.math3.linear.FieldVector
+org.apache.commons.math3.linear.IllConditionedOperatorException
+org.apache.commons.math3.linear.IterativeLinearSolver
+org.apache.commons.math3.linear.IterativeLinearSolverEvent
+org.apache.commons.math3.linear.JacobiPreconditioner
+org.apache.commons.math3.linear.LUDecomposition
+org.apache.commons.math3.linear.LUDecomposition$1
+org.apache.commons.math3.linear.LUDecomposition$Solver
+org.apache.commons.math3.linear.MatrixDimensionMismatchException
+org.apache.commons.math3.linear.MatrixUtils
+org.apache.commons.math3.linear.MatrixUtils$BigFractionMatrixConverter
+org.apache.commons.math3.linear.MatrixUtils$FractionMatrixConverter
+org.apache.commons.math3.linear.NonPositiveDefiniteMatrixException
+org.apache.commons.math3.linear.NonPositiveDefiniteOperatorException
+org.apache.commons.math3.linear.NonSelfAdjointOperatorException
+org.apache.commons.math3.linear.NonSquareMatrixException
+org.apache.commons.math3.linear.NonSquareOperatorException
+org.apache.commons.math3.linear.NonSymmetricMatrixException
+org.apache.commons.math3.linear.OpenMapRealMatrix
+org.apache.commons.math3.linear.OpenMapRealVector
+org.apache.commons.math3.linear.OpenMapRealVector$OpenMapEntry
+org.apache.commons.math3.linear.OpenMapRealVector$OpenMapSparseIterator
+org.apache.commons.math3.linear.PreconditionedIterativeLinearSolver
+org.apache.commons.math3.linear.QRDecomposition
+org.apache.commons.math3.linear.QRDecomposition$1
+org.apache.commons.math3.linear.QRDecomposition$Solver
+org.apache.commons.math3.linear.RealLinearOperator
+org.apache.commons.math3.linear.RealMatrix
+org.apache.commons.math3.linear.RealMatrixChangingVisitor
+org.apache.commons.math3.linear.RealMatrixPreservingVisitor
+org.apache.commons.math3.linear.RealVector
+org.apache.commons.math3.linear.RealVector$1
+org.apache.commons.math3.linear.RealVector$2
+org.apache.commons.math3.linear.RealVector$2$1
+org.apache.commons.math3.linear.RealVector$2$2
+org.apache.commons.math3.linear.RealVector$2$UnmodifiableEntry
+org.apache.commons.math3.linear.RealVector$Entry
+org.apache.commons.math3.linear.RealVector$SparseEntryIterator
+org.apache.commons.math3.linear.RealVectorFormat
+org.apache.commons.math3.linear.RectangularCholeskyDecomposition
+org.apache.commons.math3.linear.SingularMatrixException
+org.apache.commons.math3.linear.SingularOperatorException
+org.apache.commons.math3.linear.SingularValueDecomposition
+org.apache.commons.math3.linear.SingularValueDecomposition$1
+org.apache.commons.math3.linear.SingularValueDecomposition$Solver
+org.apache.commons.math3.linear.SparseFieldMatrix
+org.apache.commons.math3.linear.SparseFieldVector
+org.apache.commons.math3.linear.SparseRealMatrix
+org.apache.commons.math3.linear.SparseRealVector
+org.apache.commons.math3.linear.SymmLQ
+org.apache.commons.math3.linear.SymmLQ$State
+org.apache.commons.math3.linear.SymmLQ$SymmLQEvent
+org.apache.commons.math3.linear.TriDiagonalTransformer
+org.apache.commons.math3.ode.AbstractIntegrator
+org.apache.commons.math3.ode.AbstractIntegrator$1
+org.apache.commons.math3.ode.AbstractParameterizable
+org.apache.commons.math3.ode.ContinuousOutputModel
+org.apache.commons.math3.ode.EquationsMapper
+org.apache.commons.math3.ode.ExpandableStatefulODE
+org.apache.commons.math3.ode.ExpandableStatefulODE$SecondaryComponent
+org.apache.commons.math3.ode.FirstOrderConverter
+org.apache.commons.math3.ode.FirstOrderDifferentialEquations
+org.apache.commons.math3.ode.FirstOrderIntegrator
+org.apache.commons.math3.ode.JacobianMatrices
+org.apache.commons.math3.ode.JacobianMatrices$1
+org.apache.commons.math3.ode.JacobianMatrices$JacobiansSecondaryEquations
+org.apache.commons.math3.ode.JacobianMatrices$MainStateJacobianWrapper
+org.apache.commons.math3.ode.MainStateJacobianProvider
+org.apache.commons.math3.ode.MultistepIntegrator
+org.apache.commons.math3.ode.MultistepIntegrator$CountingDifferentialEquations
+org.apache.commons.math3.ode.MultistepIntegrator$InitializationCompletedMarkerException
+org.apache.commons.math3.ode.MultistepIntegrator$NordsieckInitializer
+org.apache.commons.math3.ode.MultistepIntegrator$NordsieckTransformer
+org.apache.commons.math3.ode.ODEIntegrator
+org.apache.commons.math3.ode.ParameterConfiguration
+org.apache.commons.math3.ode.ParameterJacobianProvider
+org.apache.commons.math3.ode.ParameterJacobianWrapper
+org.apache.commons.math3.ode.Parameterizable
+org.apache.commons.math3.ode.ParameterizedODE
+org.apache.commons.math3.ode.ParameterizedWrapper
+org.apache.commons.math3.ode.SecondOrderDifferentialEquations
+org.apache.commons.math3.ode.SecondOrderIntegrator
+org.apache.commons.math3.ode.SecondaryEquations
+org.apache.commons.math3.ode.events.EventHandler
+org.apache.commons.math3.ode.events.EventHandler$Action
+org.apache.commons.math3.ode.events.EventState
+org.apache.commons.math3.ode.events.EventState$1
+org.apache.commons.math3.ode.nonstiff.AdamsBashforthIntegrator
+org.apache.commons.math3.ode.nonstiff.AdamsIntegrator
+org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegrator
+org.apache.commons.math3.ode.nonstiff.AdamsMoultonIntegrator$Corrector
+org.apache.commons.math3.ode.nonstiff.AdamsNordsieckTransformer
+org.apache.commons.math3.ode.nonstiff.AdaptiveStepsizeIntegrator
+org.apache.commons.math3.ode.nonstiff.ClassicalRungeKuttaIntegrator
+org.apache.commons.math3.ode.nonstiff.ClassicalRungeKuttaStepInterpolator
+org.apache.commons.math3.ode.nonstiff.DormandPrince54Integrator
+org.apache.commons.math3.ode.nonstiff.DormandPrince54StepInterpolator
+org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator
+org.apache.commons.math3.ode.nonstiff.DormandPrince853StepInterpolator
+org.apache.commons.math3.ode.nonstiff.EmbeddedRungeKuttaIntegrator
+org.apache.commons.math3.ode.nonstiff.EulerIntegrator
+org.apache.commons.math3.ode.nonstiff.EulerStepInterpolator
+org.apache.commons.math3.ode.nonstiff.GillIntegrator
+org.apache.commons.math3.ode.nonstiff.GillStepInterpolator
+org.apache.commons.math3.ode.nonstiff.GraggBulirschStoerIntegrator
+org.apache.commons.math3.ode.nonstiff.GraggBulirschStoerStepInterpolator
+org.apache.commons.math3.ode.nonstiff.HighamHall54Integrator
+org.apache.commons.math3.ode.nonstiff.HighamHall54StepInterpolator
+org.apache.commons.math3.ode.nonstiff.MidpointIntegrator
+org.apache.commons.math3.ode.nonstiff.MidpointStepInterpolator
+org.apache.commons.math3.ode.nonstiff.RungeKuttaIntegrator
+org.apache.commons.math3.ode.nonstiff.RungeKuttaStepInterpolator
+org.apache.commons.math3.ode.nonstiff.ThreeEighthesIntegrator
+org.apache.commons.math3.ode.nonstiff.ThreeEighthesStepInterpolator
+org.apache.commons.math3.ode.sampling.AbstractStepInterpolator
+org.apache.commons.math3.ode.sampling.DummyStepHandler
+org.apache.commons.math3.ode.sampling.DummyStepHandler$1
+org.apache.commons.math3.ode.sampling.DummyStepHandler$LazyHolder
+org.apache.commons.math3.ode.sampling.FixedStepHandler
+org.apache.commons.math3.ode.sampling.NordsieckStepInterpolator
+org.apache.commons.math3.ode.sampling.StepHandler
+org.apache.commons.math3.ode.sampling.StepInterpolator
+org.apache.commons.math3.ode.sampling.StepNormalizer
+org.apache.commons.math3.ode.sampling.StepNormalizerBounds
+org.apache.commons.math3.ode.sampling.StepNormalizerMode
+org.apache.commons.math3.optimization.AbstractConvergenceChecker
+org.apache.commons.math3.optimization.BaseMultivariateMultiStartOptimizer
+org.apache.commons.math3.optimization.BaseMultivariateMultiStartOptimizer$1
+org.apache.commons.math3.optimization.BaseMultivariateOptimizer
+org.apache.commons.math3.optimization.BaseMultivariateSimpleBoundsOptimizer
+org.apache.commons.math3.optimization.BaseMultivariateVectorMultiStartOptimizer
+org.apache.commons.math3.optimization.BaseMultivariateVectorMultiStartOptimizer$1
+org.apache.commons.math3.optimization.BaseMultivariateVectorOptimizer
+org.apache.commons.math3.optimization.BaseOptimizer
+org.apache.commons.math3.optimization.ConvergenceChecker
+org.apache.commons.math3.optimization.DifferentiableMultivariateMultiStartOptimizer
+org.apache.commons.math3.optimization.DifferentiableMultivariateOptimizer
+org.apache.commons.math3.optimization.DifferentiableMultivariateVectorMultiStartOptimizer
+org.apache.commons.math3.optimization.DifferentiableMultivariateVectorOptimizer
+org.apache.commons.math3.optimization.GoalType
+org.apache.commons.math3.optimization.LeastSquaresConverter
+org.apache.commons.math3.optimization.MultivariateMultiStartOptimizer
+org.apache.commons.math3.optimization.MultivariateOptimizer
+org.apache.commons.math3.optimization.PointValuePair
+org.apache.commons.math3.optimization.PointVectorValuePair
+org.apache.commons.math3.optimization.SimplePointChecker
+org.apache.commons.math3.optimization.SimpleValueChecker
+org.apache.commons.math3.optimization.SimpleVectorValueChecker
+org.apache.commons.math3.optimization.direct.AbstractSimplex
+org.apache.commons.math3.optimization.direct.BOBYQAOptimizer
+org.apache.commons.math3.optimization.direct.BOBYQAOptimizer$PathIsExploredException
+org.apache.commons.math3.optimization.direct.BaseAbstractMultivariateOptimizer
+org.apache.commons.math3.optimization.direct.BaseAbstractMultivariateSimpleBoundsOptimizer
+org.apache.commons.math3.optimization.direct.BaseAbstractMultivariateVectorOptimizer
+org.apache.commons.math3.optimization.direct.CMAESOptimizer
+org.apache.commons.math3.optimization.direct.CMAESOptimizer$DoubleIndex
+org.apache.commons.math3.optimization.direct.CMAESOptimizer$FitnessFunction
+org.apache.commons.math3.optimization.direct.MultiDirectionalSimplex
+org.apache.commons.math3.optimization.direct.MultivariateFunctionMappingAdapter
+org.apache.commons.math3.optimization.direct.MultivariateFunctionMappingAdapter$LowerBoundMapper
+org.apache.commons.math3.optimization.direct.MultivariateFunctionMappingAdapter$LowerUpperBoundMapper
+org.apache.commons.math3.optimization.direct.MultivariateFunctionMappingAdapter$Mapper
+org.apache.commons.math3.optimization.direct.MultivariateFunctionMappingAdapter$NoBoundsMapper
+org.apache.commons.math3.optimization.direct.MultivariateFunctionMappingAdapter$UpperBoundMapper
+org.apache.commons.math3.optimization.direct.MultivariateFunctionPenaltyAdapter
+org.apache.commons.math3.optimization.direct.NelderMeadSimplex
+org.apache.commons.math3.optimization.direct.PowellOptimizer
+org.apache.commons.math3.optimization.direct.PowellOptimizer$LineSearch
+org.apache.commons.math3.optimization.direct.PowellOptimizer$LineSearch$1
+org.apache.commons.math3.optimization.direct.SimplexOptimizer
+org.apache.commons.math3.optimization.direct.SimplexOptimizer$1
+org.apache.commons.math3.optimization.direct.SimplexOptimizer$2
+org.apache.commons.math3.optimization.fitting.CurveFitter
+org.apache.commons.math3.optimization.fitting.CurveFitter$TheoreticalValuesFunction
+org.apache.commons.math3.optimization.fitting.CurveFitter$TheoreticalValuesFunction$1
+org.apache.commons.math3.optimization.fitting.GaussianFitter
+org.apache.commons.math3.optimization.fitting.GaussianFitter$1
+org.apache.commons.math3.optimization.fitting.GaussianFitter$ParameterGuesser
+org.apache.commons.math3.optimization.fitting.GaussianFitter$ParameterGuesser$1
+org.apache.commons.math3.optimization.fitting.HarmonicFitter
+org.apache.commons.math3.optimization.fitting.HarmonicFitter$ParameterGuesser
+org.apache.commons.math3.optimization.fitting.PolynomialFitter
+org.apache.commons.math3.optimization.fitting.WeightedObservedPoint
+org.apache.commons.math3.optimization.general.AbstractLeastSquaresOptimizer
+org.apache.commons.math3.optimization.general.AbstractScalarDifferentiableOptimizer
+org.apache.commons.math3.optimization.general.ConjugateGradientFormula
+org.apache.commons.math3.optimization.general.GaussNewtonOptimizer
+org.apache.commons.math3.optimization.general.LevenbergMarquardtOptimizer
+org.apache.commons.math3.optimization.general.NonLinearConjugateGradientOptimizer
+org.apache.commons.math3.optimization.general.NonLinearConjugateGradientOptimizer$IdentityPreconditioner
+org.apache.commons.math3.optimization.general.NonLinearConjugateGradientOptimizer$LineSearchFunction
+org.apache.commons.math3.optimization.general.Preconditioner
+org.apache.commons.math3.optimization.linear.AbstractLinearOptimizer
+org.apache.commons.math3.optimization.linear.LinearConstraint
+org.apache.commons.math3.optimization.linear.LinearObjectiveFunction
+org.apache.commons.math3.optimization.linear.LinearOptimizer
+org.apache.commons.math3.optimization.linear.NoFeasibleSolutionException
+org.apache.commons.math3.optimization.linear.Relationship
+org.apache.commons.math3.optimization.linear.Relationship$1
+org.apache.commons.math3.optimization.linear.SimplexSolver
+org.apache.commons.math3.optimization.linear.SimplexTableau
+org.apache.commons.math3.optimization.linear.UnboundedSolutionException
+org.apache.commons.math3.optimization.univariate.BaseAbstractUnivariateOptimizer
+org.apache.commons.math3.optimization.univariate.BaseUnivariateOptimizer
+org.apache.commons.math3.optimization.univariate.BracketFinder
+org.apache.commons.math3.optimization.univariate.BrentOptimizer
+org.apache.commons.math3.optimization.univariate.UnivariateMultiStartOptimizer
+org.apache.commons.math3.optimization.univariate.UnivariateMultiStartOptimizer$1
+org.apache.commons.math3.optimization.univariate.UnivariateOptimizer
+org.apache.commons.math3.optimization.univariate.UnivariatePointValuePair
+org.apache.commons.math3.random.AbstractRandomGenerator
+org.apache.commons.math3.random.AbstractWell
+org.apache.commons.math3.random.BitsStreamGenerator
+org.apache.commons.math3.random.CorrelatedRandomVectorGenerator
+org.apache.commons.math3.random.EmpiricalDistribution
+org.apache.commons.math3.random.EmpiricalDistribution$1
+org.apache.commons.math3.random.EmpiricalDistribution$ArrayDataAdapter
+org.apache.commons.math3.random.EmpiricalDistribution$DataAdapter
+org.apache.commons.math3.random.EmpiricalDistribution$DataAdapterFactory
+org.apache.commons.math3.random.EmpiricalDistribution$StreamDataAdapter
+org.apache.commons.math3.random.GaussianRandomGenerator
+org.apache.commons.math3.random.ISAACRandom
+org.apache.commons.math3.random.JDKRandomGenerator
+org.apache.commons.math3.random.MersenneTwister
+org.apache.commons.math3.random.NormalizedRandomGenerator
+org.apache.commons.math3.random.RandomAdaptor
+org.apache.commons.math3.random.RandomData
+org.apache.commons.math3.random.RandomDataImpl:
+    private static final long serialVersionUID
+    180:182:public RandomDataImpl(org.apache.commons.math3.random.RandomGenerator)
+    201:232:public java.lang.String nextHexString(int)
+    237:243:public int nextInt(int,int)
+    248:254:public long nextLong(long,long)
+    274:319:public java.lang.String nextSecureHexString(int)
+    324:331:public int nextSecureInt(int,int)
+    337:344:public long nextSecureLong(long,long)
+    361:447:public long nextPoisson(double)
+    454:457:public double nextGaussian(double,double)
+    473:512:public double nextExponential(double)
+    530:530:public double nextUniform(double,double)
+    551:572:public double nextUniform(double,double,boolean)
+    586:586:public double nextBeta(double,double)
+    600:600:public int nextBinomial(int,double)
+    614:614:public double nextCauchy(double,double)
+    627:627:public double nextChiSquare(double)
+    641:641:public double nextF(double,double)
+    666:728:public double nextGamma(double,double)
+    743:743:public int nextHypergeometric(int,int,int)
+    757:757:public int nextPascal(int,double)
+    770:770:public double nextT(double)
+    784:784:public double nextWeibull(double,double)
+    798:798:public int nextZipf(int,double)
+    812:815:private org.apache.commons.math3.random.RandomGenerator getRan()
+    823:824:private void initRan()
+    836:840:private java.security.SecureRandom getSecRan()
+    853:857:public void reSeed(long)
+    867:871:public void reSeedSecure()
+    883:887:public void reSeedSecure(long)
+    894:898:public void reSeed()
+    922:923:public void setSecureAlgorithm(java.lang.String,java.lang.String)
+    935:951:public int[] nextPermutation(int,int)
+    969:984:public java.lang.Object[] nextSample(java.util.Collection,int)
+    996:996:public double nextInversionDeviate(org.apache.commons.math3.distribution.RealDistribution)
+    1009:1009:public int nextInversionDeviate(org.apache.commons.math3.distribution.IntegerDistribution)
+    1024:1035:private void shuffle(int[],int)
+    1045:1049:private int[] getNatural(int)
+org.apache.commons.math3.random.RandomGenerator:
+    public abstract void setSeed(int)
+    public abstract void setSeed(int[])
+    public abstract void setSeed(long)
+    public abstract void nextBytes(byte[])
+    public abstract int nextInt()
+    public abstract int nextInt(int)
+    public abstract long nextLong()
+    public abstract boolean nextBoolean()
+    public abstract float nextFloat()
+    public abstract double nextDouble()
+    public abstract double nextGaussian()
+org.apache.commons.math3.random.RandomVectorGenerator
+org.apache.commons.math3.random.StableRandomGenerator
+org.apache.commons.math3.random.UncorrelatedRandomVectorGenerator
+org.apache.commons.math3.random.UniformRandomGenerator
+org.apache.commons.math3.random.UnitSphereRandomVectorGenerator
+org.apache.commons.math3.random.ValueServer
+org.apache.commons.math3.random.Well1024a
+org.apache.commons.math3.random.Well19937a
+org.apache.commons.math3.random.Well19937c
+org.apache.commons.math3.random.Well44497a
+org.apache.commons.math3.random.Well44497b
+org.apache.commons.math3.random.Well512a
+org.apache.commons.math3.special.Beta
+org.apache.commons.math3.special.Beta$1
+org.apache.commons.math3.special.Erf
+org.apache.commons.math3.special.Gamma
+org.apache.commons.math3.special.Gamma$1
+org.apache.commons.math3.stat.Frequency
+org.apache.commons.math3.stat.Frequency$1
+org.apache.commons.math3.stat.Frequency$NaturalComparator
+org.apache.commons.math3.stat.StatUtils
+org.apache.commons.math3.stat.clustering.Cluster
+org.apache.commons.math3.stat.clustering.Clusterable
+org.apache.commons.math3.stat.clustering.EuclideanIntegerPoint
+org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer
+org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer$1
+org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer$EmptyClusterStrategy
+org.apache.commons.math3.stat.correlation.Covariance
+org.apache.commons.math3.stat.correlation.PearsonsCorrelation
+org.apache.commons.math3.stat.correlation.SpearmansCorrelation
+org.apache.commons.math3.stat.correlation.StorelessBivariateCovariance
+org.apache.commons.math3.stat.correlation.StorelessCovariance
+org.apache.commons.math3.stat.descriptive.AbstractStorelessUnivariateStatistic
+org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatistic
+org.apache.commons.math3.stat.descriptive.AggregateSummaryStatistics
+org.apache.commons.math3.stat.descriptive.AggregateSummaryStatistics$AggregatingSummaryStatistics
+org.apache.commons.math3.stat.descriptive.DescriptiveStatistics
+org.apache.commons.math3.stat.descriptive.MultivariateSummaryStatistics
+org.apache.commons.math3.stat.descriptive.StatisticalMultivariateSummary
+org.apache.commons.math3.stat.descriptive.StatisticalSummary
+org.apache.commons.math3.stat.descriptive.StatisticalSummaryValues
+org.apache.commons.math3.stat.descriptive.StorelessUnivariateStatistic
+org.apache.commons.math3.stat.descriptive.SummaryStatistics
+org.apache.commons.math3.stat.descriptive.SynchronizedDescriptiveStatistics
+org.apache.commons.math3.stat.descriptive.SynchronizedMultivariateSummaryStatistics
+org.apache.commons.math3.stat.descriptive.SynchronizedSummaryStatistics
+org.apache.commons.math3.stat.descriptive.UnivariateStatistic
+org.apache.commons.math3.stat.descriptive.WeightedEvaluation
+org.apache.commons.math3.stat.descriptive.moment.FirstMoment
+org.apache.commons.math3.stat.descriptive.moment.FourthMoment
+org.apache.commons.math3.stat.descriptive.moment.GeometricMean
+org.apache.commons.math3.stat.descriptive.moment.Kurtosis
+org.apache.commons.math3.stat.descriptive.moment.Mean
+org.apache.commons.math3.stat.descriptive.moment.SecondMoment
+org.apache.commons.math3.stat.descriptive.moment.SemiVariance
+org.apache.commons.math3.stat.descriptive.moment.SemiVariance$Direction
+org.apache.commons.math3.stat.descriptive.moment.Skewness
+org.apache.commons.math3.stat.descriptive.moment.StandardDeviation
+org.apache.commons.math3.stat.descriptive.moment.ThirdMoment
+org.apache.commons.math3.stat.descriptive.moment.Variance
+org.apache.commons.math3.stat.descriptive.moment.VectorialCovariance
+org.apache.commons.math3.stat.descriptive.moment.VectorialMean
+org.apache.commons.math3.stat.descriptive.rank.Max
+org.apache.commons.math3.stat.descriptive.rank.Median
+org.apache.commons.math3.stat.descriptive.rank.Min
+org.apache.commons.math3.stat.descriptive.rank.Percentile
+org.apache.commons.math3.stat.descriptive.summary.Product
+org.apache.commons.math3.stat.descriptive.summary.Sum
+org.apache.commons.math3.stat.descriptive.summary.SumOfLogs
+org.apache.commons.math3.stat.descriptive.summary.SumOfSquares
+org.apache.commons.math3.stat.inference.ChiSquareTest
+org.apache.commons.math3.stat.inference.MannWhitneyUTest
+org.apache.commons.math3.stat.inference.OneWayAnova
+org.apache.commons.math3.stat.inference.OneWayAnova$1
+org.apache.commons.math3.stat.inference.OneWayAnova$AnovaStats
+org.apache.commons.math3.stat.inference.TTest
+org.apache.commons.math3.stat.inference.TestUtils
+org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest
+org.apache.commons.math3.stat.ranking.NaNStrategy
+org.apache.commons.math3.stat.ranking.NaturalRanking
+org.apache.commons.math3.stat.ranking.NaturalRanking$1
+org.apache.commons.math3.stat.ranking.NaturalRanking$IntDoublePair
+org.apache.commons.math3.stat.ranking.RankingAlgorithm
+org.apache.commons.math3.stat.ranking.TiesStrategy
+org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression
+org.apache.commons.math3.stat.regression.GLSMultipleLinearRegression
+org.apache.commons.math3.stat.regression.MillerUpdatingRegression
+org.apache.commons.math3.stat.regression.ModelSpecificationException
+org.apache.commons.math3.stat.regression.MultipleLinearRegression
+org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression
+org.apache.commons.math3.stat.regression.RegressionResults
+org.apache.commons.math3.stat.regression.SimpleRegression
+org.apache.commons.math3.stat.regression.UpdatingMultipleLinearRegression
+org.apache.commons.math3.transform.DctNormalization
+org.apache.commons.math3.transform.DftNormalization
+org.apache.commons.math3.transform.DstNormalization
+org.apache.commons.math3.transform.FastCosineTransformer
+org.apache.commons.math3.transform.FastFourierTransformer
+org.apache.commons.math3.transform.FastFourierTransformer$1
+org.apache.commons.math3.transform.FastFourierTransformer$MultiDimensionalComplexMatrix
+org.apache.commons.math3.transform.FastHadamardTransformer
+org.apache.commons.math3.transform.FastSineTransformer
+org.apache.commons.math3.transform.RealTransformer
+org.apache.commons.math3.transform.TransformType
+org.apache.commons.math3.transform.TransformUtils
+org.apache.commons.math3.util.ArithmeticUtils:
+    46:47:private ArithmeticUtils()
+    60:64:public static int addAndCheck(int,int)
+    78:78:public static long addAndCheck(long,long)
+    108:159:public static long binomialCoefficient(int,int)
+    186:205:public static double binomialCoefficientDouble(int,int)
+    228:271:public static double binomialCoefficientLog(int,int)
+    323:330:public static double factorialDouble(int)
+    341:352:public static double factorialLog(int)
+    385:439:public static int gcd(int,int)
+    472:526:public static long gcd(long,long)
+    552:560:public static int lcm(int,int)
+    586:594:public static long lcm(long,long)
+    608:612:public static int mulAndCheck(int,int)
+    627:666:public static long mulAndCheck(long,long)
+    680:684:public static int subAndCheck(int,int)
+    699:709:public static long subAndCheck(long,long)
+    721:735:public static int pow(int,int)
+    747:761:public static int pow(int,long)
+    773:787:public static long pow(long,int)
+    799:813:public static long pow(long,long)
+    825:829:public static java.math.BigInteger pow(java.math.BigInteger,int)
+    841:855:public static java.math.BigInteger pow(java.math.BigInteger,long)
+    868:882:public static java.math.BigInteger pow(java.math.BigInteger,java.math.BigInteger)
+    898:928:private static long addAndCheck(long,long,org.apache.commons.math3.exception.util.Localizable)
+    940:947:private static void checkBinomial(int,int)
+    956:956:public static boolean isPowerOfTwo(long)
+org.apache.commons.math3.util.BigReal
+org.apache.commons.math3.util.BigRealField
+org.apache.commons.math3.util.BigRealField$1
+org.apache.commons.math3.util.BigRealField$LazyHolder
+org.apache.commons.math3.util.CompositeFormat
+org.apache.commons.math3.util.ContinuedFraction
+org.apache.commons.math3.util.DefaultTransformer
+org.apache.commons.math3.util.DoubleArray
+org.apache.commons.math3.util.FastMath:
+    public static final double PI
+    public static final double E
+    static final int EXP_INT_TABLE_MAX_INDEX
+    static final int EXP_INT_TABLE_LEN
+    static final int LN_MANT_LEN
+    static final int EXP_FRAC_TABLE_LEN
+    private static final boolean RECOMPUTE_TABLES_AT_RUNTIME
+    private static final double LN_2_A
+    private static final double LN_2_B
+    private static final int SINE_TABLE_LEN
+    private static final long HEX_40000000
+    private static final long MASK_30BITS
+    private static final double TWO_POWER_52
+    private static final double F_1_3
+    private static final double F_1_5
+    private static final double F_1_7
+    private static final double F_1_9
+    private static final double F_1_11
+    private static final double F_1_13
+    private static final double F_1_15
+    private static final double F_1_17
+    private static final double F_3_4
+    private static final double F_15_16
+    private static final double F_13_14
+    private static final double F_11_12
+    private static final double F_9_10
+    private static final double F_7_8
+    private static final double F_5_6
+    private static final double F_1_2
+    private static final double F_1_4
+    349:349:private FastMath()
+    361:366:private static double doubleHighPart(double)
+    383:434:public static double cosh(double)
+    442:549:public static double sinh(double)
+    557:673:public static double tanh(double)
+    681:681:public static double acosh(double)
+    689:711:public static double asinh(double)
+    719:741:public static double atanh(double)
+    750:750:public static double signum(double)
+    759:759:public static float signum(float)
+    767:767:public static double nextUp(double)
+    775:775:public static float nextUp(float)
+    783:783:public static double random()
+    939:939:public static double expm1(double)
+    948:1086:private static double expm1(double,double[])
+    1333:1367:public static double log1p(double)
+    1375:1389:public static double log10(double)
+    1409:1409:public static double log(double,double)
+    1588:1598:private static double polySine(double)
+    1608:1616:private static double polyCosine(double)
+    1627:1740:private static double sinQ(double,double)
+    1751:1758:private static double cosQ(double,double)
+    1771:1903:private static double tanQ(double,double,boolean)
+    1920:2127:private static void reducePayneHanek(double,double[])
+    2135:2223:public static double sin(double)
+    2233:2308:public static double cos(double)
+    2318:2417:public static double tan(double)
+    2426:2426:public static double atan(double)
+    2436:2573:private static double atan(double,double,boolean)
+    2583:2696:public static double atan2(double,double)
+    2704:2772:public static double asin(double)
+    2780:2854:public static double acos(double)
+    2863:2938:public static double cbrt(double)
+    2948:2963:public static double toRadians(double)
+    2973:2984:public static double toDegrees(double)
+    2993:2993:public static int abs(int)
+    3002:3002:public static long abs(long)
+    3011:3011:public static float abs(float)
+    3020:3020:public static double abs(double)
+    3029:3032:public static double ulp(double)
+    3041:3044:public static float ulp(float)
+    3056:3125:public static double scalb(double,int)
+    3140:3209:public static float scalb(float,int)
+    3249:3266:public static double nextAfter(double,double)
+    3305:3322:public static float nextAfter(float,double)
+    3384:3399:public static double rint(double)
+    3407:3407:public static long round(double)
+    3424:3424:public static int min(int,int)
+    3433:3433:public static long min(long,long)
+    3442:3458:public static float min(float,float)
+    3467:3483:public static double min(double,double)
+    3492:3492:public static int max(int,int)
+    3501:3501:public static long max(long,long)
+    3510:3526:public static float max(float,float)
+    3535:3551:public static double max(double,double)
+    3569:3596:public static double hypot(double,double)
+    3624:3624:public static double IEEEremainder(double,double)
+    3636:3641:public static double copySign(double,double)
+    3653:3658:public static float copySign(float,float)
+    3671:3671:public static int getExponent(double)
+    3684:3684:public static int getExponent(float)
+    3693:3705:public static void main(java.lang.String[])
+org.apache.commons.math3.util.FastMath$ExpFracTable:
+    3747:3747:private FastMath$ExpFracTable()
+org.apache.commons.math3.util.FastMath$ExpIntTable:
+    3708:3708:private FastMath$ExpIntTable()
+org.apache.commons.math3.util.FastMath$lnMant:
+    3780:3780:private FastMath$lnMant()
+org.apache.commons.math3.util.FastMathCalc
+org.apache.commons.math3.util.FastMathLiteralArrays:
+    6134:6134:private FastMathLiteralArrays()
+org.apache.commons.math3.util.Incrementor
+org.apache.commons.math3.util.Incrementor$1
+org.apache.commons.math3.util.Incrementor$MaxCountExceededCallback
+org.apache.commons.math3.util.IterationEvent
+org.apache.commons.math3.util.IterationListener
+org.apache.commons.math3.util.IterationManager
+org.apache.commons.math3.util.MathArrays
+org.apache.commons.math3.util.MathArrays$1
+org.apache.commons.math3.util.MathArrays$2
+org.apache.commons.math3.util.MathArrays$OrderDirection
+org.apache.commons.math3.util.MathUtils
+org.apache.commons.math3.util.MultidimensionalCounter
+org.apache.commons.math3.util.MultidimensionalCounter$Iterator
+org.apache.commons.math3.util.NumberTransformer
+org.apache.commons.math3.util.OpenIntToDoubleHashMap
+org.apache.commons.math3.util.OpenIntToDoubleHashMap$1
+org.apache.commons.math3.util.OpenIntToDoubleHashMap$Iterator
+org.apache.commons.math3.util.OpenIntToFieldHashMap
+org.apache.commons.math3.util.OpenIntToFieldHashMap$1
+org.apache.commons.math3.util.OpenIntToFieldHashMap$Iterator
+org.apache.commons.math3.util.Pair
+org.apache.commons.math3.util.Precision
+org.apache.commons.math3.util.ResizableDoubleArray:
+    public static final int ADDITIVE_MODE
+    public static final int MULTIPLICATIVE_MODE
+    private static final long serialVersionUID
+    182:191:public ResizableDoubleArray(double[])
+    215:220:public ResizableDoubleArray(int,float)
+    242:247:public ResizableDoubleArray(int,float,float)
+    271:277:public ResizableDoubleArray(int,float,float,int)
+    290:293:public ResizableDoubleArray(org.apache.commons.math3.util.ResizableDoubleArray)
+    318:324:public synchronized void addElements(double[])
+    343:358:public synchronized double addElementRolling(double)
+    372:381:public synchronized double substituteMostRecentElement(double)
+    397:414:protected void checkContractExpand(float,float)
+    421:424:public synchronized void clear()
+    455:457:public synchronized void discardFrontElements(int)
+    472:474:public synchronized void discardMostRecentElements(int)
+    496:514:private synchronized void discardExtremeElements(int,boolean)
+    551:555:private synchronized void expandTo(int)
+    570:570:public float getContractionCriteria()
+    582:587:public synchronized double getElement(int)
+    618:618:public float getExpansionFactor()
+    629:629:public int getExpansionMode()
+    641:641:synchronized int getInternalLength()
+    651:651:public synchronized int getNumElements()
+    667:667:public synchronized double[] getInternalValues()
+    676:680:public void setContractionCriteria(float)
+    696:706:public synchronized void setElement(int,double)
+    720:725:public void setExpansionFactor(float)
+    735:745:public void setExpansionMode(int)
+    777:791:public synchronized void setNumElements(int)
+    817:817:public synchronized int start()
+    839:854:public static void copy(org.apache.commons.math3.util.ResizableDoubleArray,org.apache.commons.math3.util.ResizableDoubleArray)
+    865:867:public synchronized org.apache.commons.math3.util.ResizableDoubleArray copy()
+org.apache.commons.math3.util.TransformerMap

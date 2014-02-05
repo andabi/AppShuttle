@@ -1,0 +1,36 @@
+# view res/layout/fragment_pager.xml #generated:25
+-keep class android.support.v4.view.ViewPager { <init>(...); }
+
+# view AndroidManifest.xml #generated:27
+-keep class lab.davidahn.appshuttle.AppShuttleApplication { <init>(...); }
+
+# view AndroidManifest.xml #generated:46
+-keep class lab.davidahn.appshuttle.AppShuttleMainService { <init>(...); }
+
+# view AndroidManifest.xml #generated:52
+-keep class lab.davidahn.appshuttle.BootCompletedReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:57
+-keep class lab.davidahn.appshuttle.PackageRemovedReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:64
+-keep class lab.davidahn.appshuttle.PackageReplacedReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:47
+-keep class lab.davidahn.appshuttle.collect.CollectionService { <init>(...); }
+
+# view AndroidManifest.xml #generated:48
+-keep class lab.davidahn.appshuttle.collect.CompactionService { <init>(...); }
+
+# view AndroidManifest.xml #generated:49
+-keep class lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService { <init>(...); }
+
+# view AndroidManifest.xml #generated:50
+-keep class lab.davidahn.appshuttle.predict.PredictionService { <init>(...); }
+
+# view AndroidManifest.xml #generated:33
+-keep class lab.davidahn.appshuttle.view.AppShuttleMainActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:43
+-keep class lab.davidahn.appshuttle.view.SettingsActivity { <init>(...); }
+
