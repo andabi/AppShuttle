@@ -15,6 +15,7 @@ import lab.davidahn.appshuttle.predict.PresentBhvManager;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
+import lab.davidahn.appshuttle.utils.Call;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -115,9 +116,10 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 
 	@Override
 	public String getBhvNameText() {
+		/*
 		if(bhvNameText != null)
 			return bhvNameText;
-			
+		*/
 		bhvNameText = "no name";
 		
 		UserBhvType bhvType = uBhv.getBhvType();
@@ -132,7 +134,9 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 			} catch (NameNotFoundException e) {}
 			break;
 		case CALL:
-			bhvNameText = (String) (uBhv).getMeta("cachedName");
+			bhvNameText = Call.getContactName(uBhv.getBhvName());
+			if (bhvNameText == null)
+				bhvNameText = (String) (uBhv).getMeta("cachedName");
 			if(bhvNameText == null || bhvNameText.equals(""))
 				bhvNameText = uBhv.getBhvName();
 			break;
