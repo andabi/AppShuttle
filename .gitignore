@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-bin
-gen
-target
-.settings
-.classpath
-.project
-*.keystore
-*.swp
-*.orig
-*.log
-*.properties
-seed.txt
-map.txt
-=======
 # built application files
 *.apk
 *.ap_
@@ -42,4 +27,3 @@ proguard/
 *.ipr
 *.iws
 .idea/
->>>>>>> FETCH_HEAD
