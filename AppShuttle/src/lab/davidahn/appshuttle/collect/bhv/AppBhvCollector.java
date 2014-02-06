@@ -98,7 +98,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 	    return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true : false;
 	}
 
-	private List<String> getPresentApp(int max, boolean includeSystemApp) {
+	public List<String> getPresentApp(int max, boolean includeSystemApp) {
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
 		

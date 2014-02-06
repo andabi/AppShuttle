@@ -9,6 +9,7 @@ import java.util.Map;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
@@ -32,6 +33,9 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		if(!isCurrCxtMetPreConditions(currUCxt))
 			return null;
 
+		if(!isBhvMetCommonPreConditions(uBhv))
+			return null;
+		
 		if(!isBhvMetPreConditions(uBhv))
 			return null;
 		
@@ -109,12 +113,20 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		return true;
 	}
 
-	protected boolean isBhvMetPreConditions(UserBhv uBhv) {
-		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON && uBhv.getBhvName().equals(SensorType.WIFI.name())){
+	protected boolean isBhvMetCommonPreConditions(UserBhv uBhv) {
+		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON 
+				&& uBhv.getBhvName().equals(SensorType.WIFI.name())){
 			WifiManager wifi = (WifiManager)AppShuttleApplication.getContext().getSystemService(Context.WIFI_SERVICE);
 			if(wifi.isWifiEnabled())
 				return false;
+		} else if(uBhv.getBhvType() == UserBhvType.APP 
+				&& uBhv.getBhvName().equals(AppBhvCollector.getInstance().getPresentApp(1, true).get(0))){
+			return false;
 		}
+		return true;
+	}
+	
+	protected boolean isBhvMetPreConditions(UserBhv uBhv){
 		return true;
 	}
 	

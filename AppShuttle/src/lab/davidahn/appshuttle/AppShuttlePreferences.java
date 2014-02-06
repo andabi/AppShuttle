@@ -39,7 +39,7 @@ public class AppShuttlePreferences {
 		
 		//predictor
 		editor.putBoolean("predictor.store", false);
-		editor.putLong("predictor.period", 180000);
+		editor.putLong("predictor.period", 120000);
 		editor.putLong("predictor.delay_ignorance", 60000);
 		
 		editor.putLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY);
