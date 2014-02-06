@@ -40,8 +40,10 @@
     <string name="settings_category_setting">설정</string>
     <string name="settings_category_info">정보</string>
     <string name="settings_category_share">공유하기</string>
-    <string name="settings_pref_noti_view_enabled">알림창에 표시</string>
-    <string name="settings_pref_noti_view_enabled_summary">앱을 알림창에 표시합니다.</string>
+    <string name="settings_pref_noti_view_hide">알림창에서 숨기기</string>
+    <string name="settings_pref_noti_view_hide_summary">앱을 알림창에 표시하지 않습니다.</string>
+    <string name="settings_pref_system_area_icon_hide">아이콘 숨기기</string>
+    <string name="settings_pref_system_area_icon_hide_summary">시스템 영역에 고정된 아이콘을 숨깁니다.</string>
     <string name="settings_info_feedback">건의사항 보내기</string>
     <string name="settings_info_feedback_summary">오류를 알리거나 새로운 기능을 요청합니다.</string>
     <string name="settings_info_feedback_success_msg">건의사항을 보내주셔서 감사합니다.</string>

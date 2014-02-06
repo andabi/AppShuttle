@@ -45,11 +45,18 @@ public class NotiBarNotifier {
 	}
 	
 	public void doNotification() {
-		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		if(pref.getBoolean("settings_pref_noti_view_enabled_key", true))
-			updateNotibar();
-		else
+		if(isHidden())
 			hideNotibar();
+		else
+			updateNotibar();
+	}
+	
+	public boolean isHidden(){
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		if(pref.getBoolean("settings_pref_noti_view_hide_key", false))
+			return true;
+		else
+			return false;
 	}
 	
 	public void updateNotibar() {
@@ -77,9 +84,17 @@ public class NotiBarNotifier {
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiView)
 				.setOngoing(true)
-				.setPriority(Notification.PRIORITY_MAX)
+				.setPriority((isSystemAreaIconHidden()) ? Notification.PRIORITY_MIN : Notification.PRIORITY_MAX)
 				.build();
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
+	}
+	
+	public boolean isSystemAreaIconHidden(){
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		if(pref.getBoolean("settings_pref_system_area_icon_hide_key", false))
+			return true;
+		else
+			return false;
 	}
 
 	private <T extends UserBhv & Viewable> RemoteViews createNotiRemoteViews(List<T> viewableUserBhvList) {

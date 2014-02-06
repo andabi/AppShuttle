@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
@@ -26,7 +25,7 @@ public class MovePositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt uCxt) {
+	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt uCxt) {
 		UserSpeed.Level currUserSpeedLevel = ((UserSpeed)uCxt.getUserEnv(EnvType.SPEED)).getLevel();
 		if(currUserSpeedLevel == UserSpeed.Level.VEHICLE)
 			return true;

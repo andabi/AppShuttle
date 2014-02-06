@@ -29,7 +29,10 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 
 	@Override
 	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		if(!preConditions(uBhv, currUCxt))
+		if(!isCurrCxtMetPreConditions(currUCxt))
+			return null;
+
+		if(!isBhvMetPreConditions(uBhv))
 			return null;
 		
 		List<MatcherCountUnit> matcherCountUnitList = makeMatcherCountUnit(
@@ -101,17 +104,20 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 //		
 //		return res;
 //	}
-	
-	protected boolean preConditions(UserBhv uBhv, SnapshotUserCxt currUCxt) {
+
+	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt){
+		return true;
+	}
+
+	protected boolean isBhvMetPreConditions(UserBhv uBhv) {
 		if(uBhv.getBhvType() == UserBhvType.SENSOR_ON && uBhv.getBhvName().equals(SensorType.WIFI.name())){
 			WifiManager wifi = (WifiManager)AppShuttleApplication.getContext().getSystemService(Context.WIFI_SERVICE);
 			if(wifi.isWifiEnabled())
 				return false;
 		}
-		
 		return true;
 	}
-
+	
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv,
 			SnapshotUserCxt currUCxt) {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();

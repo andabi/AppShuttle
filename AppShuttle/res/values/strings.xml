@@ -38,10 +38,12 @@
     <string name="msg_manual_favorite">No results. Try long click to register the app to favorite.</string>
     <string name="msg_no_results">No results. Just keep using this until the results show sooner or later.</string>
     <string name="settings_category_setting">Settings</string>
-    <string name="settings_category_info">Info</string>
     <string name="settings_category_share">Share</string>
-    <string name="settings_pref_noti_view_enabled">Enable viewing on notification bar</string>
-    <string name="settings_pref_noti_view_enabled_summary">To enable viewing apps on notification bar.</string>
+    <string name="settings_category_info">Info</string>
+    <string name="settings_pref_noti_view_hide">Hide apps</string>
+    <string name="settings_pref_noti_view_hide_summary">Hide apps on notification bar.</string>
+    <string name="settings_pref_system_area_icon_hide">Hide icon</string>
+    <string name="settings_pref_system_area_icon_hide_summary">Hide pinned icon in system area.</string>
     <string name="settings_info_feedback">Send user feedback</string>
     <string name="settings_info_feedback_summary">You can ask the error or suggest new functions to developers.</string>
     <string name="settings_info_feedback_success_msg">Feedback was sent successfully.</string>

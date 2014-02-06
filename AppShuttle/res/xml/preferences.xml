@@ -3,10 +3,15 @@
 
     <PreferenceCategory android:title="@string/settings_category_setting" >
         <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="settings_pref_noti_view_enabled_key"
-            android:summary="@string/settings_pref_noti_view_enabled_summary"
-            android:title="@string/settings_pref_noti_view_enabled" />
+            android:defaultValue="false"
+            android:key="settings_pref_noti_view_hide_key"
+            android:summary="@string/settings_pref_noti_view_hide_summary"
+            android:title="@string/settings_pref_noti_view_hide" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="settings_pref_system_area_icon_hide_key"
+            android:summary="@string/settings_pref_system_area_icon_hide_summary"
+            android:title="@string/settings_pref_system_area_icon_hide" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_category_share" >
         <Preference
