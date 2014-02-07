@@ -80,6 +80,10 @@ public class PlacePositionMatcher extends PositionMatcher {
 		
 		for(MatcherCountUnit unit : matcherCountUnitList){
 			UserPlace uPlace = ((UserPlace) unit.getProperty("place"));
+
+			if(!uPlace.isValid())
+				continue;
+			
 			Iterator<UserPlace> it = uniquePlace.iterator();
 			boolean unique = true;
 			if(!uniquePlace.isEmpty()){
