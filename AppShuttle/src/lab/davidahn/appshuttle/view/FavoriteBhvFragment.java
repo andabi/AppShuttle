@@ -48,7 +48,7 @@ public class FavoriteBhvFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		setEmptyText(getResources().getString(R.string.msg_manual_favorite));
 
 		favoriteBhvList = new ArrayList<FavoriteBhv>(FavoriteBhvManager.getFavoriteBhvListSorted());

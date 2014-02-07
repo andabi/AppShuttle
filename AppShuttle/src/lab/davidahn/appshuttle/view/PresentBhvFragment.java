@@ -48,7 +48,7 @@ public class PresentBhvFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		if(System.currentTimeMillis() - AppShuttleApplication.launchTime < 3000)
 			setEmptyText(getResources().getString(R.string.msg_wait));
 		else

@@ -8,6 +8,7 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp" >
 
@@ -24,12 +25,20 @@
             android:visibility="invisible" />
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/preferences"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:src="@drawable/settings" />
+        android:layout_marginRight="5dp" >
+
+        <ImageView
+            android:id="@+id/settings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:src="@drawable/settings" />
+    </FrameLayout>
 
 </LinearLayout>

@@ -39,9 +39,9 @@
             </intent-filter>
         </activity>
         <activity android:name="lab.davidahn.appshuttle.view.SettingsActivity"
-            android:label="@string/activity_settings_label"
-            android:parentActivityName="lab.davidahn.appshuttle.view.AppShuttleMainActivity" >
-            <meta-data
+            android:label="@string/activity_settings_label" >
+ <!--            android:parentActivityName="lab.davidahn.appshuttle.view.AppShuttleMainActivity" >
+ -->            <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="lab.davidahn.appshuttle.view.AppShuttleMainActivity" />
         </activity>

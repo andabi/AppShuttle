@@ -4,7 +4,6 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.Reporter;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -24,8 +23,8 @@ public class SettingsActivity extends PreferenceActivity {
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
         
-        ActionBar bar = getActionBar();
-        bar.setDisplayHomeAsUpEnabled(true);
+//        ActionBar bar = getActionBar();
+//        bar.setDisplayHomeAsUpEnabled(true);
 	}
 	
 	public static class SettingsFragment extends PreferenceFragment
@@ -57,8 +56,13 @@ public class SettingsActivity extends PreferenceActivity {
 			if (key.equals("settings_pref_noti_view_hide_key")) {
 				NotiBarNotifier.getInstance().doNotification();
 			} else if(key.equals("settings_pref_system_area_icon_hide_key")){
-				NotiBarNotifier.getInstance().hideNotibar();
-				NotiBarNotifier.getInstance().doNotification();
+				NotiBarNotifier notifier = NotiBarNotifier.getInstance();
+				notifier.hideNotibar();
+				notifier.doNotification();
+				if(notifier.isSystemAreaIconHidden()){
+					String warnMsg = getResources().getString(R.string.settings_pref_system_area_icon_hide_warn_msg);
+					Toast.makeText(getActivity(), warnMsg, Toast.LENGTH_LONG).show();
+				}
 			} else if(key.equals("settings_info_feedback_key")){
 				String contents = sharedPreferences.getString(key, "");
 				if(!contents.equals(""))

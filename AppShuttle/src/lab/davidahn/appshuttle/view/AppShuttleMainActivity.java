@@ -15,6 +15,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -92,27 +94,27 @@ public class AppShuttleMainActivity extends Activity {
 		setContentView(mViewPager);
 
 		final ActionBar bar = getActionBar();
+		bar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+		bar.setStackedBackgroundDrawable(new ColorDrawable(Color.rgb(48, 48, 48)));
+		bar.setDisplayUseLogoEnabled(false);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
-		
+//		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle(); 
 		bundle.putString("tag", "predicted");
 		mTabsAdapter.addTab(bar.newTab()
-				.setText(" " + getResources().getString(R.string.actionbar_tab_text_predicted))
 				.setIcon(R.drawable.predicted),
 				PresentBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab()
-				.setText(" " + getResources().getString(R.string.actionbar_tab_text_favorite))
 				.setIcon(R.drawable.favorite),
 				FavoriteBhvFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab()
-				.setText(" " + getResources().getString(R.string.actionbar_tab_text_blocked))
 				.setIcon(R.drawable.ignore),
 				BlockedBhvFragment.class, null);
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
+		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
 		
 		startService(new Intent(this, AppShuttleMainService.class));
 	}
@@ -146,6 +148,24 @@ public class AppShuttleMainActivity extends Activity {
 		return true;
 	}
 		
+	public static CharSequence getActionbarTitle(Context cxt, int position) {
+		String title;
+		switch(position){
+		case 0:
+			title = cxt.getResources().getString(R.string.actionbar_tab_text_present);
+			break;
+		case 1:
+			title = cxt.getResources().getString(R.string.actionbar_tab_text_favorite);
+			break;
+		case 2:
+			title = cxt.getResources().getString(R.string.actionbar_tab_text_blocked);
+			break;
+		default:
+			title = "";
+		}
+		return title;
+	}
+
 	public static void doEmphasisChildViewInListView(ListView listview, int position){
 		for(int i=0;i<listview.getChildCount();i++){
 			if(i == position)
@@ -229,6 +249,7 @@ public class AppShuttleMainActivity extends Activity {
 		@Override
 		public void onPageSelected(int position) {
 			mActionBar.setSelectedNavigationItem(position);
+			mActionBar.setTitle(getActionbarTitle(mContext, position));
 		}
 
 		@Override
@@ -273,7 +294,7 @@ public class AppShuttleMainActivity extends Activity {
 				}
 			});
 			
-			ImageView preferences = (ImageView)layout.findViewById(R.id.preferences);
+			ImageView preferences = (ImageView)layout.findViewById(R.id.settings);
 			preferences.setOnClickListener(new ImageView.OnClickListener(){
 				public void onClick(View v) {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
