@@ -74,7 +74,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			String locality = addr.getLocality();
 			String subLocality = addr.getSubLocality();
 			String thoroughfare = addr.getThoroughfare();
-//			String subThoroughfare = addr.getSubThoroughfare();
+			String subThoroughfare = addr.getSubThoroughfare();
 			
 			StringBuilder sb = new StringBuilder();
 			if(adminArea != null)
@@ -87,8 +87,8 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 				sb.append(" ").append(subLocality);
 			if(thoroughfare != null)
 				sb.append(" ").append(thoroughfare);
-//			if(subThoroughfare != null)
-//				sb.append(" ").append(subThoroughfare);
+			if(subThoroughfare != null)
+				sb.append(" ").append(subThoroughfare);
 			
 			String placeName = sb.toString();
 

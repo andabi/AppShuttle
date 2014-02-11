@@ -1,5 +1,8 @@
 package lab.davidahn.appshuttle.collect.env;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
+import android.content.SharedPreferences;
+
 
 public class UserPlace extends UserEnv {
 	protected String name;
@@ -62,10 +65,37 @@ public class UserPlace extends UserEnv {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof UserPlace && name.equals(((UserPlace)o).name))
-			return true;
-		else 
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		Integer toleranceInMeter = pref.getInt("collection.place.tolerance.same_place", 100);
+
+		if (o instanceof UserPlace) {
+			try {
+				if (coordinates.proximity(((UserPlace)o).coordinates, toleranceInMeter))
+					return true;
+				else return false;
+			} catch (InvalidUserEnvException e) {
+				;
+			}
 			return false;
+		}
+		else return false;
+/*		Integer prefix = pref.getInt("collection.place.num_address_prefix_words", 6);
+		if(o instanceof UserPlace){
+			String[] addrs = name.split(" ");
+			String[] userAddrs = ((UserPlace)o).name.split(" ");
+			if (addrs.length < prefix)
+				prefix = addrs.length;
+
+			Integer index = 0;
+			while (index < prefix){
+				if (index >= userAddrs.length || !addrs[index].equals(userAddrs[index]))
+					break;
+				else index++;
+			}
+			return (index == prefix)? true : false;
+		}
+		else
+			return false;*/
 	}
 	
 	@Override
