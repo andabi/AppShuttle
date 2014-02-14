@@ -116,6 +116,7 @@ public class AppShuttleMainActivity extends Activity {
 		}
 		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
 		
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
 		startService(new Intent(this, AppShuttleMainService.class));
 	}
 	

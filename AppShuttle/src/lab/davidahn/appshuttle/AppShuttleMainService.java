@@ -30,9 +30,7 @@ public class AppShuttleMainService extends Service {
 		super.onCreate();
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-
 		registerReceivers();
-
 		startPeriodicCollection();
 		startPeriodicCompaction();
 		startPeriodicPrediction();
@@ -77,14 +75,18 @@ public class AppShuttleMainService extends Service {
 	}
 
 	private void tryPrediction() {
-		long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 180000);
+		if(AppShuttlePreferences.isSleepMode())
+			return;
+		
+		long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 60000);
 		if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
 			return;
-	
+		
 		doPrediction();
 	}
 	
 	private void doPrediction() {
+//		Log.d("prediction", "prediction service started");
 		startService(new Intent(this, PredictionService.class));
 		AppShuttleApplication.lastPredictionTime = System.currentTimeMillis();
 	}
@@ -92,10 +94,10 @@ public class AppShuttleMainService extends Service {
 	private void startPeriodicPrediction() {
 		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.TRY_PREDICT");
 		predictionOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
-		long period = preferenceSettings.getLong("predictor.period", 180000);
+		long period = preferenceSettings.getLong("predictor.period", 120000);
 		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, predictionOperation);
 	}
-
+	
 	public long getExecuteTimeHour(int hourOfDay){
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);

@@ -74,4 +74,29 @@ public class AppShuttlePreferences {
 		
 		editor.commit();
 	}
+
+	public static boolean isSleepMode() {
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		if(pref.getBoolean("settings_pref_sleep_mode_key", false))
+			return true;
+		else
+			return false;
+	}
+	
+	public static boolean isSystemAreaIconHidden(){
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		if(pref.getBoolean("settings_pref_system_area_icon_hide_key", false))
+			return true;
+		else
+			return false;
+	}
+	
+//	public boolean isHidden(){
+//	SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+//	if(pref.getBoolean("settings_pref_noti_view_hide_key", false))
+//		return true;
+//	else
+//		return false;
+//}
+
 }

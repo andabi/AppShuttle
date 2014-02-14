@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.Reporter;
 import android.annotation.SuppressLint;
@@ -53,13 +54,13 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
-			if (key.equals("settings_pref_noti_view_hide_key")) {
+			if (key.equals("settings_pref_sleep_mode_key")) {
 				NotiBarNotifier.getInstance().doNotification();
 			} else if(key.equals("settings_pref_system_area_icon_hide_key")){
 				NotiBarNotifier notifier = NotiBarNotifier.getInstance();
 				notifier.hideNotibar();
 				notifier.doNotification();
-				if(notifier.isSystemAreaIconHidden()){
+				if(AppShuttlePreferences.isSystemAreaIconHidden()){
 					String warnMsg = getResources().getString(R.string.settings_pref_system_area_icon_hide_warn_msg);
 					Toast.makeText(getActivity(), warnMsg, Toast.LENGTH_LONG).show();
 				}
