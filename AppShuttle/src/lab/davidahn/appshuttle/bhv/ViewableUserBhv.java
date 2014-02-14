@@ -7,6 +7,7 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.PredictedBhvInfo;
@@ -115,9 +116,10 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 
 	@Override
 	public String getBhvNameText() {
+		/*
 		if(bhvNameText != null)
 			return bhvNameText;
-			
+		*/
 		bhvNameText = "no name";
 		
 		UserBhvType bhvType = uBhv.getBhvType();
@@ -132,7 +134,9 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 			} catch (NameNotFoundException e) {}
 			break;
 		case CALL:
-			bhvNameText = (String) (uBhv).getMeta("cachedName");
+			bhvNameText = CallBhvCollector.getContactName(uBhv.getBhvName());
+			if (bhvNameText == null)
+				bhvNameText = (String) (uBhv).getMeta("cachedName");
 			if(bhvNameText == null || bhvNameText.equals(""))
 				bhvNameText = uBhv.getBhvName();
 			break;
