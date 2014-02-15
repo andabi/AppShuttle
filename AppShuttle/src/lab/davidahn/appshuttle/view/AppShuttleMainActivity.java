@@ -46,7 +46,6 @@ public class AppShuttleMainActivity extends Activity {
 		if(!AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
 
-
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
 		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
@@ -96,6 +95,7 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		updateView();
 	}
 	
 	@Override
@@ -105,6 +105,12 @@ public class AppShuttleMainActivity extends Activity {
 		unregisterReceiver(progressVisibilityReceiver);
 	}
 	
+	protected void updateView() {
+		NotiBarNotifier.getInstance().updateNotification();
+		mTabsAdapter.notifyDataSetChanged();
+//		Log.d("view", "view updated.");
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -274,10 +280,10 @@ public class AppShuttleMainActivity extends Activity {
 
 	BroadcastReceiver updateViewReceiver = new BroadcastReceiver() {
 	    public void onReceive(Context context, Intent intent) {
-			mTabsAdapter.notifyDataSetChanged();
-			NotiBarNotifier.getInstance().updateNotification();
+	    	updateView();
 	    }
 	};
+	
 	BroadcastReceiver progressVisibilityReceiver = new BroadcastReceiver() {
 	    public void onReceive(Context context, Intent intent) {
 	    	boolean isOn = intent.getBooleanExtra("isOn", false);

@@ -12,9 +12,11 @@ import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
+import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
-import android.util.Log;
+import android.content.Context;
+import android.net.wifi.WifiManager;
 
 public class PresentBhvManager {
 	
@@ -91,10 +93,13 @@ public class PresentBhvManager {
 			return false;
 		else if(uBhv.getBhvType() == UserBhvType.APP
 				&& uBhv.getBhvName().equals(AppBhvCollector.getInstance().getPresentApp(1, true).get(0))){
-			Log.d("test", AppBhvCollector.getInstance().getPresentApp(1, true).get(0) + "");
 			return false;
+		} else if(uBhv.getBhvType() == UserBhvType.SENSOR_ON 
+				&& uBhv.getBhvName().equals(SensorType.WIFI.name())){
+			WifiManager wifi = (WifiManager)AppShuttleApplication.getContext().getSystemService(Context.WIFI_SERVICE);
+			if(wifi.isWifiEnabled())
+				return false;
 		}
-		else
-			return true;
+		return true;
 	}
 }

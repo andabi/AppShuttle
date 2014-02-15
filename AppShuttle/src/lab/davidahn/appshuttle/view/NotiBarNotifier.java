@@ -71,6 +71,8 @@ public class NotiBarNotifier {
 		viewableUserBhvList.addAll(PresentBhvManager.getPresentBhvListFilteredSorted(numPredictedElem));
 		
 		updateNotiView(viewableUserBhvList);
+		
+//		Log.d("notifier", "notibar updated.");
 	}
 	
 	public void hideNotibar() {
