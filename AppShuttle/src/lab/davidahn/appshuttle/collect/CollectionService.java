@@ -31,6 +31,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 
 public class CollectionService extends Service {
 	private Date currTimeDate;
@@ -80,6 +81,8 @@ public class CollectionService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
 		
+		Log.d("collection", "CollectionService started.");
+		
 		currTimeDate = new Date(System.currentTimeMillis());
 		currTimeZone = Calendar.getInstance().getTimeZone();
 		
@@ -88,6 +91,8 @@ public class CollectionService extends Service {
 		extractAndStoreDurationUserContext(uCxt);
 
 		AppShuttleApplication.currUserCxt = uCxt;
+		
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
 		
 		return START_NOT_STICKY;
 	}

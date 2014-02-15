@@ -223,7 +223,6 @@ public class FavoriteBhvFragment extends ListFragment {
 	}
 
 	private void doPostAction() {
-		NotiBarNotifier.getInstance().doNotification();
 		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
 	}
 	

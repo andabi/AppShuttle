@@ -44,7 +44,7 @@ public class NotiBarNotifier {
 		return notifier;
 	}
 	
-	public void doNotification() {
+	public void updateNotification() {
 		if(isHidden())
 			hideNotibar();
 		else

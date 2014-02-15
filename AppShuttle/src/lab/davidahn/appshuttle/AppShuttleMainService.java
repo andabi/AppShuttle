@@ -170,7 +170,7 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOrientationReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			NotiBarNotifier.getInstance().doNotification();
+			NotiBarNotifier.getInstance().updateNotification();
 //			if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 		}
 	};

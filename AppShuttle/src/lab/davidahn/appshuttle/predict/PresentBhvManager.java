@@ -11,7 +11,10 @@ import lab.davidahn.appshuttle.bhv.FavoriteBhv;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import android.util.Log;
 
 public class PresentBhvManager {
 	
@@ -81,12 +84,17 @@ public class PresentBhvManager {
 
 	private static boolean isEligible(UserBhv uBhv){
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		if(userBhvManager.getNormalBhvSet().contains(uBhv))
-			return true;
-		else if(userBhvManager.getFavoriteBhvSet().contains(uBhv)
-				&& !((FavoriteBhv)userBhvManager.getViewableUserBhv(uBhv)).isNotifiable())
-			return true;
-		else
+		if(userBhvManager.getBlockedBhvSet().contains(uBhv))
 			return false;
+		else if(userBhvManager.getFavoriteBhvSet().contains(uBhv)
+				&& ((FavoriteBhv)userBhvManager.getViewableUserBhv(uBhv)).isNotifiable())
+			return false;
+		else if(uBhv.getBhvType() == UserBhvType.APP
+				&& uBhv.getBhvName().equals(AppBhvCollector.getInstance().getPresentApp(1, true).get(0))){
+			Log.d("test", AppBhvCollector.getInstance().getPresentApp(1, true).get(0) + "");
+			return false;
+		}
+		else
+			return true;
 	}
 }

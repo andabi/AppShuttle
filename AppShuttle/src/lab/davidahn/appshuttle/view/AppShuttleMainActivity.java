@@ -36,34 +36,6 @@ public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	
-	BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-    		mTabsAdapter.notifyDataSetChanged();
-        }
-    };
-    
-	BroadcastReceiver progressVisibleReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-    		ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
-    		if(progress != null)
-    			progress.setVisibility(View.VISIBLE);
-    		ImageView refresh = (ImageView)findViewById(R.id.refresh);
-    		if(refresh != null)
-    			refresh.setVisibility(View.INVISIBLE);
-        }
-    };
-    
-	BroadcastReceiver progressInvisibleReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-    		ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
-    		if(progress != null)
-    			progress.setVisibility(View.INVISIBLE);
-    		ImageView refresh = (ImageView)findViewById(R.id.refresh);
-    		if(refresh != null)
-    			refresh.setVisibility(View.VISIBLE);
-        }
-    };
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,15 +50,11 @@ public class AppShuttleMainActivity extends Activity {
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
 		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
-		registerReceiver(refreshReceiver, filter);
+		registerReceiver(updateViewReceiver, filter);
 		
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.PROGRESS_VISIBLE");
-		registerReceiver(progressVisibleReceiver, filter);
-
-		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.PROGRESS_INVISIBLE");
-		registerReceiver(progressInvisibleReceiver, filter);
+		filter.addAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY");
+		registerReceiver(progressVisibilityReceiver, filter);
 
 		mViewPager = new ViewPager(this);
 		mViewPager.setId(R.id.pager);
@@ -133,9 +101,8 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(refreshReceiver);
-		unregisterReceiver(progressVisibleReceiver);
-		unregisterReceiver(progressInvisibleReceiver);
+		unregisterReceiver(updateViewReceiver);
+		unregisterReceiver(progressVisibilityReceiver);
 	}
 	
 	@Override
@@ -304,4 +271,24 @@ public class AppShuttleMainActivity extends Activity {
 			return layout;
 		}
 	}
+
+	BroadcastReceiver updateViewReceiver = new BroadcastReceiver() {
+	    public void onReceive(Context context, Intent intent) {
+			mTabsAdapter.notifyDataSetChanged();
+			NotiBarNotifier.getInstance().updateNotification();
+	    }
+	};
+	BroadcastReceiver progressVisibilityReceiver = new BroadcastReceiver() {
+	    public void onReceive(Context context, Intent intent) {
+	    	boolean isOn = intent.getBooleanExtra("isOn", false);
+	    	
+			ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
+			if(progress != null)
+				progress.setVisibility((isOn) ? View.VISIBLE : View.INVISIBLE);
+			
+			ImageView refresh = (ImageView)findViewById(R.id.refresh);
+			if(refresh != null)
+				refresh.setVisibility((isOn) ? View.INVISIBLE : View.VISIBLE);
+	    }
+	};
 }

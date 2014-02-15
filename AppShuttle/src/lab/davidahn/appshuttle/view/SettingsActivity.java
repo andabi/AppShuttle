@@ -54,11 +54,11 @@ public class SettingsActivity extends PreferenceActivity {
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
 			if (key.equals("settings_pref_noti_view_hide_key")) {
-				NotiBarNotifier.getInstance().doNotification();
+				NotiBarNotifier.getInstance().updateNotification();
 			} else if(key.equals("settings_pref_system_area_icon_hide_key")){
 				NotiBarNotifier notifier = NotiBarNotifier.getInstance();
 				notifier.hideNotibar();
-				notifier.doNotification();
+				notifier.updateNotification();
 				if(notifier.isSystemAreaIconHidden()){
 					String warnMsg = getResources().getString(R.string.settings_pref_system_area_icon_hide_warn_msg);
 					Toast.makeText(getActivity(), warnMsg, Toast.LENGTH_LONG).show();
