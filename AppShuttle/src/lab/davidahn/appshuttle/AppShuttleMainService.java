@@ -66,36 +66,34 @@ public class AppShuttleMainService extends Service {
 		registerReceiver(predictReceiver, filter);
 
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.TRY_PREDICT");
-		registerReceiver(tryPredictReceiver, filter);
+		filter.addAction("lab.davidahn.appshuttle.SLEEP_MODE");
+		registerReceiver(sleepModeReceiver, filter);
 		
 		filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
 		registerReceiver(screenOrientationReceiver, filter);
 	}
 
-	private void tryPrediction() {
-		if(AppShuttlePreferences.isSleepMode())
-			return;
-		
-		long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 60000);
-		if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
-			return;
-		
-		doPrediction();
-	}
-	
-	private void doPrediction() {
-//		Log.d("prediction", "prediction service started");
+	private void doPrediction(boolean isForce) {
+		if(!isForce) {
+			long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 60000);
+			if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
+				return;
+		}
 		startService(new Intent(this, PredictionService.class));
 		AppShuttleApplication.lastPredictionTime = System.currentTimeMillis();
+//		Log.d("prediction", "prediction service started, isForce=" + isForce);
 	}
 	
 	private void startPeriodicPrediction() {
-		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.TRY_PREDICT");
+		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
 		predictionOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
 		long period = preferenceSettings.getLong("predictor.period", 120000);
 		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, predictionOperation);
+	}
+	
+	private void stopPeriodicPrediction(){
+		alarmManager.cancel(predictionOperation);
 	}
 	
 	public long getExecuteTimeHour(int hourOfDay){
@@ -129,7 +127,7 @@ public class AppShuttleMainService extends Service {
 		unregisterReceiver(screenOnReceiver);
 		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(predictReceiver);
-		unregisterReceiver(tryPredictReceiver);
+		unregisterReceiver(sleepModeReceiver);
 		unregisterReceiver(screenOrientationReceiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
@@ -150,22 +148,27 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			tryPrediction();
-			alarmManager.cancel(predictionOperation);
+			doPrediction(false);
+			stopPeriodicPrediction();
 		}
 	};
 
-	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
+	BroadcastReceiver sleepModeReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			doPrediction();
+			boolean isOn = intent.getBooleanExtra("isOn", false);
+			if(isOn)
+				stopPeriodicPrediction();
+			else
+				startPeriodicPrediction();
 		}
 	};
 	
-	BroadcastReceiver tryPredictReceiver = new BroadcastReceiver(){
+	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			tryPrediction();
+			boolean isForce = intent.getBooleanExtra("isForce", false);
+			doPrediction(isForce);
 		}
 	};
 	

@@ -6,6 +6,7 @@ import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.Reporter;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -56,6 +57,9 @@ public class SettingsActivity extends PreferenceActivity {
 				SharedPreferences sharedPreferences, String key) {
 			if (key.equals("settings_pref_sleep_mode_key")) {
 				NotiBarNotifier.getInstance().doNotification();
+				getActivity().sendBroadcast(new Intent()
+				.setAction("lab.davidahn.appshuttle.SLEEP_MODE")
+				.putExtra("isOn", AppShuttlePreferences.isSleepMode()));
 			} else if(key.equals("settings_pref_system_area_icon_hide_key")){
 				NotiBarNotifier notifier = NotiBarNotifier.getInstance();
 				notifier.hideNotibar();
