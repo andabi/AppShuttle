@@ -21,7 +21,6 @@ public class AppShuttlePreferences {
 		editor.putLong("collection.location.tolerance.time", 25000);
 		editor.putInt("collection.location.tolerance.distance", 500);
 		editor.putInt("collection.place.num_address_prefix_words", 6);
-		editor.putInt("collection.place.tolerance.same_place", 100);
 		
 		editor.putLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
 		editor.putLong("collection.call.pre.period", 6 * AlarmManager.INTERVAL_DAY);
@@ -57,17 +56,23 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.time.daily.min_num_history", 3);
 		editor.putLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR * 3);
 
-		editor.putLong("matcher.position.place.duration", 5 * AlarmManager.INTERVAL_DAY);
-		editor.putLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.position.place.min_likelihood", 0.3f);
-		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.1f);
-		editor.putInt("matcher.position.place.min_num_history", 3);
+//		editor.putLong("matcher.position.place.duration", 5 * AlarmManager.INTERVAL_DAY);
+//		editor.putLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_HOUR);
+//		editor.putFloat("matcher.position.place.min_likelihood", 0.3f);
+//		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.1f);
+//		editor.putInt("matcher.position.place.min_num_history", 3);
 
 		editor.putLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.position.move.min_likelihood", 0.3f);
 		editor.putInt("matcher.position.move.min_num_history", 3);
 
+		editor.putLong("matcher.position.loc.duration", AlarmManager.INTERVAL_HOUR / 6);
+		editor.putFloat("matcher.position.loc.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0.2f);
+		editor.putInt("matcher.position.loc.min_num_history", 5);
+		editor.putInt("matcher.position.loc.tolerance_in_meter", 50);
+		
 		//view
 		editor.putInt("viewer.noti.max_num", 12);
 		editor.putInt("viewer.noti.max_num_favorite", 8);

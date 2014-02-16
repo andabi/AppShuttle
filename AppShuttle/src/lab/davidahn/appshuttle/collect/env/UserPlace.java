@@ -66,36 +66,23 @@ public class UserPlace extends UserEnv {
 	@Override
 	public boolean equals(Object o) {
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		Integer toleranceInMeter = pref.getInt("collection.place.tolerance.same_place", 100);
-
-		if (o instanceof UserPlace) {
-			try {
-				if (coordinates.proximity(((UserPlace)o).coordinates, toleranceInMeter))
-					return true;
-				else return false;
-			} catch (InvalidUserEnvException e) {
-				;
-			}
+		int numPrefix = pref.getInt("collection.place.num_address_prefix_words", 6);
+		
+		if(!(o instanceof UserPlace)){
 			return false;
 		}
-		else return false;
-/*		Integer prefix = pref.getInt("collection.place.num_address_prefix_words", 6);
-		if(o instanceof UserPlace){
-			String[] addrs = name.split(" ");
-			String[] userAddrs = ((UserPlace)o).name.split(" ");
-			if (addrs.length < prefix)
-				prefix = addrs.length;
 
-			Integer index = 0;
-			while (index < prefix){
-				if (index >= userAddrs.length || !addrs[index].equals(userAddrs[index]))
-					break;
-				else index++;
-			}
-			return (index == prefix)? true : false;
+		String[] addrs = name.split(" ");
+		String[] userAddrs = ((UserPlace)o).name.split(" ");
+		
+		int maxIndex = Math.min(numPrefix, Math.min(addrs.length, userAddrs.length));
+		int index = 0;
+		while(index <= maxIndex){
+		  if(!addrs[index].equals(userAddrs[index]))
+		    return false;
+		  index++;
 		}
-		else
-			return false;*/
+		return true;
 	}
 	
 	@Override
