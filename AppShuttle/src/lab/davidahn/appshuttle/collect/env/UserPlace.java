@@ -65,13 +65,13 @@ public class UserPlace extends UserEnv {
 
 	@Override
 	public boolean equals(Object o) {
-		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		int numPrefix = pref.getInt("collection.place.num_address_prefix_words", 6);
-		
 		if(!(o instanceof UserPlace)){
 			return false;
 		}
-
+		
+		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
+		int numPrefix = pref.getInt("collection.place.num_address_prefix_words", 6);
+		
 		String[] addrs = name.split(" ");
 		String[] userAddrs = ((UserPlace)o).name.split(" ");
 		
