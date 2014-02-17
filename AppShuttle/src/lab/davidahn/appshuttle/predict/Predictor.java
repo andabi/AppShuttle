@@ -146,10 +146,10 @@ public class Predictor {
 		
 		locMatcherGroup.registerMatcher(new LocationPositionMatcher(
 			new PositionMatcherConf.Builder()
-				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", AlarmManager.INTERVAL_HOUR / 6))
-				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.5f))
-				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.loc.min_inverse_entropy", 0.2f))
-				.setMinNumHistory(preferenceSettings.getInt("matcher.position.loc.min_num_history", 5))
+				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", 7 * AlarmManager.INTERVAL_DAY))
+				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.7f))
+				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.loc.min_inverse_entropy", Float.MIN_VALUE))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.position.loc.min_num_history", 3))
 				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.loc.tolerance_in_meter", 50))
 				.build()
 			)
