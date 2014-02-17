@@ -56,7 +56,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 				relatedHistory.put(unit, relatedness);
 			}
 		}
-		if (numRelatedHistory < conf.getMinNumHistory())
+		if (numRelatedHistory < conf.getMinNumRelatedHistory())
 			return null;
 
 		double likelihood = computeLikelihood(numTotalHistory,

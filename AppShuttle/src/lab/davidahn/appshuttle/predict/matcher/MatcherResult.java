@@ -87,7 +87,7 @@ public class MatcherResult implements Comparable<MatcherResult> {
 		numTotalHistory = _numTotalHistory;
 	}
 
-	public int getNumRelatedCxt() {
+	public int getNumRelatedHistory() {
 		return numRelatedHistory;
 	}
 

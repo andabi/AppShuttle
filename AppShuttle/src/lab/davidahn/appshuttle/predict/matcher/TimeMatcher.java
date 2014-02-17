@@ -81,7 +81,7 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
+		assert(matcherCountUnitList.size() >= conf.getMinNumRelatedHistory());
 		
 		double inverseEntropy = 0;
 		Set<Long> uniqueTime = new HashSet<Long>();
@@ -145,16 +145,24 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 	protected double computeLikelihood(int numTotalHistory,
 		Map<MatcherCountUnit, Double> relatedHistoryMap,
 		SnapshotUserCxt uCxt) {
-		return 1;
+
+		if(numTotalHistory <= 0)
+			return 0;
+		
+		double sumRelatedness = 0;
+		for(double relatedness : relatedHistoryMap.values())
+			sumRelatedness += relatedness;
+			
+		return sumRelatedness / relatedHistoryMap.size();
 	}
 	
 	@Override
 	protected double computeScore(MatcherResult matcherResult) {
 		double likelihood = matcherResult.getLikelihood();
 		double inverseEntropy = matcherResult.getInverseEntropy();
-		double numRelatedHistory = 1.0 * matcherResult.getNumRelatedCxt();
+		double relatedHistoryRatio = 1.0 * matcherResult.getNumRelatedHistory() / conf.getDuration();
 		
-		double score = 1 + 0.5 * (inverseEntropy * (numRelatedHistory / conf.getDuration())) + 0.1 * likelihood;
+		double score = 1 + 0.5 * (inverseEntropy * relatedHistoryRatio) + 0.1 * likelihood;
 
 		assert(1 <= score && score <=2);
 		

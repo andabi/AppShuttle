@@ -58,7 +58,7 @@ public class Predictor {
 					.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6))
 					.setMinLikelihood(0.0)
 					.setMinInverseEntropy(0.0)
-					.setMinNumHistory(preferenceSettings.getInt("matcher.recent.frequently.min_num_history", 3))
+					.setMinNumHistory(preferenceSettings.getInt("matcher.recent.frequently.min_num_related_history", 3))
 					.build()
 				));
 		recentMatcherGroup.registerMatcher(new InstantlyRecentMatcher(
@@ -67,7 +67,7 @@ public class Predictor {
 				.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0))
 				.setMinLikelihood(0.0)
 				.setMinInverseEntropy(0.0)
-				.setMinNumHistory(preferenceSettings.getInt("matcher.recent.instantly.min_num_history", 1))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.recent.instantly.min_num_related_history", 1))
 				.build()
 			));
 
@@ -86,7 +86,7 @@ public class Predictor {
 			.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
-			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_related_history", 3))
 			.build()
 		));
 
@@ -97,7 +97,7 @@ public class Predictor {
 			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekday.duration", 7 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekday.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekday.min_inverse_entropy", 0.2f))
-			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekday.min_num_history", 3))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekday.min_num_related_history", 3))
 			.build()
 		));
 		
@@ -108,7 +108,7 @@ public class Predictor {
 			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekend.duration", 21 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekend.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekend.min_inverse_entropy", 0.2f))
-			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekend.min_num_history", 3))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekend.min_num_related_history", 3))
 			.build()
 		));
 	
@@ -127,7 +127,7 @@ public class Predictor {
 				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
 				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
 				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
-				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_related_history", 3))
 				.setToleranceInMeter(0)
 				.build()
 			)
@@ -138,7 +138,7 @@ public class Predictor {
 					.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
 					.setMinLikelihood(preferenceSettings.getFloat("matcher.position.move.min_likelihood", 0.3f))
 					.setMinInverseEntropy(Float.MIN_VALUE)
-					.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_history", 3))
+					.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_related_history", 3))
 					.setToleranceInMeter(0)
 					.build()
 				)
@@ -149,7 +149,7 @@ public class Predictor {
 //				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", AlarmManager.INTERVAL_HOUR / 6))
 //				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.5f))
 //				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.loc.min_inverse_entropy", 0.2f))
-//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.loc.min_num_history", 5))
+//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.loc.min_num_related_history", 5))
 //				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.loc.tolerance_in_meter", 50))
 //				.build()
 //			)

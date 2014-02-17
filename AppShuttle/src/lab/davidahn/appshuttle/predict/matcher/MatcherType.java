@@ -9,9 +9,9 @@ public enum MatcherType {
 	INSTANTALY_RECENT(1, R.string.predict_instantly_recent_msg, true),
 
 	//time
-	TIME_DAILY_WEEKDAY(0, R.string.predict_time_daily_weekday_msg, false),
-	TIME_DAILY_WEEKEND(0, R.string.predict_time_daily_weekend_msg, false),
-	TIME_DAILY(1, R.string.predict_time_daily_msg, false),
+	TIME_DAILY(0, R.string.predict_time_daily_msg, false),
+	TIME_DAILY_WEEKDAY(1, R.string.predict_time_daily_weekday_msg, false),
+	TIME_DAILY_WEEKEND(1, R.string.predict_time_daily_weekend_msg, false),
 	
 	//location
 	PLACE(0, R.string.predict_place_msg, false),
