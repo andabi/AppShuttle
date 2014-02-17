@@ -18,6 +18,7 @@ import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
 import lab.davidahn.appshuttle.utils.Time;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 
@@ -148,12 +149,12 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 
 		if(numTotalHistory <= 0)
 			return 0;
-		
-		double sumRelatedness = 0;
+
+		SummaryStatistics relatednessStat = new SummaryStatistics();
 		for(double relatedness : relatedHistoryMap.values())
-			sumRelatedness += relatedness;
-			
-		return sumRelatedness / relatedHistoryMap.size();
+			relatednessStat.addValue(relatedness);
+		
+		return relatednessStat.getMean();
 	}
 	
 	@Override
