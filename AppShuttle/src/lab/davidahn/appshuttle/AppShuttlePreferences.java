@@ -67,10 +67,11 @@ public class AppShuttlePreferences {
 		editor.putFloat("matcher.position.move.min_likelihood", 0.3f);
 		editor.putInt("matcher.position.move.min_num_history", 3);
 
-		editor.putLong("matcher.position.loc.duration", AlarmManager.INTERVAL_HOUR / 6);
-		editor.putFloat("matcher.position.loc.min_likelihood", 0.5f);
-		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0.2f);
-		editor.putInt("matcher.position.loc.min_num_history", 5);
+		editor.putLong("matcher.position.loc.duration", 5 * AlarmManager.INTERVAL_DAY);
+        editor.putLong("matcher.position.loc.acceptance_delay", AlarmManager.INTERVAL_HOUR);
+        editor.putFloat("matcher.position.loc.min_likelihood", 0.3f);
+		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0.1f);
+		editor.putInt("matcher.position.loc.min_num_history", 3);
 		editor.putInt("matcher.position.loc.tolerance_in_meter", 50);
 		
 		//view
