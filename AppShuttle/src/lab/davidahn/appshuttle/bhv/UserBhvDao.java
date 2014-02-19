@@ -27,21 +27,21 @@ public class UserBhvDao {
 		return userBhvDao;
 	}
 
-	public void storeUserBhv(NormalBhv uBhv) {
+	public void storeUserBhv(BaseUserBhv uBhv) {
 //		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Gson gson = new Gson();
 
 		ContentValues row = new ContentValues();
 		row.put("bhv_type", uBhv.getBhvType().toString());
 		row.put("bhv_name", uBhv.getBhvName());
-		row.put("metas", gson.toJson(((BaseUserBhv)uBhv.getUserBhv()).getMetas()));
+		row.put("metas", gson.toJson(uBhv.getMetas()));
 //		db.insert("user_bhv", null, row);
 		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
 //		db.insertWithOnConflict("list_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 //		Log.i("stored user bhv", uBhv.toString());
 	}
 	
-	public List<NormalBhv> retrieveNormalUserBhv() {
+	public List<BaseUserBhv> retrieveNormalUserBhv() {
 		Gson gson = new Gson();
 
 		Cursor cur = db.rawQuery(
@@ -50,17 +50,16 @@ public class UserBhvDao {
 				"WHERE blocked = 0 " +
 					"AND favorates = 0"
 				, null);
-		List<NormalBhv> res = new ArrayList<NormalBhv>();
+		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		while (cur.moveToNext()) {
 			UserBhvType bhvType= UserBhvType.valueOf(cur.getString(0));
 			String bhvName= cur.getString(1);
 			Type listType = new TypeToken<HashMap<String, Object>>(){}.getType();
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
 
-			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+			BaseUserBhv uBhv = BaseUserBhv.create(bhvType, bhvName);
 			uBhv.setMetas(metas);
-			NormalBhv normalUBhv = new NormalBhv(uBhv);
-			res.add(normalUBhv);
+			res.add(uBhv);
 		}
 		cur.close();
 //		Log.i("retrieved userBhv", res.toString());

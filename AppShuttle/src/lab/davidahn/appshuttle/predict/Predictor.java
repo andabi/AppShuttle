@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.predict;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -163,14 +162,10 @@ public class Predictor {
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
-		PresentBhvManager.extractPresentBhvs(doPredictAndExtractPredictedBhvInfos(currUserCxt));
-	}
-	
-	private Map<UserBhv, PredictedBhvInfo> doPredictAndExtractPredictedBhvInfos(SnapshotUserCxt currUserCxt){
 		if(currUserCxt == null)
-			return Collections.emptyMap();
+			return ;
 		
-		Map<UserBhv, PredictedBhvInfo> predictedBhvInfos = new HashMap<UserBhv, PredictedBhvInfo>();
+		Map<UserBhv, PredictedBhvInfo> predictedBhvInfoMap = new HashMap<UserBhv, PredictedBhvInfo>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(UserBhv uBhv : userBhvManager.getBhvSet()){
 			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
@@ -189,12 +184,12 @@ public class Predictor {
 					currUserCxt.getUserEnvs(), 
 					uBhv, matcherGroupMap, computePredictionScore(matcherGroupMap));
 			
-			predictedBhvInfos.put(uBhv, predictedBhvInfo);
+			predictedBhvInfoMap.put(uBhv, predictedBhvInfo);
 		}
-		
-		return predictedBhvInfos;
+		AppShuttleApplication.predictedBhvInfoMap = predictedBhvInfoMap;
+
 	}
-	
+		
 	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults){
 		double PredictionScore = 0;
 		

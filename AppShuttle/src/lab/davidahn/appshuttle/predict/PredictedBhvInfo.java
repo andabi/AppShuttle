@@ -94,6 +94,7 @@ public class PredictedBhvInfo implements Comparable<PredictedBhvInfo> {
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("bhv: ").append(uBhv.toString()).append(", ");
+		msg.append("time: ").append(timeDate.toString()).append(", ");
 		msg.append("matcher group results: ").append(matcherGroupResults.toString()).append(", ");
 		msg.append("score: ").append(score);
 		return msg.toString();

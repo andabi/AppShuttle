@@ -1,8 +1,8 @@
 package lab.davidahn.appshuttle.bhv;
 
+import android.text.format.DateUtils;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-
 
 public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteBhv> {
 	private long setTime;
@@ -46,6 +46,30 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 		isNotifiable = false;
 		AppShuttleApplication.numFavoriteNotifiable--;
 	}
+	
+	@Override
+	public String getViewMsg() {
+//		long blockedTime = ((BlockedUserBhv)_uBhv).getBlockedTime();
+		StringBuffer msg = new StringBuffer();
+		viewMsg = msg.toString();
+		
+		msg.append(DateUtils.getRelativeTimeSpanString(setTime, 
+				System.currentTimeMillis(), 
+				DateUtils.MINUTE_IN_MILLIS, 
+				0
+				));
+		viewMsg = msg.toString();
+		
+		return viewMsg;
+	}
+	
+	@Override
+	public Integer getNotibarContainerId() {
+		if(isNotifiable())
+			return R.id.noti_favorite_container;
+		else
+			return R.id.noti_present_container;
+	}
 
 	@Override
 	public int compareTo(FavoriteBhv uBhv) {
@@ -60,13 +84,5 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 			return 0;
 		else
 			return -1;
-	}
-	
-	@Override
-	public Integer getNotibarContainerId() {
-		if(isNotifiable())
-			return R.id.noti_favorite_container;
-		else
-			return R.id.noti_present_container;
 	}
 }
