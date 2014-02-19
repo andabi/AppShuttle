@@ -21,7 +21,7 @@ public class UnregisterBhvService extends IntentService {
 		UserBhvType bhvType = (UserBhvType) intent.getExtras().get("bhv_type");
 		String bhvName = intent.getExtras().getString("bhv_name");
 		UserBhvManager.getInstance().unregisterBhv(new BaseUserBhv(bhvType, bhvName));
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT").putExtra("isForce", true));
 	}
 	
 	public void onDestroy() {
