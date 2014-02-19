@@ -5,7 +5,7 @@ import java.util.List;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
+import lab.davidahn.appshuttle.predict.PresentBhv;
 import lab.davidahn.appshuttle.predict.PresentBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
@@ -30,7 +30,7 @@ import android.widget.Toast;
 public class PresentBhvFragment extends ListFragment {
 	private PresentBhvAdapter adapter;
 	private ActionMode actionMode;
-	private List<ViewableUserBhv> presentBhvList;
+	private List<PresentBhv> presentBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class PresentBhvFragment extends ListFragment {
 		getActivity().startActivity(intent);
 	}
 	
-	public class PresentBhvAdapter extends ArrayAdapter<ViewableUserBhv> {
+	public class PresentBhvAdapter extends ArrayAdapter<PresentBhv> {
 
 		public PresentBhvAdapter() {
 			super(getActivity(), R.layout.listview_item, presentBhvList);
@@ -99,7 +99,7 @@ public class PresentBhvFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			ViewableUserBhv presentBhv = presentBhvList.get(position);
+			PresentBhv presentBhv = presentBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
 			iconView.setImageDrawable(presentBhv.getIcon());
@@ -155,7 +155,7 @@ public class PresentBhvFragment extends ListFragment {
 	private String doActionAndGetMsg(int pos, int itemId) {
 		UserBhvManager uBhvManager = UserBhvManager.getInstance();
 
-		ViewableUserBhv presentBhv = presentBhvList.get(pos);
+		PresentBhv presentBhv = presentBhvList.get(pos);
 		switch(itemId) {
 		case R.id.favorate:	
 			uBhvManager.favorite(presentBhv);
