@@ -20,7 +20,7 @@ public class AppShuttleApplication extends Application {
 	public volatile static SnapshotUserCxt currUserCxt;
 	public volatile static Map<UserBhv, PresentBhv> presentBhvMap;
 	public volatile static int numFavoriteNotifiable;
-
+	
 	public AppShuttleApplication(){}
 
 	public void onCreate(){

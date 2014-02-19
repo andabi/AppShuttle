@@ -117,6 +117,7 @@ public class AppShuttleMainActivity extends Activity {
 		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
 		
 		startService(new Intent(this, AppShuttleMainService.class));
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
 	}
 	
 	@Override
@@ -290,7 +291,7 @@ public class AppShuttleMainActivity extends Activity {
 			ImageView refresh = (ImageView)layout.findViewById(R.id.refresh);
 			refresh.setOnClickListener(new ImageView.OnClickListener(){
 				public void onClick(View v) {
-					cxt.sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
+					cxt.sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT").putExtra("isForce", true));
 				}
 			});
 			

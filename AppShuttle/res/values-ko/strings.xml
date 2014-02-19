@@ -40,8 +40,12 @@
     <string name="settings_category_setting">설정</string>
     <string name="settings_category_info">정보</string>
     <string name="settings_category_share">공유하기</string>
+<!--
     <string name="settings_pref_noti_view_hide">앱셔틀 잠시 꺼두기</string>
     <string name="settings_pref_noti_view_hide_summary">앱을 알림창에 표시하지 않습니다.</string>
+ -->
+  	<string name="settings_pref_sleep_mode">앱셔틀 잠시 꺼두기</string>
+    <string name="settings_pref_sleep_mode_summary">앱을 알림창에 표시하지 않습니다.</string>
     <string name="settings_pref_system_area_icon_hide">아이콘 숨기기</string>
     <string name="settings_pref_system_area_icon_hide_summary">시스템 영역에 고정된 아이콘을 숨깁니다.</string>
     <string name="settings_pref_system_area_icon_hide_warn_msg">아이콘 숨김으로 설정하면 알림창에서 위치가 고정되지 않을 수 있습니다.</string>
