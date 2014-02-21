@@ -1,12 +1,11 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.view.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.predict.PresentBhv;
-import lab.davidahn.appshuttle.predict.PresentBhvManager;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.view.BlockedBhv;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -27,10 +26,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PresentBhvFragment extends ListFragment {
-	private PresentBhvAdapter adapter;
+public class BlockedBhvFragment extends ListFragment {
+	private BlockedBhvInfoAdapter adapter;
 	private ActionMode actionMode;
-	private List<PresentBhv> presentBhvList;
+	private List<BlockedBhv> blockedBhvList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,22 +47,15 @@ public class PresentBhvFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
+		setEmptyText(getResources().getString(R.string.msg_manual_blocked));
 
-		if(System.currentTimeMillis() - AppShuttleApplication.launchTime < 3000)
-			setEmptyText(getResources().getString(R.string.msg_wait));
-		else
-			setEmptyText(getResources().getString(R.string.msg_no_results));
+		blockedBhvList = new ArrayList<BlockedBhv>(BlockedBhv.getBlockedBhvListSorted());
 		
-		presentBhvList = PresentBhvManager.getPresentBhvListFilteredSorted(Integer.MAX_VALUE);
-		
-		adapter = new PresentBhvAdapter();
+		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
 
-		if (presentBhvList == null) {
-			setListShown(false);
-		} else {
-			setListShown(true);
-		}
+		setListShown(true);
 		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 	        @Override
@@ -71,15 +63,14 @@ public class PresentBhvFragment extends ListFragment {
 	    		if(actionMode == null) {
 	    			actionMode = getActivity().startActionMode(actionCallback);
 	    			actionMode.setTag(position);
-//	    			actionMode.setTitle("")
+//	    			actionMode.setTitle();
 //	    			AppShuttleMainActivity.doEmphasisChildViewInListView(getListView(), position);
-	    			
 	    		}
 	            return true;
 	        }
 	    });
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = adapter.getItem(position).getLaunchIntent();
@@ -88,27 +79,27 @@ public class PresentBhvFragment extends ListFragment {
 
 		getActivity().startActivity(intent);
 	}
-	
-	public class PresentBhvAdapter extends ArrayAdapter<PresentBhv> {
 
-		public PresentBhvAdapter() {
-			super(getActivity(), R.layout.listview_item, presentBhvList);
+	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedBhv> {
+
+		public BlockedBhvInfoAdapter() {
+			super(getActivity(), R.layout.listview_item, blockedBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			PresentBhv presentBhv = presentBhvList.get(position);
+			BlockedBhv blockedUserBhv = blockedBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
-			iconView.setImageDrawable(presentBhv.getIcon());
+			iconView.setImageDrawable(blockedUserBhv.getIcon());
 
 			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
-			firstLineView.setText(presentBhv.getBhvNameText());
+			firstLineView.setText(blockedUserBhv.getBhvNameText());
 
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
-			secondLineView.setText(presentBhv.getViewMsg());
+			secondLineView.setText(blockedUserBhv.getViewMsg());
 
 			return itemView;
 		}
@@ -119,7 +110,7 @@ public class PresentBhvFragment extends ListFragment {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.present_actionmode, menu);
+			inflater.inflate(R.menu.blocked_actionmode, menu);
 			return true;
 		}
 		
@@ -136,11 +127,11 @@ public class PresentBhvFragment extends ListFragment {
 		
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			int pos = (Integer)actionMode.getTag();
+			int pos = (Integer)mode.getTag();
 
-			if(presentBhvList.size() < pos + 1)
+			if(blockedBhvList.size() < pos + 1)
 				return false;
-
+			
 			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
 			doPostAction();
 			showToastMsg(actionMsg);
@@ -153,16 +144,12 @@ public class PresentBhvFragment extends ListFragment {
 	};
 	
 	private String doActionAndGetMsg(int pos, int itemId) {
-		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-
-		PresentBhv presentBhv = presentBhvList.get(pos);
+		BlockedBhv blockedUserBhv = blockedBhvList.get(pos);
 		switch(itemId) {
-		case R.id.favorate:	
-			uBhvManager.favorite(presentBhv);
-			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
-		case R.id.block:
-			uBhvManager.block(presentBhv);
-			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_block);
+		case R.id.unblock:
+			UserBhvManager uBhvManager = UserBhvManager.getInstance();
+			uBhvManager.unblock(blockedUserBhv);
+			return blockedUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_unblock);
 		default:
 			return null;
 		}
@@ -180,4 +167,5 @@ public class PresentBhvFragment extends ListFragment {
 		t.setGravity(Gravity.CENTER, 0, 0);
 		t.show();
 	}
+
 }

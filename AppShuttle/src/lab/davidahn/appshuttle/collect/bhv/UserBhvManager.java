@@ -1,11 +1,13 @@
-package lab.davidahn.appshuttle.bhv;
+package lab.davidahn.appshuttle.collect.bhv;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.view.BlockedBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.ViewableUserBhv;
 
 /*
  * @thread safe
@@ -158,7 +160,7 @@ public class UserBhvManager {
 		FavoriteBhv favoriteUserBhv;
 		favoriteUserBhv = new FavoriteBhv(uBhv, currTime, false);
 
-		if (!FavoriteBhvManager.isFullProperNumFavorite())
+		if (!FavoriteBhv.isFullProperNumFavorite())
 			favoriteUserBhv.trySetNotifiable();
 
 		userBhvDao.favorite(favoriteUserBhv);

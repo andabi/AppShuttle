@@ -2,14 +2,12 @@ package lab.davidahn.appshuttle.predict;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.bhv.UserBhv;
-import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.matcher.DailyTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
@@ -165,7 +163,7 @@ public class Predictor {
 		if(currUserCxt == null)
 			return ;
 		
-		Map<UserBhv, PredictedBhvInfo> predictedBhvInfoMap = new HashMap<UserBhv, PredictedBhvInfo>();
+		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(UserBhv uBhv : userBhvManager.getBhvSet()){
 			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
@@ -179,15 +177,14 @@ public class Predictor {
 			if(matcherGroupMap.isEmpty())
 				continue;
 			
-			PredictedBhvInfo predictedBhvInfo = new PredictedBhvInfo(currUserCxt.getTimeDate(), 
+			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
 					uBhv, matcherGroupMap, computePredictionScore(matcherGroupMap));
 			
-			predictedBhvInfoMap.put(uBhv, predictedBhvInfo);
+			predictedBhvList.add(predictedBhv);
 		}
-		AppShuttleApplication.predictedBhvInfoMap = predictedBhvInfoMap;
-
+		PredictedBhv.updatePredictedBhvList(predictedBhvList);
 	}
 		
 	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults){

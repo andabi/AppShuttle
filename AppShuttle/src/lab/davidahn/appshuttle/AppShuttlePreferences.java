@@ -46,15 +46,15 @@ public class AppShuttlePreferences {
 		editor.putLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putInt("matcher.recent.frequently.min_num_related_history", 3);
 		
-		editor.putLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR / 2);
+		editor.putLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR / 60);
 		editor.putLong("matcher.recent.instantly.acceptance_delay", 0);
 		editor.putInt("matcher.recent.instantly.min_num_related_history", 1);
 
 		editor.putLong("matcher.time.daily.duration", 4 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.time.daily.min_likelihood", Float.MIN_VALUE);
 		editor.putFloat("matcher.time.daily.min_inverse_entropy", Float.MIN_VALUE);
-		editor.putInt("matcher.time.daily.min_num_related_history", 3);
-		editor.putLong("matcher.time.daily.tolerance", 3 * AlarmManager.INTERVAL_HALF_HOUR);
+		editor.putInt("matcher.time.daily.min_num_related_history", 2);
+		editor.putLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HOUR);
 		
 		editor.putLong("matcher.time.daily_weekday.duration", 7 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.time.daily_weekday.min_likelihood", 0.5f);
@@ -80,7 +80,7 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.position.move.min_num_related_history", 3);
 
 		//view
-		editor.putInt("viewer.min_num_present_bhv", 6);
+//		editor.putInt("viewer.min_num_present_bhv", 6);
 		editor.putInt("viewer.noti.max_num", 24);
 		editor.putInt("viewer.noti.max_num_favorite", 24);
 		editor.putInt("viewer.noti.proper_num_favorite", 24);

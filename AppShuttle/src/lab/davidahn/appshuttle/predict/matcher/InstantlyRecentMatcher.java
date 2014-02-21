@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 
 public class InstantlyRecentMatcher extends RecentMatcher {

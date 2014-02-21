@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.view.ui;
 
 import java.util.ArrayList;
 

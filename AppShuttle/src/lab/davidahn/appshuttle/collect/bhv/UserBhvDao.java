@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.bhv;
+package lab.davidahn.appshuttle.collect.bhv;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.view.BlockedBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhv;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle.predict.matchergroup;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
 
 public interface MatcherGroup {
