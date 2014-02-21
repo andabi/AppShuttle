@@ -6,7 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferences().getString("database.name", "AppShuttle.db");
-	private static final int DB_VERSION = 41;
+	private static final int DB_VERSION = 42;
+	/*
+	 * Comments on DB_VERSION
+	 * 
+	 * 42: stat_bhv_transition table added.
+	 * 
+	 */
 	
 	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
 	public static AppShuttleDBHelper getInstance() {
@@ -59,6 +65,12 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE list_user_bhv "
 					+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
 					);
+		}
+		
+		if(oldVersion < 42) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS stat_bhv_transition ("
+					+ "time INTEGER, bhv_type TEXT, bhv_name TEXT, matchers TEXT, predicted INTEGER, clicked INTEGER, "
+					+ "PRIMARY KEY (time) " + ");");
 		}
 		
 //		db.execSQL("UPDATE list_user_bhv " + 
