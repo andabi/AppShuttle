@@ -65,6 +65,13 @@ public class SnapshotUserCxt {
 		_userBhvs.addAll(userBhvList);
 	}
 	
+	public BaseUserBhv getTopUserBhv(){
+		if (_userBhvs.isEmpty())
+			return null;
+		
+		return _userBhvs.get(0);
+	}
+	
 	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();

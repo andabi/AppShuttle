@@ -33,6 +33,10 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS list_user_bhv ("
 				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER DEFAULT 0, blocked_time INTEGER DEFAULT 0, favorates INTEGER DEFAULT 0, favorates_time INTEGER DEFAULT 0, is_notifiable INTEGER DEFAULT 0, "
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS stat_bhv_transition ("
+				+ "time INTEGER, bhv_type TEXT, bhv_name TEXT, matchers TEXT, predicted INTEGER, clicked INTEGER, "
+				+ "PRIMARY KEY (time) " + ");");
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

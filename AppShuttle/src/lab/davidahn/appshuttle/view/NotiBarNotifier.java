@@ -118,6 +118,7 @@ public class NotiBarNotifier {
 			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_element);
 			
 			Intent intent = viewableUserBhv.getLaunchIntent();
+			// FIXME: NotifyBar 에서 intent 받아서 수행할 수 있는 wrapper 작성 필요 (통계 코드 삽입용)
 			if(intent != null){
 				PendingIntent pendingIntent = PendingIntent.getActivity(cxt, 0, intent, 0);
 				if(pendingIntent != null)

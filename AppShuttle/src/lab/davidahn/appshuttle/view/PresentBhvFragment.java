@@ -7,6 +7,7 @@ import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
 import lab.davidahn.appshuttle.predict.PresentBhvManager;
+import lab.davidahn.appshuttle.report.StatCollector;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -86,6 +87,7 @@ public class PresentBhvFragment extends ListFragment {
 		if(intent == null)
 			return;
 
+		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
 	

@@ -6,9 +6,11 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.report.StatCollector;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -291,6 +293,12 @@ public class AppShuttleMainActivity extends Activity {
 			refresh.setOnClickListener(new ImageView.OnClickListener(){
 				public void onClick(View v) {
 					cxt.sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
+					
+					// FIXME: 정보를 위한 새로운 알림창 추가
+					AlertDialog.Builder alert = new AlertDialog.Builder(cxt);
+					alert.setTitle("통계정보");
+					alert.setMessage(StatCollector.getInstance().toString());
+					alert.show();
 				}
 			});
 			

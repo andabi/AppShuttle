@@ -27,10 +27,12 @@ import lab.davidahn.appshuttle.collect.env.LocEnvSensor;
 import lab.davidahn.appshuttle.collect.env.PlaceEnvSensor;
 import lab.davidahn.appshuttle.collect.env.SpeedEnvSensor;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
+import lab.davidahn.appshuttle.report.StatCollector;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 
 public class CollectionService extends Service {
 	private Date currTimeDate;
@@ -87,6 +89,23 @@ public class CollectionService extends Service {
 		extractAndStoreSnapshotAppUserBhvAsDurationUserBhv(uCxt);
 		extractAndStoreDurationUserContext(uCxt);
 
+		
+		// Retrieve uBhvs
+		BaseUserBhv oldBhv = null, newBhv = null;
+		if (uCxt != null)
+			newBhv = uCxt.getTopUserBhv();
+		if (AppShuttleApplication.currUserCxt != null)
+			oldBhv = AppShuttleApplication.currUserCxt.getTopUserBhv();
+		
+		// and collect statistics data if needed
+		if (newBhv != null && !newBhv.equals(oldBhv)) {
+			Log.i("uBhv", "uBhv changed (" + newBhv.getBhvName() + ")");
+			
+			StatCollector.getInstance().notifyBhvTransition(newBhv, false);
+		}
+		
+					
+		// Update last uCxt
 		AppShuttleApplication.currUserCxt = uCxt;
 		
 		return START_NOT_STICKY;

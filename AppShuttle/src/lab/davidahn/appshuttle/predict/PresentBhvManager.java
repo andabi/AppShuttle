@@ -78,6 +78,23 @@ public class PresentBhvManager {
 			
 		return res.subList(0, Math.min(res.size(), topN));
 	}
+	
+	public static List<ViewableUserBhv> getPresentBhvListSorted(int topN) {
+		List<ViewableUserBhv> res = new ArrayList<ViewableUserBhv>();
+	
+		List<PresentBhv> predictedPresent = new ArrayList<PresentBhv>();
+		for(PresentBhv predictedBhv : getPresentBhvs().values())
+			// FIXME: 아예 빼버려도 문제 없나? normalBhv 인지 체크하는 부분 없음
+			// if(isEligible(predictedBhv))
+			predictedPresent.add(predictedBhv);
+	
+		Collections.sort(predictedPresent, Collections.reverseOrder());
+		
+		for(PresentBhv uBhv : predictedPresent)
+			res.add(UserBhvManager.getInstance().getViewableUserBhv(uBhv));
+			
+		return res.subList(0, Math.min(res.size(), topN));
+	}
 
 	private static boolean isEligible(UserBhv uBhv){
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();

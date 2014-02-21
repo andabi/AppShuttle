@@ -7,6 +7,7 @@ import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.bhv.BlockedBhv;
 import lab.davidahn.appshuttle.bhv.BlockedBhvManager;
 import lab.davidahn.appshuttle.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.report.StatCollector;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -77,7 +78,8 @@ public class BlockedBhvFragment extends ListFragment {
 		Intent intent = adapter.getItem(position).getLaunchIntent();
 		if(intent == null)
 			return;
-
+		
+		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
 
