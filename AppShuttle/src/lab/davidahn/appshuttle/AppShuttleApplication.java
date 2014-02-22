@@ -9,7 +9,6 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
 import lab.davidahn.appshuttle.view.PredictedPresentBhv;
-import lab.davidahn.appshuttle.view.HistoryPresentBhv;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -22,7 +21,6 @@ public class AppShuttleApplication extends Application {
 	public volatile static SnapshotUserCxt currUserCxt;
 	public volatile static Map<UserBhv, PredictedBhv> predictedBhvMap;
 	public volatile static Map<UserBhv, PredictedPresentBhv> predictedPresentBhvMap;
-	public volatile static Map<UserBhv, HistoryPresentBhv> historyPresentBhvMap;
 	public volatile static int numFavoriteNotifiable;
 
 	public AppShuttleApplication(){}
@@ -33,7 +31,6 @@ public class AppShuttleApplication extends Application {
 		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
 		predictedBhvMap = new HashMap<UserBhv, PredictedBhv>();
 		predictedPresentBhvMap = new HashMap<UserBhv, PredictedPresentBhv>();
-		historyPresentBhvMap = new HashMap<UserBhv, HistoryPresentBhv>();
 	}
 	
 	public static AppShuttleApplication getContext(){

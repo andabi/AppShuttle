@@ -80,10 +80,9 @@ public abstract class PresentBhv extends ViewableUserBhv {
 			throw new IllegalArgumentException("the number of presentBhv < 0");
 
 		List<PredictedPresentBhv> predictedPresentBhvList = PredictedPresentBhv.getPredictedPresentBhvListFilteredSorted();
-//		int minNumPresentBhv = preferenceSettings.getInt("viewer.min_num_present_bhv", 6);
 		int minNumPresentBhv = NotiBarNotifier.getInstance().getNumPredictedElem();
 		int numHistoryPresentBhv = Math.max(minNumPresentBhv - predictedPresentBhvList.size(), 0);
-		List<HistoryPresentBhv> historyPresentBhvList = HistoryPresentBhv.getHistoryPresentBhvListFilteredSorted(numHistoryPresentBhv);
+		List<HistoryPresentBhv> historyPresentBhvList = HistoryPresentBhv.retrieveHistoryPresentBhvList(numHistoryPresentBhv);
 
 		List<PresentBhv> presentBhvList = new ArrayList<PresentBhv>();
 		presentBhvList.addAll(predictedPresentBhvList);

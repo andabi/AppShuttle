@@ -1,10 +1,8 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
 import android.text.format.DateUtils;
@@ -64,15 +62,6 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 		}
 	}
 	
-	public static List<HistoryPresentBhv> getHistoryPresentBhvListFilteredSorted(int num) {
-		List<HistoryPresentBhv> filteredHisPresentBhvList = new ArrayList<HistoryPresentBhv>();
-		for(HistoryPresentBhv bhv : retrieveHistoryPresentBhvList())
-			if (isEligible(bhv) && !PredictedPresentBhv.getPredictedPresentBhvList().contains(bhv))
-				filteredHisPresentBhvList.add(bhv);
-		Collections.sort(filteredHisPresentBhvList, Collections.reverseOrder());
-		return filteredHisPresentBhvList.subList(0, Math.min(filteredHisPresentBhvList.size(), num));
-	}
-
 	public static List<HistoryPresentBhv> extractHistoryPresentBhvList() {
 		List<HistoryPresentBhv> res = new ArrayList<HistoryPresentBhv>();
 		for (UserBhv bhv : PredictedPresentBhv.getPredictedPresentBhvList()) {
@@ -93,10 +82,10 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 	}
 	
 	public static void storeHistoryPresentBhv(HistoryPresentBhv bhv){
-		AppShuttleApplication.historyPresentBhvMap.put(bhv.getUserBhv(), bhv);
+		HistoryPresentBhvDao.getInstance().store(bhv);
 	}
 	
-	public static List<HistoryPresentBhv> retrieveHistoryPresentBhvList(){
-		return new ArrayList<HistoryPresentBhv>(AppShuttleApplication.historyPresentBhvMap.values());
+	public static List<HistoryPresentBhv> retrieveHistoryPresentBhvList(int topN){
+		return HistoryPresentBhvDao.getInstance().retrieveRecent(topN);
 	}
 }

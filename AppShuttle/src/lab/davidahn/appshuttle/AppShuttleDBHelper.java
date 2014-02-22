@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferences().getString("database.name", "AppShuttle.db");
-	private static final int DB_VERSION = 41;
+	private static final int DB_VERSION = 42;
 	
 	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
 	public static AppShuttleDBHelper getInstance() {
@@ -33,50 +33,17 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS list_user_bhv ("
 				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER DEFAULT 0, blocked_time INTEGER DEFAULT 0, favorates INTEGER DEFAULT 0, favorates_time INTEGER DEFAULT 0, is_notifiable INTEGER DEFAULT 0, "
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
+
+		db.execSQL("CREATE TABLE IF NOT EXISTS history_present_bhv ("
+				+ "bhv_type TEXT, bhv_name TEXT, recent_pred_time INTEGER DEFAULT 0, recent_pred_score INTEGER DEFAULT 0, "
+				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(oldVersion <= 38) {
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN blocked INTEGER DEFAULT 0"
-					);
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN blocked_time INTEGER DEFAULT 0"
-					);
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN favorates INTEGER DEFAULT 0"
-					);
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN favorates_time INTEGER DEFAULT 0"
-					);
+		if(oldVersion <= 41) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS history_present_bhv ("
+					+ "bhv_type TEXT, bhv_name TEXT, recent_pred_time INTEGER DEFAULT 0, recent_pred_score INTEGER DEFAULT 0, "
+					+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
 		}
-		
-		if(oldVersion <= 39) {
-			db.execSQL("ALTER TABLE list_user_bhv "
-					+ "ADD COLUMN is_notifiable INTEGER DEFAULT 0"
-					);
-		}
-		
-//		db.execSQL("UPDATE list_user_bhv " + 
-//				"SET blocked=0 " +
-//				"WHERE blocked IS NULL"
-//				);
-//		db.execSQL("UPDATE list_user_bhv " + 
-//				"SET blocked_time=0 " +
-//				"WHERE blocked_time IS NULL"
-//				);
-//		db.execSQL("UPDATE list_user_bhv " + 
-//				"SET favorates=0 " +
-//				"WHERE favorates IS NULL"
-//				);
-//		db.execSQL("UPDATE list_user_bhv " + 
-//				"SET favorite_time=0 " +
-//				"WHERE favorite_time IS NULL"
-//				);
-//		db.execSQL("UPDATE list_user_bhv " + 
-//				"SET is_notifiable=0 " +
-//				"WHERE is_notifiable IS NULL"
-//				);
 	}
-	
 }

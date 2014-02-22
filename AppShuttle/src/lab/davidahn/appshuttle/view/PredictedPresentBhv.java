@@ -94,12 +94,8 @@ public class PredictedPresentBhv extends PresentBhv implements Comparable<Predic
 	}
 
 	public static List<PredictedPresentBhv> getPredictedPresentBhvListFilteredSorted() {
+		HistoryPresentBhv.storeHistoryPresentBhvList(HistoryPresentBhv.extractHistoryPresentBhvList());
 		List<PredictedPresentBhv> predictedPresentBhvList = extractPredictedPresentBhvList();
-
-		List<HistoryPresentBhv> hisPresentBhvList = 
-				HistoryPresentBhv.extractHistoryPresentBhvList();
-
-		HistoryPresentBhv.storeHistoryPresentBhvList(hisPresentBhvList);
 		updatePredictedPresentBhvList(predictedPresentBhvList);
 		
 		List<PredictedPresentBhv> filteredPredictedPresentBhvList = new ArrayList<PredictedPresentBhv>();
