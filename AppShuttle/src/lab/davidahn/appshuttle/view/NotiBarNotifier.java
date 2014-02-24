@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.bhv.FavoriteBhv;
 import lab.davidahn.appshuttle.bhv.FavoriteBhvManager;
@@ -20,6 +21,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -117,10 +119,31 @@ public class NotiBarNotifier {
 			UserBhvType bhvType = viewableUserBhv.getBhvType();
 			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_element);
 			
-			Intent intent = viewableUserBhv.getLaunchIntent();
-			// FIXME: NotifyBar 에서 intent 받아서 수행할 수 있는 wrapper 작성 필요 (통계 코드 삽입용)
+			/*
+			 * 실행하고자 하는 앱 이름을 putExtra 에 넣어서
+			 * AppShuttleMainService 에 전달.
+			 */
+			Intent intent = new Intent(cxt, AppShuttleMainService.class);
+			Bundle extras = new Bundle();
+			extras.putBoolean("doExec", true);
+			extras.putSerializable("bhvType", viewableUserBhv.getBhvType());
+			extras.putString("bhvName", viewableUserBhv.getBhvName());
+			intent.putExtras(extras);
+			// TODO: 통계 wrapper 개선 방향 찾기
 			if(intent != null){
-				PendingIntent pendingIntent = PendingIntent.getActivity(cxt, 0, intent, 0);
+				/* 인자 설명:
+				 * request ID. 
+				 * request ID 가 달라야, 같은 AppShuttleMainService 로 가는 intent 끼리 서로 다른 걸로 구분이 됨.
+				 * 다 0으로 하면 마지막 intent에 설정한 extra 값이 모든 애들에게 적용되어 버림.
+				 * 
+				 * FLAG.
+				 * 뒤에 저 플래그 안 달면, 기존의 extra 값을 그대로 쓰게 됨.
+				 * 예를 들면, 처음 1번 위치에 prediction 한 애의 extra가 게속 남아있음.
+				 * 그걸 방지하기 위해 업데이트를 하도록 설정.
+				 */
+				int intent_id = viewableUserBhvList.indexOf(viewableUserBhv);
+				PendingIntent pendingIntent = PendingIntent.getService(cxt, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				
 				if(pendingIntent != null)
 					notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, pendingIntent);
 			}

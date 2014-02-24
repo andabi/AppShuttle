@@ -1,10 +1,14 @@
 package lab.davidahn.appshuttle;
 
+import java.lang.reflect.Method;
 import java.util.Calendar;
 
+import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
 import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.PredictionService;
 import lab.davidahn.appshuttle.view.NotiBarNotifier;
 import android.app.AlarmManager;
@@ -16,7 +20,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
@@ -105,14 +112,65 @@ public class AppShuttleMainService extends Service {
 		return calendar.getTimeInMillis();
 	}
 	
+	private void handleExecutionIntent(Intent intent){
+		if (intent == null)
+			return;
+		Log.i("Service", (intent != null ? intent.toString() : "null"));
+		
+		Bundle b = intent.getExtras();
+		if (b == null || (b.getBoolean("doExec", false) == false))
+			return;
+		
+		/* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
+		UserBhvType bhvType = UserBhvType.NONE;
+		String bhvName = b.getString("bhvName");
+		if (b.containsKey("bhvType"))
+			bhvType = (UserBhvType)b.getSerializable("bhvType");
+		
+		if (bhvType == UserBhvType.NONE || bhvName == null)
+			return;
+		
+		BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+		ViewableUserBhv vBhv = new ViewableUserBhv(uBhv);
+		
+		Log.i("Service", "Exec req " + uBhv.toString());
+		
+		//StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
+		Intent launchIntent = vBhv.getLaunchIntent();
+		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
+		this.startActivity(launchIntent);
+		
+		/* status 바 숨기기
+		 * 참고
+		 * http://stackoverflow.com/questions/16966540/how-to-hide-notification-panel-after-sending-a-pendingintent-to-service-in-a-not
+		 */
+		try
+		{
+		    Object service  = getSystemService("statusbar");
+		    Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+
+		    Method collapse;
+		    if (Build.VERSION.SDK_INT <= 16)
+		    	collapse = statusbarManager.getMethod("collapse");
+		    else
+		    	collapse = statusbarManager.getMethod("collapsePanels");
+		    
+		    collapse.setAccessible(true);
+		    collapse.invoke(service);
+		}catch(Exception ex){}
+		
+	}
+	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
+		handleExecutionIntent(intent);
 		return START_STICKY;
 	}
 	
 	@Override
 	public IBinder onBind(Intent intent){
+		handleExecutionIntent(intent);
 		return null;
 	}
 
