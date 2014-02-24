@@ -78,9 +78,9 @@ public class UserPlace extends UserEnv {
 		int maxIndex = Math.min(numPrefix, Math.min(addrs.length, userAddrs.length));
 		int index = 0;
 		while(index < maxIndex){
-		  if(!addrs[index].equals(userAddrs[index]))
-		    return false;
-		  index++;
+			if(!addrs[index].equals(userAddrs[index]))
+				return false;
+			index++;
 		}
 		return true;
 	}
