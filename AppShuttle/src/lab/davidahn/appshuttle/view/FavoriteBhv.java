@@ -1,16 +1,8 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import android.content.SharedPreferences;
-import android.text.format.DateUtils;
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvDao;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import android.text.format.DateUtils;
 
 public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteBhv> {
 	private long setTime;
@@ -19,10 +11,7 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 	public FavoriteBhv(UserBhv uBhv, long _setTime, boolean _isNotifiable){
 		super(uBhv);
 		setTime = _setTime;
-		isNotifiable = false;
-
-		if(_isNotifiable)
-			trySetNotifiable();
+		isNotifiable = _isNotifiable;
 	}
 
 	public long getSetTime() {
@@ -33,31 +22,12 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 		return isNotifiable;
 	}
 
-	public boolean trySetNotifiable() {
-		if(isNotifiable)
-			return true;
-		
-		int notiMaxNumFavorite = AppShuttleApplication.getContext().getPreferences().getInt("viewer.noti.max_num_favorite", 3);
-		if(AppShuttleApplication.numFavoriteNotifiable < notiMaxNumFavorite) {
-			isNotifiable = true;
-			AppShuttleApplication.numFavoriteNotifiable++;
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public void setUnNotifiable() {
-		if(!isNotifiable)
-			return ;
-		
-		isNotifiable = false;
-		AppShuttleApplication.numFavoriteNotifiable--;
+	public void setNotifiable(boolean _isNotifiable) {
+		isNotifiable = _isNotifiable;
 	}
 	
 	@Override
 	public String getViewMsg() {
-//		long blockedTime = ((BlockedUserBhv)_uBhv).getBlockedTime();
 		StringBuffer msg = new StringBuffer();
 		viewMsg = msg.toString();
 		
@@ -92,50 +62,5 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 			return 0;
 		else
 			return -1;
-	}
-	
-	public static List<FavoriteBhv> getFavoriteBhvListSorted(){
-		List<FavoriteBhv> favorateBhvList = new ArrayList<FavoriteBhv>(
-				UserBhvManager.getInstance().getFavoriteBhvSet());
-		Collections.sort(favorateBhvList);
-		return Collections.unmodifiableList(favorateBhvList);
-	}
-
-	public static List<FavoriteBhv> getNotifiableFavoriteBhvList() {
-		List<FavoriteBhv> res = new ArrayList<FavoriteBhv>();
-		for(FavoriteBhv uBhv : getFavoriteBhvListSorted()) {
-			if(uBhv.isNotifiable())
-				res.add(uBhv);
-		}
-		return res;
-	}
-
-	public synchronized static boolean trySetNotifiable(FavoriteBhv favoriteUserBhv) {
-		if(favoriteUserBhv.trySetNotifiable()) {
-			UserBhvDao.getInstance().updateNotifiable(favoriteUserBhv);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public synchronized static void setUnNotifiable(FavoriteBhv favoriteUserBhv) {
-		favoriteUserBhv.setUnNotifiable();
-		UserBhvDao.getInstance().updateUnNotifiable(favoriteUserBhv);
-	}
-
-	public static boolean isFullProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		int properNumFavorite = preferences.getInt("viewer.noti.proper_num_favorite", 3);
-	
-		if(AppShuttleApplication.numFavoriteNotifiable >= properNumFavorite)
-			return true;
-		
-		return false;
-	}
-
-	public static int getProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		return preferences.getInt("viewer.noti.proper_num_favorite", 3);
 	}
 }

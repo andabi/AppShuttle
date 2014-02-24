@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.view.BlockedBhv;
+import lab.davidahn.appshuttle.view.BlockedBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +50,7 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.msg_manual_blocked));
 
-		blockedBhvList = new ArrayList<BlockedBhv>(BlockedBhv.getBlockedBhvListSorted());
+		blockedBhvList = new ArrayList<BlockedBhv>(BlockedBhvManager.getInstance().getBlockedBhvListSorted());
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -147,8 +147,7 @@ public class BlockedBhvFragment extends ListFragment {
 		BlockedBhv blockedUserBhv = blockedBhvList.get(pos);
 		switch(itemId) {
 		case R.id.unblock:
-			UserBhvManager uBhvManager = UserBhvManager.getInstance();
-			uBhvManager.unblock(blockedUserBhv);
+			BlockedBhvManager.getInstance().unblock(blockedUserBhv);
 			return blockedUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_unblock);
 		default:
 			return null;

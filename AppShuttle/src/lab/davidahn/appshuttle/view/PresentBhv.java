@@ -5,20 +5,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import android.content.Context;
-import android.net.wifi.WifiManager;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
 import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
 import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
+import android.content.Context;
+import android.net.wifi.WifiManager;
 
 public abstract class PresentBhv extends ViewableUserBhv {
 	private long time;
@@ -92,11 +91,10 @@ public abstract class PresentBhv extends ViewableUserBhv {
 	}
 
 	protected static boolean isEligible(UserBhv uBhv) {
-		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		if (userBhvManager.getBlockedBhvSet().contains(uBhv))
+		if (BlockedBhvManager.getInstance().getBlockedBhvSet().contains(uBhv))
 			return false;
-		else if (userBhvManager.getFavoriteBhvSet().contains(uBhv)
-				&& ((FavoriteBhv) userBhvManager.getFavoriteBhv(uBhv))
+		else if ((FavoriteBhvManager.getInstance()).getFavoriteBhvSet().contains(uBhv)
+				&& ((FavoriteBhv) FavoriteBhvManager.getInstance().getFavoriteBhv(uBhv))
 						.isNotifiable())
 			return false;
 		else if (uBhv.getBhvType() == UserBhvType.APP

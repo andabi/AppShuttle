@@ -165,7 +165,7 @@ public class Predictor {
 		
 		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		for(UserBhv uBhv : userBhvManager.getBhvSet()){
+		for(UserBhv uBhv : userBhvManager.getRegisteredBhvSet()){
 			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
 			for(MatcherGroup matcherGroup : matcherGroupList){
 				MatcherGroupResult matcherGroupResult = matcherGroup.matchAndGetResult(uBhv, currUserCxt);

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +50,7 @@ public class FavoriteBhvFragment extends ListFragment {
 
 		setEmptyText(getResources().getString(R.string.msg_manual_favorite));
 
-		favoriteBhvList = new ArrayList<FavoriteBhv>(FavoriteBhv.getFavoriteBhvListSorted());
+		favoriteBhvList = new ArrayList<FavoriteBhv>(FavoriteBhvManager.getInstance().getFavoriteBhvListSorted());
 		
 		adapter = new FavoriteBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -193,20 +193,20 @@ public class FavoriteBhvFragment extends ListFragment {
 	};
 
 	private String doActionAndGetMsg(int pos, int itemId) {
+		FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
 		FavoriteBhv favoriteUserBhv = favoriteBhvList.get(pos);
 		switch(itemId) {
 		case R.id.unfavorite:
-			UserBhvManager uBhvManager = UserBhvManager.getInstance();
-			uBhvManager.unfavorite(favoriteUserBhv);
+			favoriteBhvManager.unfavorite(favoriteUserBhv);
 			return favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
 		case R.id.favorite_notify:
-			boolean isSuccess = FavoriteBhv.trySetNotifiable(favoriteUserBhv);
+			boolean isSuccess = favoriteBhvManager.trySetNotifiable(favoriteUserBhv);
 
 			if(isSuccess){
 				String msg = favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
-				if(FavoriteBhv.isFullProperNumFavorite()){
+				if(favoriteBhvManager.isFullProperNumFavorite()){
 					msg += " " 
-						+ FavoriteBhv.getProperNumFavorite() 
+						+ favoriteBhvManager.getProperNumFavorite() 
 						+ getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
 				}
 				return msg;
@@ -214,7 +214,7 @@ public class FavoriteBhvFragment extends ListFragment {
 				return getResources().getString(R.string.action_msg_favorite_notifiable_failure);
 			}
 		case R.id.favorite_unnotify:
-			FavoriteBhv.setUnNotifiable(favoriteUserBhv);
+			favoriteBhvManager.setUnNotifiable(favoriteUserBhv);
 			return favoriteUserBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
 		default:
 			return null;

@@ -1,10 +1,15 @@
 package lab.davidahn.appshuttle.view;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -173,4 +178,14 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 	
 	@Override
 	public abstract Integer getNotibarContainerId();
+	
+	/**
+	 * normal = not favorite & not blocked
+	 */
+	public static Set<BaseUserBhv> getNormalBhvSet() {
+		Set<BaseUserBhv> res = new HashSet<BaseUserBhv>(UserBhvManager.getInstance().getRegisteredBhvSet());
+		res.removeAll(FavoriteBhvManager.getInstance().getFavoriteBhvSet());
+		res.removeAll(BlockedBhvManager.getInstance().getBlockedBhvSet());
+		return res;
+	}
 }

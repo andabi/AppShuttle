@@ -239,7 +239,7 @@ public class CollectionService extends Service {
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			BaseUserBhv uBhv = (BaseUserBhv)durationUserBhv.getUserBhv();
 			if(uBhv.isValid())
-				userBhvManager.registerBhv(uBhv);
+				userBhvManager.register(uBhv);
 		}
 	}
 }

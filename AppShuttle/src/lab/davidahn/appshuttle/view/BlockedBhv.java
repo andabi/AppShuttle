@@ -1,11 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import android.text.format.DateUtils;
 
 
@@ -50,12 +45,5 @@ public class BlockedBhv extends ViewableUserBhv implements Comparable<BlockedBhv
 	@Override
 	public Integer getNotibarContainerId() {
 		return null;
-	}
-	
-	public static List<BlockedBhv> getBlockedBhvListSorted(){
-		List<BlockedBhv> blockedBhvList = new ArrayList<BlockedBhv>(
-				UserBhvManager.getInstance().getBlockedBhvSet());
-		Collections.sort(blockedBhvList, Collections.reverseOrder());
-		return Collections.unmodifiableList(blockedBhvList);
 	}
 }

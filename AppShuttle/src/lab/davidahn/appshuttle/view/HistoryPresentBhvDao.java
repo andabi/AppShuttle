@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -44,7 +44,7 @@ public class HistoryPresentBhvDao {
 			String bhvName= cur.getString(1);
 			long recentPredictionTime = cur.getLong(2);
 			long recentPredictionScore = cur.getLong(3);
-			HistoryPresentBhv bhv = new HistoryPresentBhv(BaseUserBhv.create(bhvType, bhvName));
+			HistoryPresentBhv bhv = new HistoryPresentBhv(UserBhvManager.getInstance().getRegisteredUserBhv(bhvType, bhvName));
 			bhv.setRecentPredictionTime(recentPredictionTime);
 			bhv.setRecentPredictionScore(recentPredictionScore);
 			res.add(bhv);

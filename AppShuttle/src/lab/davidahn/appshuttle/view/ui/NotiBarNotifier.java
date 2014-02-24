@@ -9,6 +9,7 @@ import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import lab.davidahn.appshuttle.view.PresentBhv;
 import lab.davidahn.appshuttle.view.Viewable;
 import lab.davidahn.appshuttle.view.ViewableUserBhv;
@@ -53,7 +54,7 @@ public class NotiBarNotifier {
 	public void updateNotibar() {
 		List<ViewableUserBhv> viewableUserBhvList = new ArrayList<ViewableUserBhv>();
 		
-		List<FavoriteBhv> notifiableFavoriteBhvList = FavoriteBhv.getNotifiableFavoriteBhvList();
+		List<FavoriteBhv> notifiableFavoriteBhvList = FavoriteBhvManager.getInstance().getNotifiableFavoriteBhvList();
 		viewableUserBhvList.addAll(notifiableFavoriteBhvList.subList(0, getNumFavoriteElem()));
 		viewableUserBhvList.addAll(PresentBhv.getPresentBhvListFilteredSorted(getNumPredictedElem()));
 		
@@ -63,15 +64,16 @@ public class NotiBarNotifier {
 	}
 	
 	public int getNumElem() {
-		int maxNumElem = cxt.getPreferences().getInt("viewer.noti.max_num", 12);
+		int maxNumElem = cxt.getPreferences().getInt("viewer.noti.max_num", 24);
 		int NotibarIconAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_icon_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
 		int NotibarBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_bhv_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
 		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarBhvAreaWidth);
 	}
+	
 	public int getNumFavoriteElem() {
-		return Math.min(FavoriteBhv.getNotifiableFavoriteBhvList().size(), getNumElem());
+		return Math.min(FavoriteBhvManager.getInstance().getNotifiableFavoriteBhvList().size(), getNumElem());
 	}
 	
 	public int getNumPredictedElem() {

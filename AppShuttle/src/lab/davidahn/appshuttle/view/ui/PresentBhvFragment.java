@@ -4,7 +4,8 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
+import lab.davidahn.appshuttle.view.BlockedBhvManager;
+import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import lab.davidahn.appshuttle.view.PresentBhv;
 import android.app.ListFragment;
 import android.content.Context;
@@ -152,15 +153,13 @@ public class PresentBhvFragment extends ListFragment {
 	};
 	
 	private String doActionAndGetMsg(int pos, int itemId) {
-		UserBhvManager uBhvManager = UserBhvManager.getInstance();
-
 		PresentBhv presentBhv = presentBhvList.get(pos);
 		switch(itemId) {
 		case R.id.favorate:	
-			uBhvManager.favorite(presentBhv);
+			FavoriteBhvManager.getInstance().favorite(presentBhv);
 			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
 		case R.id.block:
-			uBhvManager.block(presentBhv);
+			BlockedBhvManager.getInstance().block(presentBhv);
 			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_block);
 		default:
 			return null;
