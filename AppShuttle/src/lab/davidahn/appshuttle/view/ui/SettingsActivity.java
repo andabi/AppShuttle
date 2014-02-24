@@ -1,10 +1,12 @@
 package lab.davidahn.appshuttle.view.ui;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.Reporter;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -53,13 +55,16 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
-			if (key.equals("settings_pref_noti_view_hide_key")) {
+			if (key.equals("settings_pref_sleep_mode_key")) {
 				NotiBarNotifier.getInstance().updateNotification();
+				getActivity().sendBroadcast(new Intent()
+				.setAction("lab.davidahn.appshuttle.SLEEP_MODE")
+				.putExtra("isOn", AppShuttlePreferences.isSleepMode()));
 			} else if(key.equals("settings_pref_system_area_icon_hide_key")){
 				NotiBarNotifier notifier = NotiBarNotifier.getInstance();
 				notifier.hideNotibar();
 				notifier.updateNotification();
-				if(notifier.isSystemAreaIconHidden()){
+				if(AppShuttlePreferences.isSystemAreaIconHidden()){
 					String warnMsg = getResources().getString(R.string.settings_pref_system_area_icon_hide_warn_msg);
 					Toast.makeText(getActivity(), warnMsg, Toast.LENGTH_LONG).show();
 				}

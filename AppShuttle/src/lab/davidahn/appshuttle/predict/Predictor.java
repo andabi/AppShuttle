@@ -13,8 +13,8 @@ import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
+import lab.davidahn.appshuttle.predict.matcher.LocationPositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
-import lab.davidahn.appshuttle.predict.matcher.PlacePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
@@ -118,17 +118,17 @@ public class Predictor {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup locMatcherGroup = new PositionMatcherGroup();
 		
-		locMatcherGroup.registerMatcher(new PlacePositionMatcher(
-			new PositionMatcherConf.Builder()
-				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY))
-				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
-				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
-				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
-				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_related_history", 3))
-				.setToleranceInMeter(0)
-				.build()
-			)
-		);
+//		locMatcherGroup.registerMatcher(new PlacePositionMatcher(
+//			new PositionMatcherConf.Builder()
+//				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY))
+//				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
+//				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
+//				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
+//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
+//				.setToleranceInMeter(0)
+//				.build()
+//			)
+//		);
 		locMatcherGroup.registerMatcher(new MovePositionMatcher(
 				new PositionMatcherConf.Builder()
 					.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY))
@@ -140,17 +140,17 @@ public class Predictor {
 					.build()
 				)
 			);
-		
-//		locMatcherGroup.registerMatcher(new LocationMatcher(
-//			new PositionMatcherConf.Builder()
-//				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", AlarmManager.INTERVAL_HOUR / 6))
-//				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.5f))
-//				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.loc.min_inverse_entropy", 0.2f))
-//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.loc.min_num_related_history", 5))
-//				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.loc.tolerance_in_meter", 50))
-//				.build()
-//			)
-//		);
+		locMatcherGroup.registerMatcher(new LocationPositionMatcher(
+			new PositionMatcherConf.Builder()
+				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", 5 * AlarmManager.INTERVAL_DAY))
+				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.loc.acceptance_delay", AlarmManager.INTERVAL_HOUR))
+				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.3f))
+				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.loc.min_inverse_entropy", 0.1f))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.position.loc.min_num_history", 3))
+				.setToleranceInMeter(preferenceSettings.getInt("matcher.position.loc.tolerance_in_meter", 50))
+				.build()
+			)
+		);
 		
 		registerMatcherGroup(locMatcherGroup);
 	}

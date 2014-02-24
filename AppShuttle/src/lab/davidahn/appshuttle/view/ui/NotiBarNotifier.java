@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
@@ -16,7 +17,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -44,18 +44,10 @@ public class NotiBarNotifier {
 	}
 	
 	public void updateNotification() {
-		if(isHidden())
+		if(AppShuttlePreferences.isSleepMode())
 			hideNotibar();
 		else
 			updateNotibar();
-	}
-	
-	public boolean isHidden(){
-		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		if(pref.getBoolean("settings_pref_noti_view_hide_key", false))
-			return true;
-		else
-			return false;
 	}
 	
 	public void updateNotibar() {
@@ -97,19 +89,11 @@ public class NotiBarNotifier {
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiView)
 				.setOngoing(true)
-				.setPriority((isSystemAreaIconHidden()) ? Notification.PRIORITY_MIN : Notification.PRIORITY_MAX)
+				.setPriority((AppShuttlePreferences.isSystemAreaIconHidden()) ? Notification.PRIORITY_MIN : Notification.PRIORITY_MAX)
 				.build();
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
 	}
 	
-	public boolean isSystemAreaIconHidden(){
-		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		if(pref.getBoolean("settings_pref_system_area_icon_hide_key", false))
-			return true;
-		else
-			return false;
-	}
-
 	private <T extends UserBhv & Viewable> RemoteViews createNotiRemoteViews(List<T> viewableUserBhvList) {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 

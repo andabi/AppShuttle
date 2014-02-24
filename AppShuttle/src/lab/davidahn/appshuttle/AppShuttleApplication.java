@@ -22,7 +22,7 @@ public class AppShuttleApplication extends Application {
 	public volatile static Map<UserBhv, PredictedBhv> predictedBhvMap;
 	public volatile static Map<UserBhv, PredictedPresentBhv> predictedPresentBhvMap;
 	public volatile static int numFavoriteNotifiable;
-
+	
 	public AppShuttleApplication(){}
 
 	public void onCreate(){
