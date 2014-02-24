@@ -46,14 +46,14 @@ public class AppShuttlePreferences {
 		editor.putLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putInt("matcher.recent.frequently.min_num_related_history", 3);
 		
-		editor.putLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR / 60);
+		editor.putLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_HOUR / 2);
 		editor.putLong("matcher.recent.instantly.acceptance_delay", 0);
 		editor.putInt("matcher.recent.instantly.min_num_related_history", 1);
 
 		editor.putLong("matcher.time.daily.duration", 4 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.time.daily.min_likelihood", Float.MIN_VALUE);
 		editor.putFloat("matcher.time.daily.min_inverse_entropy", Float.MIN_VALUE);
-		editor.putInt("matcher.time.daily.min_num_related_history", 2);
+		editor.putInt("matcher.time.daily.min_num_related_history", 3);
 		editor.putLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HOUR);
 		
 		editor.putLong("matcher.time.daily_weekday.duration", 7 * AlarmManager.INTERVAL_DAY);
