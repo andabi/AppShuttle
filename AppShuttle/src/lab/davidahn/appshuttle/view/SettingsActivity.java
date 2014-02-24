@@ -56,14 +56,14 @@ public class SettingsActivity extends PreferenceActivity {
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
 			if (key.equals("settings_pref_sleep_mode_key")) {
-				NotiBarNotifier.getInstance().doNotification();
+				NotiBarNotifier.getInstance().updateNotification();
 				getActivity().sendBroadcast(new Intent()
 				.setAction("lab.davidahn.appshuttle.SLEEP_MODE")
 				.putExtra("isOn", AppShuttlePreferences.isSleepMode()));
 			} else if(key.equals("settings_pref_system_area_icon_hide_key")){
 				NotiBarNotifier notifier = NotiBarNotifier.getInstance();
 				notifier.hideNotibar();
-				notifier.doNotification();
+				notifier.updateNotification();
 				if(AppShuttlePreferences.isSystemAreaIconHidden()){
 					String warnMsg = getResources().getString(R.string.settings_pref_system_area_icon_hide_warn_msg);
 					Toast.makeText(getActivity(), warnMsg, Toast.LENGTH_LONG).show();

@@ -5,15 +5,15 @@ import java.util.Date;
 import java.util.EnumMap;
 
 import lab.davidahn.appshuttle.bhv.UserBhv;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-public class PresentBhv extends BaseUserBhv implements Comparable<PresentBhv> {
+public class PresentBhv extends ViewableUserBhv implements Comparable<PresentBhv> {
 
 	private EnumMap<MatcherType, PredictedBhvInfo> startPredictionInfoByMatcherType;
 
 	public PresentBhv(UserBhv uBhv) {
-		super(uBhv.getBhvType(), uBhv.getBhvName());
+		super(uBhv);
 		startPredictionInfoByMatcherType = new EnumMap<MatcherType, PredictedBhvInfo>(
 				MatcherType.class);
 	}

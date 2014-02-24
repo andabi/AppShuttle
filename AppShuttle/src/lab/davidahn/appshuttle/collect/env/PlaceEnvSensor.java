@@ -8,6 +8,7 @@ import java.util.TimeZone;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 
 public class PlaceEnvSensor extends BaseEnvSensor {
 	private UserPlace prevUPlace;
@@ -40,7 +41,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 		
 		if(!locEnvSensor.isChanged() && prevUPlace.isValid()){
 			currUPlace = prevUPlace;
-//			Log.d("place", "(continue) "+currUPlace.toString());
+			Log.d("place", "(continue) "+currUPlace.toString());
 			return currUPlace;
 		}
 		
@@ -56,7 +57,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	    	Geocoder geocoder = new Geocoder(cxt);
     		List<Address> geocoded = geocoder.getFromLocation(currLocLatitude, currLocLongitude, 1);
 			if(geocoded == null || geocoded.isEmpty()) {
-//				Log.d("place", "(geocode = null) "+currUPlace.toString());
+				Log.d("place", "(geocode = null) "+currUPlace.toString());
 				return currUPlace;
 			}
 		
@@ -64,7 +65,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 			String addressLine = addr.getAddressLine(0);
 			
 			if(addressLine == null) {
-//				Log.d("place", "(addressLine = null) "+currUPlace.toString());
+				Log.d("place", "(addressLine = null) "+currUPlace.toString());
 				return currUPlace;
 			}
 
@@ -98,11 +99,11 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 
 			currUPlace = UserPlace.create(placeName, coordinates);
 			
-//			Log.i("place", currUPlace.toString());
+			Log.i("place", currUPlace.toString());
 			
 			return currUPlace;
 		} catch (IOException e) {
-//			Log.d("place", "(Geocoder IOException) "+currUPlace.toString());
+			Log.d("place", "(Geocoder IOException) "+ currUPlace.toString());
 
 			return currUPlace;
 		}

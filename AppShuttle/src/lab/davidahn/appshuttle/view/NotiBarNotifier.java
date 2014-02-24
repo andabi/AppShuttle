@@ -44,7 +44,7 @@ public class NotiBarNotifier {
 		return notifier;
 	}
 	
-	public void doNotification() {
+	public void updateNotification() {
 		if(AppShuttlePreferences.isSleepMode())
 			hideNotibar();
 		else
@@ -63,6 +63,8 @@ public class NotiBarNotifier {
 		viewableUserBhvList.addAll(PresentBhvManager.getPresentBhvListFilteredSorted(numPredictedElem));
 		
 		updateNotiView(viewableUserBhvList);
+		
+//		Log.d("notifier", "notibar updated.");
 	}
 	
 	public void hideNotibar() {
