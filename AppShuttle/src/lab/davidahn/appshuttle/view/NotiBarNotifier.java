@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -123,13 +124,24 @@ public class NotiBarNotifier {
 			 * 실행하고자 하는 앱 이름을 putExtra 에 넣어서
 			 * AppShuttleMainService 에 전달.
 			 */
-			Intent intent = new Intent(cxt, AppShuttleMainService.class);
+			Intent intent = new Intent(cxt, AppShuttleMainActivity.class);
 			Bundle extras = new Bundle();
 			extras.putBoolean("doExec", true);
 			extras.putSerializable("bhvType", viewableUserBhv.getBhvType());
 			extras.putString("bhvName", viewableUserBhv.getBhvName());
 			intent.putExtras(extras);
-			// TODO: 통계 wrapper 개선 방향 찾기
+			intent.setAction(Long.toString(System.currentTimeMillis()));		// (1)
+			Log.i("Noti", "intent flags = " + intent.getFlags());
+			
+			/* (1)에 대한 추가 설명
+			 * 똑같은 Activity.class에 대해 extra 값만 다른 여러 intent를 만드는 건데,
+			 * 첫 intent는 전달이 제대로 되지만, 그 다음 intent는 동작이 되지 않음.
+			 * 그에 대한 해결책
+			 * 
+			 * 참고 링크:
+			 * http://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the
+			 */
+			
 			if(intent != null){
 				/* 인자 설명:
 				 * request ID. 
@@ -141,8 +153,9 @@ public class NotiBarNotifier {
 				 * 예를 들면, 처음 1번 위치에 prediction 한 애의 extra가 게속 남아있음.
 				 * 그걸 방지하기 위해 업데이트를 하도록 설정.
 				 */
-				int intent_id = viewableUserBhvList.indexOf(viewableUserBhv);
-				PendingIntent pendingIntent = PendingIntent.getService(cxt, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				int intent_id = viewableUserBhvList.indexOf(viewableUserBhv) + 1;
+				PendingIntent pendingIntent = PendingIntent.getActivity(cxt, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				Log.i("Noti", "Intent added " + intent_id);
 				
 				if(pendingIntent != null)
 					notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, pendingIntent);

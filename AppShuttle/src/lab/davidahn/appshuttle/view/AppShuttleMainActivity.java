@@ -6,6 +6,9 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -23,6 +26,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -66,6 +70,35 @@ public class AppShuttleMainActivity extends Activity {
     			refresh.setVisibility(View.VISIBLE);
         }
     };
+    
+    private void handleExecutionIntent(Intent intent){
+		if (intent == null)
+			return;
+		
+		Bundle b = intent.getExtras();
+		if (b == null || (b.getBoolean("doExec", false) == false))
+			return;
+		
+		/* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
+		UserBhvType bhvType = UserBhvType.NONE;
+		String bhvName = b.getString("bhvName");
+		if (b.containsKey("bhvType"))
+			bhvType = (UserBhvType)b.getSerializable("bhvType");
+		
+		if (bhvType == UserBhvType.NONE || bhvName == null)
+			return;
+		
+		BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+		ViewableUserBhv vBhv = new ViewableUserBhv(uBhv);
+		
+		Log.i("MainActivity", "Exec req " + uBhv.toString());
+
+		StatCollector.getInstance().notifyBhvTransition(uBhv, true);	// 통계 데이터 전송
+		
+		Intent launchIntent = vBhv.getLaunchIntent();
+		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
+		this.startActivity(launchIntent);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +195,14 @@ public class AppShuttleMainActivity extends Activity {
 		inflater.inflate(R.menu.actionbarmenu, menu);
 
 		return true;
+	}
+	
+	@Override
+	public void onNewIntent(Intent intent){
+		if (intent != null) {
+			Log.i("MainActivity", "onNewIntent:" + intent.toString());
+			handleExecutionIntent(intent);
+		}
 	}
 		
 	public static CharSequence getActionbarTitle(Context cxt, int position) {

@@ -9,7 +9,7 @@ public class AppShuttlePreferences {
 		SharedPreferences.Editor editor = pref.edit();
 		
 		//general
-		editor.putBoolean("mode.debug", false);
+		editor.putBoolean("mode.debug", true);
 		editor.putString("database.name", "AppShuttle.db");
 
 		//collection

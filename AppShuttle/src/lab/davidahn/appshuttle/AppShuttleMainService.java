@@ -165,13 +165,13 @@ public class AppShuttleMainService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
-		handleExecutionIntent(intent);
+		// handleExecutionIntent(intent);
 		return START_STICKY;
 	}
 	
 	@Override
 	public IBinder onBind(Intent intent){
-		handleExecutionIntent(intent);
+		// handleExecutionIntent(intent);
 		return null;
 	}
 
