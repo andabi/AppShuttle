@@ -2,10 +2,15 @@ package lab.davidahn.appshuttle.predict;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.bhv.UserBhv;
@@ -163,7 +168,19 @@ public class Predictor {
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
+		Date time_1 = new Date();
+		
 		PresentBhvManager.extractPresentBhvs(doPredictAndExtractPredictedBhvInfos(currUserCxt));
+		
+		Tracker easyTracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
+		
+		easyTracker.send(MapBuilder
+				.createTiming("algorithm",    // Timing category (required)
+							(new Date()).getTime() - time_1.getTime(),       // Timing interval in milliseconds (required)
+							"overall_prediction_cost",  // Timing name
+							null)           // Timing label
+				.build()
+			);
 	}
 	
 	private Map<UserBhv, PredictedBhvInfo> doPredictAndExtractPredictedBhvInfos(SnapshotUserCxt currUserCxt){

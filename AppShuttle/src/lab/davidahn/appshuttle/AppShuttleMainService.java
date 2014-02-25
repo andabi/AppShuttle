@@ -10,6 +10,7 @@ import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.PredictionService;
+import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.NotiBarNotifier;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -134,8 +135,8 @@ public class AppShuttleMainService extends Service {
 		ViewableUserBhv vBhv = new ViewableUserBhv(uBhv);
 		
 		Log.i("Service", "Exec req " + uBhv.toString());
-		
-		//StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
+
+		StatCollector.getInstance().notifyBhvTransition(uBhv, true);
 		Intent launchIntent = vBhv.getLaunchIntent();
 		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
 		this.startActivity(launchIntent);

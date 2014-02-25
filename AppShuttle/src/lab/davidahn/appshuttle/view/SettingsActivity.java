@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.Reporter;
@@ -48,6 +50,19 @@ public class SettingsActivity extends PreferenceActivity {
 			super.onPause();
 			getPreferenceScreen().getSharedPreferences()
 			.unregisterOnSharedPreferenceChangeListener(this);
+		}
+		
+		@Override
+		public void onStart() {
+			super.onStart();
+			// FIXME: Is this okay?
+			EasyTracker.getInstance(AppShuttleApplication.getContext()).activityStart(getActivity());
+		}
+		
+		@Override
+		public void onStop() {
+			super.onStop();
+			EasyTracker.getInstance(AppShuttleApplication.getContext()).activityStop(getActivity());
 		}
 
 		@Override

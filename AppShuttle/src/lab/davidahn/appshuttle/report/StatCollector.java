@@ -3,12 +3,17 @@ package lab.davidahn.appshuttle.report;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
+
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
@@ -113,10 +118,38 @@ public class StatCollector {
 	 * 사용자 행동의 변화를 발견할 때마다 매번 보내야 하는 통계자료의 전송
 	 * @param observedData
 	 */
-	private void sendEachEntry(StatEntry to_be_decided){
-		// 통계 사이트 스펙에 맞는 API 호출
+	private void sendEachEntry(StatEntry entry){
+		Tracker tracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
 		
-		// TODO: Send statistics data to the server
+		String strPredicted = (entry.isPredicted == true ? "Predicted" : "Not Predicted");
+		String lblPredicted = (entry.isPredicted == true ? "Unknown Matcher" : null); // TODO: Matcher 키워드 추가
+		long valuePredicted = (entry.isPredicted == true ? 100 : 0);
+		
+		String strClicked = (entry.isClicked == true ? "Clicked" : "Not Clicked");
+		long valueClicked = (entry.isClicked == true ? 100 : 0);
+		
+		/* FIXME:
+		 * Clicked and Predicted 일 경우,
+		 * 사용자가 click 하게 되면 통계가 누게가 됨.
+		 * 30초 내에 bhv가 바뀌지 않으면 상관 없지만,
+		 * 만약 30초 내에 또 다른 Bhv로 바뀐다면 Clicked 쪽이 통계에서 더 많이 잡힐 수 있음.
+		 * 
+		 * 이에 대한 bias 수정
+		 */
+		//Clicked / Predicted 쪽이 가중치가 더 있음. 그에 대한 대처 방안
+		
+		// tracker.set(Fields.customDimension(1), strPredicted + strClicked);
+		// Accuracy tracking
+		tracker.send(MapBuilder
+				.createEvent("algorithm", strPredicted, lblPredicted, valuePredicted)
+				.build()
+			);
+		
+		// Usage tracking
+		tracker.send(MapBuilder
+				.createEvent("usage", strClicked, entry.bhvName, valueClicked)
+				.build()
+			);
 		
 		return;
 	}
@@ -177,8 +210,6 @@ public class StatCollector {
 		
 		statReturn.click_ratio = (int)(statReturn.clicked_count * 100.0f / statReturn.total_count);
 		statReturn.hit_ratio = (int)(statReturn.hit_count * 100.0f / statReturn.total_count);
-		
-		// TODO: update lastSent (DB에 기록해야 할 듯)
 		
 		// You can add additional measures.
 		

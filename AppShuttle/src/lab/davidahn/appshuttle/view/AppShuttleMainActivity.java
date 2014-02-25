@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
@@ -125,6 +126,19 @@ public class AppShuttleMainActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		// FIXME: Is this okay?
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	@Override
