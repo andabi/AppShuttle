@@ -25,7 +25,6 @@ public class DurationUserEnvDao {
 	}
 
 	public void store(DurationUserEnv durationUserEnv) {
-//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 		Gson gson = new Gson();
 		
 		ContentValues row = new ContentValues();
@@ -36,9 +35,9 @@ public class DurationUserEnvDao {
 		row.put("env_type", durationUserEnv.getEnvType().toString());
 		row.put("user_env", gson.toJson(durationUserEnv.getUserEnv()));
 		db.insert("history_user_env", null, row);
-		
 //		Log.i("stored history_user_env", durationUserEnv.toString());
 	}
+//		Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").create();
 	
 //	public <T extends UserEnv> List<DurationUserEnv> retrieve(Date fromTime, Date toTime, EnvType envType){
 //		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();

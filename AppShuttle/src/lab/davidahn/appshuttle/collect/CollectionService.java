@@ -23,6 +23,7 @@ import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvSensor;
 import lab.davidahn.appshuttle.collect.env.EnvType;
+import lab.davidahn.appshuttle.collect.env.HeadsetEnvSensor;
 import lab.davidahn.appshuttle.collect.env.LocEnvSensor;
 import lab.davidahn.appshuttle.collect.env.PlaceEnvSensor;
 import lab.davidahn.appshuttle.collect.env.SpeedEnvSensor;
@@ -55,6 +56,7 @@ public class CollectionService extends Service {
     	sensors.put(EnvType.LOCATION, LocEnvSensor.getInstance());
     	sensors.put(EnvType.PLACE, PlaceEnvSensor.getInstance());
     	sensors.put(EnvType.SPEED, SpeedEnvSensor.getInstance());
+    	sensors.put(EnvType.HEADSET, HeadsetEnvSensor.getInstance());
     }
     
     private void registerCollectors() {

@@ -9,7 +9,7 @@ public class AppShuttlePreferences {
 		SharedPreferences.Editor editor = pref.edit();
 		
 		//general
-		editor.putBoolean("mode.debug", false);
+		editor.putBoolean("mode.debug", true);
 		editor.putString("database.name", "AppShuttle.db");
 
 		//collection
@@ -21,6 +21,7 @@ public class AppShuttlePreferences {
 		editor.putLong("collection.location.tolerance.time", 25000);
 		editor.putInt("collection.location.tolerance.distance", 500);
 		editor.putInt("collection.place.num_address_prefix_words", 6);
+		editor.putLong("collection.headset.auto_extraction_duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES);
 		
 		editor.putLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
 		editor.putLong("collection.call.pre.period", 6 * AlarmManager.INTERVAL_DAY);
