@@ -31,12 +31,12 @@ public class HistoryPresentBhvDao {
 //		Log.d("PresentBhvDao", "store: " + bhv.toString());
 	}
 	
-	public List<HistoryPresentBhv> retrieveRecent(int topN) {
+	public List<HistoryPresentBhv> retrieveRecent() {
 		Cursor cur = db.rawQuery(
 				"SELECT * " +
 				"FROM history_present_bhv " +
-				"ORDER BY recent_pred_time DESC, recent_pred_score DESC " +
-				"LIMIT " + topN
+				"ORDER BY recent_pred_time DESC, recent_pred_score DESC "
+//				"LIMIT " + topN
 				, null);
 		List<HistoryPresentBhv> res = new ArrayList<HistoryPresentBhv>();
 		while (cur.moveToNext()) {

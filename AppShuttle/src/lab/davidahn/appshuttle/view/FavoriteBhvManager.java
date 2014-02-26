@@ -45,11 +45,11 @@ public class FavoriteBhvManager {
 		return res;
 	}
 
-	public synchronized ViewableUserBhv getFavoriteBhv(UserBhv uBhv) {
+	public synchronized FavoriteBhv getFavoriteBhv(UserBhv uBhv) {
 		return favoriteBhvs.get(uBhv);
 	}
 
-	public synchronized FavoriteBhv favorite(ViewableUserBhv uBhv) {
+	public synchronized FavoriteBhv favorite(UserBhv uBhv) {
 		if (favoriteBhvs.containsKey(uBhv))
 			return null;
 

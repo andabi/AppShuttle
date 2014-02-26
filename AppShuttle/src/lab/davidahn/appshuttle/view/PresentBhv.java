@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -78,37 +79,82 @@ public abstract class PresentBhv extends ViewableUserBhv {
 		if(topN < 0)
 			throw new IllegalArgumentException("the number of presentBhv < 0");
 
-		List<PredictedPresentBhv> predictedPresentBhvList = PredictedPresentBhv.getPredictedPresentBhvListFilteredSorted();
+		HistoryPresentBhv.storeHistoryPresentBhvList(HistoryPresentBhv.extractHistoryPresentBhvList());
+		List<PredictedPresentBhv> predictedPresentBhvListSorted = PredictedPresentBhv.getPredictedPresentBhvListSorted();
+		PredictedPresentBhv.updatePredictedPresentBhvList(predictedPresentBhvListSorted);
+
+		List<PresentBhv> predictedPresentBhvListFilteredSorted = new ArrayList<PresentBhv>();
+		predictedPresentBhvListFilteredSorted.addAll(predictedPresentBhvListSorted);
+		predictedPresentBhvListFilteredSorted = getEligiblePresentList(predictedPresentBhvListFilteredSorted);
+		
+		List<HistoryPresentBhv> historyPresentBhvListSorted = HistoryPresentBhv.retrieveHistoryPresentBhvListSorted();
+		List<PresentBhv> historyPresentBhvListFilteredSorted = new ArrayList<PresentBhv>();
+		for(HistoryPresentBhv historyPresentBhv : historyPresentBhvListSorted)
+			if(!predictedPresentBhvListFilteredSorted.contains(historyPresentBhv))
+				historyPresentBhvListFilteredSorted.add(historyPresentBhv);
+		historyPresentBhvListFilteredSorted = getEligiblePresentList(historyPresentBhvListFilteredSorted);
 		int minNumPresentBhv = NotiBarNotifier.getInstance().getNumPredictedElem();
-		int numHistoryPresentBhv = Math.max(minNumPresentBhv - predictedPresentBhvList.size(), 0);
-		List<HistoryPresentBhv> historyPresentBhvList = HistoryPresentBhv.getHistoryPresentBhvListFilteredSorted(numHistoryPresentBhv);
+		int numHistoryPresentBhv = Math.max(minNumPresentBhv - predictedPresentBhvListFilteredSorted.size(), 0);
+		historyPresentBhvListFilteredSorted = historyPresentBhvListFilteredSorted.subList(0, Math.min(historyPresentBhvListFilteredSorted.size(), numHistoryPresentBhv));
 
 		List<PresentBhv> presentBhvList = new ArrayList<PresentBhv>();
-		presentBhvList.addAll(predictedPresentBhvList);
-		presentBhvList.addAll(historyPresentBhvList);
+		presentBhvList.addAll(predictedPresentBhvListFilteredSorted);
+		presentBhvList.addAll(historyPresentBhvListFilteredSorted);
 		
 		return presentBhvList.subList(0, Math.min(presentBhvList.size(), topN));
 	}
+	
+	public static List<PresentBhv> getEligiblePresentList(List<PresentBhv> list) {
+		List<PresentBhv> filteredPresentBhvList = new ArrayList<PresentBhv>(list);
+		filteredPresentBhvList = getBlockedBhvFilteredList(filteredPresentBhvList);
+		filteredPresentBhvList = getFavoriteBhvFilteredList(filteredPresentBhvList);
+		filteredPresentBhvList = getCurrentBhvFilteredList(filteredPresentBhvList);
+		filteredPresentBhvList = getSensorOnBhvFilteredList(filteredPresentBhvList);
+		return filteredPresentBhvList;
+	}
 
-	protected static boolean isEligible(UserBhv uBhv) {
-		if (BlockedBhvManager.getInstance().getBlockedBhvSet().contains(uBhv))
-			return false;
-		else if ((FavoriteBhvManager.getInstance()).getFavoriteBhvSet().contains(uBhv)
-				&& ((FavoriteBhv) FavoriteBhvManager.getInstance().getFavoriteBhv(uBhv))
-						.isNotifiable())
-			return false;
-		else if (uBhv.getBhvType() == UserBhvType.APP
-				&& uBhv.getBhvName().equals(
-						AppBhvCollector.getInstance().getPresentApp(1, true)
-								.get(0))) {
-			return false;
-		} else if (uBhv.getBhvType() == UserBhvType.SENSOR_ON
-				&& uBhv.getBhvName().equals(SensorType.WIFI.name())) {
-			WifiManager wifi = (WifiManager) AppShuttleApplication.getContext()
-					.getSystemService(Context.WIFI_SERVICE);
-			if (wifi.isWifiEnabled())
-				return false;
+	private static List<PresentBhv> getBlockedBhvFilteredList(Collection<PresentBhv> presentBhvList) {
+		List<PresentBhv> res = new ArrayList<PresentBhv>();
+		for(PresentBhv bhv : presentBhvList){
+			if(BlockedBhvManager.getInstance().getBlockedBhvSet().contains(bhv))
+				continue;
+			res.add(bhv);
 		}
-		return true;
+		return res;
+	}
+	
+	private static List<PresentBhv> getFavoriteBhvFilteredList(Collection<PresentBhv> presentBhvList) {
+		List<PresentBhv> res = new ArrayList<PresentBhv>();
+		FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+		for(PresentBhv bhv : presentBhvList){
+			if(favoriteBhvManager.getFavoriteBhvSet().contains(bhv)
+					&& favoriteBhvManager.getFavoriteBhv(bhv).isNotifiable())
+				continue;
+			res.add(bhv);
+		}
+		return res;
+	}
+	
+	private static List<PresentBhv> getCurrentBhvFilteredList(Collection<PresentBhv> presentBhvList) {
+		List<PresentBhv> res = new ArrayList<PresentBhv>();
+		for(PresentBhv bhv : presentBhvList){
+			if(bhv.getBhvType() == UserBhvType.APP
+					&& bhv.getBhvName().equals(AppBhvCollector.getInstance().getPresentApp(1, true).get(0)))
+				continue;
+			res.add(bhv);
+		}
+		return res;
+	}
+	
+	private static List<PresentBhv> getSensorOnBhvFilteredList(Collection<PresentBhv> presentBhvList) {
+		List<PresentBhv> res = new ArrayList<PresentBhv>();
+		for(PresentBhv bhv : presentBhvList){
+			if(bhv.getBhvType() == UserBhvType.SENSOR_ON && bhv.getBhvName().equals(SensorType.WIFI.name())){
+				WifiManager wifi = (WifiManager)AppShuttleApplication.getContext().getSystemService(Context.WIFI_SERVICE);
+				if(wifi.isWifiEnabled()) continue;
+			}
+			res.add(bhv);
+		}
+		return res;
 	}
 }

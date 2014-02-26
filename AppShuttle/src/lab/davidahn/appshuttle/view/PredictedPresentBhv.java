@@ -93,17 +93,10 @@ public class PredictedPresentBhv extends PresentBhv implements Comparable<Predic
 		AppShuttleApplication.predictedPresentBhvMap = map;
 	}
 
-	public static List<PredictedPresentBhv> getPredictedPresentBhvListFilteredSorted() {
-		HistoryPresentBhv.storeHistoryPresentBhvList(HistoryPresentBhv.extractHistoryPresentBhvList());
+	public static List<PredictedPresentBhv> getPredictedPresentBhvListSorted() {
 		List<PredictedPresentBhv> predictedPresentBhvList = extractPredictedPresentBhvList();
-		updatePredictedPresentBhvList(predictedPresentBhvList);
-		
-		List<PredictedPresentBhv> filteredPredictedPresentBhvList = new ArrayList<PredictedPresentBhv>();
-		for(PredictedPresentBhv bhv : predictedPresentBhvList)
-			if (isEligible(bhv))
-				filteredPredictedPresentBhvList.add(bhv);
-		Collections.sort(filteredPredictedPresentBhvList, Collections.reverseOrder());
-		return filteredPredictedPresentBhvList;
+		Collections.sort(predictedPresentBhvList, Collections.reverseOrder());
+		return predictedPresentBhvList;
 	}
 
 	public static List<PredictedPresentBhv> extractPredictedPresentBhvList() {

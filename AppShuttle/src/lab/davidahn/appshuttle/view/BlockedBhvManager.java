@@ -35,11 +35,11 @@ public class BlockedBhvManager {
 		return new HashSet<BlockedBhv>(blockedBhvs.values());
 	}
 
-	public synchronized ViewableUserBhv getBlockedBhv(UserBhv uBhv) {
+	public synchronized BlockedBhv getBlockedBhv(UserBhv uBhv) {
 		return blockedBhvs.get(uBhv);
 	}
 
-	public synchronized BlockedBhv block(ViewableUserBhv uBhv) {
+	public synchronized BlockedBhv block(UserBhv uBhv) {
 		if (blockedBhvs.containsKey(uBhv))
 			return null;
 

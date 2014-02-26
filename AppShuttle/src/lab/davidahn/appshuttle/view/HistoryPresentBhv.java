@@ -5,7 +5,6 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
-import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.text.format.DateUtils;
 
 public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryPresentBhv>{
@@ -77,13 +76,8 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 		return res;
 	}
 	
-	public static List<HistoryPresentBhv> getHistoryPresentBhvListFilteredSorted(int num) {
-		List<HistoryPresentBhv> filteredHisPresentBhvList = new ArrayList<HistoryPresentBhv>();
-		for(HistoryPresentBhv bhv : retrieveHistoryPresentBhvListSorted(NotiBarNotifier.getInstance().getNumElem()))
-			if (isEligible(bhv) && !PredictedPresentBhv.getPredictedPresentBhvList().contains(bhv))
-				filteredHisPresentBhvList.add(bhv);
-//		Collections.sort(filteredHisPresentBhvList, Collections.reverseOrder());
-		return filteredHisPresentBhvList.subList(0, Math.min(filteredHisPresentBhvList.size(), num));
+	public static List<HistoryPresentBhv> retrieveHistoryPresentBhvListSorted(){
+		return HistoryPresentBhvDao.getInstance().retrieveRecent();
 	}
 	
 	public static void storeHistoryPresentBhvList(List<HistoryPresentBhv> bhvList){
@@ -95,7 +89,4 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 		HistoryPresentBhvDao.getInstance().store(bhv);
 	}
 	
-	public static List<HistoryPresentBhv> retrieveHistoryPresentBhvListSorted(int topN){
-		return HistoryPresentBhvDao.getInstance().retrieveRecent(topN);
-	}
 }
