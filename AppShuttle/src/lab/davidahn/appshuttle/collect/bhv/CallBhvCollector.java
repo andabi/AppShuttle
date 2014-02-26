@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.database.Cursor;

@@ -76,7 +76,7 @@ public class LocationPositionMatcher extends PositionMatcher {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= conf.getMinNumHistory());
+		assert(matcherCountUnitList.size() >= conf.getMinNumRelatedHistory());
 		
 		double inverseEntropy = 0;
 		Set<UserLoc> uniqueLoc = new HashSet<UserLoc>();

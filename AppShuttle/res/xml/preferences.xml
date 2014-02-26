@@ -41,7 +41,7 @@
             android:summary="@string/settings_info_feedback_summary"
             android:title="@string/settings_info_feedback" >
         </EditTextPreference>
-        <lab.davidahn.appshuttle.view.VersionPreference 
+        <lab.davidahn.appshuttle.view.ui.VersionPreference 
             android:title="@string/settings_info_version" />
     </PreferenceCategory>
 

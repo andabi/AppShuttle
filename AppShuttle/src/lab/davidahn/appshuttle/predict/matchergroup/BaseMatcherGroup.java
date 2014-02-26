@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.BaseMatcherElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;

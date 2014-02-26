@@ -1,16 +1,13 @@
 package lab.davidahn.appshuttle.predict;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.bhv.UserBhv;
-import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.matcher.DailyTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
 import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
@@ -59,7 +56,7 @@ public class Predictor {
 					.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6))
 					.setMinLikelihood(0.0)
 					.setMinInverseEntropy(0.0)
-					.setMinNumHistory(preferenceSettings.getInt("matcher.recent.frequently.min_num_history", 3))
+					.setMinNumHistory(preferenceSettings.getInt("matcher.recent.frequently.min_num_related_history", 3))
 					.build()
 				));
 		((MatcherGroup)recentMatcherGroup).registerMatcher(new InstantlyRecentMatcher(
@@ -68,7 +65,7 @@ public class Predictor {
 				.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0))
 				.setMinLikelihood(0.0)
 				.setMinInverseEntropy(0.0)
-				.setMinNumHistory(preferenceSettings.getInt("matcher.recent.instantly.min_num_history", 1))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.recent.instantly.min_num_related_history", 1))
 				.build()
 			));
 
@@ -86,7 +83,7 @@ public class Predictor {
 			.setDuration(preferenceSettings.getLong("matcher.time.daily.duration", 5 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily.min_inverse_entropy", 0.2f))
-			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_history", 3))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily.min_num_related_history", 3))
 			.build()
 		));
 
@@ -97,7 +94,7 @@ public class Predictor {
 			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekday.duration", 7 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekday.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekday.min_inverse_entropy", 0.2f))
-			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekday.min_num_history", 3))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekday.min_num_related_history", 3))
 			.build()
 		));
 		
@@ -108,7 +105,7 @@ public class Predictor {
 			.setDuration(preferenceSettings.getLong("matcher.time.daily_weekend.duration", 21 * AlarmManager.INTERVAL_DAY))
 			.setMinLikelihood(preferenceSettings.getFloat("matcher.time.daily_weekend.min_likelihood", 0.5f))
 			.setMinInverseEntropy(preferenceSettings.getFloat("matcher.time.daily_weekend.min_inverse_entropy", 0.2f))
-			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekend.min_num_history", 3))
+			.setMinNumHistory(preferenceSettings.getInt("matcher.time.daily_weekend.min_num_related_history", 3))
 			.build()
 		));
 	
@@ -127,12 +124,11 @@ public class Predictor {
 					.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
 					.setMinLikelihood(preferenceSettings.getFloat("matcher.position.move.min_likelihood", 0.3f))
 					.setMinInverseEntropy(Float.MIN_VALUE)
-					.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_history", 3))
+					.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_related_history", 3))
 					.setToleranceInMeter(0)
 					.build()
 				)
 			);
-
 		((MatcherGroup)locMatcherGroup).registerMatcher(new LocationPositionMatcher(
 			new PositionMatcherConf.Builder()
 				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", 3 * AlarmManager.INTERVAL_DAY))
@@ -158,16 +154,12 @@ public class Predictor {
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
-		PresentBhvManager.extractPresentBhvs(doPredictAndExtractPredictedBhvInfos(currUserCxt));
-	}
-	
-	private Map<UserBhv, PredictedBhvInfo> doPredictAndExtractPredictedBhvInfos(SnapshotUserCxt currUserCxt){
 		if(currUserCxt == null)
-			return Collections.emptyMap();
+			return ;
 		
-		Map<UserBhv, PredictedBhvInfo> predictedBhvInfos = new HashMap<UserBhv, PredictedBhvInfo>();
+		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
-		for(UserBhv uBhv : userBhvManager.getBhvSet()){
+		for(UserBhv uBhv : userBhvManager.getRegisteredBhvSet()){
 			EnumMap<MatcherType, MatcherResultElem> matcherMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
 			for(MatcherElem matcher : matcherList){
 				MatcherResultElem matcherResult = matcher.matchAndGetResult(uBhv, currUserCxt);
@@ -179,17 +171,15 @@ public class Predictor {
 			if(matcherMap.isEmpty())
 				continue;
 			
-			PredictedBhvInfo predictedBhvInfo = new PredictedBhvInfo(currUserCxt.getTimeDate(), 
+			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
 					uBhv, matcherMap, computePredictionScore(matcherMap));
 			
-			predictedBhvInfos.put(uBhv, predictedBhvInfo);
+			predictedBhvList.add(predictedBhv);
 		}
-		
-		return predictedBhvInfos;
+		PredictedBhv.updatePredictedBhvList(predictedBhvList);
 	}
-	
 	private double computePredictionScore(EnumMap<MatcherType, MatcherResultElem> matcherResults){
 		double PredictionScore = 0;
 		
