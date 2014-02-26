@@ -12,7 +12,7 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.predict.matcher.conf.BaseMatcherConf;
 
-public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher {
+public abstract class BaseMatcher<C extends BaseMatcherConf> extends BaseMatcherElem {
 	protected C conf;
 	
 	public BaseMatcher(C _conf) {
@@ -20,16 +20,10 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 	}
 
 	@Override
-	public abstract MatcherType getMatcherType();
-
-	@Override
 	public MatcherResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt) {
 		if(!isCurrCxtMetPreConditions(currUCxt))
 			return null;
 
-//		if(!isBhvMetCommonPreConditions(uBhv))
-//			return null;
-		
 		if(!isBhvMetPreConditions(uBhv))
 			return null;
 		
@@ -67,7 +61,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		MatcherResult matcherResult = new MatcherResult(currUCxt.getTimeDate(),
 				currUCxt.getTimeZone(), currUCxt.getUserEnvs());
 		matcherResult.setUserBhv(uBhv);
-		matcherResult.setMatcherType(getMatcherType());
+		matcherResult.setMatcherType(getType());
 		matcherResult.setNumTotalHistory(numTotalHistory);
 		matcherResult.setNumRelatedHistory(numRelatedHistory);
 		matcherResult.setRelatedHistory(relatedHistory);
@@ -75,42 +69,13 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		matcherResult.setInverseEntropy(inverseEntropy);
 		matcherResult.setScore(computeScore(matcherResult));
 
-		// Log.d("matchedCxt: matcher type",
-		// matchedCxt.getMatcherType().toString());
-
 		return matcherResult;
 	}
 	
-//	protected List<MatcherCountUnit> mergeMatcherCountUnit(List<MatcherCountUnit> matcherCountUnitList) {
-//		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-//
-//		MatcherCountUnit lastUnit = null;
-//		for(MatcherCountUnit unit : matcherCountUnitList){
-//			if(lastUnit == null){
-//				continue;
-//			}
-//			
-//			long time = unit.getDurationUserBhvList().get(0).getTimeDate().getTime();
-//			long lastTime = lastUnit.getDurationUserBhvList().get(0).getTimeDate().getTime();
-//			if(time - lastTime	>= conf.getAcceptanceDelay()){
-//				res.add(lastUnit);
-//			}
-//			
-//			lastUnit = unit;
-//		}
-//		res.add(lastUnit);
-//		
-//		return res;
-//	}
-
 	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt){
 		return true;
 	}
 
-//	protected boolean isBhvMetCommonPreConditions(UserBhv uBhv) {
-//		return true;
-//	}
-	
 	protected boolean isBhvMetPreConditions(UserBhv uBhv){
 		return true;
 	}
@@ -149,62 +114,4 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 
 	protected abstract double computeScore(MatcherResult matcherResult);
 
-	// if(numRelatedHistory >= minNumHistory && likelihood >= minLikelihood)
-	// matchedCxt.setMatched(true);
-	// else
-	// matchedCxt.setMatched(false);
-
-	// Map<UserBhv, Integer> numTotalHistoryByBhv = new HashMap<UserBhv,
-	// Integer>();
-	// Map<UserBhv, Integer> numRelatedHistoryByBhv = new HashMap<UserBhv,
-	// Integer>();
-	// Map<UserBhv, SparseArray<Double>> relatedHistoryByBhv = new
-	// HashMap<UserBhv, SparseArray<Double>>();
-
-	// for(RfdUserCxt durationUserBhv : durationUserBhvList) {
-	// int contextId = durationUserBhv.getContextId();
-	// UserBhv userBhv = durationUserBhv.getBhv();
-	//
-	// //numTotalHistoryByBhv
-	// if(!numTotalHistoryByBhv.containsKey(userBhv))
-	// numTotalHistoryByBhv.put(userBhv, 1);
-	// numTotalHistoryByBhv.put(userBhv, numTotalHistoryByBhv.get(userBhv) + 1);
-	//
-	// double relatedness = computeRelatedness(durationUserBhv, uEnv);
-	// if(relatedness > 0 ) {
-	// //numRelatedHistoryByBhv
-	// if(!numRelatedHistoryByBhv.containsKey(userBhv))
-	// numRelatedHistoryByBhv.put(userBhv, 0);
-	// numRelatedHistoryByBhv.put(userBhv, numRelatedHistoryByBhv.get(userBhv) +
-	// 1);
-	//
-	// //relatedHistoryByBhv
-	// if(!relatedHistoryByBhv.containsKey(userBhv))
-	// relatedHistoryByBhv.put(userBhv, new SparseArray<Double>());
-	// SparseArray<Double> relatedHistoryMap = relatedHistoryByBhv.get(userBhv);
-	// relatedHistoryMap.put(contextId, relatedness);
-	// relatedHistoryByBhv.put(userBhv, relatedHistoryMap);
-	// }
-	// }
-
-	// for(UserBhv userBhv : relatedHistoryByBhv.keySet()){
-	// int numRelatedHistory = numRelatedHistoryByBhv.get(userBhv);
-	//
-	// if(numRelatedHistory < minNumHistory) continue;
-	//
-	// MatchedCxt matchedCxt = new MatchedCxt(uEnv);
-	// matchedCxt.setUserBhv(userBhv);
-	// matchedCxt.setCondition(conditionName());
-	// matchedCxt.setNumTotalCxt(numTotalHistoryByBhv.get(userBhv));
-	// matchedCxt.setNumRelatedCxt(numRelatedHistoryByBhv.get(userBhv));
-	// matchedCxt.setRelatedCxt(relatedHistoryByBhv.get(userBhv));
-	// double likelihood = computeLikelihood(matchedCxt);
-	//
-	// if(likelihood < minLikelihood) continue;
-	//
-	// matchedCxt.setLikelihood(likelihood);
-	//
-	// res.add(matchedCxt);
-	// }
-	// return res;
 }

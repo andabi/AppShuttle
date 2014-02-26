@@ -7,40 +7,27 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
-import lab.davidahn.appshuttle.predict.matcher.Matcher;
-import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
+import lab.davidahn.appshuttle.predict.matcher.BaseMatcherElem;
+import lab.davidahn.appshuttle.predict.matcher.MatcherElem;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-public abstract class BaseMatcherGroup implements MatcherGroup {
-	protected MatcherGroupType matcherGroupType;
-	protected int priority;
-	protected EnumMap<MatcherType, Matcher> matchers;
+public abstract class BaseMatcherGroup extends BaseMatcherElem {
+	protected EnumMap<MatcherType, MatcherElem> matchers;
 	
-	public BaseMatcherGroup(MatcherGroupType _matcherType, int _priority) {
-		matcherGroupType = _matcherType;
-		priority = _priority;
-		matchers = new EnumMap<MatcherType, Matcher>(MatcherType.class);
+	public BaseMatcherGroup() {
+		matchers = new EnumMap<MatcherType, MatcherElem>(MatcherType.class);
 	}
 
 	@Override
-	public MatcherGroupType getMatcherGroupType(){
-		return matcherGroupType;
-	}
-
-	@Override
-	public int getPriority() {
-		return priority;
-	}
-	
-	@Override
-	public MatcherGroupResult matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt){
+	public MatcherResultElem matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt){
 		
 		if(matchers.isEmpty())
 			return null;
 
-		List<MatcherResult> matcherResults = new ArrayList<MatcherResult>();
-		for(Matcher matcher : matchers.values()) {
-			MatcherResult matcherResult = matcher.matchAndGetResult(uBhv, currUCxt);
+		List<MatcherResultElem> matcherResults = new ArrayList<MatcherResultElem>();
+		for(MatcherElem matcher : matchers.values()) {
+			MatcherResultElem matcherResult = matcher.matchAndGetResult(uBhv, currUCxt);
 			if(matcherResult != null)
 				matcherResults.add(matcherResult);
 		}
@@ -49,9 +36,9 @@ public abstract class BaseMatcherGroup implements MatcherGroup {
 			return null;
 		
 		MatcherGroupResult matcherGroupResult = new MatcherGroupResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), currUCxt.getUserEnvs());
-		matcherGroupResult.setMatcherGroupType(matcherGroupType);
-		matcherGroupResult.setTargetUserBhv(uBhv);
-		for(MatcherResult matcherResult : matcherResults)
+		matcherGroupResult.setMatcherType(getType());
+		matcherGroupResult.setUserBhv(uBhv);
+		for(MatcherResultElem matcherResult : matcherResults)
 			matcherGroupResult.addMatcherResult(matcherResult);
 		matcherGroupResult.setScore(computeScore(matcherResults));
 		matcherGroupResult.setViewMsg(extractViewMsg(matcherResults));
@@ -59,21 +46,21 @@ public abstract class BaseMatcherGroup implements MatcherGroup {
 		return matcherGroupResult;
 	}
 
-	public void registerMatcher(Matcher matcher) {
-		matchers.put(matcher.getMatcherType(), matcher);
+	public void registerMatcher(MatcherElem matcher) {
+		matchers.put(matcher.getType(), matcher);
 	}
 
-	protected String extractViewMsg(List<MatcherResult> matcherResults) {
+	protected String extractViewMsg(List<MatcherResultElem> matcherResults) {
 		assert(!matcherResults.isEmpty());
 
-		MatcherResult maxPriority = Collections.max(matcherResults);
+		MatcherResultElem maxPriority = Collections.max(matcherResults);
 		return maxPriority.getMatcherType().viewMsg;
 	}
 
-	protected double computeScore(List<MatcherResult> matcherResults) {
+	protected double computeScore(List<MatcherResultElem> matcherResults) {
 		assert(!matcherResults.isEmpty());
 		
-		MatcherResult maxPriority = Collections.max(matcherResults);
+		MatcherResultElem maxPriority = Collections.max(matcherResults);
 		return maxPriority.getScore();
 	}
 }

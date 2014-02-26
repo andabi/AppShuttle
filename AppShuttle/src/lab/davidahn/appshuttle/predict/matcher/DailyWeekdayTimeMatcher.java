@@ -22,8 +22,13 @@ public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.TIME_DAILY_WEEKDAY;
+	}
+	
+	@Override
+	public int getPriority() {
+		return MatcherType.TIME_DAILY_WEEKDAY.priority;
 	}
 	
 	@Override

@@ -1,11 +1,16 @@
 package lab.davidahn.appshuttle.predict.matchergroup;
 
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-
-public class RecentMatcherGroup extends BaseMatcherGroup implements MatcherGroup {
+public class RecentMatcherGroup extends BaseMatcherGroup {
 	
-	public RecentMatcherGroup() {
-		super(MatcherGroupType.FREQUENCY, MatcherGroupType.FREQUENCY.priority);
+	@Override
+	public MatcherType getType() {
+		return MatcherType.FREQUENCY;
 	}
-	
+
+	@Override
+	public int getPriority() {
+		return MatcherGroupType.FREQUENCY.priority;
+	}
 }

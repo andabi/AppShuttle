@@ -12,8 +12,13 @@ public class FrequentlyRecentMatcher extends RecentMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.FREQUENTLY_RECENT;
+	}
+	
+	@Override
+	public int getPriority() {
+		return MatcherType.FREQUENTLY_RECENT.priority;
 	}
 
 	@Override

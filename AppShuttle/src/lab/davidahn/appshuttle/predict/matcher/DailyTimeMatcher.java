@@ -10,7 +10,12 @@ public class DailyTimeMatcher extends TimeMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.TIME_DAILY;
+	}
+
+	@Override
+	public int getPriority() {
+		return MatcherType.TIME_DAILY.priority;
 	}
 }

@@ -20,8 +20,13 @@ public class MovePositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.MOVE;
+	}
+	
+	@Override
+	public int getPriority() {
+		return MatcherType.MOVE.priority;
 	}
 	
 	@Override

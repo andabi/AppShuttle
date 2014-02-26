@@ -13,9 +13,9 @@ import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.PredictedBhvInfo;
 import lab.davidahn.appshuttle.predict.PresentBhv;
 import lab.davidahn.appshuttle.predict.PresentBhvManager;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import lab.davidahn.appshuttle.predict.matcher.MatcherTypeComparator;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -173,13 +173,13 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		if(predictionInfo == null)
 			return viewMsg;
 		
-		Map<MatcherGroupType, MatcherGroupResult> macherGroupResults = predictionInfo.getMatcherGroupResultMap();
-		List<MatcherGroupType> matcherGroupTypeList = new ArrayList<MatcherGroupType>(macherGroupResults.keySet());
-		Collections.sort(matcherGroupTypeList, new MatcherGroupTypeComparator());
-		Collections.reverse(matcherGroupTypeList);
+		Map<MatcherType, MatcherResultElem> macherResults = predictionInfo.getMatcherResultMap();
+		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(macherResults.keySet());
+		Collections.sort(matcherTypeList, new MatcherTypeComparator());
+		Collections.reverse(matcherTypeList);
 		
-		for (MatcherGroupType matcherGroupType : matcherGroupTypeList) {
-			msg.append(macherGroupResults.get(matcherGroupType).getViewMsg()).append(", ");
+		for (MatcherType matcherType : matcherTypeList) {
+			msg.append(macherResults.get(matcherType).getViewMsg()).append(", ");
 		}
 		msg.delete(msg.length() - 2, msg.length());
 		viewMsg = msg.toString();

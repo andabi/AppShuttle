@@ -28,8 +28,13 @@ public class LocationPositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.LOCATION;
+	}
+	
+	@Override
+	public int getPriority() {
+		return MatcherType.LOCATION.priority;
 	}
 
 	@Override

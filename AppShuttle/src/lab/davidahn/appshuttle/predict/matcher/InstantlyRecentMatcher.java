@@ -19,8 +19,13 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.INSTANTALY_RECENT;
+	}
+	
+	@Override
+	public int getPriority() {
+		return MatcherType.INSTANTALY_RECENT.priority;
 	}
 	
 	@Override

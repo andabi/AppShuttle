@@ -26,7 +26,7 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 	}
 	
 	@Override
-	public abstract MatcherType getMatcherType();
+	public abstract MatcherType getType();
 	
 	@Override
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
@@ -152,7 +152,7 @@ public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
 	protected double computeScore(MatcherResult matcherResult) {
 		double likelihood = matcherResult.getLikelihood();
 		double inverseEntropy = matcherResult.getInverseEntropy();
-		double numRelatedHistory = 1.0 * matcherResult.getNumRelatedCxt();
+		double numRelatedHistory = 1.0 * matcherResult.getNumRelatedHistory();
 		
 		double score = 1 + 0.5 * (inverseEntropy * (numRelatedHistory / conf.getDuration())) + 0.1 * likelihood;
 
