@@ -1,6 +1,6 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.time;
 
-import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 
 public class DailyTimeMatcher extends TimeMatcher {
@@ -10,7 +10,7 @@ public class DailyTimeMatcher extends TimeMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.TIME_DAILY;
 	}
 }

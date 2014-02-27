@@ -1,4 +1,6 @@
-package lab.davidahn.appshuttle.predict.matcher.conf;
+package lab.davidahn.appshuttle.predict.matcher.position;
+
+import lab.davidahn.appshuttle.predict.matcher.BaseMatcherConf;
 
 public class PositionMatcherConf extends BaseMatcherConf{
 	private final int toleranceInMeter;

@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.position;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +14,8 @@ import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.collect.env.UserLoc;
-import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 /**
  * K-NN based algorithm
@@ -28,7 +29,7 @@ public class LocationPositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.LOCATION;
 	}
 

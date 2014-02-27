@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.position;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,8 +13,9 @@ import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserPlace;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
-import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class PlacePositionMatcher extends PositionMatcher {
 
@@ -23,7 +24,7 @@ public class PlacePositionMatcher extends PositionMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.PLACE;
 	}
 	

@@ -8,44 +8,45 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.predict.matcher.DailyTimeMatcher;
-import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
-import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
-import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
-import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
-import lab.davidahn.appshuttle.predict.matcher.LocationPositionMatcher;
-import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
-import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
-import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
-import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroup;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
-import lab.davidahn.appshuttle.predict.matchergroup.PositionMatcherGroup;
-import lab.davidahn.appshuttle.predict.matchergroup.RecentMatcherGroup;
-import lab.davidahn.appshuttle.predict.matchergroup.TimeMatcherGroup;
+import lab.davidahn.appshuttle.predict.matcher.MatcherElem;
+import lab.davidahn.appshuttle.predict.matcher.MatcherGroup;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import lab.davidahn.appshuttle.predict.matcher.position.LocationPositionMatcher;
+import lab.davidahn.appshuttle.predict.matcher.position.MovePositionMatcher;
+import lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherGroup;
+import lab.davidahn.appshuttle.predict.matcher.recent.FrequentlyRecentMatcher;
+import lab.davidahn.appshuttle.predict.matcher.recent.InstantlyRecentMatcher;
+import lab.davidahn.appshuttle.predict.matcher.recent.RecentMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.recent.RecentMatcherGroup;
+import lab.davidahn.appshuttle.predict.matcher.time.DailyTimeMatcher;
+import lab.davidahn.appshuttle.predict.matcher.time.DailyWeekdayTimeMatcher;
+import lab.davidahn.appshuttle.predict.matcher.time.DailyWeekendTimeMatcher;
+import lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherGroup;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
 public class Predictor {
-	private List<MatcherGroup> matcherGroupList;
+	private List<MatcherElem> matcherList;
 	
 	private static Predictor predictor = new Predictor();
 	private Predictor(){
-		matcherGroupList = new ArrayList<MatcherGroup>();
-		registerMatcherGroup();
+		matcherList = new ArrayList<MatcherElem>();
+		registerMatcher();
 	}
 	public static Predictor getInstance() {
 		return predictor;
 	}
 	
-	private void registerMatcherGroup() {
-		registerRecentMatcherGroup();
-		registerTimeMatcherGroup();
-		registerPositionMatcherGroup();
+	private void registerMatcher() {
+		registerRecentMatcher();
+		registerTimeMatcher();
+		registerPositionMatcher();
 	}
 	
-	private void registerRecentMatcherGroup() {
+	private void registerRecentMatcher() {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup recentMatcherGroup = new RecentMatcherGroup();
 		
@@ -68,11 +69,10 @@ public class Predictor {
 				.build()
 			));
 
-
-		registerMatcherGroup(recentMatcherGroup);
+		matcherList.add(recentMatcherGroup);
 	}
 	
-	private void registerTimeMatcherGroup() {
+	private void registerTimeMatcher() {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup timeMatcherGroup = new TimeMatcherGroup();
 		
@@ -109,26 +109,15 @@ public class Predictor {
 			.build()
 		));
 	
-		registerMatcherGroup(timeMatcherGroup);
+		matcherList.add(timeMatcherGroup);
 //		long noiseTimeTolerance = _preferenceSettings.getLong("matcher.noise.time_tolerance", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 60);
 		/*, noiseTimeTolerance*/
 	}
 	
-	private void registerPositionMatcherGroup() {
+	private void registerPositionMatcher() {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup locMatcherGroup = new PositionMatcherGroup();
-		
-//		locMatcherGroup.registerMatcher(new PlacePositionMatcher(
-//			new PositionMatcherConf.Builder()
-//				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY))
-//				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
-//				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
-//				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
-//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
-//				.setToleranceInMeter(0)
-//				.build()
-//			)
-//		);
+
 		locMatcherGroup.registerMatcher(new MovePositionMatcher(
 				new PositionMatcherConf.Builder()
 					.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY))
@@ -150,12 +139,18 @@ public class Predictor {
 				.build()
 			)
 		);
-		
-		registerMatcherGroup(locMatcherGroup);
-	}
-	
-	private void registerMatcherGroup(MatcherGroup matcherGroup){
-		matcherGroupList.add(matcherGroup);
+//		locMatcherGroup.registerMatcher(new PlacePositionMatcher(
+//			new PositionMatcherConf.Builder()
+//				.setDuration(preferenceSettings.getLong("matcher.position.place.duration", 7 * AlarmManager.INTERVAL_DAY))
+//				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
+//				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.place.min_likelihood", 0.7f))
+//				.setMinInverseEntropy(preferenceSettings.getFloat("matcher.position.place.min_inverse_entropy", Float.MIN_VALUE))
+//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.place.min_num_history", 3))
+//				.setToleranceInMeter(0)
+//				.build()
+//			)
+//		);
+		matcherList.add(locMatcherGroup);
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
@@ -165,33 +160,32 @@ public class Predictor {
 		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(UserBhv uBhv : userBhvManager.getRegisteredBhvSet()){
-			EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupMap = new EnumMap<MatcherGroupType, MatcherGroupResult>(MatcherGroupType.class);
-			for(MatcherGroup matcherGroup : matcherGroupList){
-				MatcherGroupResult matcherGroupResult = matcherGroup.matchAndGetResult(uBhv, currUserCxt);
-				if(matcherGroupResult == null)
+			EnumMap<MatcherType, MatcherResultElem> matcherMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
+			for(MatcherElem matcher : matcherList){
+				MatcherResultElem matcherResult = matcher.matchAndGetResult(uBhv, currUserCxt);
+				if(matcherResult == null)
 					continue;
-				matcherGroupMap.put(matcherGroup.getMatcherGroupType(), matcherGroupResult);
+				matcherMap.put(matcher.getType(), matcherResult);
 			}
 
-			if(matcherGroupMap.isEmpty())
+			if(matcherMap.isEmpty())
 				continue;
 			
 			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
-					uBhv, matcherGroupMap, computePredictionScore(matcherGroupMap));
+					uBhv, matcherMap, computePredictionScore(matcherMap));
 			
 			predictedBhvList.add(predictedBhv);
 		}
 		PredictedBhv.updatePredictedBhvList(predictedBhvList);
 	}
-		
-	private double computePredictionScore(EnumMap<MatcherGroupType, MatcherGroupResult> matcherGroupResults){
+	private double computePredictionScore(EnumMap<MatcherType, MatcherResultElem> matcherResults){
 		double PredictionScore = 0;
 		
-		for(MatcherGroupType matcherGroupType : matcherGroupResults.keySet()){
-			double weight = Math.pow(10, matcherGroupType.priority);
-			double score = weight * matcherGroupResults.get(matcherGroupType).getScore();
+		for(MatcherType matcher : matcherResults.keySet()){
+			double weight = Math.pow(10, matcher.priority);
+			double score = weight * matcherResults.get(matcher).getScore();
 			PredictionScore += score;
 		}
 		return PredictionScore;

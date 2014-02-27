@@ -148,7 +148,6 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		return bhvNameText;
 	}
 
-	@Override
 	public abstract String getViewMsg();
 	
 	@Override

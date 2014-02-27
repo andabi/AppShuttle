@@ -1,8 +1,9 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.position;
 
-import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.Matcher;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 
-public abstract class PositionMatcher extends BaseMatcher<PositionMatcherConf> {
+public abstract class PositionMatcher extends Matcher<PositionMatcherConf> {
 
 	public PositionMatcher(PositionMatcherConf conf){
 		super(conf);

@@ -1,9 +1,10 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.recent;
 
 import java.util.Map;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
-import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
@@ -14,10 +15,10 @@ public class FrequentlyRecentMatcher extends RecentMatcher {
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
+	public MatcherType getType(){
 		return MatcherType.FREQUENTLY_RECENT;
 	}
-
+	
 	@Override
 	protected double computeRelatedness(MatcherCountUnit durationUserBhv,
 			SnapshotUserCxt uCxt) {

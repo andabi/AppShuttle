@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.time;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,27 +8,27 @@ import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import android.app.AlarmManager;
 
-public class DailyWeekendTimeMatcher extends TimeMatcher {
+public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	private static final long INTERVAL_WEEK = 7 * AlarmManager.INTERVAL_DAY;
 
-	public DailyWeekendTimeMatcher(TimeMatcherConf conf){
+	public DailyWeekdayTimeMatcher(TimeMatcherConf conf){
 		super(conf);
-
+		
 		if(conf.getDuration() % INTERVAL_WEEK != 0)
 			throw new IllegalArgumentException("duration must be times of a week");
 	}
 	
 	@Override
-	public MatcherType getMatcherType(){
-		return MatcherType.TIME_DAILY_WEEKEND;
+	public MatcherType getType(){
+		return MatcherType.TIME_DAILY_WEEKDAY;
 	}
 	
 	@Override
 	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt) {
-		if(!isWeekDay(currUCxt.getTimeDate()))
+		if(isWeekDay(currUCxt.getTimeDate()))
 			return true;
 		
 		return false;
@@ -47,7 +47,7 @@ public class DailyWeekendTimeMatcher extends TimeMatcher {
 		
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			if(!isWeekDay(durationUserBhv.getTimeDate()))
+			if(isWeekDay(durationUserBhv.getTimeDate()))
 				res.add(durationUserBhv);
 		}
 		

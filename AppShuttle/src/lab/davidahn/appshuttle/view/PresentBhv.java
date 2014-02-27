@@ -13,9 +13,9 @@ import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupResult;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupType;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroupTypeComparator;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import lab.davidahn.appshuttle.predict.matcher.MatcherTypeComparator;
 import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.content.Context;
 import android.net.wifi.WifiManager;
@@ -56,13 +56,13 @@ public abstract class PresentBhv extends ViewableUserBhv {
 		if(predictionInfo == null)
 			return viewMsg;
 		
-		Map<MatcherGroupType, MatcherGroupResult> macherGroupResults = predictionInfo.getMatcherGroupResultMap();
-		List<MatcherGroupType> matcherGroupTypeList = new ArrayList<MatcherGroupType>(macherGroupResults.keySet());
-		Collections.sort(matcherGroupTypeList, new MatcherGroupTypeComparator());
-		Collections.reverse(matcherGroupTypeList);
+		Map<MatcherType, MatcherResultElem> macherResults = predictionInfo.getMatcherResultMap();
+		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(macherResults.keySet());
+		Collections.sort(matcherTypeList, new MatcherTypeComparator());
+		Collections.reverse(matcherTypeList);
 		
-		for (MatcherGroupType matcherGroupType : matcherGroupTypeList) {
-			msg.append(macherGroupResults.get(matcherGroupType).getViewMsg()).append(", ");
+		for (MatcherType matcherType : matcherTypeList) {
+			msg.append(macherResults.get(matcherType).getViewMsg()).append(", ");
 		}
 		msg.delete(msg.length() - 2, msg.length());
 		viewMsg = msg.toString();
