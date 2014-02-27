@@ -1,5 +1,6 @@
-package lab.davidahn.appshuttle.predict.matcher.conf;
+package lab.davidahn.appshuttle.predict.matcher.time;
 
+import lab.davidahn.appshuttle.predict.matcher.BaseMatcherConf;
 import android.app.AlarmManager;
 
 public class TimeMatcherConf extends BaseMatcherConf{

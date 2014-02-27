@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matchergroup;
+package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,15 +7,11 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.predict.matcher.BaseMatcherElem;
-import lab.davidahn.appshuttle.predict.matcher.MatcherElem;
-import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
-import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-public abstract class BaseMatcherGroup extends BaseMatcherElem {
+public abstract class MatcherGroup extends MatcherElem {
 	protected EnumMap<MatcherType, MatcherElem> matchers;
 	
-	public BaseMatcherGroup() {
+	public MatcherGroup() {
 		matchers = new EnumMap<MatcherType, MatcherElem>(MatcherType.class);
 	}
 

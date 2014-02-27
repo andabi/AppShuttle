@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.recent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,11 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
-import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.Matcher;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 
-public abstract class RecentMatcher extends BaseMatcher<RecentMatcherConf>{
+public abstract class RecentMatcher extends Matcher<RecentMatcherConf>{
 	
 	public RecentMatcher(RecentMatcherConf conf){
 		super(conf);

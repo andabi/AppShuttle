@@ -1,4 +1,6 @@
-package lab.davidahn.appshuttle.predict.matcher.conf;
+package lab.davidahn.appshuttle.predict.matcher.recent;
+
+import lab.davidahn.appshuttle.predict.matcher.BaseMatcherConf;
 
 
 public class RecentMatcherConf extends BaseMatcherConf{

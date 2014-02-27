@@ -29,7 +29,8 @@ public enum MatcherType {
 	
 	MatcherType(int _priority, int viewMsgId, boolean _isOverwritableForNewPrediction){
 		priority = _priority;
-		viewMsg = AppShuttleApplication.getContext().getString(viewMsgId);
+		if(viewMsgId == 0) viewMsg = "";
+		else viewMsg = AppShuttleApplication.getContext().getString(viewMsgId);
 		isOverwritableForNewPrediction = _isOverwritableForNewPrediction;
 	}
 }

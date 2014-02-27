@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.time;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,14 +13,17 @@ import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.matcher.Matcher;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
-import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.utils.Time;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
-public abstract class TimeMatcher extends BaseMatcher<TimeMatcherConf> {
+public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 
 	public TimeMatcher(TimeMatcherConf conf){
 		super(conf);

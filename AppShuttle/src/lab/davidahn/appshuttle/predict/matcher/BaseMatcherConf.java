@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher.conf;
+package lab.davidahn.appshuttle.predict.matcher;
 
 import android.app.AlarmManager;
 

@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.time;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,7 +8,7 @@ import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import android.app.AlarmManager;
 
 public class DailyWeekendTimeMatcher extends TimeMatcher {
@@ -24,11 +24,6 @@ public class DailyWeekendTimeMatcher extends TimeMatcher {
 	@Override
 	public MatcherType getType(){
 		return MatcherType.TIME_DAILY_WEEKEND;
-	}
-	
-	@Override
-	public int getPriority() {
-		return MatcherType.TIME_DAILY_WEEKEND.priority;
 	}
 	
 	@Override

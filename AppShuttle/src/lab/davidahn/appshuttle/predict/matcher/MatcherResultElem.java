@@ -10,7 +10,7 @@ import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
 
 
-public class MatcherResultElem implements Comparable<MatcherResultElem> {
+public abstract class MatcherResultElem implements Comparable<MatcherResultElem> {
 	protected MatcherType matcherType;
 	protected Date timeDate;
 	protected TimeZone timeZone;
@@ -71,9 +71,7 @@ public class MatcherResultElem implements Comparable<MatcherResultElem> {
 		viewMsg = _viewMsg;
 	}
 	
-	public EnumMap<MatcherType, MatcherResultElem> getChildMatcherResultMap() {
-		return new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
-	}
+	public abstract EnumMap<MatcherType, MatcherResultElem> getMatcherResultMap();
 	
 	@Override
 	public int compareTo(MatcherResultElem matcherResult){

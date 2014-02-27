@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,10 @@ import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserSpeed;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
-import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class MovePositionMatcher extends PositionMatcher {
 
@@ -22,11 +24,6 @@ public class MovePositionMatcher extends PositionMatcher {
 	@Override
 	public MatcherType getType(){
 		return MatcherType.MOVE;
-	}
-	
-	@Override
-	public int getPriority() {
-		return MatcherType.MOVE.priority;
 	}
 	
 	@Override

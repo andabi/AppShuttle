@@ -64,7 +64,7 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	public EnumMap<MatcherType, MatcherResultElem> getAllChildMatcherResultMap(){
 		EnumMap<MatcherType, MatcherResultElem> matcherResultMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
 		for(MatcherType matcherType : matcherResults.keySet())
-			matcherResultMap.putAll(matcherResults.get(matcherType).getChildMatcherResultMap());
+			matcherResultMap.putAll(matcherResults.get(matcherType).getMatcherResultMap());
 		return matcherResultMap;
 	}
 	

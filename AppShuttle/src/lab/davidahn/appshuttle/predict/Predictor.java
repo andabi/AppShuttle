@@ -8,23 +8,23 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
-import lab.davidahn.appshuttle.predict.matcher.DailyTimeMatcher;
-import lab.davidahn.appshuttle.predict.matcher.DailyWeekdayTimeMatcher;
-import lab.davidahn.appshuttle.predict.matcher.DailyWeekendTimeMatcher;
-import lab.davidahn.appshuttle.predict.matcher.FrequentlyRecentMatcher;
-import lab.davidahn.appshuttle.predict.matcher.InstantlyRecentMatcher;
-import lab.davidahn.appshuttle.predict.matcher.LocationPositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.MatcherElem;
+import lab.davidahn.appshuttle.predict.matcher.MatcherGroup;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
-import lab.davidahn.appshuttle.predict.matcher.MovePositionMatcher;
-import lab.davidahn.appshuttle.predict.matcher.conf.PositionMatcherConf;
-import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
-import lab.davidahn.appshuttle.predict.matcher.conf.TimeMatcherConf;
-import lab.davidahn.appshuttle.predict.matchergroup.MatcherGroup;
-import lab.davidahn.appshuttle.predict.matchergroup.PositionMatcherGroup;
-import lab.davidahn.appshuttle.predict.matchergroup.RecentMatcherGroup;
-import lab.davidahn.appshuttle.predict.matchergroup.TimeMatcherGroup;
+import lab.davidahn.appshuttle.predict.matcher.position.LocationPositionMatcher;
+import lab.davidahn.appshuttle.predict.matcher.position.MovePositionMatcher;
+import lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherGroup;
+import lab.davidahn.appshuttle.predict.matcher.recent.FrequentlyRecentMatcher;
+import lab.davidahn.appshuttle.predict.matcher.recent.InstantlyRecentMatcher;
+import lab.davidahn.appshuttle.predict.matcher.recent.RecentMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.recent.RecentMatcherGroup;
+import lab.davidahn.appshuttle.predict.matcher.time.DailyTimeMatcher;
+import lab.davidahn.appshuttle.predict.matcher.time.DailyWeekdayTimeMatcher;
+import lab.davidahn.appshuttle.predict.matcher.time.DailyWeekendTimeMatcher;
+import lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherGroup;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
@@ -48,9 +48,9 @@ public class Predictor {
 	
 	private void registerRecentMatcher() {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-		MatcherElem recentMatcherGroup = new RecentMatcherGroup();
+		MatcherGroup recentMatcherGroup = new RecentMatcherGroup();
 		
-		((MatcherGroup)recentMatcherGroup).registerMatcher(new FrequentlyRecentMatcher(
+		recentMatcherGroup.registerMatcher(new FrequentlyRecentMatcher(
 				new RecentMatcherConf.Builder()
 					.setDuration(preferenceSettings.getLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY))
 					.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6))
@@ -59,7 +59,7 @@ public class Predictor {
 					.setMinNumHistory(preferenceSettings.getInt("matcher.recent.frequently.min_num_related_history", 3))
 					.build()
 				));
-		((MatcherGroup)recentMatcherGroup).registerMatcher(new InstantlyRecentMatcher(
+		recentMatcherGroup.registerMatcher(new InstantlyRecentMatcher(
 			new RecentMatcherConf.Builder()
 				.setDuration(preferenceSettings.getLong("matcher.recent.instantly.duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3 * 2))
 				.setAcceptanceDelay(preferenceSettings.getLong("matcher.recent.instantly.acceptance_delay", 0))
@@ -74,9 +74,9 @@ public class Predictor {
 	
 	private void registerTimeMatcher() {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-		MatcherElem timeMatcherGroup = new TimeMatcherGroup();
+		MatcherGroup timeMatcherGroup = new TimeMatcherGroup();
 		
-		((MatcherGroup)timeMatcherGroup).registerMatcher(new DailyTimeMatcher(
+		timeMatcherGroup.registerMatcher(new DailyTimeMatcher(
 			new TimeMatcherConf.Builder()
 			.setPeriod(AlarmManager.INTERVAL_DAY)
 			.setTolerance(preferenceSettings.getLong("matcher.time.daily.tolerance", AlarmManager.INTERVAL_HALF_HOUR * 3))
@@ -87,7 +87,7 @@ public class Predictor {
 			.build()
 		));
 
-		((MatcherGroup)timeMatcherGroup).registerMatcher(new DailyWeekdayTimeMatcher(
+		timeMatcherGroup.registerMatcher(new DailyWeekdayTimeMatcher(
 			new TimeMatcherConf.Builder()
 			.setPeriod(AlarmManager.INTERVAL_DAY)
 			.setTolerance(preferenceSettings.getLong("matcher.time.daily_weekday.tolerance", AlarmManager.INTERVAL_HALF_HOUR * 3))
@@ -98,7 +98,7 @@ public class Predictor {
 			.build()
 		));
 		
-		((MatcherGroup)timeMatcherGroup).registerMatcher(new DailyWeekendTimeMatcher(
+		timeMatcherGroup.registerMatcher(new DailyWeekendTimeMatcher(
 			new TimeMatcherConf.Builder()
 			.setPeriod(AlarmManager.INTERVAL_DAY)
 			.setTolerance(preferenceSettings.getLong("matcher.time.daily_weekend.tolerance", 2 * AlarmManager.INTERVAL_HOUR))
@@ -116,9 +116,9 @@ public class Predictor {
 	
 	private void registerPositionMatcher() {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-		MatcherElem locMatcherGroup = new PositionMatcherGroup();
+		MatcherGroup locMatcherGroup = new PositionMatcherGroup();
 
-		((MatcherGroup)locMatcherGroup).registerMatcher(new MovePositionMatcher(
+		locMatcherGroup.registerMatcher(new MovePositionMatcher(
 				new PositionMatcherConf.Builder()
 					.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY))
 					.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
@@ -129,7 +129,7 @@ public class Predictor {
 					.build()
 				)
 			);
-		((MatcherGroup)locMatcherGroup).registerMatcher(new LocationPositionMatcher(
+		locMatcherGroup.registerMatcher(new LocationPositionMatcher(
 			new PositionMatcherConf.Builder()
 				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", 3 * AlarmManager.INTERVAL_DAY))
 				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.loc.min_likelihood", 0.5f))

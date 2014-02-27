@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -53,6 +54,13 @@ public class MatcherResult extends MatcherResultElem {
 	public void addRelatedHistory(MatcherCountUnit durationUserBhv, double relatedness) {
 		if(relatedHistory == null) relatedHistory = new HashMap<MatcherCountUnit, Double>();
 		relatedHistory.put(durationUserBhv, relatedness);
+	}
+	
+	@Override
+	public EnumMap<MatcherType, MatcherResultElem> getMatcherResultMap() {
+		EnumMap<MatcherType, MatcherResultElem> matcherResultMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
+		matcherResultMap.put(matcherType, this);
+		return matcherResultMap;
 	}
 
 	public String toString(){

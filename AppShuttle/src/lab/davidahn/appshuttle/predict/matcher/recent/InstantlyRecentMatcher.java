@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.predict.matcher;
+package lab.davidahn.appshuttle.predict.matcher.recent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,8 @@ import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.predict.matcher.conf.RecentMatcherConf;
+import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
+import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class InstantlyRecentMatcher extends RecentMatcher {
 	
@@ -21,11 +22,6 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 	@Override
 	public MatcherType getType(){
 		return MatcherType.INSTANTALY_RECENT;
-	}
-	
-	@Override
-	public int getPriority() {
-		return MatcherType.INSTANTALY_RECENT.priority;
 	}
 	
 	@Override
