@@ -55,7 +55,6 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public void onStart() {
 			super.onStart();
-			// FIXME: Is this okay?
 			EasyTracker.getInstance(AppShuttleApplication.getContext()).activityStart(getActivity());
 		}
 		

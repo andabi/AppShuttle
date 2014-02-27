@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
-import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.bhv.FavoriteBhv;
 import lab.davidahn.appshuttle.bhv.FavoriteBhvManager;
@@ -107,7 +106,7 @@ public class NotiBarNotifier {
 		notiRemoteView.removeAllViews(R.id.noti_favorite_container);
 		notiRemoteView.removeAllViews(R.id.noti_present_container);
 		
-		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
+		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
 
 		if(viewableUserBhvList.isEmpty()){
 			RemoteViews noResultRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_no_result);
@@ -131,12 +130,11 @@ public class NotiBarNotifier {
 			extras.putString("bhvName", viewableUserBhv.getBhvName());
 			intent.putExtras(extras);
 			intent.setAction(Long.toString(System.currentTimeMillis()));		// (1)
-			Log.i("Noti", "intent flags = " + intent.getFlags());
 			
 			/* (1)에 대한 추가 설명
 			 * 똑같은 Activity.class에 대해 extra 값만 다른 여러 intent를 만드는 건데,
 			 * 첫 intent는 전달이 제대로 되지만, 그 다음 intent는 동작이 되지 않음.
-			 * 그에 대한 해결책
+			 * 그에 대한 해결책으로 매 intent마다 setAction을 다르게 주면 되는 듯.
 			 * 
 			 * 참고 링크:
 			 * http://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the
@@ -155,7 +153,7 @@ public class NotiBarNotifier {
 				 */
 				int intent_id = viewableUserBhvList.indexOf(viewableUserBhv) + 1;
 				PendingIntent pendingIntent = PendingIntent.getActivity(cxt, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-				Log.i("Noti", "Intent added " + intent_id);
+				// Log.i("Noti", "Intent added " + intent_id);
 				
 				if(pendingIntent != null)
 					notiElemRemoteView.setOnClickPendingIntent(R.id.noti_elem, pendingIntent);

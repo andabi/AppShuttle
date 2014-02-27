@@ -32,6 +32,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -110,6 +113,20 @@ public class AppShuttleMainActivity extends Activity {
 		if(!AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
 
+		
+		/* Intent를 받아서 doExec 이면 해당 앱을 실행시킨다.
+		 * 
+		 * onNewIntent(~) 핸들러에서만 동작시키면, 앱셔틀이 메모리 부족으로 킬 됐을때
+		 * 첫 인텐트가 제대로 동작하지 않음. (앱셔틀 켜지기만 하고 해당 앱이 실행이 안 됨)
+		 * 
+		 * 즉, 앱셔틀이 꺼졌다 켜질 때는 onCreate() 가 처리하고,
+		 * 이미 켜져있는 상태에서는 onNewIntent() 가 처리함.
+		 */
+		Intent intent = getIntent();
+		if (intent != null) {
+			Log.i("MainActivity", "onCreate:" + intent.toString());
+			handleExecutionIntent(intent);
+		}
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
@@ -363,6 +380,32 @@ public class AppShuttleMainActivity extends Activity {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
 				}
 			});
+			
+			/* If debug mode is ON, add debug button */
+			if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
+				ViewGroup actionbar_llayout = (ViewGroup)layout.findViewById(R.id.actionbar);
+				
+				ImageView debug_image = new ImageView(cxt);
+				debug_image.setLayoutParams(layout.findViewById(R.id.settings).getLayoutParams());
+				debug_image.setBackgroundResource(R.drawable.notifiable);	// TODO: New debug image resource is needed
+				
+				debug_image.setOnClickListener(new ImageView.OnClickListener(){
+    				public void onClick(View v) {
+    					// TODO: 디버그 정보를 위한 새로운 액티비티 생성
+    					AlertDialog.Builder alert = new AlertDialog.Builder(cxt);
+    					alert.setTitle("통계정보");
+    					alert.setMessage(StatCollector.getInstance().toString());
+    					alert.show();
+					}
+				});
+				
+				FrameLayout debug_frame = new FrameLayout(cxt);
+				debug_frame.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				debug_frame.setLayoutParams(layout.findViewById(R.id.settings_frame).getLayoutParams());
+				debug_frame.addView(debug_image);
+				
+				actionbar_llayout.addView(debug_frame);
+			}
 			
 			return layout;
 		}

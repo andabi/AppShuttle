@@ -307,7 +307,6 @@ public class StatCollector {
 		row.put("predicted", (newEntry.isPredicted ? 1 : 0));
 		row.put("clicked",  (newEntry.isClicked ? 1 : 0));
 		
-		// FIXME: 현재 click 여부는 정상적으로 카운트 되지 않음
 		db.insertWithOnConflict("stat_bhv_transition", null, row, SQLiteDatabase.CONFLICT_REPLACE);
 		Log.i("Stat", row.toString());
 		
