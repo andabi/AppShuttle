@@ -25,7 +25,7 @@ public class BaseMatcherConf {
 		return acceptanceDelay;
 	}
 	
-	public int getMinNumHistory() {
+	public int getMinNumRelatedHistory() {
 		return minNumHistory;
 	}
 

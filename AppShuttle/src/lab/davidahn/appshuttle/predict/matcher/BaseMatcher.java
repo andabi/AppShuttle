@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.conf.BaseMatcherConf;
 
 public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher {
@@ -27,9 +27,6 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 		if(!isCurrCxtMetPreConditions(currUCxt))
 			return null;
 
-//		if(!isBhvMetCommonPreConditions(uBhv))
-//			return null;
-		
 		if(!isBhvMetPreConditions(uBhv))
 			return null;
 		
@@ -56,7 +53,7 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 				relatedHistory.put(unit, relatedness);
 			}
 		}
-		if (numRelatedHistory < conf.getMinNumHistory())
+		if (numRelatedHistory < conf.getMinNumRelatedHistory())
 			return null;
 
 		double likelihood = computeLikelihood(numTotalHistory,
@@ -80,37 +77,11 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 
 		return matcherResult;
 	}
-	
-//	protected List<MatcherCountUnit> mergeMatcherCountUnit(List<MatcherCountUnit> matcherCountUnitList) {
-//		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-//
-//		MatcherCountUnit lastUnit = null;
-//		for(MatcherCountUnit unit : matcherCountUnitList){
-//			if(lastUnit == null){
-//				continue;
-//			}
-//			
-//			long time = unit.getDurationUserBhvList().get(0).getTimeDate().getTime();
-//			long lastTime = lastUnit.getDurationUserBhvList().get(0).getTimeDate().getTime();
-//			if(time - lastTime	>= conf.getAcceptanceDelay()){
-//				res.add(lastUnit);
-//			}
-//			
-//			lastUnit = unit;
-//		}
-//		res.add(lastUnit);
-//		
-//		return res;
-//	}
 
 	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt){
 		return true;
 	}
 
-//	protected boolean isBhvMetCommonPreConditions(UserBhv uBhv) {
-//		return true;
-//	}
-	
 	protected boolean isBhvMetPreConditions(UserBhv uBhv){
 		return true;
 	}
@@ -208,3 +179,25 @@ public abstract class BaseMatcher<C extends BaseMatcherConf> implements Matcher 
 	// }
 	// return res;
 }
+
+//protected List<MatcherCountUnit> mergeMatcherCountUnit(List<MatcherCountUnit> matcherCountUnitList) {
+//	List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+//
+//	MatcherCountUnit lastUnit = null;
+//	for(MatcherCountUnit unit : matcherCountUnitList){
+//		if(lastUnit == null){
+//			continue;
+//		}
+//		
+//		long time = unit.getDurationUserBhvList().get(0).getTimeDate().getTime();
+//		long lastTime = lastUnit.getDurationUserBhvList().get(0).getTimeDate().getTime();
+//		if(time - lastTime	>= conf.getAcceptanceDelay()){
+//			res.add(lastUnit);
+//		}
+//		
+//		lastUnit = unit;
+//	}
+//	res.add(lastUnit);
+//	
+//	return res;
+//}

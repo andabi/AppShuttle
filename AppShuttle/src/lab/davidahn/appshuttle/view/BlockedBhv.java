@@ -1,5 +1,6 @@
-package lab.davidahn.appshuttle.bhv;
+package lab.davidahn.appshuttle.view;
 
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import android.text.format.DateUtils;
 
 
@@ -39,5 +40,10 @@ public class BlockedBhv extends ViewableUserBhv implements Comparable<BlockedBhv
 		viewMsg = msg.toString();
 		
 		return viewMsg;
+	}
+
+	@Override
+	public Integer getNotibarContainerId() {
+		return null;
 	}
 }

@@ -3,7 +3,6 @@ package lab.davidahn.appshuttle.collect.bhv;
 import java.util.HashMap;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
 
 public class BaseUserBhv implements UserBhv {
 	protected UserBhvType bhvType;
