@@ -1,17 +1,12 @@
 package lab.davidahn.appshuttle;
 
-import java.lang.reflect.Method;
 import java.util.Calendar;
 
-import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
 import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.PredictionService;
-import lab.davidahn.appshuttle.report.StatCollector;
-import lab.davidahn.appshuttle.view.NotiBarNotifier;
+import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,10 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
@@ -38,9 +30,7 @@ public class AppShuttleMainService extends Service {
 		super.onCreate();
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
-
 		registerReceivers();
-
 		startPeriodicCollection();
 		startPeriodicCompaction();
 		startPeriodicPrediction();
@@ -76,34 +66,36 @@ public class AppShuttleMainService extends Service {
 		registerReceiver(predictReceiver, filter);
 
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.TRY_PREDICT");
-		registerReceiver(tryPredictReceiver, filter);
+		filter.addAction("lab.davidahn.appshuttle.SLEEP_MODE");
+		registerReceiver(sleepModeReceiver, filter);
 		
 		filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
 		registerReceiver(screenOrientationReceiver, filter);
 	}
 
-	private void tryPrediction() {
-		long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 180000);
-		if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
-			return;
-	
-		doPrediction();
-	}
-	
-	private void doPrediction() {
+	private void doPrediction(boolean isForce) {
+		if(!isForce) {
+			long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 60000);
+			if(System.currentTimeMillis() - AppShuttleApplication.lastPredictionTime < ignoredDelay)
+				return;
+		}
 		startService(new Intent(this, PredictionService.class));
 		AppShuttleApplication.lastPredictionTime = System.currentTimeMillis();
+//		Log.d("prediction", "prediction service started, isForce=" + isForce);
 	}
 	
 	private void startPeriodicPrediction() {
-		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.TRY_PREDICT");
+		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
 		predictionOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
-		long period = preferenceSettings.getLong("predictor.period", 180000);
+		long period = preferenceSettings.getLong("predictor.period", 120000);
 		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, predictionOperation);
 	}
-
+	
+	private void stopPeriodicPrediction(){
+		alarmManager.cancel(predictionOperation);
+	}
+	
 	public long getExecuteTimeHour(int hourOfDay){
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -113,65 +105,14 @@ public class AppShuttleMainService extends Service {
 		return calendar.getTimeInMillis();
 	}
 	
-	private void handleExecutionIntent(Intent intent){
-		if (intent == null)
-			return;
-		Log.i("Service", (intent != null ? intent.toString() : "null"));
-		
-		Bundle b = intent.getExtras();
-		if (b == null || (b.getBoolean("doExec", false) == false))
-			return;
-		
-		/* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
-		UserBhvType bhvType = UserBhvType.NONE;
-		String bhvName = b.getString("bhvName");
-		if (b.containsKey("bhvType"))
-			bhvType = (UserBhvType)b.getSerializable("bhvType");
-		
-		if (bhvType == UserBhvType.NONE || bhvName == null)
-			return;
-		
-		BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-		ViewableUserBhv vBhv = new ViewableUserBhv(uBhv);
-		
-		Log.i("Service", "Exec req " + uBhv.toString());
-
-		StatCollector.getInstance().notifyBhvTransition(uBhv, true);
-		Intent launchIntent = vBhv.getLaunchIntent();
-		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
-		this.startActivity(launchIntent);
-		
-		/* status 바 숨기기
-		 * 참고
-		 * http://stackoverflow.com/questions/16966540/how-to-hide-notification-panel-after-sending-a-pendingintent-to-service-in-a-not
-		 */
-		try
-		{
-		    Object service  = getSystemService("statusbar");
-		    Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-
-		    Method collapse;
-		    if (Build.VERSION.SDK_INT <= 16)
-		    	collapse = statusbarManager.getMethod("collapse");
-		    else
-		    	collapse = statusbarManager.getMethod("collapsePanels");
-		    
-		    collapse.setAccessible(true);
-		    collapse.invoke(service);
-		}catch(Exception ex){}
-		
-	}
-	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
-		// handleExecutionIntent(intent);
 		return START_STICKY;
 	}
 	
 	@Override
 	public IBinder onBind(Intent intent){
-		// handleExecutionIntent(intent);
 		return null;
 	}
 
@@ -186,7 +127,7 @@ public class AppShuttleMainService extends Service {
 		unregisterReceiver(screenOnReceiver);
 		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(predictReceiver);
-		unregisterReceiver(tryPredictReceiver);
+		unregisterReceiver(sleepModeReceiver);
 		unregisterReceiver(screenOrientationReceiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
@@ -207,29 +148,34 @@ public class AppShuttleMainService extends Service {
 	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			tryPrediction();
-			alarmManager.cancel(predictionOperation);
+			doPrediction(false);
+			stopPeriodicPrediction();
 		}
 	};
 
-	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
+	BroadcastReceiver sleepModeReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			doPrediction();
+			boolean isOn = intent.getBooleanExtra("isOn", false);
+			if(isOn)
+				stopPeriodicPrediction();
+			else
+				startPeriodicPrediction();
 		}
 	};
 	
-	BroadcastReceiver tryPredictReceiver = new BroadcastReceiver(){
+	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			tryPrediction();
+			boolean isForce = intent.getBooleanExtra("isForce", false);
+			doPrediction(isForce);
 		}
 	};
 	
 	BroadcastReceiver screenOrientationReceiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			NotiBarNotifier.getInstance().doNotification();
+			NotiBarNotifier.getInstance().updateNotification();
 //			if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 		}
 	};

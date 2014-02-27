@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
-import lab.davidahn.appshuttle.bhv.UserBhvManager;
 import android.app.IntentService;
 import android.content.Intent;
 
@@ -20,8 +19,11 @@ public class UnregisterBhvService extends IntentService {
 	public void onHandleIntent(Intent intent) {
 		UserBhvType bhvType = (UserBhvType) intent.getExtras().get("bhv_type");
 		String bhvName = intent.getExtras().getString("bhv_name");
-		UserBhvManager.getInstance().unregisterBhv(new BaseUserBhv(bhvType, bhvName));
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
+		BaseUserBhv targetBhv = UserBhvManager.getInstance().getRegisteredUserBhv(bhvType, bhvName);
+		if(targetBhv == null)
+			return;
+		UserBhvManager.getInstance().unregister(targetBhv);
+		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT").putExtra("isForce", true));
 	}
 	
 	public void onDestroy() {

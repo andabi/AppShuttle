@@ -4,9 +4,9 @@
     <PreferenceCategory android:title="@string/settings_category_setting" >
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="settings_pref_noti_view_hide_key"
-            android:summary="@string/settings_pref_noti_view_hide_summary"
-            android:title="@string/settings_pref_noti_view_hide" />
+            android:key="settings_pref_sleep_mode_key"
+            android:summary="@string/settings_pref_sleep_mode_summary"
+            android:title="@string/settings_pref_sleep_mode" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="settings_pref_system_area_icon_hide_key"
@@ -41,7 +41,7 @@
             android:summary="@string/settings_info_feedback_summary"
             android:title="@string/settings_info_feedback" >
         </EditTextPreference>
-        <lab.davidahn.appshuttle.view.VersionPreference 
+        <lab.davidahn.appshuttle.view.ui.VersionPreference 
             android:title="@string/settings_info_version" />
     </PreferenceCategory>
 

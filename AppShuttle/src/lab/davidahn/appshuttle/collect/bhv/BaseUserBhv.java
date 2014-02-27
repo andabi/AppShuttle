@@ -3,7 +3,12 @@ package lab.davidahn.appshuttle.collect.bhv;
 import java.util.HashMap;
 import java.util.Map;
 
-import lab.davidahn.appshuttle.bhv.UserBhv;
+import lab.davidahn.appshuttle.AppShuttleApplication;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
+
 
 public class BaseUserBhv implements UserBhv {
 	protected UserBhvType bhvType;
@@ -30,6 +35,33 @@ public class BaseUserBhv implements UserBhv {
 		default:
 			throw new IllegalArgumentException("unknown bhv type");
 		}
+	}
+	
+	@Override
+	public Intent getLaunchIntent() {
+		Intent launchIntent = null;
+		
+		UserBhvType bhvType = getBhvType();
+		String bhvName = getBhvName();
+		switch(bhvType){
+		case APP:
+			PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
+			launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
+			break;
+		case CALL:
+			launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
+			break;
+		case SENSOR_ON:
+			if(bhvName.equals(SensorType.WIFI.name()))
+				launchIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+			break;
+		case NONE:
+			break;
+		default:
+			;
+		}
+		
+		return launchIntent;
 	}
 
 	@Override

@@ -15,11 +15,12 @@ import android.util.Log;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
-import lab.davidahn.appshuttle.bhv.UserBhv;
-import lab.davidahn.appshuttle.bhv.ViewableUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.view.PredictedPresentBhv;
+import lab.davidahn.appshuttle.view.PresentBhv;
+import lab.davidahn.appshuttle.view.ViewableUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
-import lab.davidahn.appshuttle.predict.PresentBhvManager;
 
 public class StatCollector {
 	/* Statistics Collector
@@ -31,9 +32,9 @@ public class StatCollector {
 		Date timestamp = new Date();
 		UserBhvType bhvType = UserBhvType.NONE;
 		String bhvName = "";
-		String matchers = "";
-		boolean isPredicted = false;		// Matcher hit
-		boolean isClicked = false;
+		String matchers = "";				// Matcher 이름
+		boolean isPredicted = false;		// Top 6개 안에 들었는가?
+		boolean isClicked = false;			// 앱셔틀을 통해 실행했는가?
 		
 		public String toString(){
 			return timestamp + " / " + bhvType.toString() + " / " + bhvName.toString() + " / "
@@ -276,19 +277,40 @@ public class StatCollector {
 		newEntry.bhvType = userBhv.getBhvType();
 		newEntry.bhvName = userBhv.getBhvName();
 		
-
-		// FIXME: 안다비가 코드에 반영해주면, view 에서 보이는 6개의 앱을 뽑도록 수정
-		List <ViewableUserBhv> listPredictedBhvs = PresentBhvManager.getPresentBhvListSorted(6);
+		// 노티바에 보이는 6개의 앱 얻기 (현재 앱 제외 안함)
+		// FIXME: 현재 앱 제외하는 부분에 대한 고려
+		List<PresentBhv> listPredictedBhvs = PresentBhv.getPresentBhvListFilteredSorted(6, false);
 
 		int l = 0;
 		for (l=0; l<listPredictedBhvs.size(); l++){
-			ViewableUserBhv uBhvPredicted = listPredictedBhvs.get(l); 
+			PresentBhv uBhvPredicted = listPredictedBhvs.get(l); 
 			if (uBhvPredicted.getBhvName().equals(newEntry.bhvName)) {
 				this.numBhvTransitionHit++;
 				Log.i("Stat", "Bhv transition hit.");
 				
 				newEntry.isPredicted = true;
-				// TODO: uBhvPredicted 를 찾아낸 MATCHER 알아내고 카운트 증가				
+				
+				switch (uBhvPredicted.getType()){
+					case HISTORY:
+						newEntry.matchers = "History";
+						break;
+					case PREDICTED:
+						PredictedPresentBhv p = (PredictedPresentBhv)uBhvPredicted;
+						List<String> matcherStrList = p.getMatcherStringList();
+						
+						/* FIXME: 여러개의 matcher에 대한 고려 (현재는 그냥 ARRAY를 출력)
+						if (matcherStrList.size() > 0)
+							newEntry.matchers = matcherStrList.get(0);
+						*/
+						
+						newEntry.matchers = matcherStrList.toString().replace("[", "").replace("]", "");
+						break;
+					case SELECTED:
+						newEntry.matchers = "Dummy";
+						break;
+					default:
+						
+				}				
 			}
 		}
 		

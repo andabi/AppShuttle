@@ -40,8 +40,12 @@
     <string name="settings_category_setting">Settings</string>
     <string name="settings_category_share">Share</string>
     <string name="settings_category_info">Info</string>
+<!--
     <string name="settings_pref_noti_view_hide">Hide apps</string>
     <string name="settings_pref_noti_view_hide_summary">Hide apps on notification bar.</string>
+ -->    
+ 	<string name="settings_pref_sleep_mode">Turn on/off</string>
+    <string name="settings_pref_sleep_mode_summary">Turn on/off this app.</string>
     <string name="settings_pref_system_area_icon_hide">Hide icon</string>
     <string name="settings_pref_system_area_icon_hide_summary">Hide pinned icon in system area.</string>    
     <string name="settings_pref_system_area_icon_hide_warn_msg">Instead, the position will be flexible in notification bar.</string>
