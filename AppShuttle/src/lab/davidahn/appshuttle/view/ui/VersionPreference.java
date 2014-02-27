@@ -1,4 +1,4 @@
-package lab.davidahn.appshuttle.view;
+package lab.davidahn.appshuttle.view.ui;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

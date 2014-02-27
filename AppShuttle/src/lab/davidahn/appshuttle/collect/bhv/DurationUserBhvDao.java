@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
-import lab.davidahn.appshuttle.bhv.UserBhv;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

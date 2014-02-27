@@ -6,7 +6,7 @@ import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.predict.PredictionService;
-import lab.davidahn.appshuttle.view.NotiBarNotifier;
+import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

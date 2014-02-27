@@ -31,14 +31,14 @@
         android:label="@string/name"
         android:theme="@style/AppBaseTheme" >
         <activity
-            android:name="lab.davidahn.appshuttle.view.AppShuttleMainActivity"
+            android:name="lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="lab.davidahn.appshuttle.view.SettingsActivity"
+        <activity android:name="lab.davidahn.appshuttle.view.ui.SettingsActivity"
             android:label="@string/activity_settings_label" >
  <!--            android:parentActivityName="lab.davidahn.appshuttle.view.AppShuttleMainActivity" >
  -->            <meta-data
