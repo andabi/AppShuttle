@@ -123,7 +123,6 @@ public class StatCollector {
 		Tracker tracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
 		
 		String strPredicted = (entry.isPredicted == true ? "Predicted" : "Not Predicted");
-		String lblPredicted = (entry.isPredicted == true ? "Unknown Matcher" : null); // TODO: Matcher 키워드 추가
 		long valuePredicted = (entry.isPredicted == true ? 100 : 0);
 		
 		String strClicked = (entry.isClicked == true ? "Clicked" : "Not Clicked");
@@ -142,7 +141,7 @@ public class StatCollector {
 		// tracker.set(Fields.customDimension(1), strPredicted + strClicked);
 		// Accuracy tracking
 		tracker.send(MapBuilder
-				.createEvent("algorithm", strPredicted, lblPredicted, valuePredicted)
+				.createEvent("algorithm", strPredicted, entry.matchers, valuePredicted)
 				.build()
 			);
 		
