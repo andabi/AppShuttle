@@ -43,7 +43,7 @@
  <!--            android:parentActivityName="lab.davidahn.appshuttle.view.AppShuttleMainActivity" >
  -->            <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="lab.davidahn.appshuttle.view.AppShuttleMainActivity" />
+            android:value="lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity" />
         </activity>
         
         <service android:name="lab.davidahn.appshuttle.AppShuttleMainService" />
