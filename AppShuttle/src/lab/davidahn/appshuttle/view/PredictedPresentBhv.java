@@ -109,12 +109,12 @@ public class PredictedPresentBhv extends PresentBhv implements Comparable<Predic
 			PredictedPresentBhv predictedPresentBhv = new PredictedPresentBhv(predictedBhv);
 			if (prevPresentBhv == null) {
 				for (MatcherType matcherType : predictedBhv
-						.getMatcherResultMap().keySet())
+						.getAllMatcherResultMap().keySet())
 					predictedPresentBhv.setPredictedBhvByMatcherType(
 							matcherType, predictedBhv);
 			} else {
 				for (MatcherType matcherType : predictedBhv
-						.getMatcherResultMap().keySet()) {
+						.getAllMatcherResultMap().keySet()) {
 					PredictedBhv oldPredictedBhv = prevPresentBhv
 							.getPredictedBhvByMatcherType(matcherType);
 					if (oldPredictedBhv == null){
