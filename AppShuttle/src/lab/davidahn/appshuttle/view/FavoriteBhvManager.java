@@ -25,8 +25,7 @@ public class FavoriteBhvManager {
 	private FavoriteBhvManager() {
 		userBhvDao = UserBhvDao.getInstance();
 		favoriteBhvs = new HashMap<UserBhv, FavoriteBhv>();
-		for (FavoriteBhv favoriteUserBhv : userBhvDao.retrieveFavoriteUserBhv())
-			favoriteBhvs.put(favoriteUserBhv.getUserBhv(), favoriteUserBhv);
+		updateFavoriteBhv();
 	}
 
 	public static FavoriteBhvManager getInstance() {
@@ -49,6 +48,12 @@ public class FavoriteBhvManager {
 		return favoriteBhvs.get(uBhv);
 	}
 
+	public void updateFavoriteBhv(){
+		favoriteBhvs.clear();
+		for (FavoriteBhv favoriteUserBhv : userBhvDao.retrieveFavoriteUserBhv())
+			favoriteBhvs.put(favoriteUserBhv.getUserBhv(), favoriteUserBhv);
+	}
+	
 	public synchronized FavoriteBhv favorite(UserBhv uBhv) {
 		if (favoriteBhvs.containsKey(uBhv))
 			return null;
@@ -105,6 +110,7 @@ public class FavoriteBhvManager {
 	}
 
 	public synchronized List<FavoriteBhv> getFavoriteBhvListSorted(){
+		updateFavoriteBhv();
 		List<FavoriteBhv> favorateBhvList = new ArrayList<FavoriteBhv>(getFavoriteBhvSet());
 		Collections.sort(favorateBhvList);
 		return Collections.unmodifiableList(favorateBhvList);

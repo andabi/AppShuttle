@@ -10,9 +10,11 @@ import android.text.format.DateUtils;
 public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryPresentBhv>{
 	private long recentPredictionTime;
 	private double recentPredictionScore;
+	private static HistoryPresentBhvDao dao;
 	
 	public HistoryPresentBhv(UserBhv uBhv) {
 		super(uBhv);
+		dao = HistoryPresentBhvDao.getInstance();
 	}
 	
 	public long getRecentPredictionTime() {
@@ -76,17 +78,16 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 		return res;
 	}
 	
-	public static List<HistoryPresentBhv> retrieveHistoryPresentBhvListSorted(){
-		return HistoryPresentBhvDao.getInstance().retrieveRecent();
-	}
-	
 	public static void storeHistoryPresentBhvList(List<HistoryPresentBhv> bhvList){
 		for(HistoryPresentBhv bhv : bhvList)
 			storeHistoryPresentBhv(bhv);
 	}
 	
 	public static void storeHistoryPresentBhv(HistoryPresentBhv bhv){
-		HistoryPresentBhvDao.getInstance().store(bhv);
+		dao.store(bhv);
 	}
 	
+	public static List<HistoryPresentBhv> retrieveHistoryPresentBhvListSorted(){
+		return dao.retrieveRecent();
+	}
 }

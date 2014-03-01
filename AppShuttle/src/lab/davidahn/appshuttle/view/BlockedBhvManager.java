@@ -23,8 +23,7 @@ public class BlockedBhvManager {
 	private BlockedBhvManager() {
 		userBhvDao = UserBhvDao.getInstance();
 		blockedBhvs = new HashMap<UserBhv, BlockedBhv>();
-		for (BlockedBhv blockedUserBhv : userBhvDao.retrieveBlockedUserBhv())
-			blockedBhvs.put(blockedUserBhv.getUserBhv(), blockedUserBhv);
+		updateBlockedBhvSet();
 	}
 
 	public static BlockedBhvManager getInstance() {
@@ -37,6 +36,12 @@ public class BlockedBhvManager {
 
 	public synchronized BlockedBhv getBlockedBhv(UserBhv uBhv) {
 		return blockedBhvs.get(uBhv);
+	}
+	
+	public void updateBlockedBhvSet(){
+		blockedBhvs.clear();
+		for (BlockedBhv blockedUserBhv : userBhvDao.retrieveBlockedUserBhv())
+			blockedBhvs.put(blockedUserBhv.getUserBhv(), blockedUserBhv);
 	}
 
 	public synchronized BlockedBhv block(UserBhv uBhv) {
@@ -60,6 +65,7 @@ public class BlockedBhvManager {
 	}
 	
 	public synchronized List<BlockedBhv> getBlockedBhvListSorted(){
+		updateBlockedBhvSet();
 		List<BlockedBhv> blockedBhvList = new ArrayList<BlockedBhv>(getBlockedBhvSet());
 		Collections.sort(blockedBhvList, Collections.reverseOrder());
 		return Collections.unmodifiableList(blockedBhvList);
