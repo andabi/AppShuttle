@@ -86,6 +86,11 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.position.loc.min_num_history", 3);
 		editor.putInt("matcher.position.loc.tolerance_in_meter", 50);
 		
+		editor.putLong("matcher.headset.duration", 7 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("matcher.headset.acceptance_delay", AlarmManager.INTERVAL_HOUR);
+		editor.putFloat("matcher.headset.min_likelihood", 0.3f);
+		editor.putInt("matcher.headset.min_num_related_history", 2);
+		
 		//view
 		editor.putInt("viewer.noti.max_num", 24);
 		editor.putInt("viewer.noti.proper_num_favorite", 6);
