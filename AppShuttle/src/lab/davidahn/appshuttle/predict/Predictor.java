@@ -12,6 +12,8 @@ import lab.davidahn.appshuttle.predict.matcher.MatcherElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherGroup;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcher;
+import lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.position.LocationPositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.position.MovePositionMatcher;
 import lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherConf;
@@ -44,6 +46,7 @@ public class Predictor {
 		registerRecentMatcher();
 		registerTimeMatcher();
 		registerPositionMatcher();
+		registerHeadsetMatcher();
 	}
 	
 	private void registerRecentMatcher() {
@@ -151,6 +154,19 @@ public class Predictor {
 //			)
 //		);
 		matcherList.add(locMatcherGroup);
+	}
+	
+	private void registerHeadsetMatcher() {
+		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
+		MatcherElem headsetMatcherGroup = new HeadsetMatcher(
+			new HeadsetMatcherConf.Builder()
+				.setDuration(preferenceSettings.getLong("matcher.headset.duration", 7 * AlarmManager.INTERVAL_DAY))
+				.setAcceptanceDelay(preferenceSettings.getLong("matcher.headset.acceptance_delay", AlarmManager.INTERVAL_HOUR))
+				.setMinLikelihood(preferenceSettings.getFloat("matcher.headset.min_likelihood", 0.5f))
+				.setMinNumHistory(preferenceSettings.getInt("matcher.headset.min_num_related_history", 2))
+				.build()
+			);
+		matcherList.add(headsetMatcherGroup);
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
