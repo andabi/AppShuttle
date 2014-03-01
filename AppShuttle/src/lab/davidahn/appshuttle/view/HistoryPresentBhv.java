@@ -14,6 +14,7 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 	
 	public HistoryPresentBhv(UserBhv uBhv) {
 		super(uBhv);
+		dao = HistoryPresentBhvDao.getInstance();
 	}
 	
 	public long getRecentPredictionTime() {
