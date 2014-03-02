@@ -71,8 +71,10 @@ public abstract class MatcherResultElem implements Comparable<MatcherResultElem>
 		viewMsg = _viewMsg;
 	}
 	
-	public abstract EnumMap<MatcherType, MatcherResultElem> getMatcherResultMap();
+	public abstract EnumMap<MatcherType, MatcherResultElem> getAllParticipantMatchersWithResults();
 	
+	public abstract MatcherType getMatcherSelectedByPriority();
+
 	@Override
 	public int compareTo(MatcherResultElem matcherResult){
 		MatcherTypeComparator comparator = new MatcherTypeComparator();

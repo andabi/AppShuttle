@@ -57,10 +57,15 @@ public class MatcherResult extends MatcherResultElem {
 	}
 	
 	@Override
-	public EnumMap<MatcherType, MatcherResultElem> getMatcherResultMap() {
+	public EnumMap<MatcherType, MatcherResultElem> getAllParticipantMatchersWithResults() {
 		EnumMap<MatcherType, MatcherResultElem> matcherResultMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
 		matcherResultMap.put(matcherType, this);
 		return matcherResultMap;
+	}
+	
+	@Override
+	public MatcherType getMatcherSelectedByPriority(){
+		return matcherType;
 	}
 
 	public String toString(){
