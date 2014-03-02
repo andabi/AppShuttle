@@ -10,6 +10,7 @@ import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.HeadsetEnv;
+import lab.davidahn.appshuttle.collect.env.HeadsetEnvSensor;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
@@ -29,11 +30,8 @@ public class HeadsetMatcher extends Matcher<HeadsetMatcherConf>{
 	
 	@Override
 	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt uCxt) {
-		if(((HeadsetEnv)uCxt.getUserEnv(EnvType.HEADSET)).isPlugged()){
-			return true;
-		} else {
-			return false;
-		}
+		if(HeadsetEnvSensor.getInstance().isHeadsetPlugged()) return true;
+		else return false;
 	}
 	
 	@Override

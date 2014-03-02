@@ -5,7 +5,7 @@ public class HeadsetEnv extends UserEnv {
 	private static HeadsetEnv pluggedOn = new HeadsetEnv(true);
 	private static HeadsetEnv pluggedOff = new HeadsetEnv(false);
 	
-	private boolean isPlugged;
+	private final boolean isPlugged;
 	
 	private HeadsetEnv(boolean _isPlugged) {
 		isPlugged = _isPlugged;
@@ -18,10 +18,6 @@ public class HeadsetEnv extends UserEnv {
 
 	public boolean isPlugged() {
 		return isPlugged;
-	}
-
-	public void setPlugged(boolean _isPlugged) {
-		isPlugged = _isPlugged;
 	}
 
 	public EnvType getEnvType(){
