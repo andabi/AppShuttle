@@ -5,8 +5,6 @@ import java.util.Calendar;
 import lab.davidahn.appshuttle.collect.CollectionService;
 import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
-import lab.davidahn.appshuttle.collect.env.EnvType;
-import lab.davidahn.appshuttle.collect.env.HeadsetEnv;
 import lab.davidahn.appshuttle.predict.PredictionService;
 import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.app.AlarmManager;
@@ -191,8 +189,7 @@ public class AppShuttleMainService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(AppShuttleApplication.currUserCxt != null){
-				boolean plugged = (intent.getIntExtra("state", 0) == 1);
-				((HeadsetEnv)AppShuttleApplication.currUserCxt.getUserEnv(EnvType.HEADSET)).setPlugged(plugged);
+//				boolean plugged = (intent.getIntExtra("state", 0) == 1);
 				doPrediction(true);
 			}
 		}
