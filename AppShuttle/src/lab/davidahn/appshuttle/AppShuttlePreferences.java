@@ -88,8 +88,8 @@ public class AppShuttlePreferences {
 		
 		editor.putLong("matcher.headset.duration", 7 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.headset.acceptance_delay", AlarmManager.INTERVAL_HOUR);
-		editor.putFloat("matcher.headset.min_likelihood", 0.3f);
-		editor.putInt("matcher.headset.min_num_related_history", 2);
+		editor.putFloat("matcher.headset.min_likelihood", 0.5f);
+		editor.putInt("matcher.headset.min_num_related_history", 3);
 		
 		//view
 		editor.putInt("viewer.noti.max_num", 24);
