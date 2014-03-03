@@ -111,7 +111,8 @@ public class MovePositionMatcher extends PositionMatcher {
 	
 	@Override
 	protected double computeScore(MatcherResult matcherResult) {
-		double score = (1 + matcherResult.getLikelihood());
+		double score = 1 + 0.5 * matcherResult.getLikelihood()
+				+ 0.1 * (1.0 * matcherResult.getNumRelatedHistory() / Integer.MAX_VALUE);
 		
 		assert(1 <= score && score <=2);		
 		
