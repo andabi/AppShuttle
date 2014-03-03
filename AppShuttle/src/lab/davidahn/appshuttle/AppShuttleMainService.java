@@ -57,9 +57,9 @@ public class AppShuttleMainService extends Service {
 		filter.addAction(Intent.ACTION_SCREEN_ON);
 		registerReceiver(screenOnReceiver, filter);
 		
-		filter = new IntentFilter();
-		filter.addAction(Intent.ACTION_SCREEN_OFF);
-		registerReceiver(screenOffReceiver, filter);
+//		filter = new IntentFilter();
+//		filter.addAction(Intent.ACTION_SCREEN_OFF);
+//		registerReceiver(screenOffReceiver, filter);
 		
 		filter = new IntentFilter();
 		filter.addAction("lab.davidahn.appshuttle.PREDICT");
@@ -125,7 +125,7 @@ public class AppShuttleMainService extends Service {
 		alarmManager.cancel(compactionOperation);
 		
 		unregisterReceiver(screenOnReceiver);
-		unregisterReceiver(screenOffReceiver);
+//		unregisterReceiver(screenOffReceiver);
 		unregisterReceiver(predictReceiver);
 		unregisterReceiver(sleepModeReceiver);
 		unregisterReceiver(screenOrientationReceiver);
@@ -145,13 +145,13 @@ public class AppShuttleMainService extends Service {
 		}
 	};
 	
-	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			doPrediction(false);
-			stopPeriodicPrediction();
-		}
-	};
+//	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			doPrediction(false);
+//			stopPeriodicPrediction();
+//		}
+//	};
 
 	BroadcastReceiver sleepModeReceiver = new BroadcastReceiver(){
 		@Override
