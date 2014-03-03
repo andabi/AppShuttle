@@ -56,7 +56,7 @@ public class BaseBhvCollector implements BhvCollector {
 			for(BaseUserBhv uBhv : new HashSet<BaseUserBhv>((AppShuttleApplication.durationUserBhvBuilderMap.keySet()))){
 				DurationUserBhv.Builder _durationUserBhvBuilder = AppShuttleApplication.durationUserBhvBuilderMap.get(uBhv);
 				if(currTime.getTime() - _durationUserBhvBuilder.getEndTime().getTime() 
-						> preferenceSettings.getLong("collection.period", 10000) * 1.5){
+						> preferenceSettings.getLong("collection.bhv.period", 60000) * 1.5){
 					res.add(_durationUserBhvBuilder.build());
 					AppShuttleApplication.durationUserBhvBuilderMap.remove(uBhv);
 				}
@@ -72,7 +72,7 @@ public class BaseBhvCollector implements BhvCollector {
 		for(BaseUserBhv uBhv : AppShuttleApplication.durationUserBhvBuilderMap.keySet()){
 			DurationUserBhv.Builder durationUserBhvBuilder = AppShuttleApplication.durationUserBhvBuilderMap.get(uBhv);
 			if(currTimeDate.getTime() - durationUserBhvBuilder.getEndTime().getTime() 
-					> preferenceSettings.getLong("collection.period", 10000) * 1.5){
+					> preferenceSettings.getLong("collection.bhv.period", 60000) * 1.5){
 				res.add(durationUserBhvBuilder.build());
 			}
 		}
@@ -83,7 +83,7 @@ public class BaseBhvCollector implements BhvCollector {
 	}
 	
 	public DurationUserBhv.Builder createDurationUserBhvBuilder(Date time, Date endTime, TimeZone currTimeZone, UserBhv bhv) {
-		long adjustment = preferenceSettings.getLong("collection.period", 10000) / 2;
+		long adjustment = preferenceSettings.getLong("collection.bhv.period", 60000) / 2;
 
 		return new DurationUserBhv.Builder()
 		.setTime(new Date(time.getTime() - adjustment))

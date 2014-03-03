@@ -2,6 +2,7 @@ package lab.davidahn.appshuttle.collect;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class SnapshotUserCxt {
 	private List<BaseUserBhv> _userBhvs;
 
 	public SnapshotUserCxt() {
-		_userEnvs = new HashMap<EnvType, UserEnv>();
+		_userEnvs = new EnumMap<EnvType, UserEnv>(EnvType.class);
 		_userBhvs = new ArrayList<BaseUserBhv>();
 	}
 	

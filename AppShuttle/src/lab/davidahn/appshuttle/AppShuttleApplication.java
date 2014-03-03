@@ -29,6 +29,7 @@ public class AppShuttleApplication extends Application {
 		instance = this;
 		launchTime = System.currentTimeMillis();
 		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
+		currUserCxt = new SnapshotUserCxt();
 		predictedBhvMap = new HashMap<UserBhv, PredictedBhv>();
 		predictedPresentBhvMap = new HashMap<UserBhv, PredictedPresentBhv>();
 	}

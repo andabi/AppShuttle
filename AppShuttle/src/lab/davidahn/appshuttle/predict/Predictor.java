@@ -154,7 +154,7 @@ public class Predictor {
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
-		if(currUserCxt == null)
+		if(currUserCxt.getUserEnvs().isEmpty())
 			return ;
 		
 		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();

@@ -13,8 +13,10 @@ public class AppShuttlePreferences {
 		editor.putString("database.name", "AppShuttle.db");
 
 		//collection
-		editor.putBoolean("collection.enabled", true);
-		editor.putLong("collection.period", 30000);
+		editor.putBoolean("collection.bhv.enabled", true);
+		editor.putLong("collection.bhv.period", 30000);
+		editor.putBoolean("collection.env.enabled", true);
+		editor.putLong("collection.env.period", 60000);
 		
 		editor.putLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
 		
