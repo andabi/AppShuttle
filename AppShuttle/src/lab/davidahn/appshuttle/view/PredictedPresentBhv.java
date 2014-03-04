@@ -53,17 +53,12 @@ public class PredictedPresentBhv extends PresentBhv implements Comparable<Predic
 	}
 	
 	/**
-	 * Always returns a list (possible to be empty)
+	 * Always returns a list (possible to be an empty list)
 	 * @return
 	 */
-	public List<String> getMatcherStringList(){
+	public List<MatcherType> getMatcherList(){
 		Set<MatcherType> matcherSet = predictedBhvByMatcherType.keySet();
-		List<String> matcherStrList = new ArrayList<String>();
-		
-		for (MatcherType m : matcherSet)
-			matcherStrList.add(m.toString());
-		
-		return matcherStrList;
+		return new ArrayList<MatcherType>(matcherSet);
 	}
 
 	@Override
