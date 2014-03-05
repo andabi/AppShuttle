@@ -19,10 +19,10 @@ public class PredictionService extends IntentService {
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY").putExtra("isOn", true));
+		sendBroadcast(new Intent().setAction(AppShuttleApplication.PROGRESS_VISIBILITY).putExtra("isOn", true));
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY").putExtra("isOn", false));
+		sendBroadcast(new Intent().setAction(AppShuttleApplication.UPDATE_VIEW));
+		sendBroadcast(new Intent().setAction(AppShuttleApplication.PROGRESS_VISIBILITY).putExtra("isOn", false));
 	}
 	
 	@Override

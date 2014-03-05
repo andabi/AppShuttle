@@ -89,6 +89,7 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.position.loc.tolerance_in_meter", 50);
 		
 		//view
+		editor.putLong("view.update_period", 15000);
 		editor.putInt("viewer.noti.max_num", 24);
 		editor.putInt("viewer.noti.proper_num_favorite", 6);
 //		editor.putInt("viewer.noti.max_num_favorite", 24);

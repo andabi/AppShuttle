@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle.view.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
@@ -155,7 +156,7 @@ public class BlockedBhvFragment extends ListFragment {
 	}
 
 	private void doPostAction() {
-		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
+		getActivity().sendBroadcast(new Intent().setAction(AppShuttleApplication.UPDATE_VIEW));
 	}
 	
 	private void showToastMsg(String actionMsg){

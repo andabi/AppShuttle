@@ -20,8 +20,8 @@ public class SensorOnCollector extends BaseBhvCollector {
 		return sensorOnCollector;
 	}
 
-	public List<BaseUserBhv> collect() {
-		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
+	public List<UserBhv> collect() {
+		List<UserBhv> res = new ArrayList<UserBhv>();
 		WifiManager wifi = (WifiManager)AppShuttleApplication.getContext().getSystemService(Context.WIFI_SERVICE);
 		if (wifi.isWifiEnabled()) {
 			res.add(create(UserBhvType.SENSOR_ON, SensorType.WIFI.name()));

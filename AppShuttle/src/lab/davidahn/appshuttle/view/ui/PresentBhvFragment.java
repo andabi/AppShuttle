@@ -167,7 +167,7 @@ public class PresentBhvFragment extends ListFragment {
 	}
 
 	private void doPostAction() {
-		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
+		getActivity().sendBroadcast(new Intent().setAction(AppShuttleApplication.UPDATE_VIEW));
 	}
 	
 	private void showToastMsg(String actionMsg){

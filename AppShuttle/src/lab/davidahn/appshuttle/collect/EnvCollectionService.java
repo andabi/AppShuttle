@@ -27,10 +27,13 @@ public class EnvCollectionService extends Service {
 	private Date currTimeDate;
 	private TimeZone currTimeZone;
 	private Map<EnvType, EnvSensor> sensors;
+	private Map<EnvType, UserEnv> sensedEnvs;
 
     @Override
 	public void onCreate() {
 		super.onCreate();
+		sensors = new HashMap<EnvType, EnvSensor>();
+		sensedEnvs = new HashMap<EnvType, UserEnv>();
 		registerSensors();
 		if(!isDonePreCollection()){
 			preCollectCollectDurationUserEnv();
@@ -45,8 +48,9 @@ public class EnvCollectionService extends Service {
 		Log.d("EnvCollectionService", "started.");
 
 		senseTime();
-		senseEnvAndUpdateCxt(AppShuttleApplication.currUserCxt);
-		extractAndStoreDurationUserEnv(AppShuttleApplication.currUserCxt);
+		senseEnv();
+		extractAndStoreDurationUserEnv();
+		UpdateCxt(AppShuttleApplication.currUserCxt);
 		
 		return START_NOT_STICKY;
 	}
@@ -63,27 +67,29 @@ public class EnvCollectionService extends Service {
 	}
 	
 	private void registerSensors() {
-		sensors = new HashMap<EnvType, EnvSensor>();
 		sensors.put(EnvType.LOCATION, LocEnvSensor.getInstance());
 		sensors.put(EnvType.PLACE, PlaceEnvSensor.getInstance());
 		sensors.put(EnvType.SPEED, SpeedEnvSensor.getInstance());
 		sensors.put(EnvType.HEADSET, HeadsetEnvSensor.getInstance());
 	}
 
-	private void senseEnvAndUpdateCxt(SnapshotUserCxt uCxt) {
-		uCxt.setTime(currTimeDate);
-		uCxt.setTimeZone(currTimeZone);
+	private void senseEnv() {
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
-			UserEnv uEnv = sensor.sense(uCxt.getTimeDate(), uCxt.getTimeZone());
-			uCxt.addUserEnv(envType, uEnv);
+			sensedEnvs.put(envType, sensor.sense(currTimeDate, currTimeZone));
 		}
 	}
 
-	private void extractAndStoreDurationUserEnv(SnapshotUserCxt uCxt) {
+	private void UpdateCxt(SnapshotUserCxt uCxt) {
+		uCxt.setTime(currTimeDate);
+		uCxt.setTimeZone(currTimeZone);
+		uCxt.updateUserEnv(sensedEnvs);
+	}
+	
+	private void extractAndStoreDurationUserEnv() {
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
-			DurationUserEnv durationUserEnv = sensor.extractDurationUserEnv(uCxt.getTimeDate(), uCxt.getTimeZone(), uCxt.getUserEnv(envType));
+			DurationUserEnv durationUserEnv = sensor.extractDurationUserEnv(currTimeDate, currTimeZone, sensedEnvs.get(envType));
 			storeDurationUserEnv(durationUserEnv);
 		}
 	}

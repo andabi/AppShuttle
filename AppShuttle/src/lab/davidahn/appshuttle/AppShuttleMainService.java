@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.os.PowerManager;
 
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
@@ -25,6 +26,7 @@ public class AppShuttleMainService extends Service {
 	private PendingIntent bhvCollectionOperation;
 	private PendingIntent envCollectionOperation;
 	private PendingIntent predictionOperation;
+	private PendingIntent updateViewOperation;
 	private PendingIntent compactionOperation;
 	
 	@Override
@@ -33,10 +35,9 @@ public class AppShuttleMainService extends Service {
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		registerReceivers();
-		startPeriodicBhvCollection();
-		startPeriodicEnvCollection();
-		startPeriodicCompaction();
-		startPeriodicPrediction();
+		startPeriodicOperationsAlways();
+	    if(((PowerManager)getSystemService(Context.POWER_SERVICE)).isScreenOn())
+	    	startPeriodicOperationsScreenOn();
 	}
 	
 	@Override
@@ -54,16 +55,10 @@ public class AppShuttleMainService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		
-		stopPeriodicBhvCollection();
-		stopPeriodicEnvCollection();
-		stopPeriodicCompaction();
-		stopPeriodicPrediction();
+		stopPeriodicOperationsAlways();
+		stopPeriodicOperationsScreenOn();
 		
-		unregisterReceiver(screenOnReceiver);
-		unregisterReceiver(screenOffReceiver);
-		unregisterReceiver(predictReceiver);
-		unregisterReceiver(sleepModeReceiver);
-		unregisterReceiver(screenOrientationReceiver);
+		unregisterReceiver(receiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, BhvCollectionService.class));
 		stopService(new Intent(AppShuttleMainService.this, EnvCollectionService.class));
@@ -77,23 +72,34 @@ public class AppShuttleMainService extends Service {
 	private void registerReceivers() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
-		registerReceiver(screenOnReceiver, filter);
-		
-		filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_OFF);
-		registerReceiver(screenOffReceiver, filter);
-		
-		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.PREDICT");
-		registerReceiver(predictReceiver, filter);
-	
-		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.SLEEP_MODE");
-		registerReceiver(sleepModeReceiver, filter);
-		
-		filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
-		registerReceiver(screenOrientationReceiver, filter);
+		filter.addAction(Intent.ACTION_HEADSET_PLUG);
+		filter.addAction(AppShuttleApplication.PREDICT);
+		filter.addAction(AppShuttleApplication.SLEEP_MODE);
+		registerReceiver(receiver, filter);
+	}
+	
+	private void startPeriodicOperationsAlways() {
+		startPeriodicEnvCollection();
+		startPeriodicCompaction();
+	}
+	
+	private void stopPeriodicOperationsAlways() {
+		stopPeriodicEnvCollection();
+		stopPeriodicCompaction();
+	}
+	
+	private void startPeriodicOperationsScreenOn() {
+		startPeriodicBhvCollection();
+		startPeriodicPrediction();
+		startPeriodicUpdateView();
+	}
+	
+	private void stopPeriodicOperationsScreenOn() {
+		stopPeriodicBhvCollection();
+		stopPeriodicPrediction();
+		stopPeriodicUpdateView();
 	}
 
 	private void startPeriodicBhvCollection() {
@@ -121,14 +127,20 @@ public class AppShuttleMainService extends Service {
 	}
 
 	private void startPeriodicPrediction() {
-		Intent predictionIntent = new Intent().setAction("lab.davidahn.appshuttle.PREDICT");
+		Intent predictionIntent = new Intent().setAction(AppShuttleApplication.PREDICT);
 		predictionOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
 		long period = preferenceSettings.getLong("predictor.period", 120000);
 		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, predictionOperation);
 	}
-
+	
+	private void startPeriodicUpdateView() {
+		Intent predictionIntent = new Intent().setAction(AppShuttleApplication.UPDATE_VIEW);
+		updateViewOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
+		long period = preferenceSettings.getLong("view.update_period", 15000);
+		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, updateViewOperation);
+	}
+	
 	private void stopPeriodicBhvCollection(){
-		
 		alarmManager.cancel(bhvCollectionOperation);
 	}
 	
@@ -142,6 +154,10 @@ public class AppShuttleMainService extends Service {
 	
 	private void stopPeriodicPrediction(){
 		alarmManager.cancel(predictionOperation);
+	}
+	
+	private void stopPeriodicUpdateView(){
+		alarmManager.cancel(updateViewOperation);
 	}
 
 	private void doBhvCollection() {
@@ -168,47 +184,36 @@ public class AppShuttleMainService extends Service {
 		return calendar.getTimeInMillis();
 	}
 	
-	BroadcastReceiver screenOnReceiver = new BroadcastReceiver() {
+	BroadcastReceiver receiver = new BroadcastReceiver(){
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			startPeriodicPrediction();
-			startPeriodicBhvCollection();
-		}
-	};
-	
-	BroadcastReceiver screenOffReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			stopPeriodicPrediction();
-			stopPeriodicBhvCollection();
-			doBhvCollection();
-		}
-	};
-
-	BroadcastReceiver sleepModeReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			boolean isOn = intent.getBooleanExtra("isOn", false);
-			if(isOn)
-				stopPeriodicPrediction();
-			else
-				startPeriodicPrediction();
-		}
-	};
-	
-	BroadcastReceiver predictReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			boolean isForce = intent.getBooleanExtra("isForce", false);
-			doPrediction(isForce);
-		}
-	};
-	
-	BroadcastReceiver screenOrientationReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			NotiBarNotifier.getInstance().updateNotification();
-//			if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+			final String action = intent.getAction();
+			if (action.equals(Intent.ACTION_SCREEN_ON)) {
+				startPeriodicOperationsScreenOn();
+			} else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+				stopPeriodicOperationsScreenOn();
+				doBhvCollection();
+			} else if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
+				NotiBarNotifier.getInstance().updateNotification();
+//				if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+			} else if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
+				doPrediction(true);
+//				boolean plugged = (intent.getIntExtra("state", 0) == 1);
+			} else if (action.equals(AppShuttleApplication.PREDICT)) {
+				boolean isForce = intent.getBooleanExtra("isForce", false);
+				doPrediction(isForce);
+			} else if (action.equals(AppShuttleApplication.SLEEP_MODE)) {
+				boolean isOn = intent.getBooleanExtra("isOn", false);
+				if(isOn){
+					stopPeriodicPrediction();
+					stopPeriodicUpdateView();
+				} else {
+					startPeriodicPrediction();
+					startPeriodicUpdateView();
+				}
+			} else {
+				return ;
+			}
 		}
 	};
 }

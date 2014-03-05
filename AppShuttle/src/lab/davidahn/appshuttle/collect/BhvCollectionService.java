@@ -27,10 +27,13 @@ public class BhvCollectionService extends Service {
 	private Date currTimeDate;
 	private TimeZone currTimeZone;
     private List<BhvCollector> collectors;
-
+    private List<UserBhv> collectedBhvs;
+    
     @Override
 	public void onCreate() {
 		super.onCreate();
+		collectors = new ArrayList<BhvCollector>();
+		collectedBhvs = new ArrayList<UserBhv>();
 		registerCollectors();
 		if(!isDonePreCollection()){
 			preCollectCollectDurationUserBhv();
@@ -45,10 +48,10 @@ public class BhvCollectionService extends Service {
 		Log.d("BhvCollectionService", "started.");
 		
 		senseTime();
-		senseBhvAndUpdateCxt(AppShuttleApplication.currUserCxt);
-		extractAndStoreSnapshotAppUserBhvAsDurationUserBhv(AppShuttleApplication.currUserCxt);
-		extractAndStoreDurationUserBhv(AppShuttleApplication.currUserCxt);
-
+		senseBhvs();
+		extractAndStoreSnapshotAppUserBhvAsDurationUserBhv();
+		extractAndStoreDurationUserBhv();
+		updateCxt(AppShuttleApplication.currUserCxt);
 		return START_NOT_STICKY;
 	}
 	
@@ -64,61 +67,53 @@ public class BhvCollectionService extends Service {
 	}
 	
 	private void registerCollectors() {
-		collectors = new ArrayList<BhvCollector>();
 		collectors.add(AppBhvCollector.getInstance());
 		collectors.add(CallBhvCollector.getInstance());
 		collectors.add(SensorOnCollector.getInstance());
 	}
 
-	private void senseBhvAndUpdateCxt(SnapshotUserCxt uCxt) {
-		uCxt.setTime(currTimeDate);
-		uCxt.setTimeZone(currTimeZone);
-		for(BhvCollector collector : collectors){
-			List<BaseUserBhv> userBhvList = collector.collect();
-			uCxt.addUserBhvAll(userBhvList);
-		}
-//		storeSnapshotCxt(uCxt);
+	private void senseBhvs() {
+		collectedBhvs.clear();
+		for(BhvCollector collector : collectors)
+			collectedBhvs.addAll(collector.collect());
 	}
 	
-	private void extractAndStoreDurationUserBhv(SnapshotUserCxt uCxt) {
-		Date currTimeDate = uCxt.getTimeDate();
-		TimeZone currTimeZone = uCxt.getTimeZone();
+	private void updateCxt(SnapshotUserCxt uCxt) {
+		uCxt.setTime(currTimeDate);
+		uCxt.setTimeZone(currTimeZone);
+		uCxt.clearUserBhvs();
+		uCxt.addUserBhvs(collectedBhvs);
+	}
+	
+	private void extractAndStoreDurationUserBhv() {
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> durationUserBhvList = 
-					collector.extractDurationUserBhv(currTimeDate, currTimeZone, uCxt.getUserBhvs());
+					collector.extractDurationUserBhv(currTimeDate, currTimeZone, collectedBhvs);
 			registerAndStoreDurationUserBhv(durationUserBhvList);
 		}
 	}
 	
-    private void extractAndStoreSnapshotAppUserBhvAsDurationUserBhv(SnapshotUserCxt uCxt) {
+    private void extractAndStoreSnapshotAppUserBhvAsDurationUserBhv() {
 		List<DurationUserBhv> snapshotAppUserBhvList = new ArrayList<DurationUserBhv>();
-		for(UserBhv uBhv : uCxt.getUserBhvs()){
+		for(UserBhv uBhv : collectedBhvs){
 			if(uBhv.getBhvType() != UserBhvType.APP)
 				continue;
 			AppBhvCollector bhvCollector = AppBhvCollector.getInstance();
 			if(!bhvCollector.isTrackedForDurationUserBhv(uBhv)){
 				snapshotAppUserBhvList.add(bhvCollector.createDurationUserBhvBuilder(
-						uCxt.getTimeDate(), uCxt.getTimeDate(), uCxt.getTimeZone(), uBhv).build());
+						currTimeDate, currTimeDate, currTimeZone, uBhv).build());
 			}
 		}
 		registerAndStoreDurationUserBhv(snapshotAppUserBhvList);
 	}
 
 	private void registerAndStoreDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {
-		registerUserBhvs(durationUserBhvList);
-	
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
-		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			durationUserBhvDao.store(durationUserBhv);
-		}
-	}
-
-	private void registerUserBhvs(List<DurationUserBhv> durationUserBhvList) {
-		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			BaseUserBhv uBhv = (BaseUserBhv)durationUserBhv.getUserBhv();
-			if(uBhv.isValid())
-				userBhvManager.register(uBhv);
+			if(uBhv.isValid()){
+				UserBhvManager.getInstance().register(uBhv);
+				DurationUserBhvDao.getInstance().store(durationUserBhv);
+			}
 		}
 	}
 
@@ -153,7 +148,7 @@ public class BhvCollectionService extends Service {
 			registerAndStoreDurationUserBhv(postExtractedDurationUserBhvList);
 		}
 		
-		Log.d("BhvCollectionService", "post-collection");
+//		Log.d("BhvCollectionService", "post-collection");
 	}
 
 	private void senseTime() {

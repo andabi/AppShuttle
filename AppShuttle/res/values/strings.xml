@@ -13,7 +13,7 @@
     <string name="predict_time_daily_weekday_msg">used at this time of day in weekday</string>
     <string name="predict_time_daily_weekend_msg">used at this time of day in weekend</string>
     <string name="predict_place_msg">used at this place</string>
-    <string name="predict_gps_msg">used at this location</string>
+    <string name="predict_loc_msg">used at this location</string>
     <string name="predict_move_msg">used when moving</string>
     <string name="predict_notibar_msg_sensor_wifi">Wi-Fi</string>
     <string name="actionbar_tab_text_present">Now</string>

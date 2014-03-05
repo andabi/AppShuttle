@@ -17,10 +17,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,11 +50,12 @@ public class AppShuttleMainActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
+		filter.addAction(AppShuttleApplication.UPDATE_VIEW);
+		filter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
 		registerReceiver(updateViewReceiver, filter);
 		
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY");
+		filter.addAction(AppShuttleApplication.PROGRESS_VISIBILITY);
 		registerReceiver(progressVisibilityReceiver, filter);
 
 		mViewPager = new ViewPager(this);
@@ -84,7 +87,7 @@ public class AppShuttleMainActivity extends Activity {
 		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
 		
 		startService(new Intent(this, AppShuttleMainService.class));
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
+		sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
 	}
 	
 	@Override
@@ -109,7 +112,6 @@ public class AppShuttleMainActivity extends Activity {
 	protected void updateView() {
 		NotiBarNotifier.getInstance().updateNotification();
 		mTabsAdapter.notifyDataSetChanged();
-//		Log.d("view", "view updated.");
 	}
 
 	@Override
@@ -264,7 +266,7 @@ public class AppShuttleMainActivity extends Activity {
 			ImageView refresh = (ImageView)layout.findViewById(R.id.refresh);
 			refresh.setOnClickListener(new ImageView.OnClickListener(){
 				public void onClick(View v) {
-					cxt.sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT").putExtra("isForce", true));
+					cxt.sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT).putExtra("isForce", true));
 				}
 			});
 			
@@ -281,6 +283,7 @@ public class AppShuttleMainActivity extends Activity {
 
 	BroadcastReceiver updateViewReceiver = new BroadcastReceiver() {
 	    public void onReceive(Context context, Intent intent) {
+	    	Log.d("viewer", "update view");
 	    	updateView();
 	    }
 	};

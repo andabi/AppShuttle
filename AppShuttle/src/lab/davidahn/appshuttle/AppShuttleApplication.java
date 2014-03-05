@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
@@ -14,10 +13,15 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class AppShuttleApplication extends Application {
+	public static final String UPDATE_VIEW = "lab.davidahn.appshuttle.UPDATE_VIEW";
+	public static final String PREDICT = "lab.davidahn.appshuttle.PREDICT";
+	public static final String PROGRESS_VISIBILITY = "lab.davidahn.appshuttle.PROGRESS_VISIBILITY";
+	public static final String SLEEP_MODE = "lab.davidahn.appshuttle.SLEEP_MODE";
+	
 	private static AppShuttleApplication instance;
 	public static long launchTime;
 	public volatile static long lastPredictionTime;
-	public volatile static Map<BaseUserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
+	public volatile static Map<UserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
 	public volatile static SnapshotUserCxt currUserCxt;
 	public volatile static Map<UserBhv, PredictedBhv> predictedBhvMap;
 	public volatile static Map<UserBhv, PredictedPresentBhv> predictedPresentBhvMap;
@@ -28,7 +32,7 @@ public class AppShuttleApplication extends Application {
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();
-		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
+		durationUserBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
 		currUserCxt = new SnapshotUserCxt();
 		predictedBhvMap = new HashMap<UserBhv, PredictedBhv>();
 		predictedPresentBhvMap = new HashMap<UserBhv, PredictedPresentBhv>();

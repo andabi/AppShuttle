@@ -6,8 +6,8 @@ import java.util.TimeZone;
 
 
 public interface BhvCollector {
-	public <T extends BaseUserBhv> List<T> collect();
+	public <T extends UserBhv> List<T> collect();
 	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone);
-	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<BaseUserBhv> userBhvList);
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<UserBhv> userBhvList);
 	public List<DurationUserBhv> postExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone);
 }
