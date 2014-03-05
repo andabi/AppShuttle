@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import android.content.Intent;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
@@ -146,5 +148,12 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	@Override
 	public void setMeta(String key, Object val) {
 		uBhv.setMeta(key, val);
+	}
+	
+	public Intent getLaunchIntent(){
+		if (uBhv == null)
+			return null;
+		
+		return uBhv.getLaunchIntent(); 
 	}
 }

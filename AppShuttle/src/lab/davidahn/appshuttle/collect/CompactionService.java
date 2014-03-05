@@ -9,6 +9,7 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
+import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.ViewableUserBhv;
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -40,6 +41,7 @@ public class CompactionService extends IntentService {
 		compactHistoryUserBhv(expirationBoundTimeDate);
 		compactHistoryUserEnv(expirationBoundTimeDate);
 		compactUserBhvList(expirationBoundTimeDate);
+		compactStatEntires(expirationBoundTimeDate);
 	}
 	
 	public void onDestroy() {
@@ -66,5 +68,10 @@ public class CompactionService extends IntentService {
 				continue;
 			userBhvManager.unregister(uBhv);
 		}
+	}
+	
+	private void compactStatEntires(Date expirationBoundTimeDate) {
+		StatCollector statCollector = StatCollector.getInstance();
+		statCollector.deleteAllBefore(expirationBoundTimeDate);
 	}
 }

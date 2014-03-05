@@ -1,5 +1,7 @@
 package lab.davidahn.appshuttle.view.ui;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
@@ -50,6 +52,18 @@ public class SettingsActivity extends PreferenceActivity {
 			super.onPause();
 			getPreferenceScreen().getSharedPreferences()
 			.unregisterOnSharedPreferenceChangeListener(this);
+		}
+		
+		@Override
+		public void onStart() {
+			super.onStart();
+			EasyTracker.getInstance(AppShuttleApplication.getContext()).activityStart(getActivity());
+		}
+		
+		@Override
+		public void onStop() {
+			super.onStop();
+			EasyTracker.getInstance(AppShuttleApplication.getContext()).activityStop(getActivity());
 		}
 
 		@Override

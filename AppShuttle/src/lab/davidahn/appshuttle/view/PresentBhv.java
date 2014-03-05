@@ -76,40 +76,74 @@ public abstract class PresentBhv extends ViewableUserBhv {
 	}
 	
 	public static List<PresentBhv> getPresentBhvListFilteredSorted(int topN) {
+		return getPresentBhvListFilteredSorted(topN, true);
+	}
+	
+	/**
+	 * Return a list of present Bhvs (to notify)
+	 * @param topN
+	 * @param filter_current
+	 * @return
+	 */
+	public static List<PresentBhv> getPresentBhvListFilteredSorted(int topN, boolean filter_current) {
 		if(topN < 0)
 			throw new IllegalArgumentException("the number of presentBhv < 0");
 
 		HistoryPresentBhv.storeHistoryPresentBhvList(HistoryPresentBhv.extractHistoryPresentBhvList());
+		
+		
+		// Build predicted list
 		List<PredictedPresentBhv> predictedPresentBhvListSorted = PredictedPresentBhv.getPredictedPresentBhvListSorted();
 		PredictedPresentBhv.updatePredictedPresentBhvList(predictedPresentBhvListSorted);
-
+		
 		List<PresentBhv> predictedPresentBhvListFilteredSorted = new ArrayList<PresentBhv>();
 		predictedPresentBhvListFilteredSorted.addAll(predictedPresentBhvListSorted);
-		predictedPresentBhvListFilteredSorted = getEligiblePresentList(predictedPresentBhvListFilteredSorted);
+		predictedPresentBhvListFilteredSorted = getEligiblePresentList(predictedPresentBhvListFilteredSorted, filter_current);
 		
+
+		
+		// Build history list
 		List<HistoryPresentBhv> historyPresentBhvListSorted = HistoryPresentBhv.retrieveHistoryPresentBhvListSorted();
 		List<PresentBhv> historyPresentBhvListFilteredSorted = new ArrayList<PresentBhv>();
 		for(HistoryPresentBhv historyPresentBhv : historyPresentBhvListSorted)
 			if(!predictedPresentBhvListFilteredSorted.contains(historyPresentBhv))
 				historyPresentBhvListFilteredSorted.add(historyPresentBhv);
-		historyPresentBhvListFilteredSorted = getEligiblePresentList(historyPresentBhvListFilteredSorted);
-		int minNumPresentBhv = NotiBarNotifier.getInstance().getNumPredictedElem();
-		int numHistoryPresentBhv = Math.max(minNumPresentBhv - predictedPresentBhvListFilteredSorted.size(), 0);
-		historyPresentBhvListFilteredSorted = historyPresentBhvListFilteredSorted.subList(0, Math.min(historyPresentBhvListFilteredSorted.size(), numHistoryPresentBhv));
-
+		
+		historyPresentBhvListFilteredSorted = getEligiblePresentList(historyPresentBhvListFilteredSorted, filter_current);
+		
+		// TODO: Build initial list
+		List<PresentBhv> initialPresentBhvListSorted = new ArrayList<PresentBhv>();
+		
+		
+		// Concat. list
 		List<PresentBhv> presentBhvList = new ArrayList<PresentBhv>();
 		presentBhvList.addAll(predictedPresentBhvListFilteredSorted);
 		presentBhvList.addAll(historyPresentBhvListFilteredSorted);
+		presentBhvList.addAll(initialPresentBhvListSorted);
+				
+		/*
+		int numHistoryPresentBhv = Math.max(minNumPresentBhv - predictedPresentBhvListFilteredSorted.size(), 0);
+		historyPresentBhvListFilteredSorted = historyPresentBhvListFilteredSorted.subList(0, Math.min(historyPresentBhvListFilteredSorted.size(), numHistoryPresentBhv));
+		 */
 		
-		return presentBhvList.subList(0, Math.min(presentBhvList.size(), topN));
+		int numPresentBhv;
+		numPresentBhv = Math.max(predictedPresentBhvListFilteredSorted.size(), NotiBarNotifier.getInstance().getNumPredictedElem());
+		
+		if (topN < numPresentBhv)
+			numPresentBhv = topN;
+				
+		return presentBhvList.subList(0, Math.min(presentBhvList.size(), numPresentBhv));
 	}
-	
-	public static List<PresentBhv> getEligiblePresentList(List<PresentBhv> list) {
+
+	public static List<PresentBhv> getEligiblePresentList(List<PresentBhv> list, boolean filter_current) {
 		List<PresentBhv> filteredPresentBhvList = new ArrayList<PresentBhv>(list);
 		filteredPresentBhvList = getBlockedBhvFilteredList(filteredPresentBhvList);
 		filteredPresentBhvList = getFavoriteBhvFilteredList(filteredPresentBhvList);
-		filteredPresentBhvList = getCurrentBhvFilteredList(filteredPresentBhvList);
 		filteredPresentBhvList = getSensorOnBhvFilteredList(filteredPresentBhvList);
+		
+		if (filter_current == true)
+			filteredPresentBhvList = getCurrentBhvFilteredList(filteredPresentBhvList);
+		
 		return filteredPresentBhvList;
 	}
 

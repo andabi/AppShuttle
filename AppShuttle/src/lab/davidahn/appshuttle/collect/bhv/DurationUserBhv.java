@@ -3,6 +3,8 @@ package lab.davidahn.appshuttle.collect.bhv;
 import java.util.Date;
 import java.util.TimeZone;
 
+import android.content.Intent;
+
 
 public class DurationUserBhv implements UserBhv {
 	private final Date timeDate;
@@ -57,6 +59,13 @@ public class DurationUserBhv implements UserBhv {
 	}
 	public UserBhv getUserBhv() {
 		return uBhv;
+	}
+	
+	public Intent getLaunchIntent(){
+		if (uBhv == null)
+			return null;
+		
+		return uBhv.getLaunchIntent(); 
 	}
 
 	public String toString(){

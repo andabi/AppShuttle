@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/actionbar"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:gravity="center_vertical|right"
@@ -26,6 +27,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/settings_frame"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"

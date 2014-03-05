@@ -1,8 +1,13 @@
 package lab.davidahn.appshuttle.predict;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
@@ -157,6 +162,8 @@ public class Predictor {
 		if(currUserCxt == null)
 			return ;
 		
+		Date time_1 = new Date();	// Start time
+				
 		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(UserBhv uBhv : userBhvManager.getRegisteredBhvSet()){
@@ -179,6 +186,18 @@ public class Predictor {
 			predictedBhvList.add(predictedBhv);
 		}
 		PredictedBhv.updatePredictedBhvList(predictedBhvList);
+		
+		
+		// Statistics
+		// Report (end time - start time)
+		Tracker easyTracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
+		easyTracker.send(MapBuilder
+				.createTiming("algorithm",    // Timing category (required)
+							(new Date()).getTime() - time_1.getTime(),       // Timing interval in milliseconds (required)
+							"overall_prediction_cost",  // Timing name
+							null)           // Timing label
+				.build()
+			);
 	}
 	private double computePredictionScore(EnumMap<MatcherType, MatcherResultElem> matcherResults){
 		double PredictionScore = 0;

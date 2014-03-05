@@ -152,27 +152,10 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 	
 	@Override
 	public Intent getLaunchIntent() {
-		UserBhvType bhvType = uBhv.getBhvType();
-		String bhvName = uBhv.getBhvName();
-		switch(bhvType){
-		case APP:
-			PackageManager packageManager = AppShuttleApplication.getContext().getPackageManager();
-			launchIntent = packageManager.getLaunchIntentForPackage(bhvName);
-			break;
-		case CALL:
-			launchIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel: "+ bhvName));
-			break;
-		case SENSOR_ON:
-			if(bhvName.equals(SensorType.WIFI.name()))
-				launchIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-			break;
-		case NONE:
-			break;
-		default:
-			;
-		}
+		if (uBhv == null)
+			return null;
 		
-		return launchIntent;
+		return uBhv.getLaunchIntent();
 	}
 	
 	@Override

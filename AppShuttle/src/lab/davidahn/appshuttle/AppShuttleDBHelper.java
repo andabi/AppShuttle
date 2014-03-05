@@ -6,7 +6,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferences().getString("database.name", "AppShuttle.db");
-	private static final int DB_VERSION = 42;
+	private static final int DB_VERSION = 43;
+
+	/*
+	 * Comments on DB_VERSION
+	 * 
+	 * 42: history_present_bhv table added.
+	 * 43: stat_bhv_transition table added.
+	 * 
+	 */
 	
 	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
 	public static AppShuttleDBHelper getInstance() {
@@ -37,6 +45,10 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS history_present_bhv ("
 				+ "bhv_type TEXT, bhv_name TEXT, recent_pred_time INTEGER DEFAULT 0, recent_pred_score INTEGER DEFAULT 0, "
 				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
+
+		db.execSQL("CREATE TABLE IF NOT EXISTS stat_bhv_transition ("
+				+ "time INTEGER, bhv_type TEXT, bhv_name TEXT, matchers TEXT, predicted INTEGER, clicked INTEGER, "
+				+ "PRIMARY KEY (time) " + ");");
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -44,6 +56,12 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 			db.execSQL("CREATE TABLE IF NOT EXISTS history_present_bhv ("
 					+ "bhv_type TEXT, bhv_name TEXT, recent_pred_time INTEGER DEFAULT 0, recent_pred_score INTEGER DEFAULT 0, "
 					+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
+		}
+
+		if(oldVersion <= 42) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS stat_bhv_transition ("
+					+ "time INTEGER, bhv_type TEXT, bhv_name TEXT, matchers TEXT, predicted INTEGER, clicked INTEGER, "
+					+ "PRIMARY KEY (time) " + ");");
 		}
 	}
 }

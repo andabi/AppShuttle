@@ -6,9 +6,13 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.report.StatCollector;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -21,21 +25,54 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	
+    private void handleExecutionIntent(Intent intent){
+		if (intent == null)
+			return;
+		
+		Bundle b = intent.getExtras();
+		if (b == null || (b.getBoolean("doExec", false) == false))
+			return;
+		
+		/* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
+		UserBhvType bhvType = UserBhvType.NONE;
+		String bhvName = b.getString("bhvName");
+		if (b.containsKey("bhvType"))
+			bhvType = (UserBhvType)b.getSerializable("bhvType");
+		
+		if (bhvType == UserBhvType.NONE || bhvName == null)
+			return;
+		
+		BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+		
+		Log.i("MainActivity", "Exec req " + uBhv.toString());
+
+		StatCollector.getInstance().notifyBhvTransition(uBhv, true);	// 통계 데이터 전송
+		
+		Intent launchIntent = uBhv.getLaunchIntent();
+		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
+		this.startActivity(launchIntent);
+	}
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,6 +82,20 @@ public class AppShuttleMainActivity extends Activity {
 
 		if(!AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
+
+		/* Intent를 받아서 doExec 이면 해당 앱을 실행시킨다.
+		 * 
+		 * onNewIntent(~) 핸들러에서만 동작시키면, 앱셔틀이 메모리 부족으로 킬 됐을때
+		 * 첫 인텐트가 제대로 동작하지 않음. (앱셔틀 켜지기만 하고 해당 앱이 실행이 안 됨)
+		 * 
+		 * 즉, 앱셔틀이 꺼졌다 켜질 때는 onCreate() 가 처리하고,
+		 * 이미 켜져있는 상태에서는 onNewIntent() 가 처리함.
+		 */
+		Intent intent = getIntent();
+		if (intent != null) {
+			Log.i("MainActivity", "onCreate:" + intent.toString());
+			handleExecutionIntent(intent);
+		}
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
@@ -94,6 +145,19 @@ public class AppShuttleMainActivity extends Activity {
 	}
 	
 	@Override
+	public void onStart() {
+		super.onStart();
+		// FIXME: Is this okay?
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
 		updateView();
@@ -120,6 +184,14 @@ public class AppShuttleMainActivity extends Activity {
 		inflater.inflate(R.menu.actionbarmenu, menu);
 
 		return true;
+	}
+	
+	@Override
+	public void onNewIntent(Intent intent){
+		if (intent != null) {
+			Log.i("MainActivity", "onNewIntent:" + intent.toString());
+			handleExecutionIntent(intent);
+		}
 	}
 		
 	public static CharSequence getActionbarTitle(Context cxt, int position) {
@@ -274,6 +346,32 @@ public class AppShuttleMainActivity extends Activity {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
 				}
 			});
+			
+			/* If debug mode is ON, add debug button */
+			if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
+				ViewGroup actionbar_llayout = (ViewGroup)layout.findViewById(R.id.actionbar);
+				
+				ImageView debug_image = new ImageView(cxt);
+				debug_image.setLayoutParams(layout.findViewById(R.id.settings).getLayoutParams());
+				debug_image.setBackgroundResource(R.drawable.notifiable);	// TODO: New debug image resource is needed
+				
+				debug_image.setOnClickListener(new ImageView.OnClickListener(){
+    				public void onClick(View v) {
+    					// TODO: 디버그 정보를 위한 새로운 액티비티 생성
+    					AlertDialog.Builder alert = new AlertDialog.Builder(cxt);
+    					alert.setTitle("통계정보");
+    					alert.setMessage(StatCollector.getInstance().toString());
+    					alert.show();
+					}
+				});
+				
+				FrameLayout debug_frame = new FrameLayout(cxt);
+				debug_frame.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				debug_frame.setLayoutParams(layout.findViewById(R.id.settings_frame).getLayoutParams());
+				debug_frame.addView(debug_image);
+				
+				actionbar_llayout.addView(debug_frame);
+			}
 			
 			return layout;
 		}

@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
@@ -50,6 +51,15 @@ public class PredictedPresentBhv extends PresentBhv implements
 		if (predictedBhvByMatcherType.isEmpty())
 			return null;
 		return Collections.max(predictedBhvByMatcherType.values());
+	}
+	
+	/**
+	 * Always returns a list (possible to be an empty list)
+	 * @return
+	 */
+	public List<MatcherType> getMatcherList(){
+		Set<MatcherType> matcherSet = predictedBhvByMatcherType.keySet();
+		return new ArrayList<MatcherType>(matcherSet);
 	}
 
 	@Override

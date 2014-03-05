@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import android.app.ListFragment;
@@ -80,7 +81,8 @@ public class FavoriteBhvFragment extends ListFragment {
 		Intent intent = adapter.getItem(position).getLaunchIntent();
 		if(intent == null)
 			return;
-
+		
+		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
 

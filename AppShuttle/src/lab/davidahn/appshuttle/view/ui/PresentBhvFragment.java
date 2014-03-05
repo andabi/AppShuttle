@@ -4,6 +4,7 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import lab.davidahn.appshuttle.view.PresentBhv;
@@ -86,6 +87,7 @@ public class PresentBhvFragment extends ListFragment {
 		if(intent == null)
 			return;
 
+		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
 	
