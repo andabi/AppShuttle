@@ -23,7 +23,7 @@ public enum MatcherType {
 		TIME_DAILY(1, R.string.predict_time_daily_msg, false),
 		
 	//headset
-	HEADSET(3, R.string.predict_headset_msg, false),
+	HEADSET(3, R.string.predict_headset_msg, true),
 	;
 	
 	public int priority;
