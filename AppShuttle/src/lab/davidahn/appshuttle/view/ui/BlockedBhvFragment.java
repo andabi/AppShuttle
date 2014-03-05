@@ -50,7 +50,10 @@ public class BlockedBhvFragment extends ListFragment {
 		
 		setEmptyText(getResources().getString(R.string.msg_manual_blocked));
 
-		blockedBhvList = new ArrayList<BlockedBhv>(BlockedBhvManager.getInstance().getBlockedBhvListSorted());
+		blockedBhvList = new ArrayList<BlockedBhv>();
+		// add dummy Bhv
+		blockedBhvList.add(new BlockedBhv(null, 0));
+		blockedBhvList.addAll(BlockedBhvManager.getInstance().getBlockedBhvListSorted());		
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -73,11 +76,17 @@ public class BlockedBhvFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = adapter.getItem(position).getLaunchIntent();
-		if(intent == null)
-			return;
+		if (position == 0) {
+			// search activity
+			getActivity().startActivity(new Intent(Intent.ACTION_SEARCH));
+		}
+		else {
+			Intent intent = adapter.getItem(position).getLaunchIntent();
+			if(intent == null)
+				return;
 
-		getActivity().startActivity(intent);
+			getActivity().startActivity(intent);
+		}		
 	}
 
 	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedBhv> {
@@ -89,19 +98,26 @@ public class BlockedBhvFragment extends ListFragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			BlockedBhv blockedUserBhv = blockedBhvList.get(position);
+			if (position == 0) {
+				View addView = inflater.inflate(R.layout.listview_add, parent, false);
+				
+				return addView;
+			}
+			else {
+				View itemView = inflater.inflate(R.layout.listview_item, parent, false);
+				BlockedBhv blockedUserBhv = blockedBhvList.get(position);
 
-			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
-			iconView.setImageDrawable(blockedUserBhv.getIcon());
+				ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
+				iconView.setImageDrawable(blockedUserBhv.getIcon());
 
-			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
-			firstLineView.setText(blockedUserBhv.getBhvNameText());
+				TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
+				firstLineView.setText(blockedUserBhv.getBhvNameText());
 
-			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
-			secondLineView.setText(blockedUserBhv.getViewMsg());
+				TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
+				secondLineView.setText(blockedUserBhv.getViewMsg());
 
-			return itemView;
+				return itemView;
+			}
 		}
 	}
 	

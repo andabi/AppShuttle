@@ -50,7 +50,10 @@ public class FavoriteBhvFragment extends ListFragment {
 
 		setEmptyText(getResources().getString(R.string.msg_manual_favorite));
 
-		favoriteBhvList = new ArrayList<FavoriteBhv>(FavoriteBhvManager.getInstance().getFavoriteBhvListSorted());
+		favoriteBhvList = new ArrayList<FavoriteBhv>();
+		// add dummy Bhv
+		favoriteBhvList.add(new FavoriteBhv(null, 0, false));
+		favoriteBhvList.addAll(FavoriteBhvManager.getInstance().getFavoriteBhvListSorted());
 		
 		adapter = new FavoriteBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -77,11 +80,18 @@ public class FavoriteBhvFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = adapter.getItem(position).getLaunchIntent();
-		if(intent == null)
-			return;
+		if (position == 0) {
+			// search activity
+			System.out.println("AAAA");
+			getActivity().startActivity(new Intent(Intent.ACTION_SEARCH));
+		}
+		else {
+			Intent intent = adapter.getItem(position).getLaunchIntent();
+			if(intent == null)
+				return;
 
-		getActivity().startActivity(intent);
+			getActivity().startActivity(intent);
+		}		
 	}
 
 	public class FavoriteBhvInfoAdapter extends ArrayAdapter<FavoriteBhv> {
@@ -93,23 +103,31 @@ public class FavoriteBhvFragment extends ListFragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-			FavoriteBhv favoriteUserBhv = favoriteBhvList.get(position);
-
-			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
-			iconView.setImageDrawable(favoriteUserBhv.getIcon());
-
-			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
-			firstLineView.setText(favoriteUserBhv.getBhvNameText());
-
-			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
-			secondLineView.setText(favoriteUserBhv.getViewMsg());
-			
-			ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_item_image_rightside);
-			if(favoriteUserBhv.isNotifiable())
-				rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.notifiable_dark));
+			if (position == 0) {
+				View addView = inflater.inflate(R.layout.listview_add, parent, false);
 				
-			return itemView;
+				return addView;
+			}
+			else {
+				View itemView = inflater.inflate(R.layout.listview_item, parent, false);
+				FavoriteBhv favoriteUserBhv = favoriteBhvList.get(position);
+
+				ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
+				iconView.setImageDrawable(favoriteUserBhv.getIcon());
+
+				TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
+				firstLineView.setText(favoriteUserBhv.getBhvNameText());
+
+				TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
+				secondLineView.setText(favoriteUserBhv.getViewMsg());
+				
+				ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_item_image_rightside);
+				if(favoriteUserBhv.isNotifiable())
+					rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.notifiable_dark));
+					
+				return itemView;
+			}
+			
 		}
 	}
 	
