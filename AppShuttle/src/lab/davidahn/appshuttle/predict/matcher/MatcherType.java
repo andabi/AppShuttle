@@ -12,7 +12,7 @@ public enum MatcherType {
 	//location
 	POSITION(1, 0, false),
 		PLACE(0, R.string.predict_place_msg, false),
-		LOCATION(1, R.string.predict_gps_msg, false),
+		LOCATION(1, R.string.predict_loc_msg, false),
 		MOVE(2, R.string.predict_move_msg, false),
 	//	UNFAMILIER_PLACE
 
@@ -21,6 +21,9 @@ public enum MatcherType {
 		TIME_DAILY_WEEKDAY(0, R.string.predict_time_daily_weekday_msg, false),
 		TIME_DAILY_WEEKEND(0, R.string.predict_time_daily_weekend_msg, false),
 		TIME_DAILY(1, R.string.predict_time_daily_msg, false),
+		
+	//headset
+	HEADSET(3, R.string.predict_headset_msg, true),
 	;
 	
 	public int priority;

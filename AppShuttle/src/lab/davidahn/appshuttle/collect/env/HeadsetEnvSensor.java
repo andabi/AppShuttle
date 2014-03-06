@@ -27,11 +27,14 @@ public class HeadsetEnvSensor extends BaseEnvSensor {
 	@Override
 	public HeadsetEnv sense(Date currTimeDate, TimeZone currTimeZone){
 		prevHeadsetEnv = currHeadsetEnv;
-		@SuppressWarnings("deprecation")
-		boolean isPlugged = audioManager.isWiredHeadsetOn();
-		currHeadsetEnv =  HeadsetEnv.getInstance(isPlugged);
+		currHeadsetEnv =  HeadsetEnv.getInstance(isHeadsetPlugged());
 //		Log.d("HeadsetEnvSensor", "isPlugged: " + isPlugged);
 		return currHeadsetEnv;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public boolean isHeadsetPlugged(){
+		return audioManager.isWiredHeadsetOn();
 	}
 	
 	@Override
