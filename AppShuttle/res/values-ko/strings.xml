@@ -13,8 +13,9 @@
     <string name="predict_time_daily_weekday_msg">평일 이 시간대에 주로 사용</string>
     <string name="predict_time_daily_weekend_msg">주말 이 시간대에 주로 사용</string>
     <string name="predict_place_msg">이 장소에서 주로 사용</string>
-    <string name="predict_gps_msg">지금 위치에서 주로 사용</string>
+    <string name="predict_loc_msg">지금 위치에서 주로 사용</string>
     <string name="predict_move_msg">이동 중에 사용</string>
+	<string name="predict_headset_msg">이어폰 쓸때 사용</string>
     <string name="predict_notibar_msg_sensor_wifi">Wi-Fi</string>
     <string name="actionbar_tab_text_present">지금</string>
     <string name="actionbar_tab_text_favorite">고정</string>

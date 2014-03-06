@@ -72,6 +72,10 @@ public class AppShuttleMainService extends Service {
 		filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
 		registerReceiver(screenOrientationReceiver, filter);
+		
+		filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_HEADSET_PLUG);
+		registerReceiver(headsetPluggedReceiver, filter);
 	}
 
 	private void doPrediction(boolean isForce) {
@@ -129,6 +133,7 @@ public class AppShuttleMainService extends Service {
 		unregisterReceiver(predictReceiver);
 		unregisterReceiver(sleepModeReceiver);
 		unregisterReceiver(screenOrientationReceiver);
+		unregisterReceiver(headsetPluggedReceiver);
 		
 		stopService(new Intent(AppShuttleMainService.this, CollectionService.class));
 		stopService(new Intent(AppShuttleMainService.this, CompactionService.class));
@@ -177,6 +182,16 @@ public class AppShuttleMainService extends Service {
 		public void onReceive(Context context, Intent intent) {
 			NotiBarNotifier.getInstance().updateNotification();
 //			if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+		}
+	};
+	
+	BroadcastReceiver headsetPluggedReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(AppShuttleApplication.currUserCxt != null){
+//				boolean plugged = (intent.getIntExtra("state", 0) == 1);
+				doPrediction(true);
+			}
 		}
 	};
 }
