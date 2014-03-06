@@ -49,14 +49,9 @@ public class HeadsetEnvSensor extends BaseEnvSensor {
 		if(durationUserEnvBuilder == null) {
 			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, env);
 		} else {
-			if(headsetEnvSensor.isChanged()){
+			if(headsetEnvSensor.isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
 				res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
 				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, env);
-			} else {
-				if((currHeadsetEnv.isPlugged() && isAutoExtractionTime(currTimeDate, currTimeZone))){
-					res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
-					durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, env);
-				}
 			}
 		}
 		return res;
@@ -70,7 +65,9 @@ public class HeadsetEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public boolean isAutoExtractionTime(Date currTimeDate, TimeZone currTimeZone){
-		long duration = preferenceSettings.getLong("collection.headset.auto_extraction_duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES);
+		long duration = preferenceSettings.getLong("collection.common.auto_extraction_duration", AlarmManager.INTERVAL_HOUR);
+		if(currHeadsetEnv.isPlugged())
+			duration = preferenceSettings.getLong("collection.headset.auto_extraction_duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES);
 		Date lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
 		if(currTimeDate.getTime() - lastSensedTimeDate.getTime() > duration)
 			return true;

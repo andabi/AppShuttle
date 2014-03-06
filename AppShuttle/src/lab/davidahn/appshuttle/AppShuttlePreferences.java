@@ -16,7 +16,7 @@ public class AppShuttlePreferences {
 		editor.putBoolean("collection.enabled", true);
 		editor.putLong("collection.period", 30000);
 		
-		editor.putLong("collection.common.auto_store.max_duration", AlarmManager.INTERVAL_HOUR);
+		editor.putLong("collection.common.auto_extraction_duration", AlarmManager.INTERVAL_HOUR);
 		
 		editor.putLong("collection.location.tolerance.time", 25000);
 		editor.putInt("collection.location.tolerance.distance", 500);
@@ -86,7 +86,7 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.position.loc.min_num_history", 3);
 		editor.putInt("matcher.position.loc.tolerance_in_meter", 50);
 		
-		editor.putLong("matcher.headset.duration", 7 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("matcher.headset.duration", 3 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.headset.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.headset.min_likelihood", 0.5f);
 		editor.putInt("matcher.headset.min_num_related_history", 3);

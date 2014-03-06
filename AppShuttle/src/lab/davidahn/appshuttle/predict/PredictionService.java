@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle.predict;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 public class PredictionService extends IntentService {
 	public PredictionService() {
@@ -19,6 +20,7 @@ public class PredictionService extends IntentService {
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
+		Log.d("prediction", "started");
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY").putExtra("isOn", true));
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
 		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
