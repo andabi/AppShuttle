@@ -104,8 +104,7 @@ public class BaseUserBhv implements UserBhv {
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append(bhvType.name()).append(", ");
-		msg.append(bhvName);
+		msg.append(bhvType.name()).append(": ").append(bhvName);
 //		msg.append("metas: ").append(metas.toString());
 		return msg.toString();
 	}
