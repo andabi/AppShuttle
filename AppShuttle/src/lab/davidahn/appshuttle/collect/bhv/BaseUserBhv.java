@@ -104,9 +104,9 @@ public class BaseUserBhv implements UserBhv {
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("behavior type: ").append(bhvType.toString()).append(", ");
-		msg.append("behavior name: ").append(bhvName).append(", ");
-		msg.append("metas: ").append(metas.toString());
+		msg.append(bhvType.name()).append(", ");
+		msg.append(bhvName);
+//		msg.append("metas: ").append(metas.toString());
 		return msg.toString();
 	}
 	

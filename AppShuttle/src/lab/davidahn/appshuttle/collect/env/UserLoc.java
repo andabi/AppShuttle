@@ -91,7 +91,7 @@ public class UserLoc extends UserEnv {
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 //		if(_validity == Validity.VALID)
-		msg.append(" (").append(latitude).append(", ").append(longitude).append(") ");
+		msg.append(" (").append(latitude).append(", ").append(longitude).append(")");
 //		else
 //			msg.append("invalid");
 		return msg.toString();

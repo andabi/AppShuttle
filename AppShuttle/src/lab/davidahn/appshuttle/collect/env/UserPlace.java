@@ -56,10 +56,7 @@ public class UserPlace extends UserEnv {
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-//		if(_validity == Validity.VALID)
-		msg.append(name).append(" (").append(coordinates).append(") ");
-//		else
-//			msg.append("invalid");
+		msg.append(name);
 		return msg.toString();
 	}
 

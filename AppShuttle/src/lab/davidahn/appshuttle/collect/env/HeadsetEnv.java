@@ -26,7 +26,7 @@ public class HeadsetEnv extends UserEnv {
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("isPlugged: ").append(isPlugged);
+		msg.append(isPlugged);
 		return msg.toString();
 	}
 

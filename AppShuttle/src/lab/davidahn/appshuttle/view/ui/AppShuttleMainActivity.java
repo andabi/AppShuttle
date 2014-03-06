@@ -129,6 +129,13 @@ public class AppShuttleMainActivity extends Activity {
 		mTabsAdapter.addTab(bar.newTab()
 				.setIcon(R.drawable.ignore),
 				BlockedBhvFragment.class, null);
+		
+		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
+			mTabsAdapter.addTab(bar.newTab()
+					.setIcon(R.drawable.info),
+					InfoFragment.class, null);
+		}
+		
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
