@@ -1,7 +1,5 @@
 package lab.davidahn.appshuttle.view.ui;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
@@ -17,6 +15,8 @@ import android.os.Message;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class SettingsActivity extends PreferenceActivity {
 

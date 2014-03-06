@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import android.content.Intent;
-
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
@@ -17,6 +15,7 @@ import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import android.content.Intent;
 
 public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	private final UserBhv uBhv;

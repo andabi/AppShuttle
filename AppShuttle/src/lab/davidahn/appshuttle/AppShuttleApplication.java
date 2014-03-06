@@ -2,6 +2,7 @@ package lab.davidahn.appshuttle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
@@ -29,8 +30,8 @@ public class AppShuttleApplication extends Application {
 		instance = this;
 		launchTime = System.currentTimeMillis();
 		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
-		predictedBhvMap = new HashMap<UserBhv, PredictedBhv>();
-		predictedPresentBhvMap = new HashMap<UserBhv, PredictedPresentBhv>();
+		predictedBhvMap = new ConcurrentHashMap<UserBhv, PredictedBhv>();
+		predictedPresentBhvMap = new ConcurrentHashMap<UserBhv, PredictedPresentBhv>();
 	}
 	
 	public static AppShuttleApplication getContext(){

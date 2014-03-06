@@ -5,10 +5,6 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
-
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
@@ -32,6 +28,10 @@ import lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherGroup;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 public class Predictor {
 	private List<MatcherElem> matcherList;

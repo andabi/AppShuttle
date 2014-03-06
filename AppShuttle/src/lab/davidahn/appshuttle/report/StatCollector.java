@@ -5,17 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
-import android.content.ContentValues;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
@@ -23,8 +17,14 @@ import lab.davidahn.appshuttle.view.FavoriteBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import lab.davidahn.appshuttle.view.PredictedPresentBhv;
 import lab.davidahn.appshuttle.view.PresentBhv;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
-import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import android.content.ContentValues;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 public class StatCollector {
 	/* Statistics Collector

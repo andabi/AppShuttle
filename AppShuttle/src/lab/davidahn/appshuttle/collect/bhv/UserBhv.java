@@ -1,10 +1,6 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.Settings;
 
 
 public interface UserBhv {
