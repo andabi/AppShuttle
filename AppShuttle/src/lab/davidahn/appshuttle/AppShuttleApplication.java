@@ -13,11 +13,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class AppShuttleApplication extends Application {
-	public static final String UPDATE_VIEW = "lab.davidahn.appshuttle.UPDATE_VIEW";
-	public static final String PREDICT = "lab.davidahn.appshuttle.PREDICT";
-	public static final String PROGRESS_VISIBILITY = "lab.davidahn.appshuttle.PROGRESS_VISIBILITY";
-	public static final String SLEEP_MODE = "lab.davidahn.appshuttle.SLEEP_MODE";
-	
 	private static AppShuttleApplication instance;
 	public static long launchTime;
 	public volatile static long lastPredictionTime;

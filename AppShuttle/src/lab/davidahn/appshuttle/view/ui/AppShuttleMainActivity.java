@@ -6,6 +6,7 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.predict.PredictionService;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -17,12 +18,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,7 +36,7 @@ import com.bugsense.trace.BugSenseHandler;
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,73 +44,67 @@ public class AppShuttleMainActivity extends Activity {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		AppShuttlePreferences.setDefaultPreferences();
 
-		if(!AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
+		if (!AppShuttleApplication.getContext().getPreferences()
+				.getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
-		filter.addAction(AppShuttleApplication.UPDATE_VIEW);
-		filter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
-		registerReceiver(updateViewReceiver, filter);
-		
+		filter.addAction(AppShuttleMainActivity.UPDATE_ACTIVITY);
+		registerReceiver(updateReceiver, filter);
+
 		filter = new IntentFilter();
-		filter.addAction(AppShuttleApplication.PROGRESS_VISIBILITY);
+		filter.addAction(AppShuttleMainActivity.PROGRESS_VISIBILITY);
 		registerReceiver(progressVisibilityReceiver, filter);
 
 		mViewPager = new ViewPager(this);
 		mViewPager.setId(R.id.pager);
-		
+
 		setContentView(mViewPager);
 
 		final ActionBar bar = getActionBar();
-		bar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-		bar.setStackedBackgroundDrawable(new ColorDrawable(Color.rgb(48, 48, 48)));
+		bar.setIcon(new ColorDrawable(getResources().getColor(
+				android.R.color.transparent)));
+		bar.setStackedBackgroundDrawable(new ColorDrawable(Color
+				.rgb(48, 48, 48)));
 		bar.setDisplayUseLogoEnabled(false);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+		// bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
-		Bundle bundle = new Bundle(); 
+		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab()
-				.setIcon(R.drawable.predicted),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.predicted),
 				PresentBhvFragment.class, bundle);
-		mTabsAdapter.addTab(bar.newTab()
-				.setIcon(R.drawable.favorite),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.favorite),
 				FavoriteBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab()
-				.setIcon(R.drawable.ignore),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ignore),
 				BlockedBhvFragment.class, null);
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
 		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
-		
+
 		startService(new Intent(this, AppShuttleMainService.class));
-		sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
+		// sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		updateView();
+		mTabsAdapter.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(updateViewReceiver);
+		unregisterReceiver(updateReceiver);
 		unregisterReceiver(progressVisibilityReceiver);
-	}
-	
-	protected void updateView() {
-		NotiBarNotifier.getInstance().updateNotification();
-		mTabsAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -123,18 +116,21 @@ public class AppShuttleMainActivity extends Activity {
 
 		return true;
 	}
-		
+
 	public static CharSequence getActionbarTitle(Context cxt, int position) {
 		String title;
-		switch(position){
+		switch (position) {
 		case 0:
-			title = cxt.getResources().getString(R.string.actionbar_tab_text_present);
+			title = cxt.getResources().getString(
+					R.string.actionbar_tab_text_present);
 			break;
 		case 1:
-			title = cxt.getResources().getString(R.string.actionbar_tab_text_favorite);
+			title = cxt.getResources().getString(
+					R.string.actionbar_tab_text_favorite);
 			break;
 		case 2:
-			title = cxt.getResources().getString(R.string.actionbar_tab_text_blocked);
+			title = cxt.getResources().getString(
+					R.string.actionbar_tab_text_blocked);
 			break;
 		default:
 			title = "";
@@ -142,17 +138,18 @@ public class AppShuttleMainActivity extends Activity {
 		return title;
 	}
 
-	public static void doEmphasisChildViewInListView(ListView listview, int position){
-		for(int i=0;i<listview.getChildCount();i++){
-			if(i == position)
+	public static void doEmphasisChildViewInListView(ListView listview,
+			int position) {
+		for (int i = 0; i < listview.getChildCount(); i++) {
+			if (i == position)
 				listview.getChildAt(i).setAlpha(1);
 			else
 				listview.getChildAt(i).setAlpha(0.2f);
 		}
 	}
 
-	public static void cancelEmphasisInListView(ListView listview){
-		for(int i=0;i<listview.getChildCount();i++){
+	public static void cancelEmphasisInListView(ListView listview) {
+		for (int i = 0; i < listview.getChildCount(); i++) {
 			listview.getChildAt(i).setAlpha(1);
 		}
 	}
@@ -182,15 +179,15 @@ public class AppShuttleMainActivity extends Activity {
 			mViewPager.setAdapter(this);
 			mViewPager.setOnPageChangeListener(this);
 		}
-		
-		public void hideTabs(){
+
+		public void hideTabs() {
 			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		}
 
-		public void showTabs(){
+		public void showTabs() {
 			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		}
-		
+
 		public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
 			TabInfo info = new TabInfo(clss, args);
 			tab.setTag(info);
@@ -199,12 +196,12 @@ public class AppShuttleMainActivity extends Activity {
 			mActionBar.addTab(tab);
 			notifyDataSetChanged();
 		}
-		
+
 		@Override
 		public int getItemPosition(Object object) {
 			return POSITION_NONE;
 		}
-		
+
 		@Override
 		public int getCount() {
 			return mTabs.size();
@@ -250,55 +247,59 @@ public class AppShuttleMainActivity extends Activity {
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		}
 	}
-	
+
 	public static class AppShuttleActionProvider extends ActionProvider {
 		Context cxt;
-		
+
 		public AppShuttleActionProvider(Context _cxt) {
 			super(_cxt);
 			cxt = _cxt;
 		}
-		
-		public View onCreateActionView(){
+
+		public View onCreateActionView() {
 			LayoutInflater inflator = LayoutInflater.from(cxt);
 			View layout = inflator.inflate(R.layout.actionbarlayout, null);
-			
-			ImageView refresh = (ImageView)layout.findViewById(R.id.refresh);
-			refresh.setOnClickListener(new ImageView.OnClickListener(){
+
+			ImageView refresh = (ImageView) layout.findViewById(R.id.refresh);
+			refresh.setOnClickListener(new ImageView.OnClickListener() {
 				public void onClick(View v) {
-					cxt.sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT).putExtra("isForce", true));
+					cxt.sendBroadcast(new Intent().setAction(
+							PredictionService.PREDICT)
+							.putExtra("isForce", true));
 				}
 			});
-			
-			ImageView preferences = (ImageView)layout.findViewById(R.id.settings);
-			preferences.setOnClickListener(new ImageView.OnClickListener(){
+
+			ImageView preferences = (ImageView) layout
+					.findViewById(R.id.settings);
+			preferences.setOnClickListener(new ImageView.OnClickListener() {
 				public void onClick(View v) {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
 				}
 			});
-			
+
 			return layout;
 		}
 	}
 
-	BroadcastReceiver updateViewReceiver = new BroadcastReceiver() {
-	    public void onReceive(Context context, Intent intent) {
-	    	Log.d("viewer", "update view");
-	    	updateView();
-	    }
+	BroadcastReceiver updateReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			mTabsAdapter.notifyDataSetChanged();
+		}
 	};
-	
+
 	BroadcastReceiver progressVisibilityReceiver = new BroadcastReceiver() {
-	    public void onReceive(Context context, Intent intent) {
-	    	boolean isOn = intent.getBooleanExtra("isOn", false);
-	    	
-			ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
-			if(progress != null)
+		public void onReceive(Context context, Intent intent) {
+			boolean isOn = intent.getBooleanExtra("isOn", false);
+
+			ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
+			if (progress != null)
 				progress.setVisibility((isOn) ? View.VISIBLE : View.INVISIBLE);
-			
-			ImageView refresh = (ImageView)findViewById(R.id.refresh);
-			if(refresh != null)
+
+			ImageView refresh = (ImageView) findViewById(R.id.refresh);
+			if (refresh != null)
 				refresh.setVisibility((isOn) ? View.INVISIBLE : View.VISIBLE);
-	    }
+		}
 	};
+	public static final String UPDATE_ACTIVITY = "lab.davidahn.appshuttle.UPDATE_VIEW_ACTIVITY";
+	public static final String PROGRESS_VISIBILITY = "lab.davidahn.appshuttle.PROGRESS_VISIBILITY";
 }

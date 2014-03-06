@@ -58,7 +58,7 @@ public class SettingsActivity extends PreferenceActivity {
 			if (key.equals("settings_pref_sleep_mode_key")) {
 				NotiBarNotifier.getInstance().updateNotification();
 				getActivity().sendBroadcast(new Intent()
-				.setAction(AppShuttleApplication.SLEEP_MODE)
+				.setAction(AppShuttlePreferences.SLEEP_MODE)
 				.putExtra("isOn", AppShuttlePreferences.isSleepMode()));
 			} else if(key.equals("settings_pref_system_area_icon_hide_key")){
 				NotiBarNotifier notifier = NotiBarNotifier.getInstance();

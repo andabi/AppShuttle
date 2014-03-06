@@ -1,6 +1,6 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.predict.PredictionService;
 import android.app.IntentService;
 import android.content.Intent;
 
@@ -24,7 +24,7 @@ public class UnregisterBhvService extends IntentService {
 		if(targetBhv == null)
 			return;
 		UserBhvManager.getInstance().unregister(targetBhv);
-		sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT).putExtra("isForce", true));
+		sendBroadcast(new Intent().setAction(PredictionService.PREDICT).putExtra("isForce", true));
 	}
 	
 	public void onDestroy() {

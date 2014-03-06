@@ -113,6 +113,8 @@ public class AppShuttlePreferences {
 		else
 			return false;
 	}
+
+	public static final String SLEEP_MODE = "lab.davidahn.appshuttle.SLEEP_MODE";
 	
 //	public boolean isHidden(){
 //	SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();

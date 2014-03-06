@@ -7,6 +7,7 @@ import lab.davidahn.appshuttle.collect.CompactionService;
 import lab.davidahn.appshuttle.collect.EnvCollectionService;
 import lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService;
 import lab.davidahn.appshuttle.predict.PredictionService;
+import lab.davidahn.appshuttle.view.ViewService;
 import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -17,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.os.PowerManager;
 
@@ -75,8 +77,9 @@ public class AppShuttleMainService extends Service {
 		filter.addAction(Intent.ACTION_SCREEN_OFF);
 		filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
 		filter.addAction(Intent.ACTION_HEADSET_PLUG);
-		filter.addAction(AppShuttleApplication.PREDICT);
-		filter.addAction(AppShuttleApplication.SLEEP_MODE);
+		filter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+		filter.addAction(PredictionService.PREDICT);
+		filter.addAction(AppShuttlePreferences.SLEEP_MODE);
 		registerReceiver(receiver, filter);
 	}
 	
@@ -127,17 +130,17 @@ public class AppShuttleMainService extends Service {
 	}
 
 	private void startPeriodicPrediction() {
-		Intent predictionIntent = new Intent().setAction(AppShuttleApplication.PREDICT);
+		Intent predictionIntent = new Intent().setAction(PredictionService.PREDICT);
 		predictionOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
 		long period = preferenceSettings.getLong("predictor.period", 120000);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, predictionOperation);
+		alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, predictionOperation);
 	}
 	
 	private void startPeriodicUpdateView() {
-		Intent predictionIntent = new Intent().setAction(AppShuttleApplication.UPDATE_VIEW);
-		updateViewOperation = PendingIntent.getBroadcast(this, 0, predictionIntent, 0);
+		Intent predictionIntent = new Intent(this, ViewService.class).putExtra("isOnlyNotibar", true);
+		updateViewOperation = PendingIntent.getService(this, 0, predictionIntent, 0);
 		long period = preferenceSettings.getLong("view.update_period", 15000);
-		alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, updateViewOperation);
+		alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), period, updateViewOperation);
 	}
 	
 	private void stopPeriodicBhvCollection(){
@@ -160,10 +163,6 @@ public class AppShuttleMainService extends Service {
 		alarmManager.cancel(updateViewOperation);
 	}
 
-	private void doBhvCollection() {
-		startService(new Intent(this, BhvCollectionService.class));
-	}
-	
 	private void doPrediction(boolean isForce) {
 		if(!isForce) {
 			long ignoredDelay = preferenceSettings.getLong("predictor.delay_ignorance", 60000);
@@ -192,17 +191,18 @@ public class AppShuttleMainService extends Service {
 				startPeriodicOperationsScreenOn();
 			} else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
 				stopPeriodicOperationsScreenOn();
-				doBhvCollection();
+				startService(new Intent(context, BhvCollectionService.class));
+				startService(new Intent(context, ViewService.class).putExtra("isOnlyNotibar", true));
 			} else if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
 				NotiBarNotifier.getInstance().updateNotification();
 //				if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 			} else if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
 				doPrediction(true);
 //				boolean plugged = (intent.getIntExtra("state", 0) == 1);
-			} else if (action.equals(AppShuttleApplication.PREDICT)) {
+			} else if (action.equals(PredictionService.PREDICT)) {
 				boolean isForce = intent.getBooleanExtra("isForce", false);
 				doPrediction(isForce);
-			} else if (action.equals(AppShuttleApplication.SLEEP_MODE)) {
+			} else if (action.equals(AppShuttlePreferences.SLEEP_MODE)) {
 				boolean isOn = intent.getBooleanExtra("isOn", false);
 				if(isOn){
 					stopPeriodicPrediction();
@@ -211,6 +211,8 @@ public class AppShuttleMainService extends Service {
 					startPeriodicPrediction();
 					startPeriodicUpdateView();
 				}
+			} else if(action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)){
+				startService(new Intent(context, ViewService.class).putExtra("isOnlyNotibar", true));
 			} else {
 				return ;
 			}
