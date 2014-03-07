@@ -31,7 +31,7 @@ public class AppShuttlePreferences {
 		//compaction
 		editor.putBoolean("compaction.enabled", true);
 		editor.putLong("compaction.period", AlarmManager.INTERVAL_DAY);
-		editor.putLong("compaction.expiration", 35 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("compaction.expiration", 21 * AlarmManager.INTERVAL_DAY);
 		
 		//report
 		editor.putString("report.email.sender_addr", "appshuttle2@gmail.com");
