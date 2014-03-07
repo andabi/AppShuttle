@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.predict.matcher.recent;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +28,8 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 			SnapshotUserCxt currUCxt) {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
-		Date toTime = currUCxt.getTimeDate();
-		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
+		long toTime = currUCxt.getTime();
+		long fromTime = toTime - conf.getDuration();
 
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveOnEndTimeByBhv(
 				fromTime, toTime, uBhv);
@@ -54,7 +53,7 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 		List<Long> durationUserBhvsEndTimeList = new ArrayList<Long>();
 		for(MatcherCountUnit unit : relatedHistoryMap.keySet()){
 			for(DurationUserBhv uBhv : unit.getDurationUserBhvList()){
-				durationUserBhvsEndTimeList.add(uBhv.getEndTimeDate().getTime());
+				durationUserBhvsEndTimeList.add(uBhv.getEndTime());
 			}
 		}
 		

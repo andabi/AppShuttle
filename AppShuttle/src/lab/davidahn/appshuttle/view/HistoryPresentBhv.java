@@ -71,7 +71,7 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 				continue;
 			HistoryPresentBhv hisPresentBhv = new HistoryPresentBhv(bhv);
 			PredictedBhv predictedBhv = PredictedPresentBhv.getPredictedPresentBhv(bhv).getRecentOfPredictedBhv();
-			hisPresentBhv.setRecentPredictionTime(predictedBhv.getTimeDate().getTime());
+			hisPresentBhv.setRecentPredictionTime(predictedBhv.getTime());
 			hisPresentBhv.setRecentPredictionScore(predictedBhv.getScore());
 			res.add(hisPresentBhv);
 		}

@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect.env;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -23,7 +22,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	}
 	
 	@Override
-	public UserSpeed sense(Date currTimeDate, TimeZone currTimeZone){
+	public UserSpeed sense(long currTime, TimeZone currTimeZone){
 		if(!locEnvSensor.isChanged()) {
 //			Log.d("speed", "not sensed yet");
 			return currUSpeed;
@@ -40,14 +39,14 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 			return currUSpeed;
 		}
 		
-		Date lastSensedTimeDate;
+		long lastSensedTime;
 		if(durationUserEnvBuilder == null)
-			lastSensedTimeDate = currTimeDate;
+			lastSensedTime = currTime;
 		else
-			lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
+			lastSensedTime = durationUserEnvBuilder.getTime();
 		
 		try {
-			double speed = currLoc.distanceTo(prevLoc) / (currTimeDate.getTime() - lastSensedTimeDate.getTime()) * 1000;
+			double speed = currLoc.distanceTo(prevLoc) / (currTime - lastSensedTime) * 1000;
 			currUSpeed = UserSpeed.create(speed);
 			
 //			Log.i("speed", "sensed: " + currUSpeed.toString());
@@ -56,7 +55,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 			return currUSpeed;
 		}
 			
-		lastSensedTimeDate = currTimeDate;
+		lastSensedTime = currTime;
 		
 		return currUSpeed;
 	}
@@ -72,24 +71,24 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	}
 	
 	@Override
-	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
+	public List<DurationUserEnv> preExtractDurationUserEnv(long currTime,
 			TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
+	public DurationUserEnv extractDurationUserEnv(long currTime, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
 		if(durationUserEnvBuilder == null) {
-			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
+			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone);
 		} else {
 			if(locEnvSensor.isChanged()){
-				res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
-				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
+				res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTime).setTimeZone(currTimeZone).build();
+				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone);
 			} else {
-				if(currUSpeed.getLevel() == UserSpeed.Level.VEHICLE && isAutoExtractionTime(currTimeDate, currTimeZone)){
-					res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
-					durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone);
+				if(currUSpeed.getLevel() == UserSpeed.Level.VEHICLE && isAutoExtractionTime(currTime, currTimeZone)){
+					res = durationUserEnvBuilder.setEnvType(uEnv.getEnvType()).setUserEnv(uEnv).setEndTime(currTime).setTimeZone(currTimeZone).build();
+					durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone);
 					currUSpeed = UserSpeed.create(0.0);
 				}
 			}
@@ -98,20 +97,20 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	}
 	
 	@Override
-	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
+	public DurationUserEnv postExtractDurationUserEnv(long currTime, TimeZone currTimeZone) {
 		durationUserEnvBuilder = null;
 		return null;
 	}
 	
 	@Override
-	public boolean isAutoExtractionTime(Date currTimeDate, TimeZone currTimeZone){
+	public boolean isAutoExtractionTime(long currTime, TimeZone currTimeZone){
 		long minAcceptableSpeedMph = 5000;
 		long minWaitingTime = preferenceSettings.getInt("collection.location.tolerance.distance", 500) * (1000 * 60 * 60 / minAcceptableSpeedMph);
 		long reasonableWaitingTime = (long)(1.5 * minWaitingTime);
 
-		Date lastSensedTimeDate = durationUserEnvBuilder.getTimeDate();
+		long lastSensedTime = durationUserEnvBuilder.getTime();
 		
-		if(currTimeDate.getTime() - lastSensedTimeDate.getTime() > reasonableWaitingTime) {
+		if(currTime - lastSensedTime > reasonableWaitingTime) {
 //			Log.d("speed", "Auto extracted by exceeding reasonable waiting time");
 			return true;
 		}
@@ -119,7 +118,7 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 		return false;
 	}
 
-	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone) {
+	private DurationUserEnv.Builder makeDurationUserEnvBuilder(long currTimeDate, TimeZone currTimeZone) {
 		return new DurationUserEnv.Builder()
 		.setTime(currTimeDate)
 		.setEndTime(currTimeDate)

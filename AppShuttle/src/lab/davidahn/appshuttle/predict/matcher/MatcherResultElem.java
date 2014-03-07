@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -12,15 +11,15 @@ import lab.davidahn.appshuttle.collect.env.UserEnv;
 
 public abstract class MatcherResultElem implements Comparable<MatcherResultElem> {
 	protected MatcherType matcherType;
-	protected Date timeDate;
+	protected long time;
 	protected TimeZone timeZone;
 	protected Map<EnvType, UserEnv> userEnvs;
 	protected UserBhv bhv;
 	protected double score;
 	protected String viewMsg;
 
-	public MatcherResultElem(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
-		timeDate = _time;
+	public MatcherResultElem(long _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
+		time = _time;
 		timeZone = _timeZone;
 		userEnvs = _userEnv;
 	}
@@ -28,11 +27,11 @@ public abstract class MatcherResultElem implements Comparable<MatcherResultElem>
 	public MatcherType getMatcherType() {
 		return matcherType;
 	}
-	public Date getTime() {
-		return timeDate;
+	public long getTime() {
+		return time;
 	}
-	public void setTime(Date _time) {
-		timeDate = _time;
+	public void setTime(long _time) {
+		time = _time;
 	}
 	public TimeZone getTimeZone() {
 		return timeZone;
@@ -93,7 +92,7 @@ public abstract class MatcherResultElem implements Comparable<MatcherResultElem>
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("matcherType: ").append(matcherType).append(", ");
-		msg.append("timeDate").append(timeDate).append(", ");
+		msg.append("time").append(time).append(", ");
 		msg.append("timeZone").append(timeZone).append(", ");
 		msg.append("userEnvs").append(userEnvs.toString()).append(", ");
 		msg.append("bhv").append(bhv.toString()).append(", ");

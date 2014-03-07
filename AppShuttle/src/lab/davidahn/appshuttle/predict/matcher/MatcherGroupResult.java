@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -12,7 +11,7 @@ import lab.davidahn.appshuttle.collect.env.UserEnv;
 public class MatcherGroupResult extends MatcherResultElem {
 	private EnumMap<MatcherType, MatcherResultElem> participantMatcherResults;
 	
-	public MatcherGroupResult(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
+	public MatcherGroupResult(long _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
 		super(_time, _timeZone, _userEnv);
 		participantMatcherResults = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
 	}

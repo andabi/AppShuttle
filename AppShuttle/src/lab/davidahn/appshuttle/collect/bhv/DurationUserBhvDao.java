@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -24,9 +23,9 @@ public class DurationUserBhvDao {
 
 	public void store(DurationUserBhv durationUserBhv) {
 		ContentValues row = new ContentValues();
-		row.put("time", durationUserBhv.getTimeDate().getTime());
+		row.put("time", durationUserBhv.getTime());
 		row.put("duration", durationUserBhv.getDuration());
-		row.put("end_time", durationUserBhv.getEndTimeDate().getTime());
+		row.put("end_time", durationUserBhv.getEndTime());
 		row.put("timezone", durationUserBhv.getTimeZone().getID());
 		row.put("bhv_type", durationUserBhv.getUserBhv().getBhvType().toString());
 		row.put("bhv_name", durationUserBhv.getUserBhv().getBhvName());
@@ -43,19 +42,15 @@ public class DurationUserBhvDao {
 					"AND time < " + endTime+";", null);
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while (cur.moveToNext()) {
-			Date timeDate = new Date(cur.getLong(0));
-			long duration = cur.getLong(1);
-			Date endTimeDate = new Date(cur.getLong(2));
-			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
 //			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
 			UserBhvType bhvType= UserBhvType.valueOf(cur.getString(4));
 			String bhvName= cur.getString(5);
 			BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
-				.setTime(timeDate)
-				.setDuration(duration)
-				.setEndTime(endTimeDate)
-				.setTimeZone(timezone)
+				.setTime(cur.getLong(0))
+				.setDuration(cur.getLong(1))
+				.setEndTime(cur.getLong(2))
+				.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
 				.setBhv(uBhv)
 				.build();
 			res.add(durationUserBhv);
@@ -64,41 +59,37 @@ public class DurationUserBhvDao {
 		return res;
 	}
 	
-	public void delete(Date beginTime, Date endTime){
+	public void delete(long beginTime, long endTime){
 		db.execSQL("" +
 				"DELETE " +
 				"FROM history_user_bhv " +
-				"WHERE time >= " + beginTime.getTime() + " " +
-					"AND time < " + endTime.getTime() +";");
+				"WHERE time >= " + beginTime + " " +
+					"AND time < " + endTime +";");
 	}
 	
-	public void deleteBefore(Date timeDate){
+	public void deleteBefore(long time){
 		db.execSQL("" +
 				"DELETE " +
 				"FROM history_user_bhv " +
-				"WHERE time < " + timeDate.getTime() +";");
+				"WHERE time < " + time +";");
 	}
 	
-	public List<DurationUserBhv> retrieveByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
+	public List<DurationUserBhv> retrieveByBhv(long beginTime, long endTime, UserBhv uBhv) {
 		Cursor cur = db.rawQuery(
 				"SELECT * " +
 				"FROM history_user_bhv " +
-				"WHERE time >= " + beginTime.getTime() + " " +
-					"AND time < " + endTime.getTime() + " " +
+				"WHERE time >= " + beginTime + " " +
+					"AND time < " + endTime + " " +
 					"AND bhv_type = '"+uBhv.getBhvType()+"' " +
 					"AND bhv_name = '"+uBhv.getBhvName()+"';", null);
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while (cur.moveToNext()) {
-			Date timeDate = new Date(cur.getLong(0));
-			long duration = cur.getLong(1);
-			Date endTimeDate = new Date(cur.getLong(2));
-			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
 //			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
 			DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
-				.setTime(timeDate)
-				.setDuration(duration)
-				.setEndTime(endTimeDate)
-				.setTimeZone(timezone)
+				.setTime(cur.getLong(0))
+				.setDuration(cur.getLong(1))
+				.setEndTime(cur.getLong(2))
+				.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
 				.setBhv(uBhv)
 				.build();
 			res.add(durationUserBhv);
@@ -107,26 +98,22 @@ public class DurationUserBhvDao {
 		return res;
 	}
 	
-	public List<DurationUserBhv> retrieveOnEndTimeByBhv(Date beginTime, Date endTime, UserBhv uBhv) {
+	public List<DurationUserBhv> retrieveOnEndTimeByBhv(long beginTime, long endTime, UserBhv uBhv) {
 		Cursor cur = db.rawQuery(
 				"SELECT * " +
 				"FROM history_user_bhv " +
-				"WHERE end_time >= " + beginTime.getTime() + " " +
-					"AND end_time < " + endTime.getTime() + " " +
+				"WHERE end_time >= " + beginTime + " " +
+					"AND end_time < " + endTime + " " +
 					"AND bhv_type = '"+uBhv.getBhvType()+"' " +
 					"AND bhv_name = '"+uBhv.getBhvName()+"';", null);
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while (cur.moveToNext()) {
-			Date timeDate = new Date(cur.getLong(0));
-			long duration = cur.getLong(1);
-			Date endTimeDate = new Date(cur.getLong(2));
-			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
 //			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
 			DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
-				.setTime(timeDate)
-				.setDuration(duration)
-				.setEndTime(endTimeDate)
-				.setTimeZone(timezone)
+				.setTime(cur.getLong(0))
+				.setDuration(cur.getLong(1))
+				.setEndTime(cur.getLong(2))
+				.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
 				.setBhv(uBhv)
 				.build();
 			res.add(durationUserBhv);
@@ -177,7 +164,7 @@ public class DurationUserBhvDao {
 //		String bhvName = durationUserBhv.getBhv().getBhvName();
 //		String tableName = "user_behavior_"+bhvName.replace('.', '_');
 //		row.put("s_time", durationUserBhv.getStartTime().getTime());
-//		row.put("e_time", durationUserBhv.getEndTime().getTime());
+//		row.put("e_time", durationUserBhv.getEndTime());
 ////		row.put("timezone", gson.toJson(durationUserBhv.getTimeZone()));
 //		row.put("timezone", durationUserBhv.getTimeZone().getID());
 //		row.put("location_list", gson.toJson(durationUserBhv.getLocFreqList()));

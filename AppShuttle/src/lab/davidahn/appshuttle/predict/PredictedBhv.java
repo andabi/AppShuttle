@@ -19,14 +19,14 @@ import android.content.Intent;
 
 public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	private final UserBhv uBhv;
-	private final Date timeDate;
+	private final long time;
 	private final TimeZone timeZone;
 	private final Map<EnvType, UserEnv> uEnvs;
 	private final EnumMap<MatcherType, MatcherResultElem> matcherResults;
 	private final double score;
 
-	public PredictedBhv(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnvs, UserBhv _uBhv, EnumMap<MatcherType, MatcherResultElem> _matcherResults, double _score){
-		timeDate = _time;
+	public PredictedBhv(long _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnvs, UserBhv _uBhv, EnumMap<MatcherType, MatcherResultElem> _matcherResults, double _score){
+		time = _time;
 		timeZone = _timeZone;
 		uEnvs = _userEnvs;
 		uBhv = _uBhv;
@@ -34,8 +34,8 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 		score = _score;
 	}
 
-	public Date getTimeDate() {
-		return timeDate;
+	public long getTime() {
+		return time;
 	}
 	public TimeZone getTimeZone() {
 		return timeZone;
@@ -87,14 +87,17 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	
 	@Override
 	public int compareTo(PredictedBhv predictedBhvInfo){
-		return timeDate.compareTo(predictedBhvInfo.timeDate);
+		if(time > predictedBhvInfo.time) return 1;
+		else if(time == predictedBhvInfo.time) return 0;
+		else return -1;
+//		return time.compareTo(predictedBhvInfo.time);
 	}
 
 	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("bhv: ").append(uBhv.toString()).append(", ");
-		msg.append("time: ").append(timeDate.toString()).append(", ");
+		msg.append("time: ").append(new Date(time).toString()).append(", ");
 		msg.append("matcherResults: ").append(matcherResults.toString()).append(", ");
 		msg.append("score: ").append(score);
 		return msg.toString();

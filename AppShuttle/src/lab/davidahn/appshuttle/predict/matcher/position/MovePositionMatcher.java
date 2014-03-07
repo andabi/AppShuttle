@@ -45,8 +45,8 @@ public class MovePositionMatcher extends PositionMatcher {
 		DurationUserBhv prevDurationUserBhv = null;
 		UserSpeed.Level lastKnownUserSpeedLevel = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
-					, durationUserBhv.getEndTimeDate(), EnvType.SPEED)){
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTime()
+					, durationUserBhv.getEndTime(), EnvType.SPEED)){
 				UserSpeed.Level userSpeedLevel = ((UserSpeed)durationUserEnv.getUserEnv()).getLevel();
 				if(prevDurationUserBhv == null) {
 					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
@@ -55,8 +55,8 @@ public class MovePositionMatcher extends PositionMatcher {
 						res.add(matcherCountUnitBuilder.build());
 						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
 					} else {
-						long time = durationUserBhv.getTimeDate().getTime();
-						long lastEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
+						long time = durationUserBhv.getTime();
+						long lastEndTime = prevDurationUserBhv.getEndTime();
 						if(time - lastEndTime >= conf.getAcceptanceDelay()){
 							res.add(matcherCountUnitBuilder.build());
 							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);

@@ -20,7 +20,7 @@ import android.provider.ContactsContract.PhoneLookup;
 public class CallBhvCollector extends BaseBhvCollector {
 	private ContentResolver contentResolver;
 
-	private Date lastCallTimeDate;
+	private long lastCallTime;
 
 	private static CallBhvCollector callBhvCollector = new CallBhvCollector();
 	private CallBhvCollector(){
@@ -32,52 +32,52 @@ public class CallBhvCollector extends BaseBhvCollector {
 	}
 	
 	@Override
-	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+	public List<DurationUserBhv> preExtractDurationUserBhv(long currTime, TimeZone currTimeZone) {
 		long historyAcceptance = preferenceSettings.getLong("collection.call.pre.period", 6 * AlarmManager.INTERVAL_DAY);
-		lastCallTimeDate = new Date(currTimeDate.getTime() - historyAcceptance);
+		lastCallTime = currTime - historyAcceptance;
 		List<DurationUserBhv> extractedCallBhvList = new ArrayList<DurationUserBhv>();
-		extractedCallBhvList = extractCallBhvDuring(lastCallTimeDate, currTimeDate);
+		extractedCallBhvList = extractCallBhvDuring(lastCallTime, currTime);
 		
 		if(!extractedCallBhvList.isEmpty()){
-			lastCallTimeDate = extractedCallBhvList.get(extractedCallBhvList.size()-1).getTimeDate();
+			lastCallTime = extractedCallBhvList.get(extractedCallBhvList.size()-1).getTime();
 		}
 		
 		return extractedCallBhvList;
 	}
 	
 	@Override
-	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<UserBhv> userBhvList) {
-		if(lastCallTimeDate == null) {
-			lastCallTimeDate = currTimeDate;
+	public List<DurationUserBhv> extractDurationUserBhv(long currTime, TimeZone currTimeZone, List<UserBhv> userBhvList) {
+		if(lastCallTime == 0) {
+			lastCallTime = currTime;
 			return Collections.emptyList();
 		}
 			
-		List<DurationUserBhv> extractedCallBhvList = extractCallBhvDuring(lastCallTimeDate, currTimeDate);
+		List<DurationUserBhv> extractedCallBhvList = extractCallBhvDuring(lastCallTime, currTime);
 		
 		if(!extractedCallBhvList.isEmpty()){
-			lastCallTimeDate = extractedCallBhvList.get(extractedCallBhvList.size()-1).getTimeDate();
+			lastCallTime = extractedCallBhvList.get(extractedCallBhvList.size()-1).getTime();
 		}
 
 		return extractedCallBhvList;
 	}
 	
 	@Override
-	public List<DurationUserBhv> postExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+	public List<DurationUserBhv> postExtractDurationUserBhv(long currTime, TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 	
-	private List<DurationUserBhv> extractCallBhvDuring(Date beginTime, Date endTime){
+	private List<DurationUserBhv> extractCallBhvDuring(long beginTime, long endTime){
 		Cursor cursor = contentResolver.query(
 				CallLog.Calls.CONTENT_URI, 
 				null, 
-				CallLog.Calls.DATE + " > " + beginTime.getTime() + " AND " + CallLog.Calls.DATE + " <= " + endTime.getTime(),
+				CallLog.Calls.DATE + " > " + beginTime + " AND " + CallLog.Calls.DATE + " <= " + endTime,
 				null, 
 				CallLog.Calls.DATE + " ASC"
 				);
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while(cursor.moveToNext()) {
 			int nameIdx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
-			int dateIdx = cursor.getColumnIndex(CallLog.Calls.DATE);
+			int timeIdx = cursor.getColumnIndex(CallLog.Calls.DATE);
 			int numIdx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
 			int durationIdx = cursor.getColumnIndex(CallLog.Calls.DURATION);
 			int typeIdx = cursor.getColumnIndex(CallLog.Calls.TYPE);
@@ -87,9 +87,9 @@ public class CallBhvCollector extends BaseBhvCollector {
 			if(name == null)
 				name = number;
 			
-			Date date = new Date(cursor.getLong(dateIdx));
+			long time = cursor.getLong(timeIdx);
 			Calendar calender = Calendar.getInstance();
-			calender.setTime(date);
+			calender.setTime(new Date(time));
 			TimeZone timeZone = calender.getTimeZone();
 			
 			long duration = cursor.getInt(durationIdx) * 1000;
@@ -105,8 +105,8 @@ public class CallBhvCollector extends BaseBhvCollector {
 //			callUserBhv.setCachedName(name);
 			
 			DurationUserBhv durationUserBhv =  new DurationUserBhv.Builder()
-			.setTime(date)
-			.setEndTime(new Date(date.getTime() + duration))
+			.setTime(time)
+			.setEndTime(time + duration)
 			.setTimeZone(timeZone)
 			.setBhv(callUserBhv)
 			.build();

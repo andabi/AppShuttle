@@ -38,8 +38,8 @@ public class PlacePositionMatcher extends PositionMatcher {
 		DurationUserBhv prevDurationUserBhv = null;
 		UserPlace lastKnownUserPlace = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
-					, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTime()
+					, durationUserBhv.getEndTime(), EnvType.PLACE)){
 				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
 				if(prevDurationUserBhv == null) {
 					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
@@ -48,8 +48,8 @@ public class PlacePositionMatcher extends PositionMatcher {
 						res.add(matcherCountUnitBuilder.build());
 						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
 					} else {
-						long time = durationUserBhv.getTimeDate().getTime();
-						long lastEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
+						long time = durationUserBhv.getTime();
+						long lastEndTime = prevDurationUserBhv.getEndTime();
 						if(time - lastEndTime >= conf.getAcceptanceDelay()){
 							res.add(matcherCountUnitBuilder.build());
 							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);

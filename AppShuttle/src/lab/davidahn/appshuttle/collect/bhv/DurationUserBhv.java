@@ -1,22 +1,20 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 import android.content.Intent;
 
-
 public class DurationUserBhv implements UserBhv {
-	private final Date timeDate;
+	private final long time;
 	private final long duration;
-	private final Date endTimeDate;
+	private final long endTime;
 	private final TimeZone timeZone;
 	private final UserBhv uBhv;
 
 	private DurationUserBhv(Builder builder){
-		timeDate = builder.timeDate;
+		time = builder.time;
 		duration = builder.duration;
-		endTimeDate = builder.endTimeDate;
+		endTime = builder.endTime;
 		timeZone = builder.timeZone;
 		uBhv = builder.uBhv;
 	}
@@ -45,14 +43,14 @@ public class DurationUserBhv implements UserBhv {
 		uBhv.setMeta(key, val);
 	}
 
-	public Date getTimeDate() {
-		return timeDate;
+	public long getTime() {
+		return time;
 	}
 	public long getDuration() {
 		return duration;
 	}
-	public Date getEndTimeDate() {
-		return endTimeDate;
+	public long getEndTime() {
+		return endTime;
 	}
 	public TimeZone getTimeZone() {
 		return timeZone;
@@ -70,35 +68,35 @@ public class DurationUserBhv implements UserBhv {
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("start time: ").append(timeDate).append(", ");
+		msg.append("start time: ").append(time).append(", ");
 		msg.append("duration: ").append(duration).append(", ");
-		msg.append("end time: ").append(endTimeDate).append(", ");
+		msg.append("end time: ").append(endTime).append(", ");
 		msg.append("timeZone: ").append(timeZone.getID()).append("\n");
 		msg.append(uBhv.toString()).append(", ");
 		return msg.toString();
 	}
 	
 	public static class Builder {
-		private Date timeDate = null;
+		private long time = 0;
 		private long duration = 0;
-		private Date endTimeDate = null;
+		private long endTime = 0;
 		private TimeZone timeZone = null;
 		private UserBhv uBhv = null;
 
 		public Builder(){}
 		
 		public DurationUserBhv build(){
-			if(timeDate != null && endTimeDate != null)
-				duration = endTimeDate.getTime() - timeDate.getTime();
+			if(time != 0 && endTime != 0)
+				duration = endTime - time;
 			return new DurationUserBhv(this);
 		}
 		
-		public Date getEndTime() {
-			return endTimeDate;
+		public long getEndTime() {
+			return endTime;
 		}
 		
-		public Builder setTime(Date sTime) {
-			timeDate = sTime;
+		public Builder setTime(long sTime) {
+			time = sTime;
 			return this;
 		}
 		
@@ -107,8 +105,8 @@ public class DurationUserBhv implements UserBhv {
 			return this;
 		}
 
-		public Builder setEndTime(Date eTime) {
-			endTimeDate = eTime;
+		public Builder setEndTime(long eTime) {
+			endTime = eTime;
 			return this;
 		}
 

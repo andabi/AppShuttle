@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.collect;
 
-import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -36,42 +35,42 @@ public class CompactionService extends IntentService {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 
 		long expirationDuration = preferenceSettings.getLong("compaction.expiration", 15 * AlarmManager.INTERVAL_DAY);
-		Date expirationBoundTimeDate = new Date(currUserCxt.getTimeDate().getTime() - expirationDuration);
+		long expirationBoundTime = currUserCxt.getTime() - expirationDuration;
 		
-		compactHistoryUserBhv(expirationBoundTimeDate);
-		compactHistoryUserEnv(expirationBoundTimeDate);
-		compactUserBhvList(expirationBoundTimeDate);
-		compactStatEntires(expirationBoundTimeDate);
+		compactHistoryUserBhv(expirationBoundTime);
+		compactHistoryUserEnv(expirationBoundTime);
+		compactUserBhvList(expirationBoundTime);
+		compactStatEntires(expirationBoundTime);
 	}
 	
 	public void onDestroy() {
 		super.onDestroy();
 	}
 
-	private void compactHistoryUserBhv(Date expirationBoundTimeDate) {
+	private void compactHistoryUserBhv(long expirationBoundTime) {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
-		durationUserBhvDao.deleteBefore(expirationBoundTimeDate);
+		durationUserBhvDao.deleteBefore(expirationBoundTime);
 	}
 
-	private void compactHistoryUserEnv(Date expirationBoundTimeDate) {
+	private void compactHistoryUserEnv(long expirationBoundTime) {
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
-		durationUserEnvManager.deleteAllBefore(expirationBoundTimeDate);
+		durationUserEnvManager.deleteAllBefore(expirationBoundTime);
 	}
 	
-	private void compactUserBhvList(Date expirationBoundTimeDate) {
+	private void compactUserBhvList(long expirationBoundTime) {
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		
 		for(BaseUserBhv uBhv : ViewableUserBhv.getNormalBhvSet()){
-			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTimeDate, currUserCxt.getTimeDate(), uBhv);
+			List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(expirationBoundTime, currUserCxt.getTime(), uBhv);
 			if(!durationUserBhvList.isEmpty())
 				continue;
 			userBhvManager.unregister(uBhv);
 		}
 	}
 	
-	private void compactStatEntires(Date expirationBoundTimeDate) {
+	private void compactStatEntires(long expirationBoundTime) {
 		StatCollector statCollector = StatCollector.getInstance();
-		statCollector.deleteAllBefore(expirationBoundTimeDate);
+		statCollector.deleteAllBefore(expirationBoundTime);
 	}
 }

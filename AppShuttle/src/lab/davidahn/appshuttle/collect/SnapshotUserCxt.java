@@ -13,7 +13,7 @@ import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
 
 public class SnapshotUserCxt {
-	private Date _time;
+	private long _time;
 	private TimeZone _timeZone;
 	private Map<EnvType, UserEnv> _userEnvs;
 	private List<UserBhv> _userBhvs;
@@ -23,17 +23,17 @@ public class SnapshotUserCxt {
 		_userBhvs = new ArrayList<UserBhv>();
 	}
 	
-	public SnapshotUserCxt(Date time, TimeZone timeZone) {
+	public SnapshotUserCxt(long time, TimeZone timeZone) {
 		_time = time;
 		_timeZone = timeZone;
 		_userEnvs = new HashMap<EnvType, UserEnv>();
 		_userBhvs = new ArrayList<UserBhv>();
 	}
 	
-	public Date getTimeDate() {
+	public long getTime() {
 		return _time;
 	}
-	public void setTime(Date time) {
+	public void setTime(long time) {
 		_time = time;
 	}
 	public TimeZone getTimeZone() {
@@ -80,7 +80,7 @@ public class SnapshotUserCxt {
 	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("<Time>\n").append(_time.toString()).append("\n\n");
+		msg.append("<Time>\n").append(new Date(_time).toString()).append("\n\n");
 //		msg.append("timeZone: ").append(_timeZone.getID()).append(", ");
 		msg.append("<Environment>\n").append(_userEnvs.toString()).append("\n\n");
 		msg.append("<Behavior>\n").append(_userBhvs.toString());
@@ -90,7 +90,7 @@ public class SnapshotUserCxt {
 	@Override
 	public boolean equals(Object o) {
 		if((o instanceof SnapshotUserCxt) 
-				&& _time.equals(((SnapshotUserCxt)o)._time)
+				&& _time == ((SnapshotUserCxt)o)._time
 				&& _timeZone.equals(((SnapshotUserCxt)o)._timeZone))
 //				&& _userEnvs.equals(((SnapshotUserCxt)o)._userEnvs)
 //				&& _userBhvs.equals(((SnapshotUserCxt)o)._userBhvs))
@@ -101,6 +101,6 @@ public class SnapshotUserCxt {
 	
 	@Override
 	public int hashCode(){
-		return _time.hashCode() ^ _timeZone.hashCode();
+		return Long.valueOf(_time).hashCode() ^ _timeZone.hashCode();
 	}
 }

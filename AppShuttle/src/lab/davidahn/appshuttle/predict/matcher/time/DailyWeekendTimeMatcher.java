@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.predict.matcher.time;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
@@ -28,7 +27,7 @@ public class DailyWeekendTimeMatcher extends TimeMatcher {
 	
 	@Override
 	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt) {
-		if(!isWeekDay(currUCxt.getTimeDate()))
+		if(!isWeekDay(currUCxt.getTime()))
 			return true;
 		
 		return false;
@@ -36,18 +35,18 @@ public class DailyWeekendTimeMatcher extends TimeMatcher {
 	
 	@Override
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		Date toTime = new Date(currUCxt.getTimeDate().getTime() - conf.getTolerance());
+		long toTime = currUCxt.getTime() - conf.getTolerance();
 		
 		assert(conf.getDuration() % INTERVAL_WEEK == 0);
 		
-		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
+		long fromTime = toTime - conf.getDuration();
 
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
 		
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			if(!isWeekDay(durationUserBhv.getTimeDate()))
+			if(!isWeekDay(durationUserBhv.getTime()))
 				res.add(durationUserBhv);
 		}
 		

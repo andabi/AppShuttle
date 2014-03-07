@@ -44,8 +44,8 @@ public class HeadsetMatcher extends Matcher<HeadsetMatcherConf>{
 		DurationUserBhv prevDurationUserBhv = null;
 		HeadsetEnv lastKnownHeadsetEnv = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
-					, durationUserBhv.getEndTimeDate(), EnvType.HEADSET)){
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTime()
+					, durationUserBhv.getEndTime(), EnvType.HEADSET)){
 				HeadsetEnv headsetEnv = ((HeadsetEnv)durationUserEnv.getUserEnv());
 				if(prevDurationUserBhv == null) {
 					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, headsetEnv);
@@ -54,8 +54,8 @@ public class HeadsetMatcher extends Matcher<HeadsetMatcherConf>{
 						res.add(matcherCountUnitBuilder.build());
 						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, headsetEnv);
 					} else {
-						long time = durationUserBhv.getTimeDate().getTime();
-						long lastEndTime = prevDurationUserBhv.getEndTimeDate().getTime();
+						long time = durationUserBhv.getTime();
+						long lastEndTime = prevDurationUserBhv.getEndTime();
 						if(time - lastEndTime >= conf.getAcceptanceDelay()){
 							res.add(matcherCountUnitBuilder.build());
 							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, headsetEnv);

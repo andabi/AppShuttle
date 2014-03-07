@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,7 @@ public abstract class Matcher<C extends BaseMatcherConf> extends MatcherElem {
 		if (likelihood < conf.getMinLikelihood())
 			return null;
 
-		MatcherResult matcherResult = new MatcherResult(currUCxt.getTimeDate(),
+		MatcherResult matcherResult = new MatcherResult(currUCxt.getTime(),
 				currUCxt.getTimeZone(), currUCxt.getUserEnvs());
 		matcherResult.setUserBhv(uBhv);
 		matcherResult.setMatcherType(getType());
@@ -83,15 +82,15 @@ public abstract class Matcher<C extends BaseMatcherConf> extends MatcherElem {
 			SnapshotUserCxt currUCxt) {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
-		Date toTime = currUCxt.getTimeDate();
-		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
+		long toTime = currUCxt.getTime();
+		long fromTime = toTime - conf.getDuration();
 
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(
 				fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
 		for (DurationUserBhv durationUserBhv : durationUserBhvList) {
-			// if(durationUserBhv.getEndTimeDate().getTime() -
-			// durationUserBhv.getTimeDate().getTime() < noiseTimeTolerance)
+			// if(durationUserBhv.getEndTime().getTime() -
+			// durationUserBhv.getTime().getTime() < noiseTimeTolerance)
 			// continue;
 			pureDurationUserBhvList.add(durationUserBhv);
 		}
@@ -124,8 +123,8 @@ public abstract class Matcher<C extends BaseMatcherConf> extends MatcherElem {
 //			continue;
 //		}
 //		
-//		long time = unit.getDurationUserBhvList().get(0).getTimeDate().getTime();
-//		long lastTime = lastUnit.getDurationUserBhvList().get(0).getTimeDate().getTime();
+//		long time = unit.getDurationUserBhvList().get(0).getTime();
+//		long lastTime = lastUnit.getDurationUserBhvList().get(0).getTime;
 //		if(time - lastTime	>= conf.getAcceptanceDelay()){
 //			res.add(lastUnit);
 //		}

@@ -1,30 +1,29 @@
 package lab.davidahn.appshuttle.collect.env;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 public class DurationUserEnv {
-	private Date _timeDate;
+	private long _time;
 	private long _duration;
-	private Date _endTimeDate;
+	private long _endTime;
 	private TimeZone _timeZone;
 	private EnvType _envType;
 	private UserEnv _uEnv;
 
 	public DurationUserEnv(Builder builder) {
-		_timeDate = builder._timeDate;
-		_endTimeDate = builder._endTimeDate;
+		_time = builder._time;
+		_endTime = builder._endTime;
 		_timeZone = builder._timeZone;
 		_uEnv = builder._uEnv;
 		_envType = builder._envType;
 		updateDuration();
 	}
 	
-	public Date getTime() {
-		return _timeDate;
+	public long getTime() {
+		return _time;
 	}
-	public void setTime(Date time) {
-		_timeDate = time;
+	public void setTime(long time) {
+		_time = time;
 		updateDuration();
 	}
 	public long getDuration() {
@@ -33,11 +32,11 @@ public class DurationUserEnv {
 	public void setDuration(long duration) {
 		_duration = duration;
 	}
-	public Date getEndTime() {
-		return _endTimeDate;
+	public long getEndTime() {
+		return _endTime;
 	}
-	public void setEndTime(Date endTime) {
-		_endTimeDate = endTime;
+	public void setEndTime(long endTime) {
+		_endTime = endTime;
 		updateDuration();
 	}
 	public TimeZone getTimeZone() {
@@ -60,15 +59,15 @@ public class DurationUserEnv {
 	}
 
 	private void updateDuration() {
-		_duration = _endTimeDate.getTime() - _timeDate.getTime();
+		_duration = _endTime - _time;
 	}
 
 	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("time: ").append(_timeDate).append(", ");
+		msg.append("time: ").append(_time).append(", ");
 		msg.append("duration: ").append(_duration).append(", ");
-		msg.append("endTime: ").append(_endTimeDate).append(", ");
+		msg.append("endTime: ").append(_endTime).append(", ");
 		msg.append("timezone: ").append(_timeZone.getID()).append(", ");
 		msg.append("envType: ").append(_envType.toString()).append(", ");
 		msg.append("userEnv: ").append(_uEnv.toString());
@@ -77,7 +76,7 @@ public class DurationUserEnv {
 	@Override
 	public boolean equals(Object o) {
 		if((o instanceof DurationUserEnv) 
-				&& _timeDate.equals(((DurationUserEnv)o)._timeDate)
+				&& _time == ((DurationUserEnv)o)._time
 				&& _timeZone.equals(((DurationUserEnv)o)._timeZone)
 				&& _envType.equals(((DurationUserEnv)o)._envType))
 			return true;
@@ -87,12 +86,12 @@ public class DurationUserEnv {
 	
 	@Override
 	public int hashCode(){
-		return _timeDate.hashCode() ^ _timeZone.hashCode() ^ _envType.hashCode();
+		return Long.valueOf(_time).hashCode() ^ _timeZone.hashCode() ^ _envType.hashCode();
 	}
 	
 	public static class Builder{
-		private Date _timeDate = null;
-		private Date _endTimeDate = null;
+		private long _time = 0;
+		private long _endTime = 0;
 		private TimeZone _timeZone = null;
 		private EnvType _envType;
 		private UserEnv _uEnv = null;
@@ -103,12 +102,12 @@ public class DurationUserEnv {
 			return new DurationUserEnv(this);
 		}
 		
-		public Builder setTime(Date time){
-			_timeDate = time;
+		public Builder setTime(long time){
+			_time = time;
 			return this;
 		}
-		public Builder setEndTime(Date endTime){
-			_endTimeDate = endTime;
+		public Builder setEndTime(long endTime){
+			_endTime = endTime;
 			return this;
 		}
 		public Builder setTimeZone(TimeZone timeZone){
@@ -124,8 +123,8 @@ public class DurationUserEnv {
 			return this;
 		}
 		
-		public Date getTimeDate(){
-			return _timeDate;
+		public long getTime(){
+			return _time;
 		}
 		public UserEnv getUserEnv() {
 			return _uEnv;

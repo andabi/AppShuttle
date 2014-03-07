@@ -31,7 +31,7 @@ public abstract class MatcherGroup extends MatcherElem {
 		if(matcherResults.isEmpty())
 			return null;
 		
-		MatcherGroupResult matcherGroupResult = new MatcherGroupResult(currUCxt.getTimeDate(), currUCxt.getTimeZone(), currUCxt.getUserEnvs());
+		MatcherGroupResult matcherGroupResult = new MatcherGroupResult(currUCxt.getTime(), currUCxt.getTimeZone(), currUCxt.getUserEnvs());
 		matcherGroupResult.setMatcherType(getType());
 		matcherGroupResult.setUserBhv(uBhv);
 		for(MatcherResultElem matcherResult : matcherResults)

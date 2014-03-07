@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -64,12 +63,11 @@ public class PredictedPresentBhv extends PresentBhv implements
 
 	@Override
 	public int compareTo(PredictedPresentBhv _uBhv) {
-		Date recentPredictedBhvTime = getRecentOfPredictedBhv().getTimeDate();
-		Date _recentPredictedBhvTime = _uBhv.getRecentOfPredictedBhv()
-				.getTimeDate();
-		int comp = recentPredictedBhvTime.compareTo(_recentPredictedBhvTime);
-		if (comp != 0)
-			return comp;
+		long recentPredictedBhvTime = getRecentOfPredictedBhv().getTime();
+		long _recentPredictedBhvTime = _uBhv.getRecentOfPredictedBhv()
+				.getTime();
+		if(recentPredictedBhvTime > _recentPredictedBhvTime) return 1;
+		else if(recentPredictedBhvTime < _recentPredictedBhvTime) return -1;
 		else {
 			double score = getRecentOfPredictedBhv().getScore();
 			double _score = _uBhv.getRecentOfPredictedBhv().getScore();

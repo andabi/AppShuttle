@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class EnvCollectionService extends Service {
-	private Date currTimeDate;
+	private long currTime;
 	private TimeZone currTimeZone;
 	private Map<EnvType, EnvSensor> sensors;
 	private Map<EnvType, UserEnv> sensedEnvs;
@@ -76,12 +75,12 @@ public class EnvCollectionService extends Service {
 	private void senseEnv() {
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
-			sensedEnvs.put(envType, sensor.sense(currTimeDate, currTimeZone));
+			sensedEnvs.put(envType, sensor.sense(currTime, currTimeZone));
 		}
 	}
 
 	private void UpdateCxt(SnapshotUserCxt uCxt) {
-		uCxt.setTime(currTimeDate);
+		uCxt.setTime(currTime);
 		uCxt.setTimeZone(currTimeZone);
 		uCxt.updateUserEnv(sensedEnvs);
 	}
@@ -89,7 +88,7 @@ public class EnvCollectionService extends Service {
 	private void extractAndStoreDurationUserEnv() {
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
-			DurationUserEnv durationUserEnv = sensor.extractDurationUserEnv(currTimeDate, currTimeZone, sensedEnvs.get(envType));
+			DurationUserEnv durationUserEnv = sensor.extractDurationUserEnv(currTime, currTimeZone, sensedEnvs.get(envType));
 			storeDurationUserEnv(durationUserEnv);
 		}
 	}
@@ -104,7 +103,7 @@ public class EnvCollectionService extends Service {
 	private void preCollectCollectDurationUserEnv() {
 		senseTime();
 		for(EnvSensor sensor : sensors.values()){
-			List<DurationUserEnv> preExtractedDurationUserEnvList = sensor.preExtractDurationUserEnv(currTimeDate, currTimeZone);
+			List<DurationUserEnv> preExtractedDurationUserEnvList = sensor.preExtractDurationUserEnv(currTime, currTimeZone);
 			for(DurationUserEnv preExtractedDurationUserEnv : preExtractedDurationUserEnvList)
 				storeDurationUserEnv(preExtractedDurationUserEnv);
 		}
@@ -127,13 +126,13 @@ public class EnvCollectionService extends Service {
 	private void postCollectDurationUserEnv() {
 		senseTime();
 		for(EnvSensor sensor : sensors.values()){
-			DurationUserEnv postExtractedDurationUserEnv = sensor.postExtractDurationUserEnv(currTimeDate, currTimeZone);
+			DurationUserEnv postExtractedDurationUserEnv = sensor.postExtractDurationUserEnv(currTime, currTimeZone);
 			storeDurationUserEnv(postExtractedDurationUserEnv);
 		}
 	}
 
 	private void senseTime() {
-		currTimeDate = new Date(System.currentTimeMillis());
+		currTime = System.currentTimeMillis();
 		currTimeZone = Calendar.getInstance().getTimeZone();
 	}
 }

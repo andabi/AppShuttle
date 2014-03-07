@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect.env;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -28,9 +27,9 @@ public class DurationUserEnvDao {
 		Gson gson = new Gson();
 		
 		ContentValues row = new ContentValues();
-		row.put("time", durationUserEnv.getTime().getTime());
+		row.put("time", durationUserEnv.getTime());
 		row.put("duration", durationUserEnv.getDuration());
-		row.put("end_time", durationUserEnv.getEndTime().getTime());
+		row.put("end_time", durationUserEnv.getEndTime());
 		row.put("timezone", durationUserEnv.getTimeZone().getID());
 		row.put("env_type", durationUserEnv.getEnvType().toString());
 		row.put("user_env", gson.toJson(durationUserEnv.getUserEnv()));
@@ -68,27 +67,22 @@ public class DurationUserEnvDao {
 //		return res;
 //	}
 	
-	public DurationUserEnv retrieveContains(Date time, EnvType envType) {
+	public DurationUserEnv retrieveContains(long time, EnvType envType) {
 		Gson gson = new Gson();
 		
 		Cursor cur = db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
-				"WHERE time <= " + time.getTime() + " " +
-					"AND end_time > " + time.getTime() +" " +
+				"WHERE time <= " + time + " " +
+					"AND end_time > " + time +" " +
 					"AND env_type = '" + envType.toString() + "';", null);
 		DurationUserEnv res = null;
 		while (cur.moveToNext()) {
-			Date startTime = new Date(cur.getLong(0));
-			Date endTime = new Date(cur.getLong(2));
-			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-			UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
-	
 			DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
-			.setTime(startTime)
-			.setEndTime(endTime)
-			.setTimeZone(timezone)
+			.setTime(cur.getLong(0))
+			.setEndTime(cur.getLong(2))
+			.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
 			.setEnvType(envType)
-			.setUserEnv(userEnv)
+			.setUserEnv(gson.fromJson(cur.getString(5), envType.getClazz()))
 			.build();
 	//		Log.i("retrieved history_user_env", durationUserEnv.toString());
 			res = durationUserEnv;
@@ -97,27 +91,22 @@ public class DurationUserEnvDao {
 		return res;
 	}
 	
-	public DurationUserEnv retrieveContains(Date fromTime, Date toTime, EnvType envType) {
+	public DurationUserEnv retrieveContains(long fromTime, long toTime, EnvType envType) {
 		Gson gson = new Gson();
 		
 		Cursor cur = db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
-				"WHERE time <= " + fromTime.getTime() + " " +
-					"AND end_time > " + toTime.getTime() +" " +
+				"WHERE time <= " + fromTime + " " +
+					"AND end_time > " + toTime +" " +
 					"AND env_type = '" + envType.toString() + "';", null);
 		DurationUserEnv res = null;
 		while (cur.moveToNext()) {
-			Date startTime = new Date(cur.getLong(0));
-			Date endTime = new Date(cur.getLong(2));
-			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-			UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
-	
 			DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
-			.setTime(startTime)
-			.setEndTime(endTime)
-			.setTimeZone(timezone)
+			.setTime(cur.getLong(0))
+			.setEndTime(cur.getLong(2))
+			.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
 			.setEnvType(envType)
-			.setUserEnv(userEnv)
+			.setUserEnv(gson.fromJson(cur.getString(5), envType.getClazz()))
 			.build();
 	//		Log.i("retrieved history_user_env", durationUserEnv.toString());
 			res = durationUserEnv;
@@ -126,26 +115,21 @@ public class DurationUserEnvDao {
 		return res;
 	}
 
-	public List<DurationUserEnv> retrieveBetween(Date fromTime, Date toTime, EnvType envType) {
+	public List<DurationUserEnv> retrieveBetween(long fromTime, long toTime, EnvType envType) {
 		Gson gson = new Gson();
 		Cursor cur = db.rawQuery("SELECT * " +
 				"FROM history_user_env " +
-				"WHERE time >= " + fromTime.getTime() + " " +
-					"AND end_time < " + toTime.getTime() +" " +
+				"WHERE time >= " + fromTime + " " +
+					"AND end_time < " + toTime +" " +
 					"AND env_type = '" + envType.toString() + "';", null);
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		while (cur.moveToNext()) {
-			Date time = new Date(cur.getLong(0));
-			Date endTime = new Date(cur.getLong(2));
-			TimeZone timezone = TimeZone.getTimeZone(cur.getString(3));
-			UserEnv userEnv = gson.fromJson(cur.getString(5), envType.getClazz());
-
 			DurationUserEnv durationUserEnv = new DurationUserEnv.Builder()
-			.setTime(time)
-			.setEndTime(endTime)
-			.setTimeZone(timezone)
+			.setTime(cur.getLong(0))
+			.setEndTime(cur.getLong(2))
+			.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
 			.setEnvType(envType)
-			.setUserEnv(userEnv)
+			.setUserEnv(gson.fromJson(cur.getString(5), envType.getClazz()))
 			.build();
 //			Log.i("retrieved history_user_env", durationUserEnv.toString());
 			res.add(durationUserEnv);
@@ -154,16 +138,16 @@ public class DurationUserEnvDao {
 		return res;
 	}
 	
-	public void deleteBefore(Date timeDate){
+	public void deleteBefore(long time){
 		db.execSQL("DELETE " +
 				"FROM history_user_env " +
-				"WHERE time < " + timeDate.getTime() +";");
+				"WHERE time < " + time +";");
 	}
 	
-	public void deleteBetween(Date beginTime, Date endTime){
+	public void deleteBetween(long beginTime, long endTime){
 		db.execSQL("DELETE " +
 				"FROM history_user_env " + 
-				"WHERE time >= " + beginTime.getTime() + " " +
-					"AND time < " + endTime.getTime() + "';");
+				"WHERE time >= " + beginTime + " " +
+					"AND time < " + endTime + "';");
 	}
 }

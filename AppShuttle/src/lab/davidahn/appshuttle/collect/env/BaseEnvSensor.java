@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect.env;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -20,33 +19,33 @@ public abstract class BaseEnvSensor implements EnvSensor {
 	}
 	
 	@Override
-	public UserEnv sense(Date currTimeDate, TimeZone currTimeZone) {
+	public UserEnv sense(long currTime, TimeZone currTimeZone) {
 		return null;
 	}
 	
 	@Override
-	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
+	public List<DurationUserEnv> preExtractDurationUserEnv(long currTime, TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
+	public DurationUserEnv extractDurationUserEnv(long currTime, TimeZone currTimeZone, UserEnv uEnv) {
 		return null;
 	}
 	
 	@Override
-	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
+	public DurationUserEnv postExtractDurationUserEnv(long currTime, TimeZone currTimeZone) {
 		return null;
 	}
 	
 	@Override
 	public abstract boolean isChanged();
 
-	public boolean isAutoExtractionTime(Date currTimeDate, TimeZone currTimeZone){
+	public boolean isAutoExtractionTime(long currTime, TimeZone currTimeZone){
 		long autoStoreMaxDuration = preferenceSettings.getLong("collection.common.auto_extraction_duration", AlarmManager.INTERVAL_HOUR);
 		long collectionPeriod = preferenceSettings.getLong("collection.env.period", 120000);
 		
-		if(currTimeDate.getTime() % autoStoreMaxDuration < collectionPeriod)
+		if(currTime % autoStoreMaxDuration < collectionPeriod)
 			return true;
 		
 		return false;

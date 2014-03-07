@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect.env;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -67,7 +66,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 	}
 	
 	@Override
-	public UserLoc sense(Date currTimeDate, TimeZone currTimeZone){
+	public UserLoc sense(long currTime, TimeZone currTimeZone){
 		prevULoc = currULoc;
 		
 		if(lastKnownLoc == null) {
@@ -114,33 +113,33 @@ public class LocEnvSensor extends BaseEnvSensor {
 	}
 	
 	@Override
-	public List<DurationUserEnv> preExtractDurationUserEnv(Date currTimeDate,
+	public List<DurationUserEnv> preExtractDurationUserEnv(long currTime,
 			TimeZone currTimeZone) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public DurationUserEnv extractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
+	public DurationUserEnv extractDurationUserEnv(long currTime, TimeZone currTimeZone, UserEnv uEnv) {
 		DurationUserEnv res = null;
 		if(durationUserEnvBuilder == null) {
-			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
+			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone, uEnv);
 		} else {
-			if(isChanged() || isAutoExtractionTime(currTimeDate, currTimeZone)){
-				res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
-				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTimeDate, currTimeZone, uEnv);
+			if(isChanged() || isAutoExtractionTime(currTime, currTimeZone)){
+				res = durationUserEnvBuilder.setEndTime(currTime).setTimeZone(currTimeZone).build();
+				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone, uEnv);
 			}
 		}
 		return res;
 	}
 	
 	@Override
-	public DurationUserEnv postExtractDurationUserEnv(Date currTimeDate, TimeZone currTimeZone) {
-		DurationUserEnv res = durationUserEnvBuilder.setEndTime(currTimeDate).setTimeZone(currTimeZone).build();
+	public DurationUserEnv postExtractDurationUserEnv(long currTime, TimeZone currTimeZone) {
+		DurationUserEnv res = durationUserEnvBuilder.setEndTime(currTime).setTimeZone(currTimeZone).build();
 		durationUserEnvBuilder = null;
 		return res;
 	}
 	
-	private DurationUserEnv.Builder makeDurationUserEnvBuilder(Date currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
+	private DurationUserEnv.Builder makeDurationUserEnvBuilder(long currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
 		return new DurationUserEnv.Builder()
 			.setTime(currTimeDate)
 			.setEndTime(currTimeDate)

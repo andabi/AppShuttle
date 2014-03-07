@@ -4,7 +4,6 @@ import static lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.create;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -41,7 +40,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 	}
 	
 	@Override
-	public List<DurationUserBhv> preExtractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone) {
+	public List<DurationUserBhv> preExtractDurationUserBhv(long currTime, TimeZone currTimeZone) {
 		List<String> recentApps = getRecentApp(Integer.MAX_VALUE, true);
 		if(recentApps.isEmpty())
 			return Collections.emptyList();
@@ -49,7 +48,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		long depreciation = preferenceSettings.getLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
 		for(int i=0;i<recentApps.size();i++){
-			Date time = new Date(currTimeDate.getTime() - i * depreciation);
+			long time = currTime - i * depreciation;
 			res.add(new DurationUserBhv.Builder()
 			.setBhv(create(UserBhvType.APP, recentApps.get(i)))
 			.setTime(time)

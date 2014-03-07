@@ -33,7 +33,7 @@ public class StatCollector {
 	
 	// Structure-style manifestation of a DB entry
 	private class StatEntry{
-		Date timestamp = new Date();
+		long timestamp = System.currentTimeMillis();
 		UserBhvType bhvType = UserBhvType.NONE;
 		String bhvName = "";
 		String matchers = "";				// Matcher 이름
@@ -48,8 +48,8 @@ public class StatCollector {
 	
 	private class StatResult {
 		// Meta
-		Date from = new Date();
-		Date until  = new Date();
+		long from  = System.currentTimeMillis();
+		long until = System.currentTimeMillis();
 		
 		// in percent (0~100)
 		int hit_ratio = 0;		
@@ -64,7 +64,7 @@ public class StatCollector {
 		
 		public String toString(){
 			return "[통계결과]\n" +
-					from.toString() + " ~ " + until.toString() + "\n" +
+					new Date(from).toString() + " ~ " + new Date(until).toString() + "\n" +
 					"uBhv count: " + total_count + "\n" +
 					"Hit ratio: " + hit_ratio + " %\n" +
 					"Use ratio: " + click_ratio + " %\n"; 
@@ -78,15 +78,15 @@ public class StatCollector {
 	
 	private UserBhv old_uBhv;		// 직전에 관측된 Bhv
 	
-	private Date createdDate;	// obsolete
+	private long created;	// obsolete
 	private StatCollector(){
 		old_uBhv = null;
 		
-		createdDate = new Date();	// 현재 시간 저장
+		created = System.currentTimeMillis();	// 현재 시간 저장
 		
 		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
 		
-		Log.i("Stat", "New Collector created / " + createdDate);
+		Log.i("Stat", "New Collector created / " + created);
 	}
 	
 	/**
@@ -151,11 +151,11 @@ public class StatCollector {
 	 * @param until
 	 * 			통계에 포함되는 끝 시각. null 을 주면 현재를 기준으로 통계
 	 */
-	public StatResult getStatistics(Date from, Date until){
-		if (until == null)
-			until = new Date(); // 현재 시각
-		if (from == null)
-			from = new Date(until.getTime() - (24 * 60 * 60 * 1000));
+	protected StatResult getStatistics(long from, long until){
+		if (until == 0)
+			until = System.currentTimeMillis(); // 현재 시각
+		if (from == 0)
+			from = until - (24 * 60 * 60 * 1000);
 		
 		StatResult statReturn = new StatResult();
 		statReturn.from = from;
@@ -190,13 +190,13 @@ public class StatCollector {
 		
 		// 로그 데이터에서 통계 값 계산
 		statReturn.total_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-						"time > " + from.getTime() + " AND time <= " + until.getTime());
+						"time > " + from + " AND time <= " + until);
 		
 		statReturn.clicked_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-				"time > " + from.getTime() + " AND time <= " + until.getTime() + " AND clicked > 0");
+				"time > " + from + " AND time <= " + until + " AND clicked > 0");
 		
 		statReturn.hit_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-				"time > " + from.getTime() + " AND time <= " + until.getTime() + " AND predicted > 0");
+				"time > " + from + " AND time <= " + until + " AND predicted > 0");
 		
 		statReturn.click_ratio = (int)(statReturn.clicked_count * 100.0f / statReturn.total_count);
 		statReturn.hit_ratio = (int)(statReturn.hit_count * 100.0f / statReturn.total_count);
@@ -207,7 +207,7 @@ public class StatCollector {
 	}
 	
 	public StatResult getStatistics(){
-		return this.getStatistics(null, null);
+		return this.getStatistics(0, 0);
 	}	
 	
 	public static StatCollector getInstance(){
@@ -336,7 +336,7 @@ public class StatCollector {
 	
 		/* Store into DB */
 		ContentValues row = new ContentValues();
-		row.put("time", newEntry.timestamp.getTime());
+		row.put("time", newEntry.timestamp);
 		row.put("bhv_type", newEntry.bhvType.toString());
 		row.put("bhv_name", newEntry.bhvName);
 		row.put("matchers", newEntry.matchers);
@@ -349,10 +349,10 @@ public class StatCollector {
 		this.sendEachEntry(newEntry);
 	}
 	
-	public void deleteAllBefore(Date timeDate){
+	public void deleteAllBefore(long time){
 		db.execSQL("DELETE " +
 				"FROM stat_bhv_transition " +
-				"WHERE time < " + timeDate.getTime() +";");
+				"WHERE time < " + time +";");
 	}
 	
 		
@@ -360,7 +360,7 @@ public class StatCollector {
 	public String toString(){
 		return this.getStatistics().toString();
 		/*
-		return "Since " + createdDate.toString() +
+		return "Since " + created.toString() +
 				"\nTotalClicked = " + this.numTotalClicked + 
 				"\nBhvTransition: " + this.numBhvTransitionHit + " / " + this.numBhvTransitionTotal;
 				*/

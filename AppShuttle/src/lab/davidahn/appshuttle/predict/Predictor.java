@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.predict;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -178,7 +177,7 @@ public class Predictor {
 		if(currUserCxt.getUserEnvs().isEmpty())
 			return ;
 		
-		Date time_1 = new Date();	// Start time
+		long startTime = System.currentTimeMillis();	// Start time
 				
 		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
@@ -194,7 +193,7 @@ public class Predictor {
 			if(matcherMap.isEmpty())
 				continue;
 			
-			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTimeDate(), 
+			PredictedBhv predictedBhv = new PredictedBhv(currUserCxt.getTime(), 
 					currUserCxt.getTimeZone(), 
 					currUserCxt.getUserEnvs(), 
 					uBhv, matcherMap, computePredictionScore(matcherMap));
@@ -203,13 +202,14 @@ public class Predictor {
 		}
 		PredictedBhv.updatePredictedBhvList(predictedBhvList);
 		
-		
+		long endTime = System.currentTimeMillis();	// End time
+
 		// Statistics
 		// Report (end time - start time)
 		Tracker easyTracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
 		easyTracker.send(MapBuilder
 				.createTiming("algorithm",    // Timing category (required)
-							(new Date()).getTime() - time_1.getTime(),       // Timing interval in milliseconds (required)
+							endTime - startTime,       // Timing interval in milliseconds (required)
 							"overall_prediction_cost",  // Timing name
 							null)           // Timing label
 				.build()

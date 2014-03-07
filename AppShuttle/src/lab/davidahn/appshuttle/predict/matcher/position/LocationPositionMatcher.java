@@ -43,8 +43,8 @@ public class LocationPositionMatcher extends PositionMatcher {
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			UserLoc lastKnownUserLoc = null;
 			long accumulativeDuration = 0;
-			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTimeDate()
-					, durationUserBhv.getEndTimeDate(), EnvType.LOCATION)){
+			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTime()
+					, durationUserBhv.getEndTime(), EnvType.LOCATION)){
 				UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 				long duration = durationUserEnv.getDuration();
 				if(lastKnownUserLoc == null) {

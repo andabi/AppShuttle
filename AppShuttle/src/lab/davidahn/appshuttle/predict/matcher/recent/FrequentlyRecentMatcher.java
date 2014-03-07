@@ -22,8 +22,8 @@ public class FrequentlyRecentMatcher extends RecentMatcher {
 	@Override
 	protected double computeRelatedness(MatcherCountUnit durationUserBhv,
 			SnapshotUserCxt uCxt) {
-		long currTime = uCxt.getTimeDate().getTime();
-		long time = durationUserBhv.getDurationUserBhvList().get(0).getTimeDate().getTime();
+		long currTime = uCxt.getTime();
+		long time = durationUserBhv.getDurationUserBhvList().get(0).getTime();
 		double relatedness = 1 - (currTime - time) * 1.0 / conf.getDuration();
 
 		assert(0 <= relatedness && relatedness <= 1);

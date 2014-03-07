@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.predict.matcher;
 
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +15,7 @@ public class MatcherResult extends MatcherResultElem {
 	private int numRelatedHistory;
 	private Map<MatcherCountUnit, Double> relatedHistory;
 	
-	public MatcherResult(Date _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
+	public MatcherResult(long _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
 		super(_time, _timeZone, _userEnv);
 	}
 	

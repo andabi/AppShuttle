@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.collect;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -24,7 +23,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class BhvCollectionService extends Service {
-	private Date currTimeDate;
+	private long currTime;
 	private TimeZone currTimeZone;
     private List<BhvCollector> collectors;
     private List<UserBhv> collectedBhvs;
@@ -79,7 +78,7 @@ public class BhvCollectionService extends Service {
 	}
 	
 	private void updateCxt(SnapshotUserCxt uCxt) {
-		uCxt.setTime(currTimeDate);
+		uCxt.setTime(currTime);
 		uCxt.setTimeZone(currTimeZone);
 		uCxt.clearUserBhvs();
 		uCxt.addUserBhvs(collectedBhvs);
@@ -88,7 +87,7 @@ public class BhvCollectionService extends Service {
 	private void extractAndStoreDurationUserBhv() {
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> durationUserBhvList = 
-					collector.extractDurationUserBhv(currTimeDate, currTimeZone, collectedBhvs);
+					collector.extractDurationUserBhv(currTime, currTimeZone, collectedBhvs);
 			registerAndStoreDurationUserBhv(durationUserBhvList);
 		}
 	}
@@ -101,7 +100,7 @@ public class BhvCollectionService extends Service {
 			AppBhvCollector bhvCollector = AppBhvCollector.getInstance();
 			if(!bhvCollector.isTrackedForDurationUserBhv(uBhv)){
 				snapshotAppUserBhvList.add(bhvCollector.createDurationUserBhvBuilder(
-						currTimeDate, currTimeDate, currTimeZone, uBhv).build());
+						currTime, currTime, currTimeZone, uBhv).build());
 			}
 		}
 		registerAndStoreDurationUserBhv(snapshotAppUserBhvList);
@@ -121,7 +120,7 @@ public class BhvCollectionService extends Service {
 		senseTime();
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> preExtractedDurationUserBhvList = 
-					collector.preExtractDurationUserBhv(currTimeDate, currTimeZone);
+					collector.preExtractDurationUserBhv(currTime, currTimeZone);
 			registerAndStoreDurationUserBhv(preExtractedDurationUserBhvList);
 		}
 //		Log.d("BhvCollectionService", "pre-collection");
@@ -144,7 +143,7 @@ public class BhvCollectionService extends Service {
 		senseTime();
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> postExtractedDurationUserBhvList = 
-					collector.postExtractDurationUserBhv(currTimeDate, currTimeZone);
+					collector.postExtractDurationUserBhv(currTime, currTimeZone);
 			registerAndStoreDurationUserBhv(postExtractedDurationUserBhvList);
 		}
 		
@@ -152,7 +151,7 @@ public class BhvCollectionService extends Service {
 	}
 
 	private void senseTime() {
-		currTimeDate = new Date(System.currentTimeMillis());
+		currTime = System.currentTimeMillis();
 		currTimeZone = Calendar.getInstance().getTimeZone();
 	}
 }

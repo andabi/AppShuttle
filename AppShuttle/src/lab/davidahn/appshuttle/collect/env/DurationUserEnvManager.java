@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.collect.env;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class DurationUserEnvManager {
@@ -20,11 +19,7 @@ public class DurationUserEnvManager {
 		durationUserEnvDao.store(durationUserEnv);
 	}
 	
-//	public List<DurationUserEnv> retrieve(Date beginTimeDate, Date endTimeDate, EnvType envType){
-//		return durationUserEnvDao.retrieveBetweenByEnv(beginTimeDate, endTimeDate, envType);
-//	}
-	
-	public List<DurationUserEnv> retrieve(Date beginTimeDate, Date endTimeDate, EnvType envType){
+	public List<DurationUserEnv> retrieve(long beginTimeDate, long endTimeDate, EnvType envType){
 		List<DurationUserEnv> res = new ArrayList<DurationUserEnv>();
 		
 		DurationUserEnv uEnv = durationUserEnvDao.retrieveContains(beginTimeDate, endTimeDate, envType);
@@ -78,7 +73,7 @@ public class DurationUserEnvManager {
 			list.add(durationUserEnv);
 		else {
 			DurationUserEnv last = list.get(list.size()-1);
-			if(last.getEndTime().getTime() == durationUserEnv.getTime().getTime() 
+			if(last.getEndTime() == durationUserEnv.getTime()
 					&& last.getUserEnv().equals(durationUserEnv.getUserEnv()))
 				last.setEndTime(durationUserEnv.getEndTime());
 			else
@@ -86,11 +81,11 @@ public class DurationUserEnvManager {
 		}
 	}
 	
-	public void deleteAllBefore(Date timeDate){
+	public void deleteAllBefore(long timeDate){
 		durationUserEnvDao.deleteBefore(timeDate);
 	}
 	
-	public void deleteAllBetween(Date beginTime, Date endTime){
+	public void deleteAllBetween(long beginTime, long endTime){
 		durationUserEnvDao.deleteBetween(beginTime, endTime);
 	}
 }

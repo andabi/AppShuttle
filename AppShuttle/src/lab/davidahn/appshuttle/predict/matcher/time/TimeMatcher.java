@@ -36,13 +36,13 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
-		Date toTime = new Date(currUCxt.getTimeDate().getTime() - conf.getTolerance());
-		Date fromTime = new Date(toTime.getTime() - conf.getDuration());
+		long toTime = currUCxt.getTime() - conf.getTolerance();
+		long fromTime = toTime - conf.getDuration();
 		
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
 		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-//			if(durationUserBhv.getEndTimeDate().getTime() - durationUserBhv.getTimeDate().getTime()	< noiseTimeTolerance)
+//			if(durationUserBhv.getEndTime() - durationUserBhv.getTime()	< noiseTimeTolerance)
 //				continue;
 			pureDurationUserBhvList.add(durationUserBhv);
 		}
@@ -59,9 +59,9 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 			if(prevDurationUserBhv == null){
 				matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv);
 			} else {
-				if(durationUserBhv.getTimeDate().getTime() - prevDurationUserBhv.getEndTimeDate().getTime()
+				if(durationUserBhv.getTime() - prevDurationUserBhv.getEndTime()
 						< conf.getAcceptanceDelay()){
-					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTimeDate());
+					matcherCountUnitBuilder.setProperty("endTime", durationUserBhv.getEndTime());
 				} else {
 					res.add(matcherCountUnitBuilder.build());
 					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv);
@@ -78,8 +78,8 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 	
 	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv) {
 		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
-		.setProperty("time", durationUserBhv.getTimeDate())
-		.setProperty("endTime", durationUserBhv.getEndTimeDate())
+		.setProperty("time", durationUserBhv.getTime())
+		.setProperty("endTime", durationUserBhv.getEndTime())
 		.setProperty("timeZone", durationUserBhv.getTimeZone());
 	}
 	
@@ -91,7 +91,7 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 		Set<Long> uniqueTime = new HashSet<Long>();
 		
 		for(MatcherCountUnit unit : matcherCountUnitList){
-			long time = ((Date) unit.getProperty("time")).getTime();
+			long time = (Long)unit.getProperty("time");
 			long timePeriodic = time % conf.getPeriod();
 			Iterator<Long> it = uniqueTime.iterator();
 			boolean unique = true;
@@ -125,9 +125,9 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
 		double relatedness = 0;
 		
-		long currTime = uCxt.getTimeDate().getTime();
+		long currTime = uCxt.getTime();
 		long currTimePeriodic = currTime % conf.getPeriod();
-		long targetTime = ((Date) unit.getProperty("time")).getTime();
+		long targetTime = (Long) unit.getProperty("time");
 		long targetTimePeriodic = targetTime % conf.getPeriod();
 		
 		long mean = currTimePeriodic;
@@ -173,9 +173,9 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 		return score;
 	}
 	
-	protected boolean isWeekDay(Date date){
+	protected boolean isWeekDay(long date){
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+		calendar.setTime(new Date(date));
 		int day = calendar.get(Calendar.DAY_OF_WEEK);
 		
 		if(day == Calendar.SATURDAY || day == Calendar.SUNDAY)
