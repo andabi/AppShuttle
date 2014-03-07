@@ -14,7 +14,7 @@ public class AppShuttlePreferences {
 
 		//collection
 		editor.putBoolean("collection.bhv.enabled", true);
-		editor.putLong("collection.bhv.period", 30000);
+		editor.putLong("collection.bhv.period", 15000);
 		editor.putBoolean("collection.env.enabled", true);
 		editor.putLong("collection.env.period", 60000);
 		
@@ -94,7 +94,7 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.headset.min_num_related_history", 3);
 		
 		//view
-		editor.putLong("view.update_period", 15000);
+		editor.putLong("view.update_period", 10000);
 		editor.putInt("viewer.noti.max_num", 24);
 		editor.putInt("viewer.noti.proper_num_favorite", 6);
 //		editor.putInt("viewer.noti.max_num_favorite", 24);
