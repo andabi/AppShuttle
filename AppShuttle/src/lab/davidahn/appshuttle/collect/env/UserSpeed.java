@@ -39,7 +39,7 @@ public class UserSpeed extends UserEnv {
 	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append(" (").append(speed).append(", ").append(level).append(") ");
+		msg.append("(").append(speed).append(", ").append(level.name()).append(")");
 		return msg.toString();
 	}
 

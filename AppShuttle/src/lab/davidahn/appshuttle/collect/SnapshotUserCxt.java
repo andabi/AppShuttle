@@ -75,10 +75,10 @@ public class SnapshotUserCxt {
 	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
-		msg.append("time: ").append(_time).append(", ");
-		msg.append("timeZone: ").append(_timeZone.getID()).append(", ");
-		msg.append("userEnvs: ").append(_userEnvs.toString()).append(", ");
-		msg.append("userBhvs: ").append(_userBhvs.toString());
+		msg.append("<Time>\n").append(_time.toString()).append("\n\n");
+//		msg.append("timeZone: ").append(_timeZone.getID()).append(", ");
+		msg.append("<Environment>\n").append(_userEnvs.toString()).append("\n\n");
+		msg.append("<Behavior>\n").append(_userBhvs.toString());
 		return msg.toString();
 	}
 	
