@@ -60,8 +60,8 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 	
-	public List<BaseUserBhv> collect() {
-		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
+	public List<UserBhv> collect() {
+		List<UserBhv> res = new ArrayList<UserBhv>();
 		res.addAll(collectActivityBhv());
 //		res.addAll(collectServiceBhv());
 		return res;

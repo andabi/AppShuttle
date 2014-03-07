@@ -10,22 +10,22 @@ public enum MatcherType {
 		INSTANTALY_RECENT(1, R.string.predict_instantly_recent_msg, true),
 		
 	//location
-	POSITION(1, 0, false),
-		PLACE(0, R.string.predict_place_msg, false),
-		LOCATION(1, R.string.predict_loc_msg, false),
-		MOVE(2, R.string.predict_move_msg, false),
+	POSITION(0, 0, false),
+		PLACE(10, R.string.predict_place_msg, false),
+		LOCATION(11, R.string.predict_loc_msg, false),
+		MOVE(12, R.string.predict_move_msg, false),
 	//	UNFAMILIER_PLACE
 
 	//time
-	TIME(2, 0, false),
-		TIME_DAILY_WEEKDAY(0, R.string.predict_time_daily_weekday_msg, false),
-		TIME_DAILY_WEEKEND(0, R.string.predict_time_daily_weekend_msg, false),
-		TIME_DAILY(1, R.string.predict_time_daily_msg, false),
+	TIME(0, 0, false),
+		TIME_DAILY_WEEKDAY(20, R.string.predict_time_daily_weekday_msg, false),
+		TIME_DAILY_WEEKEND(20, R.string.predict_time_daily_weekend_msg, false),
+		TIME_DAILY(21, R.string.predict_time_daily_msg, false),
 		
 	//headset
-	HEADSET(3, R.string.predict_headset_msg, true),
+	HEADSET(30, R.string.predict_headset_msg, true),
 	;
-	
+
 	public int priority;
 	public String viewMsg;
 	public boolean isOverwritableForNewPrediction;

@@ -1,11 +1,14 @@
 package lab.davidahn.appshuttle.predict;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.view.ViewService;
+import lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity;
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 public class PredictionService extends IntentService {
+	public static final String PREDICT = "lab.davidahn.appshuttle.PREDICT";
+
 	public PredictionService() {
 		super("PredictionService");
 	}
@@ -20,11 +23,11 @@ public class PredictionService extends IntentService {
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
-		Log.d("prediction", "started");
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY").putExtra("isOn", true));
+//		Log.d("prediction", "started");
+		sendBroadcast(new Intent().setAction(AppShuttleMainActivity.PROGRESS_VISIBILITY).putExtra("isOn", true));
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY").putExtra("isOn", false));
+		startService(new Intent(this, ViewService.class));
+		sendBroadcast(new Intent().setAction(AppShuttleMainActivity.PROGRESS_VISIBILITY).putExtra("isOn", false));
 	}
 	
 	@Override

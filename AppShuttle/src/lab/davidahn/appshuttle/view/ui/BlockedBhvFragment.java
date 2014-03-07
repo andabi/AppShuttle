@@ -7,6 +7,7 @@ import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
+import lab.davidahn.appshuttle.view.ViewService;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -157,7 +158,7 @@ public class BlockedBhvFragment extends ListFragment {
 	}
 
 	private void doPostAction() {
-		getActivity().sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.UPDATE_VIEW"));
+		getActivity().startService(new Intent(getActivity(), ViewService.class));
 	}
 	
 	private void showToastMsg(String actionMsg){

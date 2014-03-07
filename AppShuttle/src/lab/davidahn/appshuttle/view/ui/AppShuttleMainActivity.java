@@ -9,6 +9,7 @@ import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
+import lab.davidahn.appshuttle.predict.PredictionService;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -45,42 +46,15 @@ public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	
-    private void handleExecutionIntent(Intent intent){
-		if (intent == null)
-			return;
-		
-		Bundle b = intent.getExtras();
-		if (b == null || (b.getBoolean("doExec", false) == false))
-			return;
-		
-		/* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
-		UserBhvType bhvType = UserBhvType.NONE;
-		String bhvName = b.getString("bhvName");
-		if (b.containsKey("bhvType"))
-			bhvType = (UserBhvType)b.getSerializable("bhvType");
-		
-		if (bhvType == UserBhvType.NONE || bhvName == null)
-			return;
-		
-		BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-		
-		Log.i("MainActivity", "Exec req " + uBhv.toString());
-
-		StatCollector.getInstance().notifyBhvTransition(uBhv, true);	// 통계 데이터 전송
-		
-		Intent launchIntent = uBhv.getLaunchIntent();
-		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
-		this.startActivity(launchIntent);
-	}
-    
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		AppShuttlePreferences.setDefaultPreferences();
 
-		if(!AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
+		if (!AppShuttleApplication.getContext().getPreferences()
+				.getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
 
 		/* Intent를 받아서 doExec 이면 해당 앱을 실행시킨다.
@@ -99,35 +73,34 @@ public class AppShuttleMainActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.UPDATE_VIEW");
-		registerReceiver(updateViewReceiver, filter);
-		
+		filter.addAction(AppShuttleMainActivity.UPDATE_ACTIVITY);
+		registerReceiver(updateReceiver, filter);
+
 		filter = new IntentFilter();
-		filter.addAction("lab.davidahn.appshuttle.PROGRESS_VISIBILITY");
+		filter.addAction(AppShuttleMainActivity.PROGRESS_VISIBILITY);
 		registerReceiver(progressVisibilityReceiver, filter);
 
 		mViewPager = new ViewPager(this);
 		mViewPager.setId(R.id.pager);
-		
+
 		setContentView(mViewPager);
 
 		final ActionBar bar = getActionBar();
-		bar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-		bar.setStackedBackgroundDrawable(new ColorDrawable(Color.rgb(48, 48, 48)));
+		bar.setIcon(new ColorDrawable(getResources().getColor(
+				android.R.color.transparent)));
+		bar.setStackedBackgroundDrawable(new ColorDrawable(Color
+				.rgb(48, 48, 48)));
 		bar.setDisplayUseLogoEnabled(false);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+		// bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
-		Bundle bundle = new Bundle(); 
+		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab()
-				.setIcon(R.drawable.predicted),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.predicted),
 				PresentBhvFragment.class, bundle);
-		mTabsAdapter.addTab(bar.newTab()
-				.setIcon(R.drawable.favorite),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.favorite),
 				FavoriteBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab()
-				.setIcon(R.drawable.ignore),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ignore),
 				BlockedBhvFragment.class, null);
 		
 		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
@@ -140,17 +113,17 @@ public class AppShuttleMainActivity extends Activity {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
 		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
-		
+
 		startService(new Intent(this, AppShuttleMainService.class));
-		sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT"));
+		// sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -167,20 +140,14 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		updateView();
+		mTabsAdapter.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(updateViewReceiver);
+		unregisterReceiver(updateReceiver);
 		unregisterReceiver(progressVisibilityReceiver);
-	}
-	
-	protected void updateView() {
-		NotiBarNotifier.getInstance().updateNotification();
-		mTabsAdapter.notifyDataSetChanged();
-//		Log.d("view", "view updated.");
 	}
 
 	@Override
@@ -200,18 +167,49 @@ public class AppShuttleMainActivity extends Activity {
 			handleExecutionIntent(intent);
 		}
 	}
+
+	private void handleExecutionIntent(Intent intent){
+		if (intent == null)
+			return;
 		
+		Bundle b = intent.getExtras();
+		if (b == null || (b.getBoolean("doExec", false) == false))
+			return;
+		
+		/* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
+		UserBhvType bhvType = UserBhvType.NONE;
+		String bhvName = b.getString("bhvName");
+		if (b.containsKey("bhvType"))
+			bhvType = (UserBhvType)b.getSerializable("bhvType");
+		
+		if (bhvType == UserBhvType.NONE || bhvName == null)
+			return;
+		
+		BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+		
+		Log.i("MainActivity", "Exec req " + uBhv.toString());
+	
+		StatCollector.getInstance().notifyBhvTransition(uBhv, true);	// 통계 데이터 전송
+		
+		Intent launchIntent = uBhv.getLaunchIntent();
+		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
+		this.startActivity(launchIntent);
+	}
+
 	public static CharSequence getActionbarTitle(Context cxt, int position) {
 		String title;
-		switch(position){
+		switch (position) {
 		case 0:
-			title = cxt.getResources().getString(R.string.actionbar_tab_text_present);
+			title = cxt.getResources().getString(
+					R.string.actionbar_tab_text_present);
 			break;
 		case 1:
-			title = cxt.getResources().getString(R.string.actionbar_tab_text_favorite);
+			title = cxt.getResources().getString(
+					R.string.actionbar_tab_text_favorite);
 			break;
 		case 2:
-			title = cxt.getResources().getString(R.string.actionbar_tab_text_blocked);
+			title = cxt.getResources().getString(
+					R.string.actionbar_tab_text_blocked);
 			break;
 		default:
 			title = "";
@@ -219,17 +217,18 @@ public class AppShuttleMainActivity extends Activity {
 		return title;
 	}
 
-	public static void doEmphasisChildViewInListView(ListView listview, int position){
-		for(int i=0;i<listview.getChildCount();i++){
-			if(i == position)
+	public static void doEmphasisChildViewInListView(ListView listview,
+			int position) {
+		for (int i = 0; i < listview.getChildCount(); i++) {
+			if (i == position)
 				listview.getChildAt(i).setAlpha(1);
 			else
 				listview.getChildAt(i).setAlpha(0.2f);
 		}
 	}
 
-	public static void cancelEmphasisInListView(ListView listview){
-		for(int i=0;i<listview.getChildCount();i++){
+	public static void cancelEmphasisInListView(ListView listview) {
+		for (int i = 0; i < listview.getChildCount(); i++) {
 			listview.getChildAt(i).setAlpha(1);
 		}
 	}
@@ -259,15 +258,15 @@ public class AppShuttleMainActivity extends Activity {
 			mViewPager.setAdapter(this);
 			mViewPager.setOnPageChangeListener(this);
 		}
-		
-		public void hideTabs(){
+
+		public void hideTabs() {
 			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		}
 
-		public void showTabs(){
+		public void showTabs() {
 			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		}
-		
+
 		public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
 			TabInfo info = new TabInfo(clss, args);
 			tab.setTag(info);
@@ -276,12 +275,12 @@ public class AppShuttleMainActivity extends Activity {
 			mActionBar.addTab(tab);
 			notifyDataSetChanged();
 		}
-		
+
 		@Override
 		public int getItemPosition(Object object) {
 			return POSITION_NONE;
 		}
-		
+
 		@Override
 		public int getCount() {
 			return mTabs.size();
@@ -327,80 +326,88 @@ public class AppShuttleMainActivity extends Activity {
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		}
 	}
-	
+
 	public static class AppShuttleActionProvider extends ActionProvider {
 		Context cxt;
-		
+
 		public AppShuttleActionProvider(Context _cxt) {
 			super(_cxt);
 			cxt = _cxt;
 		}
-		
-		public View onCreateActionView(){
+
+		public View onCreateActionView() {
 			LayoutInflater inflator = LayoutInflater.from(cxt);
 			View layout = inflator.inflate(R.layout.actionbarlayout, null);
-			
-			ImageView refresh = (ImageView)layout.findViewById(R.id.refresh);
-			refresh.setOnClickListener(new ImageView.OnClickListener(){
+
+			ImageView refresh = (ImageView) layout.findViewById(R.id.refresh);
+			refresh.setOnClickListener(new ImageView.OnClickListener() {
 				public void onClick(View v) {
-					cxt.sendBroadcast(new Intent().setAction("lab.davidahn.appshuttle.PREDICT").putExtra("isForce", true));
+					cxt.sendBroadcast(new Intent().setAction(
+							PredictionService.PREDICT)
+							.putExtra("isForce", true));
 				}
 			});
-			
-			ImageView preferences = (ImageView)layout.findViewById(R.id.settings);
-			preferences.setOnClickListener(new ImageView.OnClickListener(){
+
+			ImageView preferences = (ImageView) layout
+					.findViewById(R.id.settings);
+			preferences.setOnClickListener(new ImageView.OnClickListener() {
 				public void onClick(View v) {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
 				}
 			});
 			
 			/* If debug mode is ON, add debug button */
-			if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
-				ViewGroup actionbar_llayout = (ViewGroup)layout.findViewById(R.id.actionbar);
+			if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
+				addDebugButton(layout);
 				
-				ImageView debug_image = new ImageView(cxt);
-				debug_image.setLayoutParams(layout.findViewById(R.id.settings).getLayoutParams());
-				debug_image.setBackgroundResource(R.drawable.notifiable);	// TODO: New debug image resource is needed
-				
-				debug_image.setOnClickListener(new ImageView.OnClickListener(){
-    				public void onClick(View v) {
-    					// TODO: 디버그 정보를 위한 새로운 액티비티 생성
-    					AlertDialog.Builder alert = new AlertDialog.Builder(cxt);
-    					alert.setTitle("통계정보");
-    					alert.setMessage(StatCollector.getInstance().toString());
-    					alert.show();
-					}
-				});
-				
-				FrameLayout debug_frame = new FrameLayout(cxt);
-				debug_frame.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				debug_frame.setLayoutParams(layout.findViewById(R.id.settings_frame).getLayoutParams());
-				debug_frame.addView(debug_image);
-				
-				actionbar_llayout.addView(debug_frame);
-			}
-			
 			return layout;
+		}
+
+		private void addDebugButton(View layout) {
+			ViewGroup actionbar_llayout = (ViewGroup)layout.findViewById(R.id.actionbar);
+			
+			ImageView debug_image = new ImageView(cxt);
+			debug_image.setLayoutParams(layout.findViewById(R.id.settings).getLayoutParams());
+			debug_image.setBackgroundResource(R.drawable.notifiable);	// TODO: New debug image resource is needed
+			
+			debug_image.setOnClickListener(new ImageView.OnClickListener(){
+				public void onClick(View v) {
+					// TODO: 디버그 정보를 위한 새로운 액티비티 생성
+					AlertDialog.Builder alert = new AlertDialog.Builder(cxt);
+					alert.setTitle("통계정보");
+					alert.setMessage(StatCollector.getInstance().toString());
+					alert.show();
+				}
+			});
+			
+			FrameLayout debug_frame = new FrameLayout(cxt);
+			debug_frame.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			debug_frame.setLayoutParams(layout.findViewById(R.id.settings_frame).getLayoutParams());
+			debug_frame.addView(debug_image);
+			
+			actionbar_llayout.addView(debug_frame);
 		}
 	}
 
-	BroadcastReceiver updateViewReceiver = new BroadcastReceiver() {
-	    public void onReceive(Context context, Intent intent) {
-	    	updateView();
-	    }
+	BroadcastReceiver updateReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			mTabsAdapter.notifyDataSetChanged();
+		}
 	};
-	
+
 	BroadcastReceiver progressVisibilityReceiver = new BroadcastReceiver() {
-	    public void onReceive(Context context, Intent intent) {
-	    	boolean isOn = intent.getBooleanExtra("isOn", false);
-	    	
-			ProgressBar progress = (ProgressBar)findViewById(R.id.progress);
-			if(progress != null)
+		public void onReceive(Context context, Intent intent) {
+			boolean isOn = intent.getBooleanExtra("isOn", false);
+
+			ProgressBar progress = (ProgressBar) findViewById(R.id.progress);
+			if (progress != null)
 				progress.setVisibility((isOn) ? View.VISIBLE : View.INVISIBLE);
-			
-			ImageView refresh = (ImageView)findViewById(R.id.refresh);
-			if(refresh != null)
+
+			ImageView refresh = (ImageView) findViewById(R.id.refresh);
+			if (refresh != null)
 				refresh.setVisibility((isOn) ? View.INVISIBLE : View.VISIBLE);
-	    }
+		}
 	};
+	public static final String UPDATE_ACTIVITY = "lab.davidahn.appshuttle.UPDATE_VIEW_ACTIVITY";
+	public static final String PROGRESS_VISIBILITY = "lab.davidahn.appshuttle.PROGRESS_VISIBILITY";
 }

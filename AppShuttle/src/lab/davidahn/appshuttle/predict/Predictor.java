@@ -175,7 +175,7 @@ public class Predictor {
 	}
 	
 	public void predict(SnapshotUserCxt currUserCxt){
-		if(currUserCxt == null)
+		if(currUserCxt.getUserEnvs().isEmpty())
 			return ;
 		
 		Date time_1 = new Date();	// Start time

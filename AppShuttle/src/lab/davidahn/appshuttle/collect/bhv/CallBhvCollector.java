@@ -46,7 +46,7 @@ public class CallBhvCollector extends BaseBhvCollector {
 	}
 	
 	@Override
-	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<BaseUserBhv> userBhvList) {
+	public List<DurationUserBhv> extractDurationUserBhv(Date currTimeDate, TimeZone currTimeZone, List<UserBhv> userBhvList) {
 		if(lastCallTimeDate == null) {
 			lastCallTimeDate = currTimeDate;
 			return Collections.emptyList();

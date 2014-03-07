@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
@@ -18,7 +17,7 @@ public class AppShuttleApplication extends Application {
 	private static AppShuttleApplication instance;
 	public static long launchTime;
 	public volatile static long lastPredictionTime;
-	public volatile static Map<BaseUserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
+	public volatile static Map<UserBhv, DurationUserBhv.Builder> durationUserBhvBuilderMap;
 	public volatile static SnapshotUserCxt currUserCxt;
 	public volatile static Map<UserBhv, PredictedBhv> predictedBhvMap;
 	public volatile static Map<UserBhv, PredictedPresentBhv> predictedPresentBhvMap;
@@ -29,7 +28,8 @@ public class AppShuttleApplication extends Application {
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();
-		durationUserBhvBuilderMap = new HashMap<BaseUserBhv, DurationUserBhv.Builder>();
+		durationUserBhvBuilderMap = new HashMap<UserBhv, DurationUserBhv.Builder>();
+		currUserCxt = new SnapshotUserCxt();
 		predictedBhvMap = new ConcurrentHashMap<UserBhv, PredictedBhv>();
 		predictedPresentBhvMap = new ConcurrentHashMap<UserBhv, PredictedPresentBhv>();
 	}

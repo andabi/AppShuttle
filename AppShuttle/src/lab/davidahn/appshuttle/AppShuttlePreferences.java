@@ -13,8 +13,10 @@ public class AppShuttlePreferences {
 		editor.putString("database.name", "AppShuttle.db");
 
 		//collection
-		editor.putBoolean("collection.enabled", true);
-		editor.putLong("collection.period", 30000);
+		editor.putBoolean("collection.bhv.enabled", true);
+		editor.putLong("collection.bhv.period", 30000);
+		editor.putBoolean("collection.env.enabled", true);
+		editor.putLong("collection.env.period", 60000);
 		
 		editor.putLong("collection.common.auto_extraction_duration", AlarmManager.INTERVAL_HOUR);
 		
@@ -92,6 +94,7 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.headset.min_num_related_history", 3);
 		
 		//view
+		editor.putLong("view.update_period", 15000);
 		editor.putInt("viewer.noti.max_num", 24);
 		editor.putInt("viewer.noti.proper_num_favorite", 6);
 //		editor.putInt("viewer.noti.max_num_favorite", 24);
@@ -115,6 +118,8 @@ public class AppShuttlePreferences {
 		else
 			return false;
 	}
+
+	public static final String SLEEP_MODE = "lab.davidahn.appshuttle.SLEEP_MODE";
 	
 //	public boolean isHidden(){
 //	SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
