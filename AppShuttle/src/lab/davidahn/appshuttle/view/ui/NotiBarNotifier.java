@@ -97,6 +97,7 @@ public class NotiBarNotifier {
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
 	}
 	
+	@SuppressWarnings("unused")
 	private <T extends UserBhv & Viewable> RemoteViews createNotiRemoteViews(List<T> viewableUserBhvList) {
 		RemoteViews notiRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar);
 
@@ -117,19 +118,23 @@ public class NotiBarNotifier {
 			UserBhvType bhvType = viewableUserBhv.getBhvType();
 			RemoteViews notiElemRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_element);
 			
-			// Intent intent = viewableUserBhv.getLaunchIntent();
+			Intent intent;
+			intent = viewableUserBhv.getLaunchIntent();
 			/*
 			 * 실행하고자 하는 앱 이름을 putExtra 에 넣어서
 			 * AppShuttleMainService 에 전달.
 			 */
-			Intent intent = new Intent(cxt, AppShuttleMainActivity.class);
+			
+			// FIXME: 노티바 사용 통계 대책
+			if (false) { // Notibar 에서 사용 카운트를 통계내고자 할 경우
+			intent = new Intent(cxt, AppShuttleMainActivity.class);
 			Bundle extras = new Bundle();
 			extras.putBoolean("doExec", true);
 			extras.putSerializable("bhvType", viewableUserBhv.getBhvType());
 			extras.putString("bhvName", viewableUserBhv.getBhvName());
 			intent.putExtras(extras);
 			intent.setAction(Long.toString(System.currentTimeMillis()));		// (1)
-			
+
 			/* (1)에 대한 추가 설명
 			 * 똑같은 Activity.class에 대해 extra 값만 다른 여러 intent를 만드는 건데,
 			 * 첫 intent는 전달이 제대로 되지만, 그 다음 intent는 동작이 되지 않음.
@@ -138,6 +143,7 @@ public class NotiBarNotifier {
 			 * 참고 링크:
 			 * http://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the
 			 */
+			}
 			
 			if(intent != null){
 				/* 인자 설명:

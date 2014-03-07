@@ -356,36 +356,7 @@ public class AppShuttleMainActivity extends Activity {
 				}
 			});
 			
-			/* If debug mode is ON, add debug button */
-			if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false))
-				addDebugButton(layout);
-				
 			return layout;
-		}
-
-		private void addDebugButton(View layout) {
-			ViewGroup actionbar_llayout = (ViewGroup)layout.findViewById(R.id.actionbar);
-			
-			ImageView debug_image = new ImageView(cxt);
-			debug_image.setLayoutParams(layout.findViewById(R.id.settings).getLayoutParams());
-			debug_image.setBackgroundResource(R.drawable.notifiable);	// TODO: New debug image resource is needed
-			
-			debug_image.setOnClickListener(new ImageView.OnClickListener(){
-				public void onClick(View v) {
-					// TODO: 디버그 정보를 위한 새로운 액티비티 생성
-					AlertDialog.Builder alert = new AlertDialog.Builder(cxt);
-					alert.setTitle("통계정보");
-					alert.setMessage(StatCollector.getInstance().toString());
-					alert.show();
-				}
-			});
-			
-			FrameLayout debug_frame = new FrameLayout(cxt);
-			debug_frame.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			debug_frame.setLayoutParams(layout.findViewById(R.id.settings_frame).getLayoutParams());
-			debug_frame.addView(debug_image);
-			
-			actionbar_llayout.addView(debug_frame);
 		}
 	}
 

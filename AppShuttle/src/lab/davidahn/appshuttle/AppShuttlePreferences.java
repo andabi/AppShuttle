@@ -100,6 +100,9 @@ public class AppShuttlePreferences {
 //		editor.putInt("viewer.noti.max_num_favorite", 24);
 //		editor.putInt("viewer.min_num_present_bhv", 6);
 		
+		
+		// TODO: 통계관련 패러미터 추가
+		
 		editor.commit();
 	}
 

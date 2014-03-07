@@ -63,8 +63,7 @@ public class StatCollector {
 		// You can add additional measures.
 		
 		public String toString(){
-			return "[통계결과]\n" +
-					from.toString() + " ~ " + until.toString() + "\n" +
+			return from.toString() + "\n ~ " + until.toString() + "\n" +
 					"uBhv count: " + total_count + "\n" +
 					"Hit ratio: " + hit_ratio + " %\n" +
 					"Use ratio: " + click_ratio + " %\n"; 
