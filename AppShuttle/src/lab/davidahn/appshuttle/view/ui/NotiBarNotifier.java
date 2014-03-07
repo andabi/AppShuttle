@@ -92,6 +92,7 @@ public class NotiBarNotifier {
 				.setSmallIcon(R.drawable.appshuttle)
 				.setContent(notiView)
 				.setOngoing(true)
+//				.setAutoCancel(true) //close notification panel (method 1)
 				.setPriority((AppShuttlePreferences.isSystemAreaIconHidden()) ? Notification.PRIORITY_MIN : Notification.PRIORITY_MAX)
 				.build();
 		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
@@ -105,7 +106,8 @@ public class NotiBarNotifier {
 		notiRemoteView.removeAllViews(R.id.noti_present_container);
 		
 		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
-
+//		notiRemoteView.setOnClickPendingIntent(R.id.noti_icon, PendingIntent.getActivity(cxt, 0, new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS), 0));
+		
 		if(viewableUserBhvList.isEmpty()){
 			RemoteViews noResultRemoteView = new RemoteViews(cxt.getPackageName(), R.layout.notibar_no_result);
 			notiRemoteView.addView(R.id.noti_present_container, noResultRemoteView);

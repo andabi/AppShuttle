@@ -71,6 +71,17 @@ public class AppShuttleMainActivity extends Activity {
 		Intent launchIntent = uBhv.getLaunchIntent();
 		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
 		this.startActivity(launchIntent);
+		
+		//close notification panel (method 2)
+		sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+		
+		//close notification panel (method 3)
+//		Object sbservice = c.getSystemService( "statusbar" );
+//      Class<?> statusbarManager = Class.forName( "android.app.StatusBarManager" );
+//      Method hidesb = statusbarManager.getMethod( "collapse" );
+//      hidesb.invoke( sbservice );
+		//nedded permission
+//		<uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
 	}
     
 	@Override
@@ -193,7 +204,7 @@ public class AppShuttleMainActivity extends Activity {
 			handleExecutionIntent(intent);
 		}
 	}
-		
+	
 	public static CharSequence getActionbarTitle(Context cxt, int position) {
 		String title;
 		switch(position){
@@ -397,3 +408,37 @@ public class AppShuttleMainActivity extends Activity {
 	    }
 	};
 }
+
+//@Override
+//public void onWindowFocusChanged(boolean hasFocus)
+//{
+//    try
+//    {
+//        if(!hasFocus)
+//        {
+//            Object service  = getSystemService("statusbar");
+//            Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+//            Method collapse = statusbarManager.getMethod("collapse");
+//            collapse .setAccessible(true);
+//            collapse .invoke(service);
+//        }
+//    }
+//    catch(Exception ex)
+//    {
+//        if(!hasFocus)
+//        {
+//            try {
+//                Object service  = getSystemService("statusbar");
+//                Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+//                Method collapse = statusbarManager.getMethod("collapse");
+//                collapse .setAccessible(true);
+//                collapse .invoke(service);
+//
+//            } catch (Exception e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();                
+//            }
+//            ex.printStackTrace();
+//        }
+//    }
+//}
