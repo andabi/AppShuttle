@@ -9,11 +9,11 @@
     <string name="report_failure_msg">전송 실패</string>
     <string name="predict_frequently_recent_msg">최근 자주 사용</string>
     <string name="predict_instantly_recent_msg">최근 사용</string>
-    <string name="predict_time_daily_msg">이 시간대에 주로 사용</string>
-    <string name="predict_time_daily_weekday_msg">평일 이 시간대에 주로 사용</string>
-    <string name="predict_time_daily_weekend_msg">주말 이 시간대에 주로 사용</string>
-    <string name="predict_place_msg">이 장소에서 주로 사용</string>
-    <string name="predict_loc_msg">지금 위치에서 주로 사용</string>
+    <string name="predict_time_daily_msg">이 시간대에 사용</string>
+    <string name="predict_time_daily_weekday_msg">평일 이 시간대에 사용</string>
+    <string name="predict_time_daily_weekend_msg">주말 이 시간대에 사용</string>
+    <string name="predict_place_msg">이 곳에서 사용</string>
+    <string name="predict_loc_msg">이 곳에서 사용</string>
     <string name="predict_move_msg">이동 중에 사용</string>
 	<string name="predict_headset_msg">이어폰 쓸때 사용</string>
     <string name="predict_notibar_msg_sensor_wifi">Wi-Fi</string>
