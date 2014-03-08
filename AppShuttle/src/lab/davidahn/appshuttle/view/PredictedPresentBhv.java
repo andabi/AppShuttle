@@ -15,6 +15,8 @@ import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class PredictedPresentBhv extends PresentBhv implements
 		Comparable<PredictedPresentBhv> {
+	public static List<PredictedPresentBhv> predictedPresentBhvList = new ArrayList<PredictedPresentBhv>();
+	
 	private EnumMap<MatcherType, PredictedBhv> predictedBhvByMatcherType;
 
 	public PredictedPresentBhv(UserBhv uBhv) {
@@ -87,7 +89,7 @@ public class PredictedPresentBhv extends PresentBhv implements
 				predictedBhvByMatcherType.toString());
 		return msg.toString();
 	}
-
+	
 	public static PredictedPresentBhv getPredictedPresentBhv(UserBhv bhv) {
 		return AppShuttleApplication.predictedPresentBhvMap.get(bhv);
 	}
@@ -97,10 +99,6 @@ public class PredictedPresentBhv extends PresentBhv implements
 				AppShuttleApplication.predictedPresentBhvMap.values());
 	}
 
-	public static void updatePredictedPresentBhv(PredictedPresentBhv bhv) {
-		AppShuttleApplication.predictedPresentBhvMap.put(bhv.getUserBhv(), bhv);
-	}
-
 	public static void updatePredictedPresentBhvList(
 			List<PredictedPresentBhv> list) {
 		Map<UserBhv, PredictedPresentBhv> map = new HashMap<UserBhv, PredictedPresentBhv>();
@@ -108,18 +106,21 @@ public class PredictedPresentBhv extends PresentBhv implements
 			map.put(bhv.getUserBhv(), bhv);
 		AppShuttleApplication.predictedPresentBhvMap = map;
 	}
+	
+//	public static void updatePredictedPresentBhv(PredictedPresentBhv bhv) {
+//		AppShuttleApplication.predictedPresentBhvMap.put(bhv.getUserBhv(), bhv);
+//	}
 
 	public static List<PredictedPresentBhv> getPredictedPresentBhvListSorted() {
-		List<PredictedPresentBhv> predictedPresentBhvList = extractPredictedPresentBhvList();
 		Collections.sort(predictedPresentBhvList, Collections.reverseOrder());
 		return predictedPresentBhvList;
 	}
 
-	public static List<PredictedPresentBhv> extractPredictedPresentBhvList() {
+	public static void extractPredictedPresentBhvList() {
 		if (PredictedBhv.getRecentPredictedBhvList().isEmpty())
-			return Collections.emptyList();
+			return ;
 
-		List<PredictedPresentBhv> res = new ArrayList<PredictedPresentBhv>();
+		List<PredictedPresentBhv> extractedBhvList = new ArrayList<PredictedPresentBhv>();
 		for (PredictedBhv predictedBhv : PredictedBhv.getRecentPredictedBhvList()) {
 			PredictedPresentBhv presentBhv = getPredictedPresentBhv(predictedBhv);
 			if (presentBhv == null) {
@@ -140,8 +141,8 @@ public class PredictedPresentBhv extends PresentBhv implements
 					}
 				}
 			}
-			res.add(presentBhv);
+			extractedBhvList.add(presentBhv);
 		}
-		return res;
+		predictedPresentBhvList = extractedBhvList;
 	}
 }

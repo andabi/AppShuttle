@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.predict;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.view.PredictedPresentBhv;
 import lab.davidahn.appshuttle.view.ViewService;
 import lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity;
 import android.app.IntentService;
@@ -26,6 +27,7 @@ public class PredictionService extends IntentService {
 //		Log.d("prediction", "started");
 		sendBroadcast(new Intent().setAction(AppShuttleMainActivity.PROGRESS_VISIBILITY).putExtra("isOn", true));
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
+		PredictedPresentBhv.extractPredictedPresentBhvList();
 		startService(new Intent(this, ViewService.class));
 		sendBroadcast(new Intent().setAction(AppShuttleMainActivity.PROGRESS_VISIBILITY).putExtra("isOn", false));
 	}

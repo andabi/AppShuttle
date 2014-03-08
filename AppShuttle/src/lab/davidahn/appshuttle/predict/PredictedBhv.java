@@ -103,24 +103,24 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 		return msg.toString();
 	}
 
-	public static List<PredictedBhv> getRecentPredictedBhvList() {
+	public static synchronized List<PredictedBhv> getRecentPredictedBhvList() {
 		return new ArrayList<PredictedBhv>(AppShuttleApplication.predictedBhvMap.values());
 	}
 	
-	public static PredictedBhv getRecentPredictedBhv(UserBhv bhv) {
-		return AppShuttleApplication.predictedBhvMap.get(bhv);
-	}
-	
-	protected static void updatePredictedBhv(PredictedBhv bhv) {
-		AppShuttleApplication.predictedBhvMap.put(bhv.getUserBhv(), bhv);
-	}
-	
-	protected static void updatePredictedBhvList(List<PredictedBhv> list) {
+	protected static synchronized void updatePredictedBhvList(List<PredictedBhv> list) {
 		Map<UserBhv, PredictedBhv> map = new HashMap<UserBhv, PredictedBhv>();
 		for(PredictedBhv bhv : list)
 			map.put(bhv.getUserBhv(), bhv);
 		AppShuttleApplication.predictedBhvMap = map;
 	}
+	
+//	public static PredictedBhv getRecentPredictedBhv(UserBhv bhv) {
+//		return AppShuttleApplication.predictedBhvMap.get(bhv);
+//	}
+	
+//	protected static void updatePredictedBhv(PredictedBhv bhv) {
+//		AppShuttleApplication.predictedBhvMap.put(bhv.getUserBhv(), bhv);
+//	}
 
 	@Override
 	public UserBhvType getBhvType() {
