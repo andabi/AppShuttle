@@ -70,12 +70,12 @@ public class SnapshotUserCxt {
 		_userBhvs.clear();
 	}
 	
-	public UserBhv getTopUserBhv(){
-		if (_userBhvs.isEmpty())
-			return null;
-		
-		return _userBhvs.get(0);
-	}
+//	public UserBhv getTopUserBhv(){
+//		if (_userBhvs.isEmpty())
+//			return null;
+//		
+//		return _userBhvs.get(0);
+//	}
 	
 	@Override
 	public String toString(){

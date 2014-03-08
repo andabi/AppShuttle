@@ -8,7 +8,6 @@ import java.util.Map;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.report.StatCollector;
-
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,15 +34,8 @@ public class InfoFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		infoList = new ArrayList<Map<String,String>>();
-		
-		// Context info
 		infoList.add(getContextInfo());
-		
-		// Stat info
-		Map<String, String> keyValueStat = new HashMap<String, String>();
-		keyValueStat.put(INFO_KEY, "Statistics");
-		keyValueStat.put(INFO_VALUE, StatCollector.getInstance().toString());
-		infoList.add(keyValueStat);
+		infoList.add(getStatisticsInfo());
 		
 		adapter = new SimpleAdapter(getActivity(), infoList, android.R.layout.simple_list_item_2,
 				new String[]{INFO_KEY, INFO_VALUE},
@@ -56,6 +48,13 @@ public class InfoFragment extends ListFragment {
 		SnapshotUserCxt cxt = AppShuttleApplication.currUserCxt;
 		keyValue.put(INFO_KEY, "Context");
 		keyValue.put(INFO_VALUE, cxt.toString());
+		return keyValue;
+	}
+	
+	private Map<String, String> getStatisticsInfo(){
+		Map<String, String> keyValue = new HashMap<String, String>();
+		keyValue.put(INFO_KEY, "Statistics");
+		keyValue.put(INFO_VALUE, StatCollector.getInstance().toString());
 		return keyValue;
 	}
 }

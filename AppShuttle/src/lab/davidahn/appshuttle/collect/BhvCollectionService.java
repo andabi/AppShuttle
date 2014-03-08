@@ -2,7 +2,9 @@ package lab.davidahn.appshuttle.collect;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -16,6 +18,7 @@ import lab.davidahn.appshuttle.collect.bhv.SensorOnCollector;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.report.StatCollector;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,17 +46,26 @@ public class BhvCollectionService extends Service {
     @Override
 	public int onStartCommand(Intent intent, int flags, int startId){
 		super.onStartCommand(intent, flags, startId);
-		
 		Log.d("BhvCollectionService", "started.");
-		
 		senseTime();
 		senseBhvs();
 		extractAndStoreSnapshotAppUserBhvAsDurationUserBhv();
 		extractAndStoreDurationUserBhv();
+		catchNewAppBhvForStatistics();
 		updateCxt(AppShuttleApplication.currUserCxt);
 		return START_NOT_STICKY;
 	}
 	
+	private void catchNewAppBhvForStatistics() {
+		Set<UserBhv> prevBhvs = new HashSet<UserBhv>(AppShuttleApplication.currUserCxt.getUserBhvs());
+		Set<UserBhv> newBhvs = new HashSet<UserBhv>(collectedBhvs);
+		newBhvs.removeAll(prevBhvs);
+		for(UserBhv bhv : newBhvs) {
+//			Log.i("statistics", "uBhv changed (" + bhv.getBhvName() + ")");
+			StatCollector.getInstance().notifyBhvTransition(bhv, false);
+		}
+	}
+
 	@Override
 	public IBinder onBind(Intent intent){
 		return null;
