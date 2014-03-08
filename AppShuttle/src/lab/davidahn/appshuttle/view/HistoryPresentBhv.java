@@ -67,10 +67,10 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 	public static List<HistoryPresentBhv> extractHistoryPresentBhvList() {
 		List<HistoryPresentBhv> res = new ArrayList<HistoryPresentBhv>();
 		for (UserBhv bhv : PredictedPresentBhv.getPredictedPresentBhvList()) {
-			if (PredictedBhv.getRecentPredictedBhvList().contains(bhv))
+			if (PredictedBhv.getPredictedBhvList().contains(bhv))
 				continue;
 			HistoryPresentBhv hisPresentBhv = new HistoryPresentBhv(bhv);
-			PredictedBhv predictedBhv = PredictedPresentBhv.getPredictedPresentBhv(bhv).getRecentOfPredictedBhv();
+			PredictedBhv predictedBhv = PredictedPresentBhv.getPredictedPresentBhv(bhv).getRecentPredictedBhv();
 			hisPresentBhv.setRecentPredictionTime(predictedBhv.getTime());
 			hisPresentBhv.setRecentPredictionScore(predictedBhv.getScore());
 			res.add(hisPresentBhv);

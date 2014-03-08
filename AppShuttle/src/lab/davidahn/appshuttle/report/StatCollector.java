@@ -302,7 +302,7 @@ public class StatCollector {
 						break;
 					case PREDICTED:
 						PredictedPresentBhv p = (PredictedPresentBhv)uBhvPredicted;
-						List<MatcherType> matcherList = p.getMatcherList();
+						List<MatcherType> matcherList = p.getMatchers();
 						List<String> matcherStrList = new ArrayList<String>();
 						
 						for (MatcherType m: matcherList)

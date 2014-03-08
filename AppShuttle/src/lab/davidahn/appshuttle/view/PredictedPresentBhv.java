@@ -17,11 +17,11 @@ public class PredictedPresentBhv extends PresentBhv implements
 		Comparable<PredictedPresentBhv> {
 	public static List<PredictedPresentBhv> predictedPresentBhvList = new ArrayList<PredictedPresentBhv>();
 	
-	private EnumMap<MatcherType, PredictedBhv> predictedBhvByMatcherType;
+	private EnumMap<MatcherType, PredictedBhv> matchersWithPredictionInfos;
 
 	public PredictedPresentBhv(UserBhv uBhv) {
 		super(uBhv);
-		predictedBhvByMatcherType = new EnumMap<MatcherType, PredictedBhv>(
+		matchersWithPredictionInfos = new EnumMap<MatcherType, PredictedBhv>(
 				MatcherType.class);
 	}
 
@@ -30,55 +30,48 @@ public class PredictedPresentBhv extends PresentBhv implements
 		return PresentBhvType.PREDICTED;
 	}
 
-	public EnumMap<MatcherType, PredictedBhv> getPredictedBhv() {
-		return predictedBhvByMatcherType;
-	}
-
-	public void setPredictedBhv(
-			EnumMap<MatcherType, PredictedBhv> _predictedBhvByMatcherType) {
-		predictedBhvByMatcherType = _predictedBhvByMatcherType;
-	}
-
-	public PredictedBhv getPredictedBhvByMatcherType(MatcherType matcherType) {
-		return predictedBhvByMatcherType.get(matcherType);
-	}
-
-	public void setPredictedBhvByMatcherType(MatcherType matcherType,
-			PredictedBhv predictedBhv) {
-		predictedBhvByMatcherType.put(matcherType, predictedBhv);
-	}
-
-	public PredictedBhv getRecentOfPredictedBhv() {
-		if (predictedBhvByMatcherType.isEmpty())
-			return null;
-		return Collections.max(predictedBhvByMatcherType.values());
+	public EnumMap<MatcherType, PredictedBhv> getMatchersWithPredictionInfos() {
+		return matchersWithPredictionInfos;
 	}
 	
-	/**
-	 * Always returns a list (possible to be an empty list)
-	 * @return
-	 */
-	public List<MatcherType> getMatcherList(){
-		Set<MatcherType> matcherSet = predictedBhvByMatcherType.keySet();
+	public void setMatchersWithPredictionInfos(
+			EnumMap<MatcherType, PredictedBhv> _predictedBhvByMatcherType) {
+		matchersWithPredictionInfos = _predictedBhvByMatcherType;
+	}
+	
+	public List<MatcherType> getMatchers(){
+		Set<MatcherType> matcherSet = matchersWithPredictionInfos.keySet();
 		return new ArrayList<MatcherType>(matcherSet);
+	}
+	
+	public PredictedBhv getPredictionInfos(MatcherType matcherType) {
+		return matchersWithPredictionInfos.get(matcherType);
+	}
+
+	public void setPredictionInfos(MatcherType matcherType,
+			PredictedBhv predictedBhv) {
+		matchersWithPredictionInfos.put(matcherType, predictedBhv);
+	}
+
+	public PredictedBhv getRecentPredictedBhv() {
+		if (matchersWithPredictionInfos.isEmpty())
+			return null;
+		return Collections.max(matchersWithPredictionInfos.values());
 	}
 
 	@Override
 	public int compareTo(PredictedPresentBhv _uBhv) {
-		long recentPredictedBhvTime = getRecentOfPredictedBhv().getTime();
-		long _recentPredictedBhvTime = _uBhv.getRecentOfPredictedBhv()
+		long recentPredictedBhvTime = getRecentPredictedBhv().getTime();
+		long _recentPredictedBhvTime = _uBhv.getRecentPredictedBhv()
 				.getTime();
 		if(recentPredictedBhvTime > _recentPredictedBhvTime) return 1;
 		else if(recentPredictedBhvTime < _recentPredictedBhvTime) return -1;
 		else {
-			double score = getRecentOfPredictedBhv().getScore();
-			double _score = _uBhv.getRecentOfPredictedBhv().getScore();
-			if (score > _score)
-				return 1;
-			else if (score == _score)
-				return 0;
-			else
-				return -1;
+			double score = getRecentPredictedBhv().getScore();
+			double _score = _uBhv.getRecentPredictedBhv().getScore();
+			if (score > _score) return 1;
+			else if (score == _score) return 0;
+			else return -1;
 		}
 	}
 
@@ -86,7 +79,7 @@ public class PredictedPresentBhv extends PresentBhv implements
 	public String toString() {
 		StringBuffer msg = new StringBuffer();
 		msg.append("PredictedBhvByMatcherType: ").append(
-				predictedBhvByMatcherType.toString());
+				matchersWithPredictionInfos.toString());
 		return msg.toString();
 	}
 	
@@ -95,12 +88,10 @@ public class PredictedPresentBhv extends PresentBhv implements
 	}
 
 	public static List<PredictedPresentBhv> getPredictedPresentBhvList() {
-		return new ArrayList<PredictedPresentBhv>(
-				AppShuttleApplication.predictedPresentBhvMap.values());
+		return new ArrayList<PredictedPresentBhv>(AppShuttleApplication.predictedPresentBhvMap.values());
 	}
 
-	public static void updatePredictedPresentBhvList(
-			List<PredictedPresentBhv> list) {
+	public static void updatePredictedPresentBhvList(List<PredictedPresentBhv> list) {
 		Map<UserBhv, PredictedPresentBhv> map = new HashMap<UserBhv, PredictedPresentBhv>();
 		for (PredictedPresentBhv bhv : list)
 			map.put(bhv.getUserBhv(), bhv);
@@ -117,32 +108,35 @@ public class PredictedPresentBhv extends PresentBhv implements
 	}
 
 	public static void extractPredictedPresentBhvList() {
-		if (PredictedBhv.getRecentPredictedBhvList().isEmpty())
+		if (PredictedBhv.getPredictedBhvList().isEmpty())
 			return ;
 
-		List<PredictedPresentBhv> extractedBhvList = new ArrayList<PredictedPresentBhv>();
-		for (PredictedBhv predictedBhv : PredictedBhv.getRecentPredictedBhvList()) {
-			PredictedPresentBhv presentBhv = getPredictedPresentBhv(predictedBhv);
-			if (presentBhv == null) {
-				presentBhv = new PredictedPresentBhv(predictedBhv);
-				for (MatcherType matcherType : predictedBhv.getAllMatcherWithResult().keySet())
-					presentBhv.setPredictedBhvByMatcherType(matcherType,
+		List<PredictedPresentBhv> extractedPredictedPresentBhvList = new ArrayList<PredictedPresentBhv>();
+		for (PredictedBhv predictedBhv : PredictedBhv.getPredictedBhvList()) {
+			PredictedPresentBhv currPresentBhv = new PredictedPresentBhv(predictedBhv);
+			PredictedPresentBhv prevPresentBhv = getPredictedPresentBhv(predictedBhv);
+			for (MatcherType matcherType : predictedBhv.getAllMatcherWithResult().keySet()) {
+				if (prevPresentBhv == null) {
+					currPresentBhv.setPredictionInfos(matcherType,
 							predictedBhv);
-			} else {
-				for (MatcherType matcherType : predictedBhv.getAllMatcherWithResult().keySet()) {
-					PredictedBhv oldPredictedBhv = presentBhv
-							.getPredictedBhvByMatcherType(matcherType);
-					if (oldPredictedBhv == null) {
-						presentBhv.setPredictedBhvByMatcherType(matcherType, predictedBhv);
+				} else {
+					PredictedBhv prevPredictedBhv = prevPresentBhv
+							.getPredictionInfos(matcherType);
+					if (prevPredictedBhv == null) {
+						currPresentBhv.setPredictionInfos(matcherType, predictedBhv);
 					} else {
 						if (matcherType.isOverwritableForNewPrediction)
-							presentBhv.setPredictedBhvByMatcherType(
+							currPresentBhv.setPredictionInfos(
 									matcherType, predictedBhv);
+						else {
+							currPresentBhv.setPredictionInfos(
+									matcherType, prevPredictedBhv);
+						}
 					}
 				}
 			}
-			extractedBhvList.add(presentBhv);
+			extractedPredictedPresentBhvList.add(currPresentBhv);
 		}
-		predictedPresentBhvList = extractedBhvList;
+		predictedPresentBhvList = extractedPredictedPresentBhvList;
 	}
 }

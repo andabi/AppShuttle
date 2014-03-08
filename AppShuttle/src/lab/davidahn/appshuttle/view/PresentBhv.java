@@ -41,22 +41,12 @@ public abstract class PresentBhv extends ViewableUserBhv {
 	public String getViewMsg() {
 		StringBuffer msg = new StringBuffer();
 		viewMsg = msg.toString();
-		PredictedPresentBhv recentPresentBhv = PredictedPresentBhv.getPredictedPresentBhv(uBhv);
+		PredictedBhv predictedBhv = PredictedBhv.getPredictedBhv(uBhv);
 		
-		if(recentPresentBhv == null)
+		if(predictedBhv == null)
 			return viewMsg;
 
-		PredictedBhv predictionInfo = recentPresentBhv.getRecentOfPredictedBhv();
-		
-//		if(uBhv.getBhvName().equals("com.android.chrome")){
-//			Log.d("test", recentPresentBhv.hashCode() + "");
-//			Log.d("test", predictionInfo.getMatcherResultMap().keySet() + "");
-//		}
-		
-		if(predictionInfo == null)
-			return viewMsg;
-		
-		Map<MatcherType, MatcherResultElem> macherResults = predictionInfo.getMatcherResultMap();
+		Map<MatcherType, MatcherResultElem> macherResults = predictedBhv.getMatcherResultMap();
 		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(macherResults.keySet());
 		Collections.sort(matcherTypeList, new MatcherTypeComparator());
 		Collections.reverse(matcherTypeList);
