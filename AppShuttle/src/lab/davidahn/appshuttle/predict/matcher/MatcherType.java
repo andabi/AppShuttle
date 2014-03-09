@@ -10,14 +10,14 @@ public enum MatcherType {
 		INSTANTALY_RECENT(1, R.string.predict_instantly_recent_msg, true),
 		
 	//location
-	POSITION(0, 0, false),
+	POSITION(10, 0, false),
 		PLACE(10, R.string.predict_place_msg, false),
 		LOCATION(11, R.string.predict_loc_msg, false),
 		MOVE(12, R.string.predict_move_msg, false),
 	//	UNFAMILIER_PLACE
 
 	//time
-	TIME(0, 0, false),
+	TIME(20, 0, false),
 		TIME_DAILY_WEEKDAY(20, R.string.predict_time_daily_weekday_msg, false),
 		TIME_DAILY_WEEKEND(20, R.string.predict_time_daily_weekend_msg, false),
 		TIME_DAILY(21, R.string.predict_time_daily_msg, false),
