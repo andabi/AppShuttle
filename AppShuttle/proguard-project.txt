@@ -13,7 +13,7 @@
 # Add any project specific keep options here:
 ## For classes referenced in xml
 -keepattributes InnerClasses
--keep public class lab.davidahn.appshuttle.view.AppShuttleMainActivity$* { *; }
+-keep public class lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity$* { *; }
 
 ## For gson
 -keepattributes Signature
@@ -51,6 +51,7 @@
 -libraryjars libs/android-support-v13.jar
 -libraryjars libs/bugsense-3.6.jar
 -libraryjars libs/commons-math3-3.0.jar
+-libraryjars libs/google-analytics-services.jar
 -libraryjars libs/gson-2.2.4.jar
 -libraryjars libs/mail.jar
 
