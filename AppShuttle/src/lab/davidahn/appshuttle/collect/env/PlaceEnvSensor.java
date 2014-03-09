@@ -178,7 +178,7 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 //}
 
 //StringTokenizer st = new StringTokenizer(addressLine);
-//int numWord = preferenceSettings.getInt("collection.place.num_address_prefix_words", 3);
+//int numWord = preferenceSettings.getInt("collection.env.place.num_address_prefix_words", 3);
 
 //while(st.hasMoreTokens() && numWord-- > 0){
 //	sb.append(st.nextToken()).append(" ");

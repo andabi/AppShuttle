@@ -67,7 +67,7 @@ public class UserPlace extends UserEnv {
 		}
 		
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		int numPrefix = pref.getInt("collection.place.num_address_prefix_words", 6);
+		int numPrefix = pref.getInt("collection.env.place.num_address_prefix_words", 6);
 		
 		String[] addrs = name.split(" ");
 		String[] userAddrs = ((UserPlace)o).name.split(" ");

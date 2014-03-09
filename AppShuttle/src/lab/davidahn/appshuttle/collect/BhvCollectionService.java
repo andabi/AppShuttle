@@ -38,7 +38,7 @@ public class BhvCollectionService extends Service {
 		collectedBhvs = new ArrayList<UserBhv>();
 		registerCollectors();
 		if(!isDonePreCollection()){
-			preCollectCollectDurationUserBhv();
+			preCollectDurationUserBhv();
 			setDonePreCollection();
 		}
 	}
@@ -128,7 +128,7 @@ public class BhvCollectionService extends Service {
 		}
 	}
 
-	private void preCollectCollectDurationUserBhv() {
+	private void preCollectDurationUserBhv() {
 		senseTime();
 		for(BhvCollector collector : collectors){
 			List<DurationUserBhv> preExtractedDurationUserBhvList = 
@@ -140,14 +140,14 @@ public class BhvCollectionService extends Service {
 
 	private boolean isDonePreCollection() {
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		boolean isDone = pref.getBoolean("collection.pre.done", false);
+		boolean isDone = pref.getBoolean("collection.bhv.pre.done", false);
 		return isDone;
 	}
 
 	private void setDonePreCollection(){
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
 		SharedPreferences.Editor editor = pref.edit();
-		editor.putBoolean("collection.pre.done", true);
+		editor.putBoolean("collection.bhv.pre.done", true);
 		editor.commit();
 	}
 

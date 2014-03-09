@@ -46,7 +46,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 			return Collections.emptyList();
 		
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		long depreciation = preferenceSettings.getLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3);
+		long depreciation = preferenceSettings.getLong("collection.bhv.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
 		for(int i=0;i<recentApps.size();i++){
 			long time = currTime - i * depreciation;
 			res.add(new DurationUserBhv.Builder()

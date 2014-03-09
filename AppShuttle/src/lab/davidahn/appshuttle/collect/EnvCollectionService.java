@@ -35,7 +35,7 @@ public class EnvCollectionService extends Service {
 		sensedEnvs = new HashMap<EnvType, UserEnv>();
 		registerSensors();
 		if(!isDonePreCollection()){
-			preCollectCollectDurationUserEnv();
+			preCollectDurationUserEnv();
 			setDonePreCollection();
 		}
 	}
@@ -100,7 +100,7 @@ public class EnvCollectionService extends Service {
 		durationUserEnvManager.store(durationUserEnv);
 	}
 
-	private void preCollectCollectDurationUserEnv() {
+	private void preCollectDurationUserEnv() {
 		senseTime();
 		for(EnvSensor sensor : sensors.values()){
 			List<DurationUserEnv> preExtractedDurationUserEnvList = sensor.preExtractDurationUserEnv(currTime, currTimeZone);
@@ -112,14 +112,14 @@ public class EnvCollectionService extends Service {
 
 	private boolean isDonePreCollection() {
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
-		boolean isDone = pref.getBoolean("collection.pre.done", false);
+		boolean isDone = pref.getBoolean("collection.env.pre.done", false);
 		return isDone;
 	}
 
 	private void setDonePreCollection(){
 		SharedPreferences pref = AppShuttleApplication.getContext().getPreferences();
 		SharedPreferences.Editor editor = pref.edit();
-		editor.putBoolean("collection.pre.done", true);
+		editor.putBoolean("collection.env.pre.done", true);
 		editor.commit();
 	}
 

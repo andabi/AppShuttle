@@ -94,8 +94,8 @@ public class LocEnvSensor extends BaseEnvSensor {
 			return;
 		
 		locationManager.requestLocationUpdates(bestProvider, 
-				preferenceSettings.getLong("collection.location.tolerance.time", 300000), 
-				preferenceSettings.getInt("collection.location.tolerance.distance", 500), 
+				preferenceSettings.getLong("collection.env.location.tolerance.time", 300000), 
+				preferenceSettings.getInt("collection.env.location.tolerance.distance", 500), 
 				locationListener);
 	}
 

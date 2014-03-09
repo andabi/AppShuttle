@@ -13,23 +13,21 @@ public class AppShuttlePreferences {
 		editor.putString("database.name", "AppShuttle.db");
 
 		//collection
-		editor.putBoolean("collection.bhv.enabled", true);
-		editor.putLong("collection.bhv.period", 15000);
+		editor.putLong("collection.common.auto_extraction_duration", AlarmManager.INTERVAL_HOUR);
+		editor.putBoolean("collection.store_snapshot_cxt.enabled", false);
+
 		editor.putBoolean("collection.env.enabled", true);
 		editor.putLong("collection.env.period", 60000);
-		
-		editor.putLong("collection.common.auto_extraction_duration", AlarmManager.INTERVAL_HOUR);
-		
-		editor.putLong("collection.location.tolerance.time", 25000);
-		editor.putInt("collection.location.tolerance.distance", 500);
-		editor.putInt("collection.place.num_address_prefix_words", 6);
-		editor.putLong("collection.headset.auto_extraction_duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES);
-		
-		editor.putLong("collection.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
-		editor.putLong("collection.call.pre.period", 6 * AlarmManager.INTERVAL_DAY);
-		
-		editor.putBoolean("collection.store_snapshot_cxt.enabled", false);
-		
+		editor.putLong("collection.env.location.tolerance.time", 25000);
+		editor.putInt("collection.env.location.tolerance.distance", 500);
+		editor.putInt("collection.env.place.num_address_prefix_words", 6);
+		editor.putLong("collection.env.place.auto_extraction_duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES);
+
+		editor.putBoolean("collection.bhv.enabled", true);
+		editor.putLong("collection.bhv.period", 15000);
+		editor.putLong("collection.bhv.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
+		editor.putLong("collection.bhv.call.pre.period", 6 * AlarmManager.INTERVAL_DAY);
+
 		//compaction
 		editor.putBoolean("compaction.enabled", true);
 		editor.putLong("compaction.period", AlarmManager.INTERVAL_DAY);
