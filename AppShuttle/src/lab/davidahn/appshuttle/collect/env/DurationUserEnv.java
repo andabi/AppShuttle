@@ -7,7 +7,6 @@ public class DurationUserEnv {
 	private long _duration;
 	private long _endTime;
 	private TimeZone _timeZone;
-	private EnvType _envType;
 	private UserEnv _uEnv;
 
 	public DurationUserEnv(Builder builder) {
@@ -15,7 +14,6 @@ public class DurationUserEnv {
 		_endTime = builder._endTime;
 		_timeZone = builder._timeZone;
 		_uEnv = builder._uEnv;
-		_envType = builder._envType;
 		updateDuration();
 	}
 	
@@ -45,12 +43,6 @@ public class DurationUserEnv {
 	public void setTimeZone(TimeZone timezone) {
 		_timeZone = timezone;
 	}
-	public EnvType getEnvType() {
-		return _envType;
-	}
-	public void setEnvType(EnvType envType) {
-		_envType = envType;
-	}
 	public UserEnv getUserEnv() {
 		return _uEnv;
 	}
@@ -69,7 +61,6 @@ public class DurationUserEnv {
 		msg.append("duration: ").append(_duration).append(", ");
 		msg.append("endTime: ").append(_endTime).append(", ");
 		msg.append("timezone: ").append(_timeZone.getID()).append(", ");
-		msg.append("envType: ").append(_envType.toString()).append(", ");
 		msg.append("userEnv: ").append(_uEnv.toString());
 		return msg.toString();
 	}
@@ -78,7 +69,7 @@ public class DurationUserEnv {
 		if((o instanceof DurationUserEnv) 
 				&& _time == ((DurationUserEnv)o)._time
 				&& _timeZone.equals(((DurationUserEnv)o)._timeZone)
-				&& _envType.equals(((DurationUserEnv)o)._envType))
+				&& _uEnv.getEnvType().equals(((DurationUserEnv)o)._uEnv.getEnvType()))
 			return true;
 		else
 			return false;
@@ -86,14 +77,13 @@ public class DurationUserEnv {
 	
 	@Override
 	public int hashCode(){
-		return Long.valueOf(_time).hashCode() ^ _timeZone.hashCode() ^ _envType.hashCode();
+		return Long.valueOf(_time).hashCode() ^ _timeZone.hashCode() ^ _uEnv.getEnvType().hashCode();
 	}
 	
 	public static class Builder{
 		private long _time = 0;
 		private long _endTime = 0;
 		private TimeZone _timeZone = null;
-		private EnvType _envType;
 		private UserEnv _uEnv = null;
 		
 		public Builder(){}
@@ -112,10 +102,6 @@ public class DurationUserEnv {
 		}
 		public Builder setTimeZone(TimeZone timeZone){
 			_timeZone = timeZone;
-			return this;
-		}
-		public Builder setEnvType(EnvType envType){
-			_envType = envType;
 			return this;
 		}
 		public Builder setUserEnv(UserEnv userEnv){

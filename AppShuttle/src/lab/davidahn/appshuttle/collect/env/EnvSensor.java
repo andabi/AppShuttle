@@ -5,7 +5,7 @@ import java.util.TimeZone;
 
 
 public interface EnvSensor {
-	public UserEnv sense(long currTime, TimeZone currTimeZone);	
+	public UserEnv senseAndGet(long currTime, TimeZone currTimeZone);	
 	public boolean isChanged();
 	public List<DurationUserEnv> preExtractDurationUserEnv(long currTime, TimeZone currTimeZone);
 	public DurationUserEnv extractDurationUserEnv(long currTime, TimeZone currTimeZone, UserEnv uEnv);

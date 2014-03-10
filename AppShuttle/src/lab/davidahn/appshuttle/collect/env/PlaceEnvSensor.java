@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.collect.env;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -10,15 +9,12 @@ import android.location.Geocoder;
 import android.util.Log;
 
 public class PlaceEnvSensor extends BaseEnvSensor {
-	private UserPlace prevUPlace;
-	private UserPlace currUPlace;
-    private DurationUserEnv.Builder durationUserEnvBuilder;
-	
-    private static PlaceEnvSensor placeEnvSensor = new PlaceEnvSensor();
+
+	private static PlaceEnvSensor placeEnvSensor = new PlaceEnvSensor();
 
     private PlaceEnvSensor(){
     	super();
-		prevUPlace = currUPlace = InvalidUserPlace.getInstance();
+		prevEnv = currEnv = InvalidUserPlace.getInstance();
 	}
 	
 	public static PlaceEnvSensor getInstance(){
@@ -27,21 +23,17 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public UserPlace sense(long currTime, TimeZone currTimeZone){
-		prevUPlace = currUPlace;
+		UserPlace place = InvalidUserPlace.getInstance();
 		
 		LocEnvSensor locEnvSensor = LocEnvSensor.getInstance();
-		UserLoc currLoc = locEnvSensor.getCurrULoc();
+		UserLoc currLoc = (UserLoc)locEnvSensor.getCurrEnv();
+		if(!currLoc.isValid())
+			return place;
 		
-		currUPlace = InvalidUserPlace.getInstance();
-		
-		if(!currLoc.isValid()) {
-			return currUPlace;
-		}
-		
-		if(!locEnvSensor.isChanged() && prevUPlace.isValid()){
-			currUPlace = prevUPlace;
-			Log.d("place", "(continue) "+currUPlace.toString());
-			return currUPlace;
+		if(!locEnvSensor.isChanged() && prevEnv.isValid()){
+			place = (UserPlace)prevEnv;
+			Log.d("place", "(continue) " + place.toString());
+			return place;
 		}
 		
 		double currLocLatitude, currLocLongitude;
@@ -56,16 +48,16 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 	    	Geocoder geocoder = new Geocoder(cxt);
     		List<Address> geocoded = geocoder.getFromLocation(currLocLatitude, currLocLongitude, 1);
 			if(geocoded == null || geocoded.isEmpty()) {
-				Log.d("place", "(geocode = null) "+currUPlace.toString());
-				return currUPlace;
+				Log.d("place", "(geocode = null) " + place.toString());
+				return place;
 			}
 		
 			Address addr = geocoded.get(0);
 			String addressLine = addr.getAddressLine(0);
 			
 			if(addressLine == null) {
-				Log.d("place", "(addressLine = null) "+currUPlace.toString());
-				return currUPlace;
+				Log.d("place", "(addressLine = null) " + place.toString());
+				return place;
 			}
 
 			//TODO
@@ -89,93 +81,19 @@ public class PlaceEnvSensor extends BaseEnvSensor {
 				sb.append(" ").append(thoroughfare);
 			if(subThoroughfare != null)
 				sb.append(" ").append(subThoroughfare);
-			
 			String placeName = sb.toString();
 
 			UserLoc coordinates = InvalidUserLoc.getInstance();
 			if(addr.hasLongitude() && addr.hasLatitude())
 				coordinates = UserLoc.create(addr.getLatitude(), addr.getLongitude());
-
-			currUPlace = UserPlace.create(placeName, coordinates);
-			
-			Log.i("place", currUPlace.toString());
-			
-			return currUPlace;
+			place = UserPlace.create(placeName, coordinates);
+			Log.i("place", place.toString());
 		} catch (IOException e) {
-			Log.d("place", "(Geocoder IOException) "+ currUPlace.toString());
-
-			return currUPlace;
+			Log.d("place", "(Geocoder IOException) "+ place.toString());
 		}
-	}
-	
-	@Override
-	public boolean isChanged(){
-		if(!currUPlace.equals(prevUPlace)) {
-//			Log.i("user env", "place moved");
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public List<DurationUserEnv> preExtractDurationUserEnv(long currTime, TimeZone currTimeZone) {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public DurationUserEnv extractDurationUserEnv(long currTime, TimeZone currTimeZone, UserEnv uEnv) {
-		DurationUserEnv res = null;
-		if(durationUserEnvBuilder == null) {
-			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone, uEnv);
-		} else {
-			if(isChanged()/* || LocEnvSensor.getInstance().isChanged()*/ || isAutoExtractionTime(currTime, currTimeZone)){
-				res = durationUserEnvBuilder.setEndTime(currTime).setTimeZone(currTimeZone).build();
-				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone, uEnv);
-			}
-		}
-		return res;
-	}
-	
-	@Override
-	public DurationUserEnv postExtractDurationUserEnv(long currTime, TimeZone currTimeZone) {
-		DurationUserEnv res = durationUserEnvBuilder.setEndTime(currTime).setTimeZone(currTimeZone).build();
-		durationUserEnvBuilder = null;
-		return res;
-	}
-	
-	private DurationUserEnv.Builder makeDurationUserEnvBuilder(long currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
-		return new DurationUserEnv.Builder()
-			.setTime(currTimeDate)
-			.setEndTime(currTimeDate)
-			.setTimeZone(currTimeZone)
-			.setEnvType(uEnv.getEnvType())
-			.setUserEnv(uEnv);
+		return place;
 	}
 }
-	
-//	public DurationUserEnv extractDurationUserEnv(SnapshotUserCxt uCxt) {
-//		DurationUserEnv res = null;
-//		if(durationUserEnvBuilder == null) {
-//			durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
-//		} else {
-//			if(isChanged()){
-//				durationUserEnvBuilder.setEndTime(uCxt.getTimeDate());
-//				res = durationUserEnvBuilder.build();
-//				durationUserEnvBuilder = makeDurationUserEnvBuilder(uCxt);
-//			}
-//		}
-//		return res;
-//	}
-//	
-//	private DurationUserEnv.Builder makeDurationUserEnvBuilder(SnapshotUserCxt uCxt) {
-//		return new DurationUserEnv.Builder()
-//			.setTime(uCxt.getTimeDate())
-//			.setEndTime(uCxt.getTimeDate())
-//			.setTimeZone(uCxt.getTimeZone())
-//			.setUserEnv(uCxt.getUserEnv(EnvType.PLACE));
-//	}
-//}
 
 //StringTokenizer st = new StringTokenizer(addressLine);
 //int numWord = preferenceSettings.getInt("collection.env.place.num_address_prefix_words", 3);
