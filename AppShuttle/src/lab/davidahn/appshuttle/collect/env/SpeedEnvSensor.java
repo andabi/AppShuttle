@@ -104,13 +104,15 @@ public class SpeedEnvSensor extends BaseEnvSensor {
 	
 	@Override
 	public boolean isAutoExtractionTime(long currTime, TimeZone currTimeZone){
-		long minAcceptableSpeedMph = 5000;
-		long minWaitingTime = preferenceSettings.getInt("collection.env.location.tolerance.distance", 500) * (1000 * 60 * 60 / minAcceptableSpeedMph);
-		long reasonableWaitingTime = (long)(1.5 * minWaitingTime);
+		long minAcceptableSpeedKmph = 5;
+		long minWaitingTime = (preferenceSettings.getInt("collection.env.location.tolerance.distance", 500) / 1000)
+				/ minAcceptableSpeedKmph
+				* (1000 * 60 * 60); //6min
+//		long reasonableWaitingTime = (long)(1.2 * minWaitingTime);
 
 		long lastSensedTime = durationUserEnvBuilder.getTime();
 		
-		if(currTime - lastSensedTime > reasonableWaitingTime) {
+		if(currTime - lastSensedTime > minWaitingTime) {
 //			Log.d("speed", "Auto extracted by exceeding reasonable waiting time");
 			return true;
 		}

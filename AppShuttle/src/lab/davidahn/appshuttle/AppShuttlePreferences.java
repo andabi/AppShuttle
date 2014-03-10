@@ -17,8 +17,8 @@ public class AppShuttlePreferences {
 		editor.putBoolean("collection.store_snapshot_cxt.enabled", false);
 
 		editor.putBoolean("collection.env.enabled", true);
-		editor.putLong("collection.env.period", 60000);
-		editor.putLong("collection.env.location.tolerance.time", 25000);
+		editor.putLong("collection.env.period", 300000);
+		editor.putLong("collection.env.location.tolerance.time", 60000);
 		editor.putInt("collection.env.location.tolerance.distance", 500);
 		editor.putInt("collection.env.place.num_address_prefix_words", 6);
 		editor.putLong("collection.env.place.auto_extraction_duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES);
@@ -40,7 +40,7 @@ public class AppShuttlePreferences {
 		
 		//predictor
 		editor.putBoolean("predictor.store", false);
-		editor.putLong("predictor.period", 120000);
+		editor.putLong("predictor.period", 180000);
 		editor.putLong("predictor.delay_ignorance", 60000);
 		
 		editor.putLong("matcher.recent.frequently.duration", AlarmManager.INTERVAL_DAY);
@@ -84,7 +84,7 @@ public class AppShuttlePreferences {
 		editor.putFloat("matcher.position.loc.min_likelihood", 0.5f);
 		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0.3f);
 		editor.putInt("matcher.position.loc.min_num_history", 3);
-		editor.putInt("matcher.position.loc.tolerance_in_meter", 50);
+		editor.putInt("matcher.position.loc.tolerance_in_meter", 100);
 		
 		editor.putLong("matcher.headset.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.headset.acceptance_delay", AlarmManager.INTERVAL_HOUR);
