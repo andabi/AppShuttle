@@ -102,6 +102,10 @@ public class BaseUserBhv implements UserBhv {
 		metas.put(key, val);
 	}
 
+	public boolean isValid() {
+		return true;
+	}
+
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append(bhvType.name()).append(": ").append(bhvName);
@@ -123,8 +127,5 @@ public class BaseUserBhv implements UserBhv {
 	public int hashCode(){
 		return bhvType.hashCode() ^ bhvName.hashCode();
 	}
-	
-	public boolean isValid() {
-		return true;
-	}
+
 }

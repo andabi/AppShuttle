@@ -26,7 +26,9 @@ public class AppBhvCollector extends BaseBhvCollector {
 	private KeyguardManager keyguardManager;
 
 	private static AppBhvCollector appBhvCollector = new AppBhvCollector();
-
+	private String recentRunningAppPackageName = "";
+//	private List<String> recentApps = new ArrayList<String>();
+	
 	private AppBhvCollector(){
 		super();
 		activityManager = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
@@ -41,7 +43,8 @@ public class AppBhvCollector extends BaseBhvCollector {
 	
 	@Override
 	public List<DurationUserBhv> preExtractDurationUserBhv(long currTime, TimeZone currTimeZone) {
-		List<String> recentApps = getRecentApp(Integer.MAX_VALUE, true);
+		List<String> recentApps = getRecentAppHistory(Integer.MAX_VALUE, true);
+		
 		if(recentApps.isEmpty())
 			return Collections.emptyList();
 		
@@ -56,6 +59,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 			.setTimeZone(currTimeZone)
 			.build());
 		}
+		
 		return res;
 	}
 	
@@ -63,22 +67,43 @@ public class AppBhvCollector extends BaseBhvCollector {
 		List<UserBhv> res = new ArrayList<UserBhv>();
 		res.addAll(collectActivityBhv());
 //		res.addAll(collectServiceBhv());
+
 		return res;
 	}
 	
 	private List<BaseUserBhv> collectActivityBhv() {
 		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		
+		//Currently running app
+		BaseUserBhv runningAppBhv;
 	    if (!powerManager.isScreenOn()) { //screen off
-	    	res.add(create(UserBhvType.NONE, "screen.off"));
+	    	runningAppBhv = create(UserBhvType.NONE, "screen.off");
         } else if (keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
-				res.add(create(UserBhvType.NONE, "lock.screen.on"));
-	    } else {
-			for(String bhvName : getPresentApp(1, true)){
-				res.add(create(UserBhvType.APP, bhvName));
+        	runningAppBhv = create(UserBhvType.NONE, "lock.screen.on");
+	    } else
+	    	runningAppBhv = create(UserBhvType.APP, getPresentApp(1, true).get(0));
+	    res.add(runningAppBhv);
+	
+	    /**
+	     * New apps in history. 
+	     * This is NOT complete even though the best currently.
+	     * Some apps may not be caught in case recentRunningAppPackageName become same or
+	     * user explicitly delete app history.
+	     */
+		List<String> recentApps = getRecentAppHistory(Integer.MAX_VALUE, true);
+		List<BaseUserBhv> newAppBhvs = new ArrayList<BaseUserBhv>();
+		if(recentApps.contains(recentRunningAppPackageName)){ //user did not manage history
+			for(String app : recentApps){
+				if(app.equals(recentRunningAppPackageName)) break;
+				if(app.equals(runningAppBhv.getBhvName())) continue;
+				newAppBhvs.add(create(UserBhvType.APP, app));
 			}
-	    }
-	    return res;
+		}
+		res.addAll(newAppBhvs);
+		
+		recentRunningAppPackageName = runningAppBhv.getBhvName();
+		
+		return res;
 	}
 
 	@SuppressWarnings("unused")
@@ -117,7 +142,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 	
-	private List<String> getRecentApp(int max, boolean includeSystemApp) {
+	private List<String> getRecentAppHistory(int max, boolean includeSystemApp) {
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
 		
