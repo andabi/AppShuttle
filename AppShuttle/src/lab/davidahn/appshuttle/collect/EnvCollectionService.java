@@ -75,7 +75,7 @@ public class EnvCollectionService extends Service {
 	private void senseEnv() {
 		for(EnvType envType : sensors.keySet()){
 			EnvSensor sensor = sensors.get(envType);
-			sensedEnvs.put(envType, sensor.sense(currTime, currTimeZone));
+			sensedEnvs.put(envType, sensor.senseAndGet(currTime, currTimeZone));
 		}
 	}
 

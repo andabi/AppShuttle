@@ -31,7 +31,7 @@ public class DurationUserEnvDao {
 		row.put("duration", durationUserEnv.getDuration());
 		row.put("end_time", durationUserEnv.getEndTime());
 		row.put("timezone", durationUserEnv.getTimeZone().getID());
-		row.put("env_type", durationUserEnv.getEnvType().toString());
+		row.put("env_type", durationUserEnv.getUserEnv().getEnvType().toString());
 		row.put("user_env", gson.toJson(durationUserEnv.getUserEnv()));
 		db.insert("history_user_env", null, row);
 //		Log.i("stored history_user_env", durationUserEnv.toString());
@@ -81,7 +81,6 @@ public class DurationUserEnvDao {
 			.setTime(cur.getLong(0))
 			.setEndTime(cur.getLong(2))
 			.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
-			.setEnvType(envType)
 			.setUserEnv(gson.fromJson(cur.getString(5), envType.getClazz()))
 			.build();
 	//		Log.i("retrieved history_user_env", durationUserEnv.toString());
@@ -105,7 +104,6 @@ public class DurationUserEnvDao {
 			.setTime(cur.getLong(0))
 			.setEndTime(cur.getLong(2))
 			.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
-			.setEnvType(envType)
 			.setUserEnv(gson.fromJson(cur.getString(5), envType.getClazz()))
 			.build();
 	//		Log.i("retrieved history_user_env", durationUserEnv.toString());
@@ -128,7 +126,6 @@ public class DurationUserEnvDao {
 			.setTime(cur.getLong(0))
 			.setEndTime(cur.getLong(2))
 			.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
-			.setEnvType(envType)
 			.setUserEnv(gson.fromJson(cur.getString(5), envType.getClazz()))
 			.build();
 //			Log.i("retrieved history_user_env", durationUserEnv.toString());

@@ -37,6 +37,11 @@ public class UserSpeed extends UserEnv {
 		return EnvType.SPEED;
 	}
 	
+	public boolean isSpeedVehicle(){
+		if(level == Level.VEHICLE) return true;
+		else return false;
+	}
+	
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append("(").append(speed).append(", ").append(level.name()).append(")");
