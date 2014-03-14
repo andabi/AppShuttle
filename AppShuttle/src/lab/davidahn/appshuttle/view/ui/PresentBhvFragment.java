@@ -5,33 +5,27 @@ import java.util.List;
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.report.StatCollector;
-import lab.davidahn.appshuttle.view.BlockedBhvManager;
-import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import lab.davidahn.appshuttle.view.PresentBhv;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ActionMode;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PresentBhvFragment extends ListFragment {
 	private PresentBhvAdapter adapter;
-	private ActionMode actionMode;
 	private List<PresentBhv> presentBhvList;
+	private int posMenuOpened = -1; //menu closed
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,119 +60,120 @@ public class PresentBhvFragment extends ListFragment {
 			setListShown(true);
 		}
 		
+		posMenuOpened = -1;
+		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 	        @Override
 	        public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
-	    		if(actionMode == null) {
-	    			actionMode = getActivity().startActionMode(actionCallback);
-	    			actionMode.setTag(position);
-//	    			actionMode.setTitle("")
-//	    			AppShuttleMainActivity.doEmphasisChildViewInListView(getListView(), position);
-	    			
-	    		}
+	        	if(!isMenuOpened()){
+	        		openMenu(v, position);
+	        	} else {
+	        		if(posMenuOpened != position) {
+	        			closeMenu();
+		        		openMenu(v, position);
+	        		}
+	        	}
 	            return true;
 	        }
 	    });
+		
+		getListView().setOnScrollListener(new OnScrollListener() {
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+						closeMenu();
+			}
+		});
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		if(posMenuOpened == position)
+			return;
+			
 		Intent intent = adapter.getItem(position).getLaunchIntent();
 		if(intent == null)
 			return;
-
+		
 		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
+	}
+	
+	private void openMenu(View v, int pos) {
+		if(pos < 0) return;
+		View menu = v.findViewById(R.id.listview_present_menu);
+		menu.setVisibility(View.VISIBLE);
+		posMenuOpened = pos;
+	}
+	
+	private void closeMenu() {
+		for(int i=0;i<getListView().getChildCount();i++){
+			View menu = getListView().getChildAt(i).findViewById(R.id.listview_present_menu);
+			menu.setVisibility(View.GONE);
+		}
+		posMenuOpened = -1;
+	}
+	
+	private boolean isMenuOpened(){
+		if(posMenuOpened < 0 ) return false;
+		else return true;
 	}
 	
 	public class PresentBhvAdapter extends ArrayAdapter<PresentBhv> {
 
 		public PresentBhvAdapter() {
-			super(getActivity(), R.layout.listview_item, presentBhvList);
+			super(getActivity(), R.layout.listview_present, presentBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
+			View itemView = inflater.inflate(R.layout.listview_present, parent, false);
 			PresentBhv presentBhv = presentBhvList.get(position);
 
-			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
+			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_present_item_image);
 			iconView.setImageDrawable(presentBhv.getIcon());
 
-			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
+			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_present_item_firstline);
 			firstLineView.setText(presentBhv.getBhvNameText());
 
-			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
+			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_present_item_secondline);
 			secondLineView.setText(presentBhv.getViewMsg());
 
+			View.OnClickListener menuItemListener = new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					AppShuttleMainActivity mainActivity = (AppShuttleMainActivity)getActivity();
+					String actionMsg = mainActivity.doActionAndGetMsg(presentBhvList.get(posMenuOpened), v.getId());
+					mainActivity.doPostAction();
+					mainActivity.showToastMsg(actionMsg);
+				}
+			};
+			ImageView favoriteView = (ImageView) itemView.findViewById(R.id.listview_present_menu_favorite);
+			favoriteView.setOnClickListener(menuItemListener);
+
+			ImageView ignoreView = (ImageView) itemView.findViewById(R.id.listview_present_menu_ignore);
+			ignoreView.setOnClickListener(menuItemListener);
+			
+//			ViewGroup menu = (ViewGroup)itemView.findViewById(R.id.listview_menu);
+//			menu.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 
+//					ViewGroup.LayoutParams.MATCH_PARENT));
+
+//			ImageView favoriteView = new ImageView(getContext());
+//			favoriteView.setLayoutParams(new android.view.ViewGroup.LayoutParams(30,30));
+//			favoriteView.setImageResource(R.id.favorate);
+//			menu.addView(favoriteView);
+//
+//			ImageView ignoreView = new ImageView(getContext());
+//			ignoreView.setLayoutParams(new android.view.ViewGroup.LayoutParams(30,30));
+//			ignoreView.setImageResource(R.id.block);
+//			menu.addView(ignoreView);
+			
 			return itemView;
 		}
-	}
-	
-	ActionMode.Callback actionCallback = new ActionMode.Callback() {
-		
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.present_actionmode, menu);
-			return true;
-		}
-		
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false;
-		}
-		
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			actionMode = null;
-//			AppShuttleMainActivity.cancelEmphasisInListView(getListView());
-		}
-		
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			int pos = (Integer)actionMode.getTag();
-
-			if(presentBhvList.size() < pos + 1)
-				return false;
-
-			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
-			doPostAction();
-			showToastMsg(actionMsg);
-			
-			if(actionMode != null)
-				actionMode.finish();
-			
-			return true;
-		}
-	};
-	
-	private String doActionAndGetMsg(int pos, int itemId) {
-		PresentBhv presentBhv = presentBhvList.get(pos);
-		switch(itemId) {
-		case R.id.favorate:	
-			FavoriteBhvManager.getInstance().favorite(presentBhv);
-			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
-		case R.id.block:
-			BlockedBhvManager.getInstance().block(presentBhv);
-			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_block);
-		default:
-			return null;
-		}
-	}
-
-	private void doPostAction() {
-		((AppShuttleMainActivity)getActivity()).updateView();
-		NotiBarNotifier.getInstance().updateNotification();
-	}
-	
-	private void showToastMsg(String actionMsg){
-		if(actionMsg == null)
-			return ;
-		
-		Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
-		t.setGravity(Gravity.CENTER, 0, 0);
-		t.show();
 	}
 }

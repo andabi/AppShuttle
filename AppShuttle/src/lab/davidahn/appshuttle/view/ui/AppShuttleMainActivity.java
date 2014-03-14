@@ -7,6 +7,11 @@ import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.predict.PredictionService;
+import lab.davidahn.appshuttle.view.BlockedBhv;
+import lab.davidahn.appshuttle.view.BlockedBhvManager;
+import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhvManager;
+import lab.davidahn.appshuttle.view.ViewableUserBhv;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -23,13 +28,14 @@ import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ActionProvider;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -88,7 +94,7 @@ public class AppShuttleMainActivity extends Activity {
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.predicted),
+		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.present),
 				PresentBhvFragment.class, bundle);
 		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.favorite),
 				FavoriteBhvFragment.class, null);
@@ -213,20 +219,54 @@ public class AppShuttleMainActivity extends Activity {
 		return title;
 	}
 
-	public static void doEmphasisChildViewInListView(ListView listview,
-			int position) {
-		for (int i = 0; i < listview.getChildCount(); i++) {
-			if (i == position)
-				listview.getChildAt(i).setAlpha(1);
-			else
-				listview.getChildAt(i).setAlpha(0.2f);
+	public String doActionAndGetMsg(ViewableUserBhv bhv, int itemId) {
+		switch(itemId) {
+		case R.id.listview_present_menu_favorite:
+			FavoriteBhvManager.getInstance().favorite(bhv);
+			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
+		case R.id.listview_present_menu_ignore:
+			BlockedBhvManager.getInstance().block(bhv);
+			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_block);
+		case R.id.listview_favorite_menu_present:
+			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
+			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
+		case R.id.listview_ignore_menu_present:
+			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
+			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unblock);
+		case R.id.favorite_notify:
+			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+			boolean isSuccess = favoriteBhvManager.trySetNotifiable((FavoriteBhv)bhv);
+			if(isSuccess){
+				String msg = bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
+				if(favoriteBhvManager.isFullProperNumFavorite()){
+					msg += " " 
+							+ favoriteBhvManager.getProperNumFavorite() 
+							+ getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
+				}
+				return msg;
+			} else {
+				return getResources().getString(R.string.action_msg_favorite_notifiable_failure);
+			}
+		case R.id.favorite_unnotify:
+			FavoriteBhvManager.getInstance().setUnNotifiable((FavoriteBhv)bhv);
+			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
+		default:
+			return null;
 		}
 	}
-
-	public static void cancelEmphasisInListView(ListView listview) {
-		for (int i = 0; i < listview.getChildCount(); i++) {
-			listview.getChildAt(i).setAlpha(1);
-		}
+	
+	public void doPostAction() {
+		updateView();
+		NotiBarNotifier.getInstance().updateNotification();
+	}
+	
+	public void showToastMsg(String actionMsg){
+		if(actionMsg == null)
+			return ;
+		
+		Toast t = Toast.makeText(this, actionMsg, Toast.LENGTH_SHORT);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
 	}
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements

@@ -30,11 +30,11 @@
     </style>
 
     <style name="MyActionBarTab" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
-        <item name="android:background">@color/Indigo</item>
+        <item name="android:background">@color/indigo</item>
     </style>
 
     <style name="MyActionBarTabBar" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar">
-        <item name="android:background">@color/Indigo</item>
+        <item name="android:background">@color/indigo</item>
     </style>
 
 </resources>
