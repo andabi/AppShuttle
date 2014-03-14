@@ -132,7 +132,7 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mTabsAdapter.notifyDataSetChanged();
+		updateView();
 	}
 
 	@Override
@@ -150,6 +150,10 @@ public class AppShuttleMainActivity extends Activity {
 		inflater.inflate(R.menu.actionbarmenu, menu);
 
 		return true;
+	}
+
+	public void updateView(){
+		mTabsAdapter.notifyDataSetChanged();
 	}
 	
 //	@Override
@@ -354,7 +358,7 @@ public class AppShuttleMainActivity extends Activity {
 
 	BroadcastReceiver updateReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
-			mTabsAdapter.notifyDataSetChanged();
+			updateView();
 		}
 	};
 

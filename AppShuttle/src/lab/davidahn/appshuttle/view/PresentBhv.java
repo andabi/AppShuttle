@@ -90,8 +90,6 @@ public abstract class PresentBhv extends ViewableUserBhv {
 		predictedPresentBhvListFilteredSorted.addAll(predictedPresentBhvListSorted);
 		predictedPresentBhvListFilteredSorted = getEligiblePresentList(predictedPresentBhvListFilteredSorted, filter_current);
 		
-
-		
 		// Build history list
 		List<HistoryPresentBhv> historyPresentBhvListSorted = HistoryPresentBhv.retrieveHistoryPresentBhvListSorted();
 		List<PresentBhv> historyPresentBhvListFilteredSorted = new ArrayList<PresentBhv>();

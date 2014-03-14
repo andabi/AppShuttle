@@ -22,9 +22,9 @@ public class ViewService extends IntentService {
 	@Override
 	public void onHandleIntent(Intent intent) {
 		Log.d("viewer","update view");
-		NotiBarNotifier.getInstance().updateNotification();
 		if(!intent.getBooleanExtra("isOnlyNotibar", false))
 			sendBroadcast(new Intent().setAction(AppShuttleMainActivity.UPDATE_ACTIVITY));
+		NotiBarNotifier.getInstance().updateNotification();
 	}
 	
 	@Override
