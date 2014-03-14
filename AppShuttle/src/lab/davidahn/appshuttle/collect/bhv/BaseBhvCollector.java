@@ -82,8 +82,7 @@ public class BaseBhvCollector implements BhvCollector {
 	}
 	
 	public DurationUserBhv.Builder createDurationUserBhvBuilder(long time, long endTime, TimeZone currTimeZone, UserBhv bhv) {
-		long adjustment = preferenceSettings.getLong("collection.bhv.period", 60000) / 2;
-
+		long adjustment = preferenceSettings.getLong("collection.bhv.period", 60000);
 		return new DurationUserBhv.Builder()
 		.setTime(time - adjustment)
 		.setEndTime(endTime + adjustment)
