@@ -36,7 +36,7 @@ public class BlockedBhvFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(android.R.layout.list_content, container,
+		View v = inflater.inflate(R.layout.ignore, container,
 				false);
 		return v;
 	}
@@ -45,14 +45,14 @@ public class BlockedBhvFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText(getResources().getString(R.string.msg_manual_blocked));
+//		setEmptyText(getResources().getString(R.string.msg_manual_ignore));
 
 		blockedBhvList = new ArrayList<BlockedBhv>(BlockedBhvManager.getInstance().getBlockedBhvListSorted());
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
 
-		setListShown(true);
+//		setListShown(true);
 		
 		posMenuOpened = -1;
 		
@@ -121,13 +121,13 @@ public class BlockedBhvFragment extends ListFragment {
 	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedBhv> {
 
 		public BlockedBhvInfoAdapter() {
-			super(getActivity(), R.layout.listview_ignore, blockedBhvList);
+			super(getActivity(), R.layout.ignore_listview, blockedBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.listview_ignore, parent, false);
+			View itemView = inflater.inflate(R.layout.ignore_listview, parent, false);
 			BlockedBhv blockedUserBhv = blockedBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_ignore_item_image);
@@ -139,7 +139,8 @@ public class BlockedBhvFragment extends ListFragment {
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_ignore_item_secondline);
 			secondLineView.setText(blockedUserBhv.getViewMsg());
 
-			View.OnClickListener menuItemListener = new View.OnClickListener() {
+			TextView presentView = (TextView) itemView.findViewById(R.id.listview_ignore_menu_unignore);
+			presentView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					AppShuttleMainActivity mainActivity = (AppShuttleMainActivity)getActivity();
@@ -147,9 +148,15 @@ public class BlockedBhvFragment extends ListFragment {
 					mainActivity.doPostAction();
 					mainActivity.showToastMsg(actionMsg);
 				}
-			};
-			ImageView presentView = (ImageView) itemView.findViewById(R.id.listview_ignore_menu_present);
-			presentView.setOnClickListener(menuItemListener);
+			});
+			
+			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_ignore_menu_cancel);
+			cancelView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					closeMenu();
+				}
+			});
 			
 			return itemView;
 		}

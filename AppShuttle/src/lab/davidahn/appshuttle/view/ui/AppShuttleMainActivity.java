@@ -211,7 +211,7 @@ public class AppShuttleMainActivity extends Activity {
 			break;
 		case 2:
 			title = cxt.getResources().getString(
-					R.string.actionbar_tab_text_blocked);
+					R.string.actionbar_tab_text_ignore);
 			break;
 		default:
 			title = "";
@@ -226,13 +226,13 @@ public class AppShuttleMainActivity extends Activity {
 			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
 		case R.id.listview_present_menu_ignore:
 			BlockedBhvManager.getInstance().block(bhv);
-			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_block);
-		case R.id.listview_favorite_menu_present:
+			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
+		case R.id.listview_favorite_menu_unfavorite:
 			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
 			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
-		case R.id.listview_ignore_menu_present:
+		case R.id.listview_ignore_menu_unignore:
 			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
-			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unblock);
+			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unignore);
 		case R.id.favorite_notify:
 			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
 			boolean isSuccess = favoriteBhvManager.trySetNotifiable((FavoriteBhv)bhv);

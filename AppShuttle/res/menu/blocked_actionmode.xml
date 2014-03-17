@@ -5,6 +5,6 @@
         android:id="@+id/unblock"
         android:icon="@drawable/present"
         android:showAsAction="always|withText"
-        android:title="@string/action_unblock"/>
+        android:title="@string/action_unignore"/>
 
 </menu>

@@ -35,7 +35,7 @@ public class PresentBhvFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(android.R.layout.list_content, container,
+		View v = inflater.inflate(R.layout.present, container,
 				false);
 		return v;
 	}
@@ -43,23 +43,16 @@ public class PresentBhvFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+	
+		TextView emptyMsgView = (TextView)getView().findViewById(R.id.present_empty_msg);
 		if(System.currentTimeMillis() - AppShuttleApplication.launchTime < 3000)
-			setEmptyText(getResources().getString(R.string.msg_wait));
-		else
-			setEmptyText(getResources().getString(R.string.msg_no_results));
-		
+			emptyMsgView.setText(R.string.msg_wait);
+
 		presentBhvList = PresentBhv.getPresentBhvListFilteredSorted(Integer.MAX_VALUE);
 		
 		adapter = new PresentBhvAdapter();
 		setListAdapter(adapter);
 
-		if (presentBhvList == null) {
-			setListShown(false);
-		} else {
-			setListShown(true);
-		}
-		
 		posMenuOpened = -1;
 		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -126,13 +119,13 @@ public class PresentBhvFragment extends ListFragment {
 	public class PresentBhvAdapter extends ArrayAdapter<PresentBhv> {
 
 		public PresentBhvAdapter() {
-			super(getActivity(), R.layout.listview_present, presentBhvList);
+			super(getActivity(), R.layout.present_listview, presentBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.listview_present, parent, false);
+			View itemView = inflater.inflate(R.layout.present_listview, parent, false);
 			PresentBhv presentBhv = presentBhvList.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_present_item_image);
@@ -153,12 +146,25 @@ public class PresentBhvFragment extends ListFragment {
 					mainActivity.showToastMsg(actionMsg);
 				}
 			};
-			ImageView favoriteView = (ImageView) itemView.findViewById(R.id.listview_present_menu_favorite);
+			TextView favoriteView = (TextView) itemView.findViewById(R.id.listview_present_menu_favorite);
 			favoriteView.setOnClickListener(menuItemListener);
 
-			ImageView ignoreView = (ImageView) itemView.findViewById(R.id.listview_present_menu_ignore);
+			TextView ignoreView = (TextView) itemView.findViewById(R.id.listview_present_menu_ignore);
 			ignoreView.setOnClickListener(menuItemListener);
 			
+			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_present_menu_cancel);
+			cancelView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					closeMenu();
+				}
+			});
+			
+			return itemView;
+		}
+	}
+}
+
 //			ViewGroup menu = (ViewGroup)itemView.findViewById(R.id.listview_menu);
 //			menu.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 
 //					ViewGroup.LayoutParams.MATCH_PARENT));
@@ -172,8 +178,3 @@ public class PresentBhvFragment extends ListFragment {
 //			ignoreView.setLayoutParams(new android.view.ViewGroup.LayoutParams(30,30));
 //			ignoreView.setImageResource(R.id.block);
 //			menu.addView(ignoreView);
-			
-			return itemView;
-		}
-	}
-}
