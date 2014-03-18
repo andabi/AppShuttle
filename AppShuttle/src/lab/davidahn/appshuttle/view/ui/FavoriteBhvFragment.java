@@ -36,7 +36,7 @@ public class FavoriteBhvFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.favorite, container,
+		View v = inflater.inflate(R.layout.favorite_view, container,
 				false);
 		return v;
 	}

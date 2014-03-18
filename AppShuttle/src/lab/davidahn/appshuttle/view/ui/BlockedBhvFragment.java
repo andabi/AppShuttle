@@ -36,7 +36,7 @@ public class BlockedBhvFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.ignore, container,
+		View v = inflater.inflate(R.layout.ignore_view, container,
 				false);
 		return v;
 	}

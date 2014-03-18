@@ -66,22 +66,42 @@
 
         <ImageView
             android:id="@+id/listview_present_menu_cancel"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_weight="0"
             android:src="@drawable/cancel" />
 
-        <TextView
+        <ImageView
+            android:id="@+id/listview_present_menu_favorite"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/favorite" />
+
+        <ImageView
+            android:id="@+id/listview_present_menu_ignore"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/ignore" />
+    </LinearLayout>
+
+</RelativeLayout>
+<!--
+             <TextView
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="18dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
             android:background="#80FFFFFF" />
+-->
 
-        <LinearLayout
+
+<!--
+             <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -118,21 +138,4 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
         </LinearLayout>
-    </LinearLayout>
-    <!--
-             <ImageView
-            android:id="@+id/listview_present_menu_favorite"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/favorite" />
-
-        <ImageView
-            android:id="@+id/listview_present_menu_ignore"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/ignore" />
-    -->
-
-</RelativeLayout>
+-->

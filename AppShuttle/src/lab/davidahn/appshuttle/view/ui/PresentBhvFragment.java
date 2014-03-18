@@ -35,7 +35,7 @@ public class PresentBhvFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.present, container,
+		View v = inflater.inflate(R.layout.present_view, container,
 				false);
 		return v;
 	}
@@ -146,10 +146,10 @@ public class PresentBhvFragment extends ListFragment {
 					mainActivity.showToastMsg(actionMsg);
 				}
 			};
-			TextView favoriteView = (TextView) itemView.findViewById(R.id.listview_present_menu_favorite);
+			ImageView favoriteView = (ImageView) itemView.findViewById(R.id.listview_present_menu_favorite);
 			favoriteView.setOnClickListener(menuItemListener);
 
-			TextView ignoreView = (TextView) itemView.findViewById(R.id.listview_present_menu_ignore);
+			ImageView ignoreView = (ImageView) itemView.findViewById(R.id.listview_present_menu_ignore);
 			ignoreView.setOnClickListener(menuItemListener);
 			
 			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_present_menu_cancel);
