@@ -1,5 +1,10 @@
 package lab.davidahn.appshuttle;
 
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvDao;
+import lab.davidahn.appshuttle.collect.env.DurationUserEnvDao;
+import lab.davidahn.appshuttle.report.StatCollector;
+import lab.davidahn.appshuttle.view.HistoryPresentBhvDao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -8,14 +13,6 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferences().getString("database.name", "AppShuttle.db");
 	private static final int DB_VERSION = 43;
 
-	/*
-	 * Comments on DB_VERSION
-	 * 
-	 * 42: history_present_bhv table added.
-	 * 43: stat_bhv_transition table added.
-	 * 
-	 */
-	
 	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
 	public static AppShuttleDBHelper getInstance() {
 		return dbHelper;
@@ -26,42 +23,25 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE IF NOT EXISTS history_user_env ("
-				+ "time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, env_type TEXT, user_env TEXT, "
-				+ "PRIMARY KEY (time, timezone, env_type) " + ");");
-		db.execSQL("CREATE INDEX idx1_history_user_env on history_user_env (time)");
-		db.execSQL("CREATE INDEX idx2_history_user_env on history_user_env (time, end_time, env_type)");
-
-		db.execSQL("CREATE TABLE IF NOT EXISTS history_user_bhv ("
-				+ "time INTEGER, duration INTEGER, end_time INTEGER, timezone TEXT, bhv_type TEXT, bhv_name TEXT, "
-				+ "PRIMARY KEY (time, timezone, bhv_type, bhv_name) " + ");");		
-		db.execSQL("CREATE INDEX idx1_history_user_bhv on history_user_bhv (time)");
-		db.execSQL("CREATE INDEX idx2_history_user_bhv on history_user_bhv (time, bhv_type, bhv_name)");
-		
-		db.execSQL("CREATE TABLE IF NOT EXISTS list_user_bhv ("
-				+ "bhv_type TEXT, bhv_name TEXT, metas TEXT, blocked INTEGER DEFAULT 0, blocked_time INTEGER DEFAULT 0, favorates INTEGER DEFAULT 0, favorates_time INTEGER DEFAULT 0, is_notifiable INTEGER DEFAULT 0, "
-				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
-
-		db.execSQL("CREATE TABLE IF NOT EXISTS history_present_bhv ("
-				+ "bhv_type TEXT, bhv_name TEXT, recent_pred_time INTEGER DEFAULT 0, recent_pred_score INTEGER DEFAULT 0, "
-				+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
-
-		db.execSQL("CREATE TABLE IF NOT EXISTS stat_bhv_transition ("
-				+ "time INTEGER, bhv_type TEXT, bhv_name TEXT, matchers TEXT, predicted INTEGER, clicked INTEGER, "
-				+ "PRIMARY KEY (time) " + ");");
+		DurationUserEnvDao.getInstance().createTable();
+		DurationUserBhvDao.getInstance().createTable();
+		UserBhvDao.getInstance().createTable();
+		HistoryPresentBhvDao.getInstance().createTable();
+		StatCollector.getInstance().createTable();
 	}
 
+	/*
+	 * Comments on DB_VERSION
+	 * 
+	 * 42: history_present_bhv table added.
+	 * 43: stat_bhv_transition table added.
+	 * 
+	 */
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(oldVersion <= 41) {
-			db.execSQL("CREATE TABLE IF NOT EXISTS history_present_bhv ("
-					+ "bhv_type TEXT, bhv_name TEXT, recent_pred_time INTEGER DEFAULT 0, recent_pred_score INTEGER DEFAULT 0, "
-					+ "PRIMARY KEY (bhv_type, bhv_name) " + ");");
-		}
+		if(oldVersion <= 41)
+			HistoryPresentBhvDao.getInstance().createTable();
 
-		if(oldVersion <= 42) {
-			db.execSQL("CREATE TABLE IF NOT EXISTS stat_bhv_transition ("
-					+ "time INTEGER, bhv_type TEXT, bhv_name TEXT, matchers TEXT, predicted INTEGER, clicked INTEGER, "
-					+ "PRIMARY KEY (time) " + ");");
-		}
+		if(oldVersion <= 42)
+			StatCollector.getInstance().createTable();
 	}
 }
