@@ -37,9 +37,7 @@ public class StatCollector {
 
 	private volatile static StatCollector instance;
 	
-	/* Internal variables */
 	private SQLiteDatabase db;
-	
 	private UserBhv oldUBhv;		// 직전에 관측된 Bhv
 	
 	private long created;	// obsolete
@@ -340,7 +338,9 @@ public class StatCollector {
 				*/
 	}
 	
-	// Structure-style manifestation of a DB entry
+	/**
+	 *  Structure-style manifestation of a DB entry
+	 */
 	private class StatEntry{
 		long timestamp = System.currentTimeMillis();
 		UserBhvType bhvType = UserBhvType.NONE;
