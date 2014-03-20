@@ -56,7 +56,7 @@ public class NotiBarNotifier {
 		
 		List<FavoriteBhv> notifiableFavoriteBhvList = FavoriteBhvManager.getInstance().getNotifiableFavoriteBhvList();
 		viewableUserBhvList.addAll(notifiableFavoriteBhvList.subList(0, getNumFavoriteElem()));
-		viewableUserBhvList.addAll(PresentBhv.getPresentBhvListFilteredSorted(getNumPredictedElem()));
+		viewableUserBhvList.addAll(PresentBhv.getPresentBhvListFilteredSorted(getNumPresentElem()));
 		
 		updateNotiView(viewableUserBhvList);
 		
@@ -76,7 +76,7 @@ public class NotiBarNotifier {
 		return Math.min(FavoriteBhvManager.getInstance().getNotifiableFavoriteBhvList().size(), getNumElem());
 	}
 	
-	public int getNumPredictedElem() {
+	public int getNumPresentElem() {
 		return getNumElem() - getNumFavoriteElem();
 	}
 	
