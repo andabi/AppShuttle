@@ -27,11 +27,10 @@ import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
 public class StatCollector {
-	/* Statistics Collector
-	 * 
+
+	/**
+	 *  Structure-style manifestation of a DB entry
 	 */
-	
-	// Structure-style manifestation of a DB entry
 	private class StatEntry{
 		long timestamp = System.currentTimeMillis();
 		UserBhvType bhvType = UserBhvType.NONE;
@@ -45,7 +44,7 @@ public class StatCollector {
 					+ matchers.toString() + " / " + isPredicted + " / " + isClicked; 
 		}
 	}
-	
+
 	private class StatResult {
 		// Meta
 		long from  = System.currentTimeMillis();
