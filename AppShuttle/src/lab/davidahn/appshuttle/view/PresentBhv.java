@@ -72,10 +72,10 @@ public abstract class PresentBhv extends ViewableUserBhv {
 	/**
 	 * Return a list of present Bhvs (to notify)
 	 * @param topN
-	 * @param filter_current
+	 * @param isFilteringCurrent
 	 * @return
 	 */
-	public static List<PresentBhv> getPresentBhvListFilteredSorted(int topN, boolean filter_current) {
+	public static List<PresentBhv> getPresentBhvListFilteredSorted(int topN, boolean isFilteringCurrent) {
 		if(topN < 0)
 			throw new IllegalArgumentException("the number of presentBhv < 0");
 
@@ -88,7 +88,7 @@ public abstract class PresentBhv extends ViewableUserBhv {
 		
 		List<PresentBhv> predictedPresentBhvListFilteredSorted = new ArrayList<PresentBhv>();
 		predictedPresentBhvListFilteredSorted.addAll(predictedPresentBhvListSorted);
-		predictedPresentBhvListFilteredSorted = getEligiblePresentList(predictedPresentBhvListFilteredSorted, filter_current);
+		predictedPresentBhvListFilteredSorted = getEligiblePresentList(predictedPresentBhvListFilteredSorted, isFilteringCurrent);
 		
 		// Build history list
 		List<HistoryPresentBhv> historyPresentBhvListSorted = HistoryPresentBhv.retrieveHistoryPresentBhvListSorted();
@@ -97,7 +97,7 @@ public abstract class PresentBhv extends ViewableUserBhv {
 			if(!predictedPresentBhvListFilteredSorted.contains(historyPresentBhv))
 				historyPresentBhvListFilteredSorted.add(historyPresentBhv);
 		
-		historyPresentBhvListFilteredSorted = getEligiblePresentList(historyPresentBhvListFilteredSorted, filter_current);
+		historyPresentBhvListFilteredSorted = getEligiblePresentList(historyPresentBhvListFilteredSorted, isFilteringCurrent);
 		
 		// TODO: Build initial list
 		List<PresentBhv> initialPresentBhvListSorted = new ArrayList<PresentBhv>();
@@ -115,7 +115,7 @@ public abstract class PresentBhv extends ViewableUserBhv {
 		 */
 		
 		int numPresentBhv;
-		numPresentBhv = Math.max(predictedPresentBhvListFilteredSorted.size(), NotiBarNotifier.getInstance().getNumPredictedElem());
+		numPresentBhv = Math.max(predictedPresentBhvListFilteredSorted.size(), NotiBarNotifier.getInstance().getNumPresentElem());
 		
 		if (topN < numPresentBhv)
 			numPresentBhv = topN;
@@ -123,13 +123,13 @@ public abstract class PresentBhv extends ViewableUserBhv {
 		return presentBhvList.subList(0, Math.min(presentBhvList.size(), numPresentBhv));
 	}
 
-	public static List<PresentBhv> getEligiblePresentList(List<PresentBhv> list, boolean filter_current) {
+	public static List<PresentBhv> getEligiblePresentList(List<PresentBhv> list, boolean isFilteringCurrent) {
 		List<PresentBhv> filteredPresentBhvList = new ArrayList<PresentBhv>(list);
 		filteredPresentBhvList = getBlockedBhvFilteredList(filteredPresentBhvList);
 		filteredPresentBhvList = getFavoriteBhvFilteredList(filteredPresentBhvList);
 		filteredPresentBhvList = getSensorOnBhvFilteredList(filteredPresentBhvList);
 		
-		if (filter_current == true)
+		if(isFilteringCurrent)
 			filteredPresentBhvList = getCurrentBhvFilteredList(filteredPresentBhvList);
 		
 		return filteredPresentBhvList;
