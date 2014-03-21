@@ -27,59 +27,24 @@ import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
 public class StatCollector {
-	/* Statistics Collector
-	 * 
-	 */
-	
-	// Structure-style manifestation of a DB entry
-	private class StatEntry{
-		long timestamp = System.currentTimeMillis();
-		UserBhvType bhvType = UserBhvType.NONE;
-		String bhvName = "";
-		String matchers = "";				// Matcher 이름
-		boolean isPredicted = false;		// Top 6개 안에 들었는가?
-		boolean isClicked = false;			// 앱셔틀을 통해 실행했는가?
-		
-		public String toString(){
-			return timestamp + " / " + bhvType.toString() + " / " + bhvName.toString() + " / "
-					+ matchers.toString() + " / " + isPredicted + " / " + isClicked; 
-		}
-	}
-	
-	private class StatResult {
-		// Meta
-		long from  = System.currentTimeMillis();
-		long until = System.currentTimeMillis();
-		
-		// in percent (0~100)
-		int hit_ratio = 0;		
-		int click_ratio = 0;
-		
-		// in hit (0~N)
-		int clicked_count = 0;
-		int hit_count = 0;
-		int total_count = 0;
-		
-		// You can add additional measures.
-		
-		public String toString(){
-			return new Date(from).toString() + " ~ " + new Date(until).toString() + "\n" +
-					"uBhv count: " + total_count + "\n" +
-					"Hit ratio: " + hit_ratio + " %\n" +
-					"Use ratio: " + click_ratio + " %\n"; 
-		}
-	}
-	
+	private static final String tableName = "stat_bhv_transition";
+	private static final String columnTime = "time";
+	private static final String columnBhvType = "bhv_type";
+	private static final String columnBhvName = "bhv_name";
+	private static final String columnMatchers = "matchers";
+	private static final String columnPredicted = "predicted";
+	private static final String columnClicked = "clicked";
+
 	private volatile static StatCollector instance;
 	
 	/* Internal variables */
 	private SQLiteDatabase db;
 	
-	private UserBhv old_uBhv;		// 직전에 관측된 Bhv
+	private UserBhv oldUBhv;		// 직전에 관측된 Bhv
 	
 	private long created;	// obsolete
 	private StatCollector(){
-		old_uBhv = null;
+		oldUBhv = null;
 		
 		created = System.currentTimeMillis();	// 현재 시간 저장
 		
@@ -188,17 +153,17 @@ public class StatCollector {
 		
 		
 		// 로그 데이터에서 통계 값 계산
-		statReturn.total_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-						"time > " + from + " AND time <= " + until);
+		statReturn.totalCount = (int)DatabaseUtils.queryNumEntries(db, tableName,
+				columnTime + " > " + from + " AND " + columnTime + " <= " + until);
 		
-		statReturn.clicked_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-				"time > " + from + " AND time <= " + until + " AND clicked > 0");
+		statReturn.clickedCount = (int)DatabaseUtils.queryNumEntries(db, tableName,
+				columnTime + " > " + from + " AND " + columnTime + " <= " + until + " AND " + columnClicked + " > 0");
 		
-		statReturn.hit_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-				"time > " + from + " AND time <= " + until + " AND predicted > 0");
+		statReturn.hitCount = (int)DatabaseUtils.queryNumEntries(db, tableName,
+				columnTime + " > " + from + " AND " + columnTime + " <= " + until + " AND " + columnPredicted + " > 0");
 		
-		statReturn.click_ratio = (int)(statReturn.clicked_count * 100.0f / statReturn.total_count);
-		statReturn.hit_ratio = (int)(statReturn.hit_count * 100.0f / statReturn.total_count);
+		statReturn.clickRatio = (int)(statReturn.clickedCount * 100.0f / statReturn.totalCount);
+		statReturn.hitRatio = (int)(statReturn.hitCount * 100.0f / statReturn.totalCount);
 		
 		// You can add additional measures.
 		
@@ -249,9 +214,9 @@ public class StatCollector {
 		// Same UserBhv (Screen ON -> OFF -> ON) 무시
 		//if (old_uBhv != null)
 		//	Log.d("Stat", "old Ubhv: " + old_uBhv.toString());
-		if (old_uBhv != null && old_uBhv.equals(userBhv))
+		if (oldUBhv != null && oldUBhv.equals(userBhv))
 			return;
-		this.old_uBhv = userBhv; // FIXME: Is this okay? Reference
+		this.oldUBhv = userBhv; // FIXME: Is this okay? Reference
 		
 		// 런쳐 / 앱셔틀 등 통계낼 필요 없는 앱 무시
 		if (userBhv instanceof BaseUserBhv) {
@@ -332,29 +297,39 @@ public class StatCollector {
 			newEntry.matchers = "Unknown Matcher";
 		}
 		
-	
-		/* Store into DB */
-		ContentValues row = new ContentValues();
-		row.put("time", newEntry.timestamp);
-		row.put("bhv_type", newEntry.bhvType.toString());
-		row.put("bhv_name", newEntry.bhvName);
-		row.put("matchers", newEntry.matchers);
-		row.put("predicted", (newEntry.isPredicted ? 1 : 0));
-		row.put("clicked",  (newEntry.isClicked ? 1 : 0));
-		
-		db.insertWithOnConflict("stat_bhv_transition", null, row, SQLiteDatabase.CONFLICT_REPLACE);
-		Log.i("Stat", row.toString());
-		
+		store(newEntry);
 		this.sendEachEntry(newEntry);
 	}
 	
+	public void createTable() {
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+				+ columnTime + " INTEGER, "
+				+ columnBhvType + " TEXT, "
+				+ columnBhvName + " TEXT, "
+				+ columnMatchers + " TEXT, "
+				+ columnPredicted + " INTEGER, "
+				+ columnClicked + " INTEGER, "
+				+ "PRIMARY KEY (" + columnTime + ") "
+				+ ");");
+	}
+
+	public void store(StatEntry entry){
+		ContentValues row = new ContentValues();
+		row.put(columnTime, entry.timestamp);
+		row.put(columnBhvType, entry.bhvType.toString());
+		row.put(columnBhvName, entry.bhvName);
+		row.put(columnMatchers, entry.matchers);
+		row.put(columnPredicted, (entry.isPredicted ? 1 : 0));
+		row.put(columnClicked, (entry.isClicked ? 1 : 0));
+		db.insertWithOnConflict(tableName, null, row, SQLiteDatabase.CONFLICT_REPLACE);
+		Log.i("Stat", row.toString());
+	}
+
 	public void deleteAllBefore(long time){
-		db.execSQL("DELETE " +
-				"FROM stat_bhv_transition " +
-				"WHERE time < " + time +";");
+		db.execSQL("DELETE FROM " + tableName +
+				" WHERE " + columnTime + " < " + time + ";");
 	}
 	
-		
 	@Override
 	public String toString(){
 		return this.getStatistics().toString();
@@ -363,5 +338,44 @@ public class StatCollector {
 				"\nTotalClicked = " + this.numTotalClicked + 
 				"\nBhvTransition: " + this.numBhvTransitionHit + " / " + this.numBhvTransitionTotal;
 				*/
+	}
+	
+	// Structure-style manifestation of a DB entry
+	private class StatEntry{
+		long timestamp = System.currentTimeMillis();
+		UserBhvType bhvType = UserBhvType.NONE;
+		String bhvName = "";
+		String matchers = "";				// Matcher 이름
+		boolean isPredicted = false;		// Top 6개 안에 들었는가?
+		boolean isClicked = false;			// 앱셔틀을 통해 실행했는가?
+		
+		public String toString(){
+			return timestamp + " / " + bhvType.toString() + " / " + bhvName.toString() + " / "
+					+ matchers.toString() + " / " + isPredicted + " / " + isClicked; 
+		}
+	}
+
+	private class StatResult {
+		// Meta
+		long from  = System.currentTimeMillis();
+		long until = System.currentTimeMillis();
+		
+		// in percent (0~100)
+		int hitRatio = 0;		
+		int clickRatio = 0;
+		
+		// in hit (0~N)
+		int clickedCount = 0;
+		int hitCount = 0;
+		int totalCount = 0;
+		
+		// You can add additional measures.
+		
+		public String toString(){
+			return new Date(from).toString() + " ~ " + new Date(until).toString() + "\n" +
+					"uBhv count: " + totalCount + "\n" +
+					"Hit ratio: " + hitRatio + " %\n" +
+					"Use ratio: " + clickRatio + " %\n"; 
+		}
 	}
 }
