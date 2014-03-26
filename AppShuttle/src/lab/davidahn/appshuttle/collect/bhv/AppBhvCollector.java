@@ -5,6 +5,7 @@ import static lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.create;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.TimeZone;
 
 import android.app.ActivityManager;
@@ -26,8 +27,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 	private KeyguardManager keyguardManager;
 
 	private static AppBhvCollector appBhvCollector = new AppBhvCollector();
-	private String recentRunningAppPackageName = "";
-//	private List<String> recentApps = new ArrayList<String>();
+	private List<String> lastAppHistory = null;
 	
 	private AppBhvCollector(){
 		super();
@@ -84,24 +84,52 @@ public class AppBhvCollector extends BaseBhvCollector {
 	    	runningAppBhv = create(UserBhvType.APP, getPresentApp(1, true).get(0));
 	    res.add(runningAppBhv);
 	
-	    /**
-	     * New apps in history. 
-	     * This is NOT complete even though the best currently.
-	     * Some apps may not be caught in case recentRunningAppPackageName become same or
-	     * user explicitly delete app history.
-	     */
-		List<String> recentApps = getRecentAppHistory(Integer.MAX_VALUE, true);
+		/**
+		 * (Modified 14.03.26)
+		 * 지난 번과 현재의 최근 앱 목록을 비교하여 새로이 관찰된 앱 추가 
+		 * 
+		 * 설명
+		 * - 두 개의 리스트 존재 (current / last)
+		 * - current 리스트를 가장 오래된 것부터 하나씩 last 리스트와 비교해서 "순서대로" 매칭
+		 * - last 리스트에서 건너뛰는 앱은 다시 실행해서 순서가 바뀌었거나, 사용저가 지웠단 뜻.
+		 * - current 리스트에 있는 것 중에서, last 리스트에 매칭을 못시킨 애들은 새로 수행된 앱들.
+		 * 
+		 * 한계
+		 * - Old history 에서와 정확히 같은 순서로 실행된 앱은 확인 불가
+		 */
+	    List<String> recentApps = getRecentAppHistory(Integer.MAX_VALUE, true);
+	    
+	    // 처음 켜질 때, 히스토리의 모든 앱이 추가되는 걸 방지 
+	    if (lastAppHistory == null) {
+	    	lastAppHistory = recentApps;
+			return res;
+		}
+
 		List<BaseUserBhv> newAppBhvs = new ArrayList<BaseUserBhv>();
-		if(recentApps.contains(recentRunningAppPackageName)){ //user did not manage history
-			for(String app : recentApps){
-				if(app.equals(recentRunningAppPackageName)) break;
-				if(app.equals(runningAppBhv.getBhvName())) continue;
+		
+		ListIterator<String> li = recentApps.listIterator();
+		ListIterator<String> li_last = lastAppHistory.listIterator();
+		
+		// Reverse iterator (old -> recent)
+		while (li.hasPrevious()) {
+			String app = li.previous();
+			Boolean hasFound = false;
+			
+			while (li_last.hasPrevious()) {
+				if (li_last.previous().equals(app)) {
+					hasFound = true;
+					break;
+				}
+			}
+			
+			if (!li_last.hasPrevious() && hasFound == false) {
 				newAppBhvs.add(create(UserBhvType.APP, app));
 			}
 		}
+		
 		res.addAll(newAppBhvs);
 		
-		recentRunningAppPackageName = runningAppBhv.getBhvName();
+		lastAppHistory = recentApps;
 		
 		return res;
 	}
