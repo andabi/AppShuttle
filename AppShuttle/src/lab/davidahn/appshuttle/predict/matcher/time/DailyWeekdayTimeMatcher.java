@@ -10,6 +10,9 @@ import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import android.app.AlarmManager;
 
+/* TODO: 리팩토링 제안
+ * - Weekday와 Weekend 매쳐는 따로 있을 필요가 없음. (요일 조건별 매쳐로 통합 가능)
+ */
 public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	private static final long INTERVAL_WEEK = 7 * AlarmManager.INTERVAL_DAY;
 

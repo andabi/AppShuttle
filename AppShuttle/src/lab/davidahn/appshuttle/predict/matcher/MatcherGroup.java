@@ -9,6 +9,7 @@ import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 
 public abstract class MatcherGroup extends MatcherElem {
+	// FIXME: MatcherElem이 이미 MacherType을 안에 들고 있으므로 그냥 리스트로 바꾸면 됨
 	protected EnumMap<MatcherType, MatcherElem> matchers;
 	
 	public MatcherGroup() {

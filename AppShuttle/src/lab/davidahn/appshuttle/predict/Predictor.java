@@ -34,6 +34,11 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
+/*
+ * TODO: 리팩토링 제안
+ * - 의미없는 환경변수
+ * - 과다한 Builder 패턴
+ */
 public class Predictor {
 	private List<MatcherElem> matcherList;
 	

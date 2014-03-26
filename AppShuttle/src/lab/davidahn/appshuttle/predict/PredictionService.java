@@ -26,6 +26,9 @@ public class PredictionService extends IntentService {
 	public void onHandleIntent(Intent intent) {
 //		Log.d("prediction", "started");
 		sendBroadcast(new Intent().setAction(AppShuttleMainActivity.PROGRESS_VISIBILITY).putExtra("isOn", true));
+		/* TODO:
+		 * 왜 Predictor에 명령하고 PredictedPresentBhv에서 꺼내오나?
+		 */
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
 		PredictedPresentBhv.extractPredictedPresentBhvList();
 		sendBroadcast(new Intent().setAction(AppShuttleMainActivity.UPDATE_ACTIVITY));
