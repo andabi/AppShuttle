@@ -92,7 +92,6 @@ public class PresentBhvFragment extends ListFragment {
 		if(intent == null)
 			return;
 		
-		//TODO 수집시 캐치하는 새 앱과 중복되어 캐치될 수 있지 않나? isClick는 지금 당장 안쓰고 있으니 이 코드가 필요한지 확인 필요
 		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}

@@ -1,12 +1,18 @@
-<?xml version="1.0" encoding="utf-8" ?>
-
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Replace placeholder ID with your tracking ID-->
-  <string name="ga_trackingId">UA-48091354-1</string>
 
-  <!--Enable automatic activity tracking-->
-  <bool name="ga_autoActivityTracking">true</bool>
+    <!-- Replace placeholder ID with your tracking ID -->
+    <string name="ga_trackingId">UA-48091354-2</string>
 
-  <!--Enable automatic exception tracking-->
-  <bool name="ga_reportUncaughtExceptions">true</bool>
+    <!-- Enable automatic activity tracking -->
+    <bool name="ga_autoActivityTracking">true</bool>
+
+<!--
+    <screenName name="lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity">Main</screenName>
+    <screenName name="lab.davidahn.appshuttle.view.ui.SettingsActivity">Setting</screenName>
+-->    
+
+    <!-- Enable automatic exception tracking -->
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+
 </resources>
