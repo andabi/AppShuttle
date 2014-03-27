@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_manager.html#a5a8d696ef319e68f873be04b81f4693b" title="lab.davidahn.appshuttle.collect.env.DurationUserEnvManager.getInstance" alt="" coords="601,5,1052,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_headset_env.html#a5add75e10866468bd9f09dadbe182d62" title="lab.davidahn.appshuttle.collect.env.HeadsetEnv.equals" alt="" coords="655,59,999,88"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a46ad5b008899b7d7e89d3a48f2e64e69" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getEndTime" alt="" coords="625,112,1028,141"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_headset_env.html#ad02f208eae962dcfb21fd2bc39e2bf81" title="lab.davidahn.appshuttle.collect.env.HeadsetEnv.isPlugged" alt="" coords="1101,59,1464,88"/>
+</map>

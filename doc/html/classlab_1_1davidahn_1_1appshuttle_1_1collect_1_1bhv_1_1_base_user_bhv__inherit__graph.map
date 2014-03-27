@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_app_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.AppUserBhv\n||+ AppUserBhv()\l+ isValid()\l}" alt="" coords="5,654,309,757"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_call_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.CallUserBhv\n||+ CallUserBhv()\l}" alt="" coords="333,663,637,748"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_none_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.NoneUserBhv\n||+ NoneUserBhv()\l+ isValid()\l}" alt="" coords="661,654,973,757"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_sensor_on_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.SensorOnUserBhv\n||+ SensorOnUserBhv()\l}" alt="" coords="997,663,1336,748"/>
+<area shape="rect" id="node2" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.UserBhv\n||+ getBhvType()\l+ setBhvType()\l+ getBhvName()\l+ setBhvName()\l+ getMeta()\l+ setMeta()\l+ getLaunchIntent()\l}" alt="" coords="511,5,791,195"/>
+</map>

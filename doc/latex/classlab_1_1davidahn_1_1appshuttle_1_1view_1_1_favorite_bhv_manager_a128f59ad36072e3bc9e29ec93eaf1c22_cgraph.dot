@@ -1,0 +1,47 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.favorite",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.isFullProperNumFavorite",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a12715a118022ecb5bd146c5bebcde2fe"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="lab.davidahn.appshuttle.AppShuttleApplication.getContext",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#a3aaf27429843b2eb05fdd33f20be8f86"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="lab.davidahn.appshuttle.AppShuttleApplication.getPreferences",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#ae46ed63b120534585fb15e7d5ed5593a"];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.getNotifiableFavoriteBhvSet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a4d0bdf7148c80391d67ed9c84ec371d6"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.getFavoriteBhvSet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab20144f0da1fe5a22731ac49d6c5c05a"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab92b1c857b0fdd635723335be0bde5e7"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.trySetNotifiable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#aa18a30831f7395a608cdedf787292ee6"];
+  Node8 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="lab.davidahn.appshuttle.view.FavoriteBhv.setNotifiable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv.html#a519adb4bd072ef46e5011832b70314fa"];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="lab.davidahn.appshuttle.view.FavoriteBhv.isNotifiable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv.html#a7023e6858239f8bbdef260d8e22e9d6c"];
+  Node8 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a9ef19f5e1ff5108d26dff21e09c791ee"];
+  Node8 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.updateNotifiable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a9884bc1ec65c46edeab38d3dbbfd3c9b"];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid"];
+  Node13 [label="lab.davidahn.appshuttle.view.ViewableUserBhv.getBhvType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#a3a584c304446a7f9e856f18222aa9a90"];
+  Node13 -> Node14 [color="midnightblue",fontsize="10",style="solid"];
+  Node14 [label="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#aa40041afff60cca4cb2b7351bc4614bb"];
+  Node12 -> Node15 [color="midnightblue",fontsize="10",style="solid"];
+  Node15 [label="lab.davidahn.appshuttle.view.ViewableUserBhv.getBhvName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#a956879b6b47ea49ee3f9a12f5fdd55db"];
+  Node15 -> Node16 [color="midnightblue",fontsize="10",style="solid"];
+  Node16 [label="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#a16c8cfa47dc39ba10e931c730295a3f3"];
+  Node1 -> Node17 [color="midnightblue",fontsize="10",style="solid"];
+  Node17 [label="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.favorite",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a1b8026558c53882ec36732c0d517bdfa"];
+  Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid"];
+  Node18 [label="lab.davidahn.appshuttle.view.FavoriteBhv.getSetTime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv.html#a7842f627ef6b3794d12c8c64f97161d7"];
+  Node17 -> Node13 [color="midnightblue",fontsize="10",style="solid"];
+  Node17 -> Node15 [color="midnightblue",fontsize="10",style="solid"];
+  Node1 -> Node19 [color="midnightblue",fontsize="10",style="solid"];
+  Node19 [label="lab.davidahn.appshuttle.view.ViewableUserBhv.getUserBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#ad122739b90e2eaeee1c74ce99cd0e9d7"];
+}

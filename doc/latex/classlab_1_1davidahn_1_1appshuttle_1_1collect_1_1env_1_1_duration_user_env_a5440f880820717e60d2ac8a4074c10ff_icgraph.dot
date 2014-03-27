@@ -1,0 +1,16 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.collect.env.DurationUserEnv.setUserEnv",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.collect.env.BaseEnvSensor.setEnvForDurationUserEnvBuilder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_base_env_sensor.html#ad2800c98cf7d5d697e0340453a5e6893"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="lab.davidahn.appshuttle.collect.env.BaseEnvSensor.extractDurationUserEnv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_base_env_sensor.html#ab18b816952c26259a2d19b0845d1254c"];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="lab.davidahn.appshuttle.collect.env.HeadsetEnvSensor.extractDurationUserEnv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_headset_env_sensor.html#acd65dcea55efbd3121a0d0e8fd0ffb0f"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="lab.davidahn.appshuttle.collect.env.SpeedEnvSensor.extractDurationUserEnv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_speed_env_sensor.html#a4741b543901607a0f22e49fc64276c5f"];
+}

@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_manager.html#a9078af0ba22cb926a05332d15bddcf65" title="lab.davidahn.appshuttle.collect.bhv.UserBhvManager.getInstance" alt="" coords="504,5,907,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_manager.html#a75593d51cbe273dfb50d6c8cdcc800d7" title="lab.davidahn.appshuttle.collect.bhv.UserBhvManager.getRegisteredUserBhv" alt="" coords="472,59,939,88"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_history_present_bhv.html#adae39116d1163c34b3479d2f5a96a485" title="lab.davidahn.appshuttle.view.HistoryPresentBhv.setRecentPredictionTime" alt="" coords="479,112,932,141"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_history_present_bhv.html#a13446007422a70d55d293e7e3e2fc725" title="lab.davidahn.appshuttle.view.HistoryPresentBhv.setRecentPredictionScore" alt="" coords="476,165,935,195"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_user_bhv.html#a2b8ccb431e222ea8162e3ffaec88e5be" title="lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.create" alt="" coords="988,59,1337,88"/>
+</map>

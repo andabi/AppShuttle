@@ -1,0 +1,132 @@
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher}{\section{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher \-Class \-Reference}
+\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher}\index{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher@{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher}}
+}
+
+
+\-Inheritance diagram for lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher__inherit__graph}
+\end{center}
+\end{figure}
+
+
+\-Collaboration diagram for lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ab98d33b266c9e85f0c88a69bdc96cae4}{\-Location\-Position\-Matcher} (\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_position_matcher_conf}{\-Position\-Matcher\-Conf} conf)
+\item 
+\hyperlink{enumlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_type}{\-Matcher\-Type} \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ace1434b47f9f9b06301cdd10fa29c001}{get\-Type} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Protected \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a50ff6822bc7ee25e8006a56f7a3afb9d}{make\-Matcher\-Count\-Unit} (\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv}{\-Duration\-User\-Bhv} $>$ duration\-User\-Bhv\-List, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} u\-Cxt)
+\item 
+double \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a2f6619a2c7615ebf42eda3e2d5988271}{compute\-Inverse\-Entropy} (\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit} $>$ matcher\-Count\-Unit\-List)
+\item 
+double \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ac89bdfd35db4b835f73df8b78d986ee1}{compute\-Relatedness} (\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit} unit, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} u\-Cxt)
+\item 
+double \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a787f09d4907e0f44e926f77713426110}{compute\-Likelihood} (int num\-Total\-History, \-Map$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit}, \-Double $>$ related\-History\-Map, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} u\-Cxt)
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-K-\/\-N\-N based algorithm \begin{DoxyAuthor}{\-Author}
+andabi 
+\end{DoxyAuthor}
+
+
+\-Definition at line 25 of file \-Location\-Position\-Matcher.\-java.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ab98d33b266c9e85f0c88a69bdc96cae4}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}!\-Location\-Position\-Matcher@{\-Location\-Position\-Matcher}}
+\index{\-Location\-Position\-Matcher@{\-Location\-Position\-Matcher}!lab::davidahn::appshuttle::predict::matcher::position::LocationPositionMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}}
+\subsubsection[{\-Location\-Position\-Matcher}]{\setlength{\rightskip}{0pt plus 5cm}{\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher.\-Location\-Position\-Matcher} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Position\-Matcher\-Conf}}]{conf}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ab98d33b266c9e85f0c88a69bdc96cae4}
+
+
+\-Definition at line 27 of file \-Location\-Position\-Matcher.\-java.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a2f6619a2c7615ebf42eda3e2d5988271}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}!compute\-Inverse\-Entropy@{compute\-Inverse\-Entropy}}
+\index{compute\-Inverse\-Entropy@{compute\-Inverse\-Entropy}!lab::davidahn::appshuttle::predict::matcher::position::LocationPositionMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}}
+\subsubsection[{compute\-Inverse\-Entropy}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher.\-compute\-Inverse\-Entropy} (
+\begin{DoxyParamCaption}
+\item[{\-List$<$ {\bf \-Matcher\-Count\-Unit} $>$}]{matcher\-Count\-Unit\-List}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a2f6619a2c7615ebf42eda3e2d5988271}
+
+
+\-Definition at line 74 of file \-Location\-Position\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a787f09d4907e0f44e926f77713426110}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}!compute\-Likelihood@{compute\-Likelihood}}
+\index{compute\-Likelihood@{compute\-Likelihood}!lab::davidahn::appshuttle::predict::matcher::position::LocationPositionMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}}
+\subsubsection[{compute\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher.\-compute\-Likelihood} (
+\begin{DoxyParamCaption}
+\item[{int}]{num\-Total\-History, }
+\item[{\-Map$<$ {\bf \-Matcher\-Count\-Unit}, \-Double $>$}]{related\-History\-Map, }
+\item[{{\bf \-Snapshot\-User\-Cxt}}]{u\-Cxt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a787f09d4907e0f44e926f77713426110}
+
+
+\-Definition at line 118 of file \-Location\-Position\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ac89bdfd35db4b835f73df8b78d986ee1}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}!compute\-Relatedness@{compute\-Relatedness}}
+\index{compute\-Relatedness@{compute\-Relatedness}!lab::davidahn::appshuttle::predict::matcher::position::LocationPositionMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}}
+\subsubsection[{compute\-Relatedness}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher.\-compute\-Relatedness} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Matcher\-Count\-Unit}}]{unit, }
+\item[{{\bf \-Snapshot\-User\-Cxt}}]{u\-Cxt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ac89bdfd35db4b835f73df8b78d986ee1}
+
+
+\-Definition at line 113 of file \-Location\-Position\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ace1434b47f9f9b06301cdd10fa29c001}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}!get\-Type@{get\-Type}}
+\index{get\-Type@{get\-Type}!lab::davidahn::appshuttle::predict::matcher::position::LocationPositionMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}}
+\subsubsection[{get\-Type}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Matcher\-Type} {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher.\-get\-Type} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_ace1434b47f9f9b06301cdd10fa29c001}
+
+
+\-Definition at line 32 of file \-Location\-Position\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a50ff6822bc7ee25e8006a56f7a3afb9d}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}!make\-Matcher\-Count\-Unit@{make\-Matcher\-Count\-Unit}}
+\index{make\-Matcher\-Count\-Unit@{make\-Matcher\-Count\-Unit}!lab::davidahn::appshuttle::predict::matcher::position::LocationPositionMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::position\-::\-Location\-Position\-Matcher}}
+\subsubsection[{make\-Matcher\-Count\-Unit}]{\setlength{\rightskip}{0pt plus 5cm}\-List$<${\bf \-Matcher\-Count\-Unit}$>$ {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-position.\-Location\-Position\-Matcher.\-make\-Matcher\-Count\-Unit} (
+\begin{DoxyParamCaption}
+\item[{\-List$<$ {\bf \-Duration\-User\-Bhv} $>$}]{duration\-User\-Bhv\-List, }
+\item[{{\bf \-Snapshot\-User\-Cxt}}]{u\-Cxt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher_a50ff6822bc7ee25e8006a56f7a3afb9d}
+
+
+\-Definition at line 37 of file \-Location\-Position\-Matcher.\-java.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\-App\-Shuttle/src/lab/davidahn/appshuttle/predict/matcher/position/\hyperlink{_location_position_matcher_8java}{\-Location\-Position\-Matcher.\-java}\end{DoxyCompactItemize}

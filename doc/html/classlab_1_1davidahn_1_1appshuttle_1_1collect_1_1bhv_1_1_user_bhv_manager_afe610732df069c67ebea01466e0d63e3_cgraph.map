@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#ac0a070a1ae8f75b034a9ac196c3ceac8" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.storeUserBhv" alt="" coords="432,59,821,88"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_user_bhv.html#a187a1ad4bab71800fbf104fd0378a4e2" title="lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.getBhvType" alt="" coords="873,5,1257,35"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_user_bhv.html#ad949185031050c0eba6521d3e6b3eff7" title="lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.getBhvName" alt="" coords="871,59,1260,88"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_user_bhv.html#a90df2cc6d7eb42e460549cfe54e5e9e6" title="lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.getMetas" alt="" coords="881,112,1249,141"/>
+</map>

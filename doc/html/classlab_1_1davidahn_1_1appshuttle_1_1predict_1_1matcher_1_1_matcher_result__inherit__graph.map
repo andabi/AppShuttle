@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result_elem.html" title="{lab.davidahn.appshuttle.predict.matcher.MatcherResultElem\n|# matcherType\l# time\l# timeZone\l# userEnvs\l# bhv\l# score\l# viewMsg\l|+ MatcherResultElem()\l+ getMatcherType()\l+ getTime()\l+ setTime()\l+ getTimeZone()\l+ setTimeZone()\l+ setMatcherType()\l+ getUserEnv()\l+ getUserEnvs()\l+ setUserEnv()\land 9 more...}" alt="" coords="5,139,376,501"/>
+<area shape="rect" id="node4" href="$class_comparable.html" title="{Comparable\&lt; MatcherResultElem \&gt;\n||}" alt="" coords="76,5,305,91"/>
+</map>

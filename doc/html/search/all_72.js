@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['receiver',['receiver',['../classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_main_service.html#a8dd8650455103ea373569ab429a3f809',1,'lab::davidahn::appshuttle::AppShuttleMainService']]],
+  ['recentmatcher',['RecentMatcher',['../classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_recent_matcher.html',1,'lab::davidahn::appshuttle::predict::matcher::recent']]],
+  ['recentmatcher',['RecentMatcher',['../classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_recent_matcher.html#aa723a6521b53bd80dea0f39f0c6e0ecb',1,'lab::davidahn::appshuttle::predict::matcher::recent::RecentMatcher']]],
+  ['recentmatcher_2ejava',['RecentMatcher.java',['../_recent_matcher_8java.html',1,'']]],
+  ['recentmatcherconf',['RecentMatcherConf',['../classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_recent_matcher_conf.html',1,'lab::davidahn::appshuttle::predict::matcher::recent']]],
+  ['recentmatcherconf_2ejava',['RecentMatcherConf.java',['../_recent_matcher_conf_8java.html',1,'']]],
+  ['recentmatchergroup',['RecentMatcherGroup',['../classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_recent_matcher_group.html',1,'lab::davidahn::appshuttle::predict::matcher::recent']]],
+  ['recentmatchergroup_2ejava',['RecentMatcherGroup.java',['../_recent_matcher_group_8java.html',1,'']]],
+  ['register',['register',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_manager.html#afe610732df069c67ebea01466e0d63e3',1,'lab::davidahn::appshuttle::collect::bhv::UserBhvManager']]],
+  ['registermatcher',['registerMatcher',['../classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group.html#a7d49a1ae78e9d2ca142fef432edfe14b',1,'lab::davidahn::appshuttle::predict::matcher::MatcherGroup']]],
+  ['report',['report',['../classlab_1_1davidahn_1_1appshuttle_1_1report_1_1_reporter.html#aa46a0a8b1801ed6e03f62882d8eed552',1,'lab::davidahn::appshuttle::report::Reporter']]],
+  ['reporter',['Reporter',['../classlab_1_1davidahn_1_1appshuttle_1_1report_1_1_reporter.html',1,'lab::davidahn::appshuttle::report']]],
+  ['reporter',['Reporter',['../classlab_1_1davidahn_1_1appshuttle_1_1report_1_1_reporter.html#ab69796a65bf0fa2d857c18dcfee5211d',1,'lab::davidahn::appshuttle::report::Reporter']]],
+  ['reporter_2ejava',['Reporter.java',['../_reporter_8java.html',1,'']]],
+  ['retrieve',['retrieve',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv_dao.html#a361c8bc6da5d1aea6214b7d8524e160d',1,'lab::davidahn::appshuttle::collect::bhv::DurationUserBhvDao.retrieve()'],['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_manager.html#a94597be6c84d11756b33c7efb9f946e0',1,'lab::davidahn::appshuttle::collect::env::DurationUserEnvManager.retrieve()']]],
+  ['retrievebetween',['retrieveBetween',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_dao.html#aac99ba4d0a65aabc39cd06308687971e',1,'lab::davidahn::appshuttle::collect::env::DurationUserEnvDao']]],
+  ['retrieveblockeduserbhv',['retrieveBlockedUserBhv',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a1e7dfd630cac9e84c4f06d1dc85657de',1,'lab::davidahn::appshuttle::collect::bhv::UserBhvDao']]],
+  ['retrievebybhv',['retrieveByBhv',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv_dao.html#a57f7c7cc2c499dff99f46d365eecf6e6',1,'lab::davidahn::appshuttle::collect::bhv::DurationUserBhvDao']]],
+  ['retrievecontains',['retrieveContains',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_dao.html#ad6232fa96a37cfdf5cdd01b8ab1b9e0a',1,'lab::davidahn::appshuttle::collect::env::DurationUserEnvDao.retrieveContains(long time, EnvType envType)'],['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_dao.html#a6be688edf887731335f3a7f3054a8d2b',1,'lab::davidahn::appshuttle::collect::env::DurationUserEnvDao.retrieveContains(long fromTime, long toTime, EnvType envType)']]],
+  ['retrievefavoriteuserbhv',['retrieveFavoriteUserBhv',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a25e1efeaeec8508360a9d8a4c417a9e1',1,'lab::davidahn::appshuttle::collect::bhv::UserBhvDao']]],
+  ['retrievehistorypresentbhvlistsorted',['retrieveHistoryPresentBhvListSorted',['../classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_history_present_bhv.html#a2c2091974b4ef03bd8262641795c92fa',1,'lab::davidahn::appshuttle::view::HistoryPresentBhv']]],
+  ['retrieveonendtimebybhv',['retrieveOnEndTimeByBhv',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv_dao.html#af2803e2cacbc7311826226e0c5c88d81',1,'lab::davidahn::appshuttle::collect::bhv::DurationUserBhvDao']]],
+  ['retrieverecent',['retrieveRecent',['../classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_history_present_bhv_dao.html#a27e9e765af44214c4df1cca0c745a04c',1,'lab::davidahn::appshuttle::view::HistoryPresentBhvDao']]],
+  ['retrieveuserbhv',['retrieveUserBhv',['../classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#ad5120804f22b8a845044c7ae2806b82b',1,'lab::davidahn::appshuttle::collect::bhv::UserBhvDao']]]
+];

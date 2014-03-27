@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a47ad88f90c52264c12acb35e36199d02" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getTime" alt="" coords="455,5,836,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a2696b810045ffb56c7fe8e260b2109e3" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getDuration" alt="" coords="445,59,845,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a46ad5b008899b7d7e89d3a48f2e64e69" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getEndTime" alt="" coords="444,112,847,141"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a8387a4b0279cc1c91fe921d7de78528d" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getTimeZone" alt="" coords="440,165,851,195"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a23b6a888adb88aad858d95160804cc0a" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getUserBhv" alt="" coords="444,219,847,248"/>
+<area shape="rect" id="node13" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#aa40041afff60cca4cb2b7351bc4614bb" title="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvType" alt="" coords="468,272,823,301"/>
+<area shape="rect" id="node15" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#a16c8cfa47dc39ba10e931c730295a3f3" title="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvName" alt="" coords="465,325,825,355"/>
+</map>

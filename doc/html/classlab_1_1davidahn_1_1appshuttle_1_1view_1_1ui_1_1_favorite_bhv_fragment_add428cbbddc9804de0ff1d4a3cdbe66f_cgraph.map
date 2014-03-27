@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab92b1c857b0fdd635723335be0bde5e7" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getInstance" alt="" coords="536,5,923,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#aba5d587e43f97309c98ccd9e4fe42ca4" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getFavoriteBhvListSorted" alt="" coords="497,59,961,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a512ba14af7e6330d226a026384514a8b" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.updateFavoriteBhv" alt="" coords="1011,32,1437,61"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab20144f0da1fe5a22731ac49d6c5c05a" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getFavoriteBhvSet" alt="" coords="1011,85,1437,115"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a25e1efeaeec8508360a9d8a4c417a9e1" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.retrieveFavoriteUserBhv" alt="" coords="1485,32,1936,61"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.BaseUserBhv\n|# bhvType\l# bhvName\l# metas\l|+ BaseUserBhv()\l+ getLaunchIntent()\l+ getBhvType()\l+ setBhvType()\l+ getBhvName()\l+ setBhvName()\l+ getMetas()\l+ setMetas()\l+ getMeta()\l+ setMeta()\l+ isValid()\l+ toString()\l+ equals()\l+ hashCode()\l+ create()\l}" alt="" coords="285,413,595,776"/>
+<area shape="rect" id="node4" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.UserBhv\n||+ getBhvType()\l+ setBhvType()\l+ getBhvName()\l+ setBhvName()\l+ getMeta()\l+ setMeta()\l+ getLaunchIntent()\l}" alt="" coords="5,157,285,347"/>
+<area shape="rect" id="node8" href="$enumlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_type.html" title="{lab.davidahn.appshuttle.collect.bhv.UserBhvType\n|+ NONE\l+ APP\l+ CALL\l+ SENSOR_ON\l|}" alt="" coords="389,183,699,321"/>
+</map>

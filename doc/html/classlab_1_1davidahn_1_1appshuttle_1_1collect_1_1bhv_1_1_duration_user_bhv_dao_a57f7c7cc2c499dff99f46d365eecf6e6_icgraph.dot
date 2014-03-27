@@ -1,0 +1,16 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao.retrieveByBhv",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="lab.davidahn.appshuttle.predict.matcher.Matcher\< C extends BaseMatcherConf \>.getInvolvedDurationUserBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_3_01_c_01extends_01_base_matcher_conf_01_4.html#ad39d4dcce8a977539d9d70f4db42a504"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="lab.davidahn.appshuttle.predict.matcher.time.DailyWeekdayTimeMatcher.getInvolvedDurationUserBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_daily_weekday_time_matcher.html#aa2fbe7415cc1e7e0ff58c1498818944c"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="lab.davidahn.appshuttle.predict.matcher.time.DailyWeekendTimeMatcher.getInvolvedDurationUserBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_daily_weekend_time_matcher.html#ad9adedaf2a35c09d429e5ce4aaeec3b5"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="lab.davidahn.appshuttle.predict.matcher.time.TimeMatcher.getInvolvedDurationUserBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher.html#a902ae5d9c21e50a3db1c49e5be034bd8"];
+}

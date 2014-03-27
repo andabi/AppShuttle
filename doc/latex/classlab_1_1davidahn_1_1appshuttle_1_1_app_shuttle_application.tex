@@ -1,0 +1,171 @@
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application}{\section{lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application \-Class \-Reference}
+\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application}\index{lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application@{lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application}}
+}
+
+
+\-Inheritance diagram for lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=298pt]{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application__inherit__graph}
+\end{center}
+\end{figure}
+
+
+\-Collaboration diagram for lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a23024e1f4e6a9b50c262fb19a1a09d69}{\-App\-Shuttle\-Application} ()
+\item 
+void \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3bc4890f9565e18edaad0a0bb06e8b2f}{on\-Create} ()
+\item 
+\-Shared\-Preferences \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_ae46ed63b120534585fb15e7d5ed5593a}{get\-Preferences} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Static \-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application}{\-App\-Shuttle\-Application} \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3aaf27429843b2eb05fdd33f20be8f86}{get\-Context} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Static \-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static long \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a1f29797a601b4c214b90cd0952595564}{launch\-Time}
+\item 
+static long \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_adb0cb74b77e1bf2dd00d8d11308a0b19}{last\-Prediction\-Time}
+\item 
+static \-Map$<$ \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv}, \*
+\-Duration\-User\-Bhv.\-Builder $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a42e05ff1c1e85fe0d8178d5f6db08c8d}{duration\-User\-Bhv\-Builder\-Map}
+\item 
+static volatile \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_abad87ce8605d542e59bb402ceaff671f}{curr\-User\-Cxt}
+\item 
+static volatile \-Map$<$ \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv}, \*
+\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1_predicted_bhv}{\-Predicted\-Bhv} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3a70bde7b271c3e7d4aaf83df91d4b41}{predicted\-Bhv\-Map}
+\item 
+static volatile \-Map$<$ \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv}, \*
+\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_predicted_present_bhv}{\-Predicted\-Present\-Bhv} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_aae8fb9f870346c2665884100497a83cf}{predicted\-Present\-Bhv\-Map}
+\item 
+static int \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a0df5e1b7e8ec958c2c6d8811921cb54c}{num\-Favorite\-Notifiable}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+
+
+\-Definition at line 15 of file \-App\-Shuttle\-Application.\-java.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a23024e1f4e6a9b50c262fb19a1a09d69}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!\-App\-Shuttle\-Application@{\-App\-Shuttle\-Application}}
+\index{\-App\-Shuttle\-Application@{\-App\-Shuttle\-Application}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{\-App\-Shuttle\-Application}]{\setlength{\rightskip}{0pt plus 5cm}{\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-App\-Shuttle\-Application} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a23024e1f4e6a9b50c262fb19a1a09d69}
+
+
+\-Definition at line 25 of file \-App\-Shuttle\-Application.\-java.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3aaf27429843b2eb05fdd33f20be8f86}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!get\-Context@{get\-Context}}
+\index{get\-Context@{get\-Context}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{get\-Context}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf \-App\-Shuttle\-Application} {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-get\-Context} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3aaf27429843b2eb05fdd33f20be8f86}
+
+
+\-Definition at line 36 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_ae46ed63b120534585fb15e7d5ed5593a}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!get\-Preferences@{get\-Preferences}}
+\index{get\-Preferences@{get\-Preferences}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{get\-Preferences}]{\setlength{\rightskip}{0pt plus 5cm}\-Shared\-Preferences {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-get\-Preferences} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_ae46ed63b120534585fb15e7d5ed5593a}
+
+
+\-Definition at line 40 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3bc4890f9565e18edaad0a0bb06e8b2f}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!on\-Create@{on\-Create}}
+\index{on\-Create@{on\-Create}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{on\-Create}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-on\-Create} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3bc4890f9565e18edaad0a0bb06e8b2f}
+
+
+\-Definition at line 27 of file \-App\-Shuttle\-Application.\-java.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_abad87ce8605d542e59bb402ceaff671f}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!curr\-User\-Cxt@{curr\-User\-Cxt}}
+\index{curr\-User\-Cxt@{curr\-User\-Cxt}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{curr\-User\-Cxt}]{\setlength{\rightskip}{0pt plus 5cm}volatile {\bf \-Snapshot\-User\-Cxt} {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-curr\-User\-Cxt}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_abad87ce8605d542e59bb402ceaff671f}
+
+
+\-Definition at line 20 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a42e05ff1c1e85fe0d8178d5f6db08c8d}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!duration\-User\-Bhv\-Builder\-Map@{duration\-User\-Bhv\-Builder\-Map}}
+\index{duration\-User\-Bhv\-Builder\-Map@{duration\-User\-Bhv\-Builder\-Map}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{duration\-User\-Bhv\-Builder\-Map}]{\setlength{\rightskip}{0pt plus 5cm}\-Map$<${\bf \-User\-Bhv}, \-Duration\-User\-Bhv.\-Builder$>$ {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-duration\-User\-Bhv\-Builder\-Map}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a42e05ff1c1e85fe0d8178d5f6db08c8d}
+
+
+\-Definition at line 19 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_adb0cb74b77e1bf2dd00d8d11308a0b19}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!last\-Prediction\-Time@{last\-Prediction\-Time}}
+\index{last\-Prediction\-Time@{last\-Prediction\-Time}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{last\-Prediction\-Time}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-last\-Prediction\-Time}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_adb0cb74b77e1bf2dd00d8d11308a0b19}
+
+
+\-Definition at line 18 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a1f29797a601b4c214b90cd0952595564}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!launch\-Time@{launch\-Time}}
+\index{launch\-Time@{launch\-Time}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{launch\-Time}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-launch\-Time}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a1f29797a601b4c214b90cd0952595564}
+
+
+\-Definition at line 17 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a0df5e1b7e8ec958c2c6d8811921cb54c}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!num\-Favorite\-Notifiable@{num\-Favorite\-Notifiable}}
+\index{num\-Favorite\-Notifiable@{num\-Favorite\-Notifiable}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{num\-Favorite\-Notifiable}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-num\-Favorite\-Notifiable}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a0df5e1b7e8ec958c2c6d8811921cb54c}
+
+
+\-Definition at line 23 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3a70bde7b271c3e7d4aaf83df91d4b41}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!predicted\-Bhv\-Map@{predicted\-Bhv\-Map}}
+\index{predicted\-Bhv\-Map@{predicted\-Bhv\-Map}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{predicted\-Bhv\-Map}]{\setlength{\rightskip}{0pt plus 5cm}volatile \-Map$<${\bf \-User\-Bhv}, {\bf \-Predicted\-Bhv}$>$ {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-predicted\-Bhv\-Map}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_a3a70bde7b271c3e7d4aaf83df91d4b41}
+
+
+\-Definition at line 21 of file \-App\-Shuttle\-Application.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_aae8fb9f870346c2665884100497a83cf}{\index{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}!predicted\-Present\-Bhv\-Map@{predicted\-Present\-Bhv\-Map}}
+\index{predicted\-Present\-Bhv\-Map@{predicted\-Present\-Bhv\-Map}!lab::davidahn::appshuttle::AppShuttleApplication@{lab\-::davidahn\-::appshuttle\-::\-App\-Shuttle\-Application}}
+\subsubsection[{predicted\-Present\-Bhv\-Map}]{\setlength{\rightskip}{0pt plus 5cm}volatile \-Map$<${\bf \-User\-Bhv}, {\bf \-Predicted\-Present\-Bhv}$>$ {\bf lab.\-davidahn.\-appshuttle.\-App\-Shuttle\-Application.\-predicted\-Present\-Bhv\-Map}\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application_aae8fb9f870346c2665884100497a83cf}
+
+
+\-Definition at line 22 of file \-App\-Shuttle\-Application.\-java.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\-App\-Shuttle/src/lab/davidahn/appshuttle/\hyperlink{_app_shuttle_application_8java}{\-App\-Shuttle\-Application.\-java}\end{DoxyCompactItemize}

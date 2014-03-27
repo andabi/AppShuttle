@@ -1,0 +1,3 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_base_matcher_conf.html" title="{lab.davidahn.appshuttle.predict.matcher.BaseMatcherConf\n|# duration\l# acceptanceDelay\l# minNumHistory\l# minLikelihood\l# minInverseEntropy\l|+ getDuration()\l+ getAcceptanceDelay()\l+ getMinNumRelatedHistory()\l+ getMinLikelihood()\l+ getMinInverseEntropy()\l~ BaseMatcherConf()\l}" alt="" coords="31,174,393,415"/>
+</map>

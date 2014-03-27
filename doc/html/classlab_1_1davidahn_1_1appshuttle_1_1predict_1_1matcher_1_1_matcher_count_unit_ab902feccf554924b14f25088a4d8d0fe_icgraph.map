@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1headset_1_1_headset_matcher.html#a3a8f69593f8b801b594291ec8c078d32" title="lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcher.computeRelatedness" alt="" coords="503,5,1033,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_move_position_matcher.html#a4fbd9deb43a6ef1b133d121631466935" title="lab.davidahn.appshuttle.predict.matcher.position.MovePositionMatcher.computeRelatedness" alt="" coords="489,59,1047,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_place_position_matcher.html#a42764115ab4acb83c2fbecaa5fea4c25" title="lab.davidahn.appshuttle.predict.matcher.position.PlacePositionMatcher.computeRelatedness" alt="" coords="488,112,1048,141"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher.html#a5156068d7a6fb6eaeb79005535bea95a" title="lab.davidahn.appshuttle.predict.matcher.time.TimeMatcher.computeRelatedness" alt="" coords="524,165,1012,195"/>
+</map>

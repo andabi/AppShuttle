@@ -1,0 +1,29 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.view.ui.NotiBarNotifier.getNumPresentElem",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.view.ui.NotiBarNotifier.getNumElem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_noti_bar_notifier.html#ae9ddd6bb783d361bc8b7c7f88625255f"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="lab.davidahn.appshuttle.AppShuttleApplication.getPreferences",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#ae46ed63b120534585fb15e7d5ed5593a"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="lab.davidahn.appshuttle.view.ui.NotiBarNotifier.getNotibarWidth",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_noti_bar_notifier.html#a6ea620431f38a93a4937640b3d00a861"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="lab.davidahn.appshuttle.view.ui.NotiBarNotifier.getNumFavoriteElem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_noti_bar_notifier.html#a495beeed0f4480c041ee2e34023ce26b"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab92b1c857b0fdd635723335be0bde5e7"];
+  Node5 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.getNotifiableFavoriteBhvList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a93308cece9a6a14f27a3866986730e8d"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.getFavoriteBhvListSorted",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#aba5d587e43f97309c98ccd9e4fe42ca4"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.updateFavoriteBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a512ba14af7e6330d226a026384514a8b"];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.retrieveFavoriteUserBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a25e1efeaeec8508360a9d8a4c417a9e1"];
+  Node8 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="lab.davidahn.appshuttle.view.FavoriteBhvManager.getFavoriteBhvSet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab20144f0da1fe5a22731ac49d6c5c05a"];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+}

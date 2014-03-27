@@ -1,0 +1,25 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.collect.env.DurationUserEnvManager.retrieve",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.collect.env.DurationUserEnvDao.retrieveContains",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_dao.html#ad6232fa96a37cfdf5cdd01b8ab1b9e0a"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="lab.davidahn.appshuttle.collect.env.DurationUserEnv.setTime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env.html#a1188a9bc35369018131f8cd74f4a5801"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="lab.davidahn.appshuttle.collect.env.EnvType.getClazz",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$enumlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_env_type.html#a51b2442353c7736d39ce93dc70b6fe68"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="lab.davidahn.appshuttle.collect.env.DurationUserEnvDao.retrieveBetween",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_dao.html#aac99ba4d0a65aabc39cd06308687971e"];
+  Node5 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="lab.davidahn.appshuttle.collect.env.DurationUserEnv.equals",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env.html#a4b8f05055a1ab46dc47f82d2369a5009"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="lab.davidahn.appshuttle.collect.env.UserEnv.getEnvType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_env.html#ae83478f565a40e3650be12e7ed98e4cb"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="lab.davidahn.appshuttle.collect.env.DurationUserEnv.setEndTime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env.html#a59a5f134514989990748f94bdfcff3e6"];
+}

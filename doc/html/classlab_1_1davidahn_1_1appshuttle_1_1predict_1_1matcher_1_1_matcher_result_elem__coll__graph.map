@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$class_comparable.html" title="{Comparable\&lt; MatcherResultElem \&gt;\n||}" alt="" coords="5,244,235,329"/>
+<area shape="rect" id="node16" href="$enumlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_type.html" title="{lab.davidahn.appshuttle.predict.matcher.MatcherType\n|+ FREQUENCY\l+ FREQUENTLY_RECENT\l+ INSTANTALY_RECENT\l+ POSITION\l+ PLACE\l+ LOCATION\l+ MOVE\l+ TIME\l+ TIME_DAILY_WEEKDAY\l+ TIME_DAILY_WEEKEND\land 4 more...|+ MatcherType()\l}" alt="" coords="364,157,697,416"/>
+<area shape="rect" id="node12" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html" title="{lab.davidahn.appshuttle.collect.bhv.UserBhv\n||+ getBhvType()\l+ setBhvType()\l+ getBhvName()\l+ setBhvName()\l+ getMeta()\l+ setMeta()\l+ getLaunchIntent()\l}" alt="" coords="1009,192,1289,381"/>
+</map>

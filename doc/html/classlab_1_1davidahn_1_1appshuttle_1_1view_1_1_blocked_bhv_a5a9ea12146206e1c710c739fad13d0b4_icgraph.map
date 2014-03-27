@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a2e63c6c3d13922ff5a8c85dbf8fefcc3" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.block" alt="" coords="417,59,756,88"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_blocked_bhv_manager.html#a13166f2c1bf8e747843c4fdc1a0ca4e0" title="lab.davidahn.appshuttle.view.BlockedBhvManager.block" alt="" coords="805,59,1155,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_app_shuttle_main_activity.html#a89208de0a4ba1cb488208b72f9aa33ee" title="lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity.doActionAndGetMsg" alt="" coords="1204,59,1671,88"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_blocked_bhv_fragment_1_1_blocked_bhv_info_adapter.html#a996a9f405f7d97ee54d0c6f3db25ab24" title="lab.davidahn.appshuttle.view.ui.BlockedBhvFragment.BlockedBhvInfoAdapter.getView" alt="" coords="1720,5,2245,35"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_favorite_bhv_fragment_1_1_favorite_bhv_info_adapter.html#a6db75a41a5dfb45cf50a05d6134bab59" title="lab.davidahn.appshuttle.view.ui.FavoriteBhvFragment.FavoriteBhvInfoAdapter.getView" alt="" coords="1720,59,2245,88"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_present_bhv_fragment_1_1_present_bhv_adapter.html#ad968c6b3d5bd8a90248a62de92b7ac28" title="lab.davidahn.appshuttle.view.ui.PresentBhvFragment.PresentBhvAdapter.getView" alt="" coords="1733,112,2232,141"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_place_position_matcher.html#aa119112e5551c1b55067c68de74a0964" title="lab.davidahn.appshuttle.predict.matcher.position.PlacePositionMatcher.makeMatcherCountUnit" alt="" coords="388,5,961,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_place_position_matcher.html#aad3d883f47ba687b6e1c77527d4e266a" title="lab.davidahn.appshuttle.predict.matcher.position.PlacePositionMatcher.computeInverseEntropy" alt="" coords="388,59,961,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_place_position_matcher.html#a42764115ab4acb83c2fbecaa5fea4c25" title="lab.davidahn.appshuttle.predict.matcher.position.PlacePositionMatcher.computeRelatedness" alt="" coords="395,112,955,141"/>
+</map>
