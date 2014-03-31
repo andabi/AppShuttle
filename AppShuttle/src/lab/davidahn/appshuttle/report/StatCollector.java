@@ -24,7 +24,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -72,14 +71,17 @@ public class StatCollector {
 				List<MatcherType> withMatchers = new ArrayList<MatcherType>(entry.matchers);
 				withMatchers.remove(matcherType);
 				Collections.sort(withMatchers);
+
+				String label = matcherType.name();
+				if(!withMatchers.isEmpty())
+					label += " with " + withMatchers.toString().replace("[", "").replace("]", "");
+				
 				tracker.send(MapBuilder
-						.createEvent("algorithm", strPredicted, matcherType.name() + " with ("
-								+ withMatchers.toString().replace("[", "").replace("]", "") + ")", valuePredicted)
-								.build());
+						.createEvent("algorithm", strPredicted, label, valuePredicted).build());
+
+				label = matcherType.name() + "(total)";
 				tracker.send(MapBuilder
-						.createEvent("algorithm", strPredicted, 
-								matcherType.name() + " (total)", valuePredicted)
-								.build());
+						.createEvent("algorithm", strPredicted,	label, valuePredicted).build());
 			}
 			break;
 		case FAVORITE:
@@ -221,6 +223,7 @@ public class StatCollector {
 					newEntry.presentBhvType = PresentBhvType.HISTORY;
 					break;
 				case PREDICTED:
+					newEntry.presentBhvType = PresentBhvType.PREDICTED;
 					newEntry.matchers = ((PredictedPresentBhv)uBhvPredicted).getFinalMatchers();
 					break;
 				case SELECTED:
@@ -274,7 +277,7 @@ public class StatCollector {
 		row.put(columnPredicted, (entry.isPredicted ? 1 : 0));
 		row.put(columnClicked, (entry.isClicked ? 1 : 0));
 		db.insertWithOnConflict(tableName, null, row, SQLiteDatabase.CONFLICT_REPLACE);
-		Log.d("Stat", row.toString());
+//		Log.d("Stat", row.toString());
 	}
 	
 	public List<StatEntry> retrieve(long fromTime, long toTime){

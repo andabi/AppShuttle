@@ -22,6 +22,8 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.os.PowerManager;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 public class AppShuttleMainService extends Service {
 	private AlarmManager alarmManager;
 	private SharedPreferences preferenceSettings;
@@ -40,6 +42,7 @@ public class AppShuttleMainService extends Service {
 		startPeriodicOperationsAlways();
 	    if(((PowerManager)getSystemService(Context.POWER_SERVICE)).isScreenOn())
 	    	startPeriodicOperationsScreenOn();
+	    
 	}
 	
 	@Override
