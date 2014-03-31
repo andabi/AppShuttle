@@ -221,7 +221,7 @@ public class StatCollector {
 					newEntry.presentBhvType = PresentBhvType.HISTORY;
 					break;
 				case PREDICTED:
-					newEntry.matchers = ((PredictedPresentBhv)uBhvPredicted).getMatchers();
+					newEntry.matchers = ((PredictedPresentBhv)uBhvPredicted).getFinalMatchers();
 					break;
 				case SELECTED:
 					newEntry.presentBhvType = PresentBhvType.SELECTED;

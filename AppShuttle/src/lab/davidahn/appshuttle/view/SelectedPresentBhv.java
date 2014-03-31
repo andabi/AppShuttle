@@ -13,4 +13,9 @@ public class SelectedPresentBhv extends PresentBhv {
 		return PresentBhvType.SELECTED;
 	}
 
+	@Override
+	public String getViewMsg() {
+		return "";
+	}
+
 }

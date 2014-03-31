@@ -6,12 +6,13 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
+import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+import lab.davidahn.appshuttle.predict.matcher.MatcherTypeComparator;
 
 public class PredictedPresentBhv extends PresentBhv implements
 		Comparable<PredictedPresentBhv> {
@@ -39,9 +40,15 @@ public class PredictedPresentBhv extends PresentBhv implements
 		matchersWithPredictionInfos = _predictedBhvByMatcherType;
 	}
 	
-	public List<MatcherType> getMatchers(){
-		Set<MatcherType> matcherSet = matchersWithPredictionInfos.keySet();
-		return new ArrayList<MatcherType>(matcherSet);
+	public List<MatcherType> getFinalMatchers(){
+		PredictedBhv predictedBhv = PredictedBhv.getPredictedBhv(uBhv);
+		if(predictedBhv == null)
+			return Collections.emptyList();
+
+		List<MatcherType> res = new ArrayList<MatcherType>();
+		for(MatcherResultElem resultElem : predictedBhv.getMatchersWithResult().values())
+			res.add(resultElem.getFinalMatcher());
+		return res;
 	}
 	
 	public PredictedBhv getPredictionInfos(MatcherType matcherType) {
@@ -58,7 +65,25 @@ public class PredictedPresentBhv extends PresentBhv implements
 			return null;
 		return Collections.max(matchersWithPredictionInfos.values());
 	}
+	
+	@Override
+	public String getViewMsg() {
+		StringBuffer msg = new StringBuffer();
+		viewMsg = msg.toString();
 
+		List<MatcherType> matchers = getFinalMatchers();
+		Collections.sort(matchers, new MatcherTypeComparator());
+		Collections.reverse(matchers);
+		
+		for (MatcherType matcher : matchers) {
+			msg.append(matcher.viewMsg).append(", ");
+		}
+		msg.delete(msg.length() - 2, msg.length());
+		viewMsg = msg.toString();
+		
+		return viewMsg;
+	}
+	
 	@Override
 	public int compareTo(PredictedPresentBhv _uBhv) {
 		long recentPredictedBhvTime = getRecentPredictedBhv().getTime();
@@ -113,25 +138,22 @@ public class PredictedPresentBhv extends PresentBhv implements
 
 		List<PredictedPresentBhv> extractedPredictedPresentBhvList = new ArrayList<PredictedPresentBhv>();
 		for (PredictedBhv predictedBhv : PredictedBhv.getPredictedBhvList()) {
-			PredictedPresentBhv currPresentBhv = new PredictedPresentBhv(predictedBhv);
 			PredictedPresentBhv prevPresentBhv = getPredictedPresentBhv(predictedBhv);
-			for (MatcherType matcherType : predictedBhv.getAllMatcherWithResult().keySet()) {
+			PredictedPresentBhv currPresentBhv = new PredictedPresentBhv(predictedBhv);
+			for (MatcherType matcher : predictedBhv.getMatchersWithResult().keySet()) {
 				if (prevPresentBhv == null) {
-					currPresentBhv.setPredictionInfos(matcherType,
-							predictedBhv);
+					currPresentBhv.setPredictionInfos(matcher, predictedBhv);
 				} else {
-					PredictedBhv prevPredictedBhv = prevPresentBhv
-							.getPredictionInfos(matcherType);
+					PredictedBhv prevPredictedBhv = prevPresentBhv.getPredictionInfos(matcher);
 					if (prevPredictedBhv == null) {
-						currPresentBhv.setPredictionInfos(matcherType, predictedBhv);
+						currPresentBhv.setPredictionInfos(matcher, predictedBhv);
 					} else {
-						if (matcherType.isOverwritableForNewPrediction)
-							currPresentBhv.setPredictionInfos(
-									matcherType, predictedBhv);
-						else {
-							currPresentBhv.setPredictionInfos(
-									matcherType, prevPredictedBhv);
-						}
+						MatcherType finalMatcher = 
+								predictedBhv.getMatchersWithResult().get(matcher).getFinalMatcher();
+						if (finalMatcher.isOverwritableForNewPrediction)
+							currPresentBhv.setPredictionInfos(matcher, predictedBhv);
+						else
+							currPresentBhv.setPredictionInfos(matcher, prevPredictedBhv);
 					}
 				}
 			}
