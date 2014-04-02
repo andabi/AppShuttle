@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.report;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -63,41 +62,43 @@ public class StatCollector {
 		Tracker tracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
 
 		String strPredicted = (entry.isPredicted) ? "Predicted" : "Not Predicted";
-		long valuePredicted = (entry.isPredicted) ? 100 : 0;
+		long valuePredicted = (entry.isPredicted) ? 100 : 0; //percent
 
 		switch(entry.presentBhvType){
 		case PREDICTED:
+			valuePredicted /= entry.matchers.size();
 			for(MatcherType matcherType : entry.matchers) {
-				List<MatcherType> withMatchers = new ArrayList<MatcherType>(entry.matchers);
-				withMatchers.remove(matcherType);
-				Collections.sort(withMatchers);
-
 				String label = matcherType.name();
-				if(!withMatchers.isEmpty())
-					label += " with " + withMatchers.toString().replace("[", "").replace("]", "");
-				
-				tracker.send(MapBuilder
-						.createEvent("algorithm", strPredicted, label, valuePredicted).build());
-
-				label = matcherType.name() + "(total)";
 				tracker.send(MapBuilder
 						.createEvent("algorithm", strPredicted,	label, valuePredicted).build());
+
+//				List<MatcherType> withMatchers = new ArrayList<MatcherType>(entry.matchers);
+//				withMatchers.remove(matcherType);
+//				if(!withMatchers.isEmpty()) {
+//					Collections.sort(withMatchers);
+//					String label = matcherType.name() 
+//							+ " (with " + withMatchers.toString().replace("[", "").replace("]", "") + ")";
+//					tracker.send(MapBuilder
+//							.createEvent("algorithm", strPredicted, label, valuePredicted).build());
+//				}
 			}
 			break;
-		case FAVORITE:
-			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
-							entry.presentBhvType.name() , valuePredicted).build());
-			break;
-		case HISTORY:
-			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
-					entry.presentBhvType.name() , valuePredicted).build());
-			break;
-		case SELECTED:
-			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
-					entry.presentBhvType.name() , valuePredicted).build());
-			break;
 		default:
+			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+					entry.presentBhvType.name() , valuePredicted).build());
 		}
+//		case FAVORITE:
+//			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+//							entry.presentBhvType.name() , valuePredicted).build());
+//			break;
+//		case HISTORY:
+//			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+//					entry.presentBhvType.name() , valuePredicted).build());
+//			break;
+//		case SELECTED:
+//			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+//					entry.presentBhvType.name() , valuePredicted).build());
+//			break;
 		
 		// tracker.set(Fields.customDimension(1), strPredicted + strClicked);
 		
