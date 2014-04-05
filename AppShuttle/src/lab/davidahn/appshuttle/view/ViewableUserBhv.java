@@ -57,6 +57,9 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 	public void setMeta(String key, Object val){
 		uBhv.setMeta(key, val);
 	}
+	
+	public abstract ViewableBhvType getViewableBhvType();
+
 
 	@Override
 	public boolean equals(Object o) {

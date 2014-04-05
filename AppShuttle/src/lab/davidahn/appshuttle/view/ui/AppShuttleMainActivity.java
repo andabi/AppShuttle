@@ -7,6 +7,7 @@ import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.predict.PredictionService;
+import lab.davidahn.appshuttle.report.Share;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
@@ -227,6 +228,35 @@ public class AppShuttleMainActivity extends Activity {
 		case R.id.listview_present_menu_ignore:
 			BlockedBhvManager.getInstance().block(bhv);
 			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
+		case R.id.listview_present_menu_share:
+			String status;
+			switch(bhv.getViewableBhvType()){
+			case PREDICTED:
+				status = bhv.getViewMsg();
+				break;
+			case FAVORITE:
+				status = getResources().getString(R.string.action_favorite);
+				break;
+			default:
+				status = null;
+			}
+			
+			String link;
+			switch(bhv.getBhvType()){
+			case APP:
+				link = "https://play.google.com/store/apps/details?id=" + bhv.getBhvName();
+				break;
+			case CALL:
+				link = bhv.getBhvName();
+				break;
+			default :
+				link = null;
+			}
+			
+			Share.shareTextPlain(this, 
+				"["+ getResources().getString(R.string.name) +"]",
+				getMsgShareByCountry(bhv.getBhvNameText(), status, link));
+			return null;
 		case R.id.listview_favorite_menu_unfavorite:
 			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
 			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
@@ -255,6 +285,17 @@ public class AppShuttleMainActivity extends Activity {
 		}
 	}
 	
+	private String getMsgShareByCountry(String name, String status, String link) {
+		//TODO: i13n
+		String text = "친구가 ";
+		if(status != null)
+			text += status + "한 ";
+		text += name + "을(를) 셔틀합니다.";
+		if(link != null)
+			text += "\n" + link;
+		return text;
+	}
+
 	public void doPostAction() {
 		updateView();
 		NotiBarNotifier.getInstance().updateNotification();

@@ -61,7 +61,7 @@ public class BhvCollectionService extends Service {
 		Set<UserBhv> newBhvs = new HashSet<UserBhv>(collectedBhvs);
 		newBhvs.removeAll(prevBhvs);
 		for(UserBhv bhv : newBhvs) {
-//			Log.i("statistics", "uBhv changed (" + bhv.getBhvName() + ")");
+			Log.i("statistics", "uBhv changed (" + bhv.getBhvName() + ")");
 			StatCollector.getInstance().notifyBhvTransition(bhv, false);
 		}
 	}

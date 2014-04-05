@@ -17,7 +17,7 @@ import lab.davidahn.appshuttle.view.FavoriteBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import lab.davidahn.appshuttle.view.PredictedPresentBhv;
 import lab.davidahn.appshuttle.view.PresentBhv;
-import lab.davidahn.appshuttle.view.PresentBhvType;
+import lab.davidahn.appshuttle.view.ViewableBhvType;
 import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -205,7 +205,7 @@ public class StatCollector {
 		Set<FavoriteBhv> setFavoriteBhvs = FavoriteBhvManager.getInstance().getFavoriteBhvSet();
 		if (setFavoriteBhvs.contains(userBhv)){
 			newEntry.isPredicted = true;
-			newEntry.presentBhvType = PresentBhvType.FAVORITE;
+			newEntry.presentBhvType = ViewableBhvType.FAVORITE;
 		}
 		
 		/* 현재 앱 처리 */
@@ -219,16 +219,16 @@ public class StatCollector {
 //			Log.d("Stat", "Bhv transition hit.");
 			newEntry.isPredicted = true;
 			
-			switch (uBhvPredicted.getType()){
+			switch (uBhvPredicted.getViewableBhvType()){
 				case HISTORY:
-					newEntry.presentBhvType = PresentBhvType.HISTORY;
+					newEntry.presentBhvType = ViewableBhvType.HISTORY;
 					break;
 				case PREDICTED:
-					newEntry.presentBhvType = PresentBhvType.PREDICTED;
+					newEntry.presentBhvType = ViewableBhvType.PREDICTED;
 					newEntry.matchers = ((PredictedPresentBhv)uBhvPredicted).getFinalMatchers();
 					break;
 				case SELECTED:
-					newEntry.presentBhvType = PresentBhvType.SELECTED;
+					newEntry.presentBhvType = ViewableBhvType.SELECTED;
 					break;
 				default:
 			}
@@ -321,7 +321,7 @@ public class StatCollector {
 		UserBhvType bhvType = UserBhvType.NONE;
 		String bhvName = "";
 		List<MatcherType> matchers = new ArrayList<MatcherType>();
-		PresentBhvType presentBhvType = PresentBhvType.NONE;
+		ViewableBhvType presentBhvType = ViewableBhvType.NONE;
 		boolean isPredicted = false;		// Top 6개 안에 들었는가?
 		boolean isClicked = false;			// 앱셔틀을 통해 실행했는가?
 		

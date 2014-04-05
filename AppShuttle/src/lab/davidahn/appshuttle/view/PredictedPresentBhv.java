@@ -27,8 +27,8 @@ public class PredictedPresentBhv extends PresentBhv implements
 	}
 
 	@Override
-	public PresentBhvType getType() {
-		return PresentBhvType.PREDICTED;
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.PREDICTED;
 	}
 
 	public EnumMap<MatcherType, PredictedBhv> getMatchersWithPredictionInfos() {

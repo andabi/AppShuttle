@@ -15,7 +15,7 @@
     <string name="predict_place_msg">used at this place</string>
     <string name="predict_loc_msg">used at this location</string>
     <string name="predict_move_msg">used when moving</string>
-	<string name="predict_headset_msg">used when headset plugged</string>
+    <string name="predict_headset_msg">used when headset plugged</string>
     <string name="predict_notibar_msg_sensor_wifi">Wi-Fi</string>
     <string name="actionbar_tab_text_present">Now</string>
     <string name="actionbar_tab_text_favorite">Favorite</string>
@@ -41,14 +41,14 @@
     <string name="settings_category_setting">Settings</string>
     <string name="settings_category_share">Share</string>
     <string name="settings_category_info">Info</string>
-<!--
+    <!--
     <string name="settings_pref_noti_view_hide">Hide apps</string>
     <string name="settings_pref_noti_view_hide_summary">Hide apps on notification bar.</string>
- -->    
- 	<string name="settings_pref_sleep_mode">Turn on/off</string>
+    -->
+    <string name="settings_pref_sleep_mode">Turn on/off</string>
     <string name="settings_pref_sleep_mode_summary">Turn on/off this app.</string>
     <string name="settings_pref_system_area_icon_hide">Hide icon</string>
-    <string name="settings_pref_system_area_icon_hide_summary">Hide pinned icon in system area.</string>    
+    <string name="settings_pref_system_area_icon_hide_summary">Hide pinned icon in system area.</string>
     <string name="settings_pref_system_area_icon_hide_warn_msg">Instead, the position will be flexible in notification bar.</string>
     <string name="settings_info_feedback">Send user feedback</string>
     <string name="settings_info_feedback_summary">You can ask the error or suggest new functions to developers.</string>
@@ -60,5 +60,5 @@
     <string name="settings_info_version">Version</string>
     <string name="settings_info_facebook">Facebook page</string>
     <string name="settings_info_facebook_summary">Please click \'Like\' button. </string>
-    
+
 </resources>

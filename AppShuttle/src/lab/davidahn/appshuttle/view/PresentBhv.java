@@ -29,8 +29,6 @@ public abstract class PresentBhv extends ViewableUserBhv {
 		return endTime;
 	}
 
-	public abstract PresentBhvType getType();
-
 	@Override
 	public Integer getNotibarContainerId() {
 		return R.id.noti_present_container;

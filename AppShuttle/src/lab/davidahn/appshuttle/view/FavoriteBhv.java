@@ -63,4 +63,9 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 		else
 			return -1;
 	}
+
+	@Override
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.FAVORITE;
+	}
 }

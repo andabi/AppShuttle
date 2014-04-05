@@ -152,6 +152,9 @@ public class PresentBhvFragment extends ListFragment {
 			ImageView ignoreView = (ImageView) itemView.findViewById(R.id.listview_present_menu_ignore);
 			ignoreView.setOnClickListener(menuItemListener);
 			
+			ImageView shareView = (ImageView) itemView.findViewById(R.id.listview_present_menu_share);
+			shareView.setOnClickListener(menuItemListener);
+			
 			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_present_menu_cancel);
 			cancelView.setOnClickListener(new View.OnClickListener() {
 				@Override

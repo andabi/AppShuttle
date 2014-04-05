@@ -9,8 +9,8 @@ public class SelectedPresentBhv extends PresentBhv {
 	}
 	
 	@Override
-	public PresentBhvType getType() {
-		return PresentBhvType.SELECTED;
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.SELECTED;
 	}
 
 	@Override
