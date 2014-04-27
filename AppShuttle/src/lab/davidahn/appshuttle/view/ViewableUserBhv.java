@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -18,7 +19,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public abstract class ViewableUserBhv implements UserBhv, Viewable {
+public abstract class ViewableUserBhv implements UserBhv, Viewable, Sharable {
 	protected UserBhv uBhv;
 	protected Drawable icon;
 	protected String bhvNameText;
@@ -170,5 +171,59 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		res.removeAll(FavoriteBhvManager.getInstance().getFavoriteBhvSet());
 		res.removeAll(BlockedBhvManager.getInstance().getBlockedBhvSet());
 		return res;
+	}
+
+	@Override
+	public boolean isSharable(){
+		switch(getBhvType()){
+		case SENSOR_ON:
+			return false;
+		default:
+			return true;
+		}
+	}
+	
+	@Override
+	public String getSharingMsg() {
+		if(!isSharable())
+			return null;
+		
+		return String.format(getSharingMsgFormat(Locale.getDefault().getDisplayLanguage()), 
+				getViewMsg(),
+				getBhvNameText(),
+				getSharingLink());
+	}
+	
+	protected String getSharingMsgFormat(String language) {
+		if(language.equals(Locale.KOREA.getDisplayLanguage())) {
+			switch(getBhvType()){
+			case APP:
+				return "친구가 '%2$s'을(를) 셔틀합니다.\n%3$s";
+			case CALL:
+				return "'%2$s'의 전화번호를 셔틀합니다.\n%3$s";
+			default:
+				return null;
+			}
+		} else {
+			switch(getBhvType()){
+			case APP:
+				return "Your friend deliver '%2$s'.\n%3$s";
+			case CALL:
+				return "Your friend deliver '%2$s's phone number.\n%3$s";
+			default:
+				return null;
+			}
+		}
+	}
+	
+	protected String getSharingLink(){
+		switch(getBhvType()){
+		case APP:
+			return "https://play.google.com/store/apps/details?id=" + getBhvName();
+		case CALL:
+			return getBhvName();
+		default:
+			return null;
+		}
 	}
 }

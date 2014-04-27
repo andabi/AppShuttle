@@ -68,4 +68,9 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 	public ViewableBhvType getViewableBhvType() {
 		return ViewableBhvType.FAVORITE;
 	}
+	
+//	@Override
+//	public String getSharingMsg() {
+//		return AppShuttleApplication.getContext().getResources().getString(R.string.action_favorite);
+//	}
 }

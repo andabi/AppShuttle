@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -160,5 +161,27 @@ public class PredictedPresentBhv extends PresentBhv implements
 			extractedPredictedPresentBhvList.add(currPresentBhv);
 		}
 		predictedPresentBhvList = extractedPredictedPresentBhvList;
+	}
+	
+	protected String getSharingMsgFormat(String language) {
+		if(language.equals(Locale.KOREA.getDisplayLanguage())) {
+			switch(getBhvType()){
+			case APP:
+				return "친구가 %1$s한 '%2$s'을(를) 셔틀합니다.\n%3$s";
+			case CALL:
+				return "'%2$s'의 전화번호를 셔틀합니다.\n%3$s";
+			default:
+				return null;
+			}
+		} else {
+			switch(getBhvType()){
+			case APP:
+				return "Your friend deliver '%2$s' which %1$s.\n%3$s";
+			case CALL:
+				return "Your friend deliver '%2$s's phone number.\n%3$s";
+			default:
+				return null;
+			}
+		}
 	}
 }
