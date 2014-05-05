@@ -34,6 +34,10 @@
     <string name="action_msg_favorite_notifiable_num_proper">is usually the proper number.</string>
     <string name="action_msg_favorite_unnotifiable">Canceling fixing on notification bar.</string>
     <string name="action_msg_favorite_notifiable_failure">Did not complete because exceeding the limit.</string>
+ 	<string name="action_msg_share_app">Your friend deliver \'%2$s\'.\n%3$s</string>
+	<string name="action_msg_share_call">Your friend deliver \'%2$s\'s phone number.\n%3$s</string>
+	<string name="action_msg_share_predicted_app">Your friend deliver \'%2$s\' which %1$s.\n%3$s</string>
+	<string name="action_msg_share_predicted_call">Your friend deliver \'%2$s\'s phone number.\n%3$s</string>
     <string name="msg_wait">Please wait for a second.</string>
     <string name="msg_manual_ignore">No results. Try long click to register the app into ignoring list.</string>
     <string name="msg_manual_favorite">No results. Try long click to register the app to favorite.</string>

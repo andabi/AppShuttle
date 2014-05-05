@@ -5,15 +5,16 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.predict.matcher.MatcherTypeComparator;
+import android.content.Context;
 
 public class PredictedPresentBhv extends PresentBhv implements
 		Comparable<PredictedPresentBhv> {
@@ -163,25 +164,15 @@ public class PredictedPresentBhv extends PresentBhv implements
 		predictedPresentBhvList = extractedPredictedPresentBhvList;
 	}
 	
-	protected String getSharingMsgFormat(String language) {
-		if(language.equals(Locale.KOREA.getDisplayLanguage())) {
-			switch(getBhvType()){
-			case APP:
-				return "친구가 %1$s한 '%2$s'을(를) 셔틀합니다.\n%3$s";
-			case CALL:
-				return "'%2$s'의 전화번호를 셔틀합니다.\n%3$s";
-			default:
-				return null;
-			}
-		} else {
-			switch(getBhvType()){
-			case APP:
-				return "Your friend deliver '%2$s' which %1$s.\n%3$s";
-			case CALL:
-				return "Your friend deliver '%2$s's phone number.\n%3$s";
-			default:
-				return null;
-			}
+	protected String getSharingMsgFormat() {
+		final Context cxt = AppShuttleApplication.getContext();
+		switch(getBhvType()){
+		case APP:
+			return cxt.getString(R.string.action_msg_share_predicted_app);
+		case CALL:
+			return cxt.getString(R.string.action_msg_share_predicted_call);
+		default:
+			return null;
 		}
 	}
 }

@@ -7,7 +7,7 @@ import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.predict.PredictionService;
-import lab.davidahn.appshuttle.report.Share;
+import lab.davidahn.appshuttle.report.ShareUtils;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
@@ -229,7 +229,7 @@ public class AppShuttleMainActivity extends Activity {
 			BlockedBhvManager.getInstance().block(bhv);
 			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
 		case R.id.listview_present_menu_share:
-			Share.shareTextPlain(this, getResources().getString(R.string.name), bhv.getSharingMsg());
+			ShareUtils.shareTextPlain(this, getResources().getString(R.string.name), bhv.getSharingMsg());
 			return null;
 		case R.id.listview_favorite_menu_unfavorite:
 			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);

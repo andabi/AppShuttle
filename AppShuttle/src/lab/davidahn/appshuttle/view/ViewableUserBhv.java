@@ -1,7 +1,6 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
@@ -12,6 +11,8 @@ import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.report.Sharable;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -188,31 +189,21 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable, Sharable {
 		if(!isSharable())
 			return null;
 		
-		return String.format(getSharingMsgFormat(Locale.getDefault().getDisplayLanguage()), 
+		return String.format(getSharingMsgFormat(), 
 				getViewMsg(),
 				getBhvNameText(),
 				getSharingLink());
 	}
 	
-	protected String getSharingMsgFormat(String language) {
-		if(language.equals(Locale.KOREA.getDisplayLanguage())) {
-			switch(getBhvType()){
-			case APP:
-				return "친구가 '%2$s'을(를) 셔틀합니다.\n%3$s";
-			case CALL:
-				return "'%2$s'의 전화번호를 셔틀합니다.\n%3$s";
-			default:
-				return null;
-			}
-		} else {
-			switch(getBhvType()){
-			case APP:
-				return "Your friend deliver '%2$s'.\n%3$s";
-			case CALL:
-				return "Your friend deliver '%2$s's phone number.\n%3$s";
-			default:
-				return null;
-			}
+	protected String getSharingMsgFormat() {
+		final Context cxt = AppShuttleApplication.getContext();
+		switch(getBhvType()){
+		case APP:
+			return cxt.getString(R.string.action_msg_share_app);
+		case CALL:
+			return cxt.getString(R.string.action_msg_share_call);
+		default:
+			return null;
 		}
 	}
 	

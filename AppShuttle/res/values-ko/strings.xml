@@ -38,7 +38,11 @@
     <string name="action_msg_favorite_unnotifiable">을(를) 알림창에 표시하지 않도록 변경합니다.</string>
     <string name="action_msg_favorite_notifiable_num_proper">개가 보통 적당합니다.</string>
     <string name="action_msg_favorite_notifiable_failure">가능한 개수를 초과하여 변경이 되지 않았습니다.</string>
-    <string name="settings_category_setting">설정</string>
+	<string name="action_msg_share_app">친구가 \'%2$s\'을(를) 셔틀합니다.\n%3$s</string>
+	<string name="action_msg_share_call">\'%2$s\'의 전화번호를 셔틀합니다.\n%3$s</string>
+	<string name="action_msg_share_predicted_app">친구가 %1$s한 \'%2$s\'을(를) 셔틀합니다.\n%3$s</string>
+	<string name="action_msg_share_predicted_call">\'%2$s\'의 전화번호를 셔틀합니다.\n%3$s"</string>
+	<string name="settings_category_setting">설정</string>
     <string name="settings_category_info">정보</string>
     <string name="settings_category_share">공유하기</string>
 <!--
