@@ -219,8 +219,9 @@ public class AppShuttleMainActivity extends Activity {
 		return title;
 	}
 
-	public String doActionAndGetMsg(ViewableUserBhv bhv, int itemId) {
-		switch(itemId) {
+	//TODO: handler 적용
+	public String doActionAndGetMsg(ViewableUserBhv bhv, int actionId) {
+		switch(actionId) {
 		case R.id.listview_present_menu_favorite:
 			FavoriteBhvManager.getInstance().favorite(bhv);
 			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);

@@ -48,7 +48,7 @@ public class FavoriteBhvManager {
 		return favoriteBhvs.get(uBhv);
 	}
 
-	public void updateFavoriteBhv(){
+	private void updateFavoriteBhv(){
 		favoriteBhvs.clear();
 		for (FavoriteBhv favoriteUserBhv : userBhvDao.retrieveFavoriteUserBhv())
 			favoriteBhvs.put(favoriteUserBhv.getUserBhv(), favoriteUserBhv);
@@ -59,9 +59,11 @@ public class FavoriteBhvManager {
 			return null;
 
 		long currTime = System.currentTimeMillis();
-
-		FavoriteBhv favoriteUserBhv;
-		favoriteUserBhv = new FavoriteBhv(uBhv, currTime, false);
+		int order = 1;
+		List<FavoriteBhv> favoriteBhvListSorted = getFavoriteBhvListSorted();
+		if(!favoriteBhvListSorted.isEmpty()) 
+			order = favoriteBhvListSorted.get(favoriteBhvListSorted.size() - 1).getOrder() + 1;
+		FavoriteBhv favoriteUserBhv = new FavoriteBhv(uBhv, currTime, false, order);
 
 		if (!isFullProperNumFavorite())
 			FavoriteBhvManager.getInstance().trySetNotifiable(favoriteUserBhv);
@@ -108,7 +110,12 @@ public class FavoriteBhvManager {
 		}
 		return res;
 	}
-
+	
+	public void updateOrder(FavoriteBhv favoriteUserBhv, int order) {
+		favoriteUserBhv.setOrder(order);
+		UserBhvDao.getInstance().updateOrder(favoriteUserBhv, order);
+	}
+	
 	public synchronized List<FavoriteBhv> getFavoriteBhvListSorted(){
 		updateFavoriteBhv();
 		List<FavoriteBhv> favorateBhvList = new ArrayList<FavoriteBhv>(getFavoriteBhvSet());

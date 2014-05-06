@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferences().getString("database.name", "AppShuttle.db");
-	private static final int DB_VERSION = 43;
+	private static final int DB_VERSION = 44;
 
 	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
 	public static AppShuttleDBHelper getInstance() {
@@ -35,7 +35,7 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	 * 
 	 * 42: history_present_bhv table added.
 	 * 43: stat_bhv_transition table added.
-	 * 
+	 * 44: 'favorite_order' column added in 'list_user_bhv' table.
 	 */
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if(oldVersion <= 41)
@@ -43,5 +43,10 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 
 		if(oldVersion <= 42)
 			StatCollector.getInstance().createTable();
+		
+		if(oldVersion <= 43){
+			db.execSQL(String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0", 
+					UserBhvDao.tableName, UserBhvDao.columnFavoriteOrder));
+		}
 	}
 }

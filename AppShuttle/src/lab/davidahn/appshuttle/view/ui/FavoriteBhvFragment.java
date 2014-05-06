@@ -14,14 +14,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.commonsware.cwac.tlv.TouchListView;
 
 public class FavoriteBhvFragment extends ListFragment {
 	private FavoriteBhvInfoAdapter adapter;
@@ -51,6 +53,9 @@ public class FavoriteBhvFragment extends ListFragment {
 		
 		adapter = new FavoriteBhvInfoAdapter();
 		setListAdapter(adapter);
+
+		TouchListView touchListView = (TouchListView)getListView();
+		touchListView.setDropListener(onDrop);
 
 //		setListShown(true);
 		
@@ -118,6 +123,21 @@ public class FavoriteBhvFragment extends ListFragment {
 		else return true;
 	}
 	
+	private TouchListView.DropListener onDrop=new TouchListView.DropListener() {
+		@Override
+		public void drop(int fromPos, int toPos) {
+			FavoriteBhv bhv = adapter.getItem(fromPos);
+			adapter.remove(bhv);
+			adapter.insert(bhv, toPos);
+			
+			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+			for(int i=0; i<adapter.getCount();i++)
+				favoriteBhvManager.updateOrder(adapter.getItem(i), i+1);
+			
+			NotiBarNotifier.getInstance().updateNotification();
+		}
+	};
+	
 	public class FavoriteBhvInfoAdapter extends ArrayAdapter<FavoriteBhv> {
 
 		public FavoriteBhvInfoAdapter() {
@@ -140,8 +160,9 @@ public class FavoriteBhvFragment extends ListFragment {
 			secondLineView.setText(favoriteUserBhv.getViewMsg());
 			
 			ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_favorite_item_image_rightside);
-			if(favoriteUserBhv.isNotifiable())
-				rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.notifiable_dark));
+//			if(favoriteUserBhv.isNotifiable())
+//				rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.notifiable_dark));
+			rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.grabber));
 				
 			TextView unfavoriteView = (TextView) itemView.findViewById(R.id.listview_favorite_menu_unfavorite);
 			unfavoriteView.setOnClickListener(new View.OnClickListener() {

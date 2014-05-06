@@ -17,16 +17,17 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class UserBhvDao {
-	private static final String tableName = "list_user_bhv";
-	private static final String columnBhvType = "bhv_type";
-	private static final String columnBhvName = "bhv_name";
-	private static final String columnMetas = "metas";
-	private static final String columnBlocked = "blocked";
-	private static final String columnBlockedTime = "blocked_time";
-	private static final String columnFavorite = "favorates";
-	private static final String columnFavoriteTime = "favorates_time";
-	private static final String columnIsNotifiable = "is_notifiable";
-			
+	public static final String tableName = "list_user_bhv";
+	public static final String columnBhvType = "bhv_type";
+	public static final String columnBhvName = "bhv_name";
+	public static final String columnMetas = "metas";
+	public static final String columnBlocked = "blocked";
+	public static final String columnBlockedTime = "blocked_time";
+	public static final String columnFavorite = "favorates";
+	public static final String columnFavoriteTime = "favorates_time";
+	public static final String columnIsNotifiable = "is_notifiable";
+	public static final String columnFavoriteOrder = "favorite_order";
+	
 	private SQLiteDatabase db;
 	private Gson gson;
 	
@@ -49,6 +50,7 @@ public class UserBhvDao {
 				+ columnFavorite + " INTEGER DEFAULT 0, "
 				+ columnFavoriteTime + " INTEGER DEFAULT 0, "
 				+ columnIsNotifiable + " INTEGER DEFAULT 0, "
+				+ columnFavoriteOrder + " INTEGER DEFAULT 0, "
 				+ "PRIMARY KEY (" + columnBhvType + ", " + columnBhvName + ") "
 				+ ");");
 	}
@@ -103,10 +105,11 @@ public class UserBhvDao {
 			Map<String, Object> metas = gson.fromJson(cur.getString(2), listType);
 			long setTime = cur.getLong(6);
 			boolean isNotifiable = (cur.getInt(7) == 1) ? true : false;
+			int order = cur.getInt(8);
 			
 			UserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
 			((BaseUserBhv)uBhv).setMetas(metas);
-			FavoriteBhv favoriteUserBhv = new FavoriteBhv(uBhv, setTime, isNotifiable);
+			FavoriteBhv favoriteUserBhv = new FavoriteBhv(uBhv, setTime, isNotifiable, order);
 			res.add(favoriteUserBhv);
 		}
 		cur.close();
@@ -116,11 +119,14 @@ public class UserBhvDao {
 	
 	public void favorite(FavoriteBhv uBhv) {
 		int notifiable = (uBhv.isNotifiable()) ? 1 : 0;
+		int order = uBhv.getOrder();
+		
 		db.execSQL(
 				"UPDATE " + tableName +
 				" SET " + columnFavorite + " = 1, "
 						+ columnFavoriteTime + " = " + uBhv.getSetTime() + " , "
-						+ columnIsNotifiable + " = " + notifiable + " " +
+						+ columnIsNotifiable + " = " + notifiable + " , "
+						+ columnFavoriteOrder + " = " + order + " " +
 				" WHERE " + columnBhvType + " = '" + uBhv.getBhvType() + "'" +
 					" AND " + columnBhvName + " = '" + uBhv.getBhvName() + "';");
 	}
@@ -129,7 +135,9 @@ public class UserBhvDao {
 		db.execSQL(
 				"UPDATE " + tableName +
 				" SET " + columnFavorite + " = 0, "
-						+ columnIsNotifiable + " = 0" +
+						+ columnFavoriteTime + " = 0, "
+						+ columnIsNotifiable + " = 0, "
+						+ columnFavoriteOrder + " = 0" +
 				" WHERE " + columnBhvType + " = '" + uBhv.getBhvType() + "'" +
 					" AND " + columnBhvName + " = '" + uBhv.getBhvName() + "';");
 	}
@@ -146,6 +154,14 @@ public class UserBhvDao {
 		db.execSQL(
 				"UPDATE " + tableName +
 				" SET " + columnIsNotifiable + " = 0" +
+				" WHERE " + columnBhvType + " = '" + uBhv.getBhvType() + "'" +
+					" AND " + columnBhvName + " = '" + uBhv.getBhvName() + "';");
+	}
+	
+	public void updateOrder(FavoriteBhv uBhv, int order) {
+		db.execSQL(
+				"UPDATE " + tableName +
+				" SET " + columnFavoriteOrder + " = " + order +
 				" WHERE " + columnBhvType + " = '" + uBhv.getBhvType() + "'" +
 					" AND " + columnBhvName + " = '" + uBhv.getBhvName() + "';");
 	}
