@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle.view.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
@@ -78,15 +79,15 @@ public class BlockedBhvFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		if (position == 0) {
 			// search activity
-			getActivity().startActivity(new Intent(Intent.ACTION_SEARCH));
-		}
-		else {
-			Intent intent = adapter.getItem(position).getLaunchIntent();
-			if(intent == null)
-				return;
-
+			Intent intent = new Intent(AppShuttleApplication.getContext(), SearchableActivity.class);
 			getActivity().startActivity(intent);
-		}		
+			return;
+		}
+		Intent intent = adapter.getItem(position).getLaunchIntent();
+		if(intent == null)
+			return;
+
+		getActivity().startActivity(intent);				
 	}
 
 	public class BlockedBhvInfoAdapter extends ArrayAdapter<BlockedBhv> {
@@ -103,21 +104,19 @@ public class BlockedBhvFragment extends ListFragment {
 				
 				return addView;
 			}
-			else {
-				View itemView = inflater.inflate(R.layout.listview_item, parent, false);
-				BlockedBhv blockedUserBhv = blockedBhvList.get(position);
+			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
+			BlockedBhv blockedUserBhv = blockedBhvList.get(position);
 
-				ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
-				iconView.setImageDrawable(blockedUserBhv.getIcon());
+			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
+			iconView.setImageDrawable(blockedUserBhv.getIcon());
 
-				TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
-				firstLineView.setText(blockedUserBhv.getBhvNameText());
+			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
+			firstLineView.setText(blockedUserBhv.getBhvNameText());
 
-				TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
-				secondLineView.setText(blockedUserBhv.getViewMsg());
+			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
+			secondLineView.setText(blockedUserBhv.getViewMsg());
 
-				return itemView;
-			}
+			return itemView;			
 		}
 	}
 	

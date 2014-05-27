@@ -9,13 +9,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.commons.math3.util.Pair;
+
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
+import android.graphics.drawable.Drawable;
 
 public class CallBhvCollector extends BaseBhvCollector {
 	private ContentResolver contentResolver;
@@ -141,5 +146,69 @@ public class CallBhvCollector extends BaseBhvCollector {
 			cursor.close();
 
 		return contactName;
+	}
+	
+	/**
+	 * @return List of contactName & icon
+	 */
+	public static List<Pair<String, Drawable>> getContactList() {
+		 // 주소록 URI        
+        Uri people = Contacts.CONTENT_URI;
+        
+        // 검색할 컬럼 정하기
+        String[] projection = new String[] { Contacts._ID, Contacts.DISPLAY_NAME, Contacts.HAS_PHONE_NUMBER };
+        
+        // 쿼리 날려서 커서 얻기
+        String[] selectionArgs = null;
+        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";    
+
+        ContentResolver cr = AppShuttleApplication.getContext().getContentResolver();
+        Cursor cursor = cr.query(people, projection, null, selectionArgs, sortOrder);
+        // return managedQuery(people, projection, null, selectionArgs, sortOrder);
+        
+        // 전화번호부의 갯수 세기
+        int end = cursor.getCount();                
+        // 전화번호부의 (이름,사진)을 저장할 배열 선언
+        List<Pair<String, Drawable>> res = new ArrayList<Pair<String, Drawable>>();
+        // 전화번호부의 번호를 저장할 배열 선언
+        //String [] phone = new String[end];    
+        int count = 0;    
+
+        if(cursor.moveToFirst()) 
+        {
+            // 컬럼명으로 컬럼 인덱스 찾기 
+            int idIndex = cursor.getColumnIndex("_id");
+
+            do 
+            {
+                // 요소값 얻기
+//                int id = cursor.getInt(idIndex);        
+//                String phoneChk = cursor.getString(2);
+//                if (phoneChk.equals("1")) {
+//                    Cursor phones = cr.query(
+//                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+//                            null,
+//                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+//                                    + " = " + id, null, null);
+//
+//                    while (phones.moveToNext()) {
+//                        phone[count] = phones
+//                                .getString(phones
+//                                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//                    }        
+//                }
+                String name = cursor.getString(1);
+                // TODO: 연락처 마다의 사진 가져오기.
+                // 임시로 전화기 아이콘 가져오도록 함.
+                Drawable icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+                res.add(new Pair<String, Drawable>(name, icon));
+                //name[count] = cursor.getString(1);
+
+                //Log.i("ANDROES", "id=" + id +", name["+count+"]=" + names.get(count));
+                count++;
+                
+            } while(cursor.moveToNext() || count > end);
+        }
+        return res;
 	}
 }
