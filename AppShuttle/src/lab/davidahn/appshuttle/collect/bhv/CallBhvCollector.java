@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.commons.math3.util.Pair;
-
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
@@ -20,7 +18,6 @@ import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
-import android.graphics.drawable.Drawable;
 
 public class CallBhvCollector extends BaseBhvCollector {
 	private ContentResolver contentResolver;
@@ -151,14 +148,15 @@ public class CallBhvCollector extends BaseBhvCollector {
 	/**
 	 * @return List of contactName & icon
 	 */
-	public static List<Pair<String, Drawable>> getContactList() {
-		 // ÁÖ¼Ò·Ï URI        
+	//TODO fix
+	public static List<UserBhv> getContactList() {
+		 // ï¿½Ö¼Ò·ï¿½ URI        
         Uri people = Contacts.CONTENT_URI;
         
-        // °Ë»öÇÒ ÄÃ·³ Á¤ÇÏ±â
+        // ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½
         String[] projection = new String[] { Contacts._ID, Contacts.DISPLAY_NAME, Contacts.HAS_PHONE_NUMBER };
         
-        // Äõ¸® ³¯·Á¼­ Ä¿¼­ ¾ò±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½
         String[] selectionArgs = null;
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";    
 
@@ -166,22 +164,22 @@ public class CallBhvCollector extends BaseBhvCollector {
         Cursor cursor = cr.query(people, projection, null, selectionArgs, sortOrder);
         // return managedQuery(people, projection, null, selectionArgs, sortOrder);
         
-        // ÀüÈ­¹øÈ£ºÎÀÇ °¹¼ö ¼¼±â
+        // ï¿½ï¿½È­ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int end = cursor.getCount();                
-        // ÀüÈ­¹øÈ£ºÎÀÇ (ÀÌ¸§,»çÁø)À» ÀúÀåÇÒ ¹è¿­ ¼±¾ð
-        List<Pair<String, Drawable>> res = new ArrayList<Pair<String, Drawable>>();
-        // ÀüÈ­¹øÈ£ºÎÀÇ ¹øÈ£¸¦ ÀúÀåÇÒ ¹è¿­ ¼±¾ð
+        // ï¿½ï¿½È­ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ (ï¿½Ì¸ï¿½,ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½
+        List<UserBhv> res = new ArrayList<UserBhv>();
+        // ï¿½ï¿½È­ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½
         //String [] phone = new String[end];    
         int count = 0;    
 
         if(cursor.moveToFirst()) 
         {
-            // ÄÃ·³¸íÀ¸·Î ÄÃ·³ ÀÎµ¦½º Ã£±â 
+            // ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ ï¿½Îµï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ 
             int idIndex = cursor.getColumnIndex("_id");
 
             do 
             {
-                // ¿ä¼Ò°ª ¾ò±â
+                // ï¿½ï¿½Ò°ï¿½ ï¿½ï¿½ï¿½
 //                int id = cursor.getInt(idIndex);        
 //                String phoneChk = cursor.getString(2);
 //                if (phoneChk.equals("1")) {
@@ -198,10 +196,10 @@ public class CallBhvCollector extends BaseBhvCollector {
 //                    }        
 //                }
                 String name = cursor.getString(1);
-                // TODO: ¿¬¶ôÃ³ ¸¶´ÙÀÇ »çÁø °¡Á®¿À±â.
-                // ÀÓ½Ã·Î ÀüÈ­±â ¾ÆÀÌÄÜ °¡Á®¿Àµµ·Ï ÇÔ.
-                Drawable icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
-                res.add(new Pair<String, Drawable>(name, icon));
+                // TODO: ï¿½ï¿½ï¿½ï¿½Ã³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+                // ï¿½Ó½Ã·ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
+//                Drawable icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+                res.add(BaseUserBhv.create(UserBhvType.CALL, name));
                 //name[count] = cursor.getString(1);
 
                 //Log.i("ANDROES", "id=" + id +", name["+count+"]=" + names.get(count));

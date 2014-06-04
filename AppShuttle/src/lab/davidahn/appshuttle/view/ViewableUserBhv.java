@@ -1,11 +1,11 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
@@ -18,7 +18,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public abstract class ViewableUserBhv implements UserBhv, Viewable {
+public class ViewableUserBhv implements UserBhv, Viewable {
 	protected UserBhv uBhv;
 	protected Drawable icon;
 	protected String bhvNameText;
@@ -50,12 +50,16 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		uBhv.setBhvName(bhvName);
 	}
 	@Override
-	public Object getMeta(String key) {
-		return uBhv.getMeta(key);
+	public Map<String, Object> getMetas() {
+		return uBhv.getMetas();
 	}
 	@Override
-	public void setMeta(String key, Object val){
-		uBhv.setMeta(key, val);
+	public void setMetas(Map<String, Object> metas) {
+		uBhv.setMetas(metas);
+	}
+	@Override
+	public boolean isValid() {
+		return uBhv.isValid();
 	}
 
 	@Override
@@ -129,7 +133,7 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		case CALL:
 			bhvNameText = CallBhvCollector.getContactName(uBhv.getBhvName());
 			if (bhvNameText == null)
-				bhvNameText = (String) (uBhv).getMeta("cachedName");
+				bhvNameText = (String) uBhv.getMetas().get("cachedName");
 			if(bhvNameText == null || bhvNameText.equals(""))
 				bhvNameText = uBhv.getBhvName();
 			break;
@@ -146,7 +150,9 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		return bhvNameText;
 	}
 
-	public abstract String getViewMsg();
+	public String getViewMsg() {
+		return null;
+	}
 	
 	@Override
 	public Intent getLaunchIntent() {
@@ -156,14 +162,15 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		return uBhv.getLaunchIntent();
 	}
 	
-	@Override
-	public abstract Integer getNotibarContainerId();
+	public Integer getNotibarContainerId() {
+		return null;
+	}
 	
 	/**
 	 * normal = not favorite & not blocked
 	 */
-	public static Set<BaseUserBhv> getNormalBhvSet() {
-		Set<BaseUserBhv> res = new HashSet<BaseUserBhv>(UserBhvManager.getInstance().getRegisteredBhvSet());
+	public static Set<UserBhv> getNormalBhvSet() {
+		Set<UserBhv> res = new HashSet<UserBhv>(UserBhvManager.getInstance().getRegisteredBhvSet());
 		res.removeAll(FavoriteBhvManager.getInstance().getFavoriteBhvSet());
 		res.removeAll(BlockedBhvManager.getInstance().getBlockedBhvSet());
 		return res;

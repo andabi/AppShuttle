@@ -3,28 +3,30 @@ package lab.davidahn.appshuttle.view.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.util.Pair;
-
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
+import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.view.ViewableUserBhv;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SearchableActivity extends Activity {
+public class SearchableActivity extends Activity implements OnItemClickListener {
 	private SearchListAdapter adapter;
-	private List<SearchListItem> searchList;
+	private List<ViewableUserBhv> bhvList;
 	private ListView mListView;
 
 	@Override
@@ -32,25 +34,18 @@ public class SearchableActivity extends Activity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.searchlayout);
 	    
-	    searchList = new ArrayList<SearchListItem>();
+	    bhvList = new ArrayList<ViewableUserBhv>();
 	    
-	    // get appsList
-	    List<Pair<String, Drawable>> appInfos = AppBhvCollector.getInstalledAppList(false);
-	    int size_appInfos = appInfos.size();
-	    for (int i = 0; i < size_appInfos; i++) {
-	    	Pair<String, Drawable> appInfo = appInfos.get(i);
-	    	searchList.add(new SearchListItem(appInfo.getKey(), appInfo.getValue()));
-	    }
+	    List<UserBhv> appUserBhvList = AppBhvCollector.getInstance().getInstalledAppList(false);
+	    for(UserBhv bhv : appUserBhvList)
+	    	bhvList.add(new ViewableUserBhv(bhv));
 	    
-	    // get contactsList
-	    List<Pair<String, Drawable>> contactInfos = CallBhvCollector.getContactList();
-	    int size_contactInfos = contactInfos.size();
-	    for (int i = 0; i < size_contactInfos; i++) {
-	    	Pair<String, Drawable> contactInfo = contactInfos.get(i);
-            searchList.add(new SearchListItem(contactInfo.getKey(), contactInfo.getValue()));
-        }
+	    List<UserBhv> callUserBhvList = CallBhvCollector.getContactList();
+	    for(UserBhv bhv : callUserBhvList)
+	    	bhvList.add(new ViewableUserBhv(bhv));
 	    
 	    onSearchRequested();
+	    mListView.setOnItemClickListener(this);
 	}
 	
 	@Override
@@ -79,11 +74,21 @@ public class SearchableActivity extends Activity {
 	public boolean onSearchRequested() {
 		//pauseSomeStuff();
 	    mListView = (ListView) findViewById(R.id.list_search_results);
-	    adapter = new SearchListAdapter(this, R.layout.listview_contact_item, searchList);
+	    adapter = new SearchListAdapter(this, R.layout.listview_contact_item, bhvList);
 	    mListView.setAdapter(adapter);
 		
 		return super.onSearchRequested();
 	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parentView, View v, int pos, long id) {
+		Message msg = new Message();
+		msg.what = AppShuttleMainActivity.ACTION_FAVORITE;
+		msg.obj = bhvList.get(pos);
+		AppShuttleMainActivity.userActionHandler.sendMessage(msg);
+		finish();
+	}	
+
 	
 /*	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,50 +103,28 @@ public class SearchableActivity extends Activity {
         return true;
     }*/
 	
-	public class SearchListAdapter extends ArrayAdapter<SearchListItem> {
-		private List<SearchListItem> items;
+	public class SearchListAdapter extends ArrayAdapter<ViewableUserBhv> {
+		private List<ViewableUserBhv> items;
 		
-		public SearchListAdapter(Context context, int textViewResourceId, List<SearchListItem> items) 
+		public SearchListAdapter(Context context, int textViewResourceId, List<ViewableUserBhv> items) 
         {
-                super(context, textViewResourceId, items);
-                this.items = items;
+            super(context, textViewResourceId, items);
+            this.items = items;
         }
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_contact_item, parent, false);
-			SearchListItem contact = this.items.get(position);
+			ViewableUserBhv contact = this.items.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_contact_item_image);
 			iconView.setImageDrawable(contact.getIcon());
 			
 			TextView nameView = (TextView) itemView.findViewById(R.id.listview_contact_item_name);
-			nameView.setText(contact.getName());
+			nameView.setText(contact.getUserBhv().getBhvName());
 
 			return itemView;
 		}
 	}
-	
-	class SearchListItem 
-    {
-        private String name;
-        private Drawable icon;
-         
-        public SearchListItem(String _Name, Drawable _Icon)
-        {
-            this.name = _Name;
-            this.icon = _Icon;
-        }
-         
-        public String getName() 
-        {
-            return name;
-        }
- 
-        public Drawable getIcon() 
-        {
-            return icon;
-        }        
-    }	
 }

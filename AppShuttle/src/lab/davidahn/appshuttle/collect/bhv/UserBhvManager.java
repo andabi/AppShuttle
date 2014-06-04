@@ -7,15 +7,15 @@ import java.util.Set;
  * @thread safe
  */
 public class UserBhvManager {
-	private Set<BaseUserBhv> userBhvSet;
+	private Set<UserBhv> userBhvSet;
 	private UserBhvDao userBhvDao;
 
 	private static UserBhvManager userBhvManager = new UserBhvManager();
 
 	private UserBhvManager() {
 		userBhvDao = UserBhvDao.getInstance();
-		userBhvSet = new HashSet<BaseUserBhv>();
-		for (BaseUserBhv userBhv : userBhvDao.retrieveUserBhv())
+		userBhvSet = new HashSet<UserBhv>();
+		for (UserBhv userBhv : userBhvDao.retrieveUserBhv())
 			userBhvSet.add(userBhv);
 	}
 
@@ -23,29 +23,29 @@ public class UserBhvManager {
 		return userBhvManager;
 	}
 
-	public synchronized Set<BaseUserBhv> getRegisteredBhvSet() {
-		return new HashSet<BaseUserBhv>(userBhvSet);
+	public synchronized Set<UserBhv> getRegisteredBhvSet() {
+		return new HashSet<UserBhv>(userBhvSet);
 	}
 	
-	public synchronized BaseUserBhv getRegisteredUserBhv(UserBhvType bhvType, String bhvName) {
-		BaseUserBhv target = BaseUserBhv.create(bhvType, bhvName);
+	public synchronized UserBhv getRegisteredUserBhv(UserBhvType bhvType, String bhvName) {
+		UserBhv target = BaseUserBhv.create(bhvType, bhvName);
 		return getRegisteredUserBhv(target);
 	}
 	
-	public synchronized BaseUserBhv getRegisteredUserBhv(UserBhv target) {
-		for(BaseUserBhv bhv : userBhvSet)
+	public synchronized UserBhv getRegisteredUserBhv(UserBhv target) {
+		for(UserBhv bhv : userBhvSet)
 			if(bhv.equals(target)) return bhv;
 		return null;
 	}
 
-	public synchronized void register(BaseUserBhv bhv) {
+	public synchronized void register(UserBhv bhv) {
 		if (userBhvSet.contains(bhv))
 			return;
 		userBhvDao.storeUserBhv(bhv);
 		userBhvSet.add(bhv);
 	}
 
-	public synchronized void unregister(BaseUserBhv uBhv) {
+	public synchronized void unregister(UserBhv uBhv) {
 		if (!userBhvSet.contains(uBhv))
 			return;
 		userBhvDao.deleteUserBhv(uBhv);

@@ -1,5 +1,6 @@
 package lab.davidahn.appshuttle.collect.bhv;
 
+import java.util.Map;
 import java.util.TimeZone;
 
 import android.content.Intent;
@@ -35,12 +36,16 @@ public class DurationUserBhv implements UserBhv {
 		uBhv.setBhvName(bhvName);
 	}
 	@Override
-	public Object getMeta(String key) {
-		return uBhv.getMeta(key);
+	public Map<String, Object> getMetas() {
+		return uBhv.getMetas();
 	}
 	@Override
-	public void setMeta(String key, Object val){
-		uBhv.setMeta(key, val);
+	public void setMetas(Map<String, Object> metas) {
+		uBhv.setMetas(metas);
+	}
+	@Override
+	public boolean isValid() {
+		return uBhv.isValid();
 	}
 
 	public long getTime() {

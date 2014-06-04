@@ -20,7 +20,7 @@ public class UnregisterBhvService extends IntentService {
 	public void onHandleIntent(Intent intent) {
 		UserBhvType bhvType = (UserBhvType) intent.getExtras().get("bhv_type");
 		String bhvName = intent.getExtras().getString("bhv_name");
-		BaseUserBhv targetBhv = UserBhvManager.getInstance().getRegisteredUserBhv(bhvType, bhvName);
+		UserBhv targetBhv = UserBhvManager.getInstance().getRegisteredUserBhv(bhvType, bhvName);
 		if(targetBhv == null)
 			return;
 		UserBhvManager.getInstance().unregister(targetBhv);

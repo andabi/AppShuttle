@@ -55,7 +55,7 @@ public class UserBhvDao {
 				+ ");");
 	}
 	
-	public void storeUserBhv(BaseUserBhv uBhv) {
+	public void storeUserBhv(UserBhv uBhv) {
 		ContentValues row = new ContentValues();
 		row.put(columnBhvType, uBhv.getBhvType().toString());
 		row.put(columnBhvName, uBhv.getBhvName());

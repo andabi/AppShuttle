@@ -143,14 +143,18 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	}
 
 	@Override
-	public Object getMeta(String key) {
-		return uBhv.getMeta(key);
+	public Map<String, Object> getMetas() {
+		return uBhv.getMetas();
+	}
+	@Override
+	public void setMetas(Map<String, Object> metas) {
+		uBhv.setMetas(metas);
+	}
+	@Override
+	public boolean isValid() {
+		return uBhv.isValid();
 	}
 
-	@Override
-	public void setMeta(String key, Object val) {
-		uBhv.setMeta(key, val);
-	}
 	
 	public Intent getLaunchIntent(){
 		if (uBhv == null)

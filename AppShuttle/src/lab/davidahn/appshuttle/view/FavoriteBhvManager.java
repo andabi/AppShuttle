@@ -12,6 +12,7 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvDao;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /*
  * @thread safe
@@ -64,13 +65,15 @@ public class FavoriteBhvManager {
 		if(!favoriteBhvListSorted.isEmpty()) 
 			order = favoriteBhvListSorted.get(favoriteBhvListSorted.size() - 1).getOrder() + 1;
 		FavoriteBhv favoriteUserBhv = new FavoriteBhv(uBhv, currTime, false, order);
-
+		
 		if (!isFullProperNumFavorite())
 			FavoriteBhvManager.getInstance().trySetNotifiable(favoriteUserBhv);
 
 		userBhvDao.favorite(favoriteUserBhv);
 		favoriteBhvs.put(favoriteUserBhv.getUserBhv(), favoriteUserBhv);
 
+		Log.d("test", favoriteBhvs.size()+"");
+		
 		return favoriteUserBhv;
 	}
 

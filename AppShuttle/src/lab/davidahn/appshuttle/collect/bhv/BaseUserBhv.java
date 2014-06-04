@@ -84,27 +84,30 @@ public class BaseUserBhv implements UserBhv {
 		this.bhvName = bhvName;
 	}
 	
+	@Override
 	public Map<String, Object> getMetas() {
 		return metas;
 	}
 	
+	@Override
 	public void setMetas(Map<String, Object> metas) {
 		this.metas = metas;
 	}
-
 	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+//	@Override
 	public Object getMeta(String key) {
 		return metas.get(key);
 	}
 	
-	@Override
+//	@Override
 	public void setMeta(String key, Object val){
 		metas.put(key, val);
 	}
 
-	public boolean isValid() {
-		return true;
-	}
 
 	public String toString(){
 		StringBuffer msg = new StringBuffer();

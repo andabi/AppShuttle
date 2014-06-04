@@ -11,6 +11,7 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,10 +145,23 @@ public class BlockedBhvFragment extends ListFragment {
 			presentView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					AppShuttleMainActivity mainActivity = (AppShuttleMainActivity)getActivity();
-					String actionMsg = mainActivity.doActionAndGetMsg(blockedBhvList.get(posMenuOpened), v.getId());
-					mainActivity.doPostAction();
-					mainActivity.showToastMsg(actionMsg);
+					Message msg = new Message();
+					switch(v.getId()){
+					case R.id.listview_present_menu_favorite:
+						msg.what = AppShuttleMainActivity.ACTION_FAVORITE;
+						break;
+					case R.id.listview_present_menu_ignore:
+						msg.what = AppShuttleMainActivity.ACTION_IGNORE;
+						break;
+					case R.id.listview_favorite_menu_unfavorite:
+						msg.what = AppShuttleMainActivity.ACTION_UNFAVORITE;
+						break;
+					case R.id.listview_ignore_menu_unignore:
+						msg.what = AppShuttleMainActivity.ACTION_UNIGNORE;
+						break;
+					}
+					msg.obj = blockedBhvList.get(posMenuOpened);
+					AppShuttleMainActivity.userActionHandler.sendMessage(msg);
 				}
 			});
 			

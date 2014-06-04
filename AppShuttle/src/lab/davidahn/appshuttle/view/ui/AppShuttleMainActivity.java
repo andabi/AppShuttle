@@ -6,6 +6,8 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.PredictionService;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
@@ -24,6 +26,8 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -43,11 +47,14 @@ import com.google.analytics.tracking.android.EasyTracker;
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
+	public static UserActionHandler userActionHandler;
 	
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		userActionHandler = new UserActionHandler();
+		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		AppShuttlePreferences.setDefaultPreferences();
 
@@ -218,44 +225,7 @@ public class AppShuttleMainActivity extends Activity {
 		}
 		return title;
 	}
-
-	//TODO: handler 적용
-	public String doActionAndGetMsg(ViewableUserBhv bhv, int actionId) {
-		switch(actionId) {
-		case R.id.listview_present_menu_favorite:
-			FavoriteBhvManager.getInstance().favorite(bhv);
-			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
-		case R.id.listview_present_menu_ignore:
-			BlockedBhvManager.getInstance().block(bhv);
-			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
-		case R.id.listview_favorite_menu_unfavorite:
-			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
-			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
-		case R.id.listview_ignore_menu_unignore:
-			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
-			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_unignore);
-		case R.id.favorite_notify:
-			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
-			boolean isSuccess = favoriteBhvManager.trySetNotifiable((FavoriteBhv)bhv);
-			if(isSuccess){
-				String msg = bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
-				if(favoriteBhvManager.isFullProperNumFavorite()){
-					msg += " " 
-							+ favoriteBhvManager.getProperNumFavorite() 
-							+ getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
-				}
-				return msg;
-			} else {
-				return getResources().getString(R.string.action_msg_favorite_notifiable_failure);
-			}
-		case R.id.favorite_unnotify:
-			FavoriteBhvManager.getInstance().setUnNotifiable((FavoriteBhv)bhv);
-			return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
-		default:
-			return null;
-		}
-	}
-	
+		
 	public void doPostAction() {
 		updateView();
 		NotiBarNotifier.getInstance().updateNotification();
@@ -418,4 +388,61 @@ public class AppShuttleMainActivity extends Activity {
 	};
 	public static final String UPDATE_ACTIVITY = "lab.davidahn.appshuttle.UPDATE_VIEW_ACTIVITY";
 	public static final String PROGRESS_VISIBILITY = "lab.davidahn.appshuttle.PROGRESS_VISIBILITY";
+	
+	public static final int ACTION_FAVORITE = 0;
+	public static final int ACTION_UNFAVORITE = 1;
+	public static final int ACTION_IGNORE = 2;
+	public static final int ACTION_UNIGNORE = 3;
+	public static final int ACTION_SHARE = 4;
+	
+	class UserActionHandler extends Handler {
+		@Override
+        public void handleMessage(Message msg) {
+        	ViewableUserBhv bhv = (ViewableUserBhv)msg.obj;
+        	String actionMsg = "";
+            switch (msg.what) {
+	    		case ACTION_FAVORITE:
+	    			UserBhvManager.getInstance().register(bhv.getUserBhv());
+	    			FavoriteBhv favoriteBhv = FavoriteBhvManager.getInstance().favorite(bhv);
+	    			actionMsg = favoriteBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
+	    			break;
+	    		case ACTION_IGNORE:
+	    			UserBhvManager.getInstance().register(bhv.getUserBhv());
+	    			BlockedBhv blockedBhv = BlockedBhvManager.getInstance().block(bhv);
+	    			actionMsg =  blockedBhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
+	    			break;
+	    		case ACTION_UNFAVORITE:
+	    			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
+	    			actionMsg = ((FavoriteBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
+	    			break;
+	    		case ACTION_UNIGNORE:
+	    			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
+	    			actionMsg = ((BlockedBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unignore);
+	    			break;
+    			default:
+            }
+			doPostAction();
+			showToastMsg(actionMsg);
+        }
+    };
 }
+
+//case R.id.favorite_notify:
+//FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+//boolean isSuccess = favoriteBhvManager.trySetNotifiable((FavoriteBhv)bhv);
+//if(isSuccess){
+//	String msg = bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
+//	if(favoriteBhvManager.isFullProperNumFavorite()){
+//		msg += " " 
+//				+ favoriteBhvManager.getProperNumFavorite() 
+//				+ getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
+//	}
+//	return msg;
+//} else {
+//	return getResources().getString(R.string.action_msg_favorite_notifiable_failure);
+//}
+//case R.id.favorite_unnotify:
+//FavoriteBhvManager.getInstance().setUnNotifiable((FavoriteBhv)bhv);
+//return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
+
+
