@@ -9,31 +9,40 @@ import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserEnv;
 
 public class MatcherGroupResult extends MatcherResultElem {
-	private EnumMap<MatcherType, MatcherResultElem> participantMatcherResults;
+	private EnumMap<MatcherType, MatcherResultElem> childMatcherResults;
 	
 	public MatcherGroupResult(long _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
 		super(_time, _timeZone, _userEnv);
-		participantMatcherResults = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
+		childMatcherResults = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
 	}
 	
 	public void addMatcherResult(MatcherResultElem matcherResult) {
-		participantMatcherResults.put(matcherResult.getMatcherType(), matcherResult);
+		childMatcherResults.put(matcherResult.getMatcherType(), matcherResult);
 	}
 
 	@Override
-	public EnumMap<MatcherType, MatcherResultElem> getAllParticipantMatchersWithResults() {
-		return participantMatcherResults;
+	public EnumMap<MatcherType, MatcherResultElem> getChildMatchersWithResult() {
+		return childMatcherResults;
 	}
 
 	@Override
-	public MatcherType getMatcherSelectedByPriority(){
-		 return Collections.max(participantMatcherResults.keySet());
+	public EnumMap<MatcherType, MatcherResultElem> getAllLeafMatchersWithResult(){
+		EnumMap<MatcherType, MatcherResultElem> res = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
+		for(MatcherResultElem resultElem : childMatcherResults.values())
+			res.putAll(resultElem.getAllLeafMatchersWithResult());
+		return res;
 	}
-	
+
+	@Override
+	public MatcherType getFinalMatcher(){
+		 return Collections.max(childMatcherResults.keySet());
+	}
+
+	@Override
 	public String toString(){
 		StringBuffer msg = new StringBuffer();
 		msg.append(super.toString()).append(", ");
-		msg.append("matcherResults").append(getAllParticipantMatchersWithResults().toString());
+		msg.append("child matchers: ").append(getChildMatchersWithResult().toString());
 		return msg.toString();
 	}
 }

@@ -56,14 +56,21 @@ public class MatcherResult extends MatcherResultElem {
 	}
 	
 	@Override
-	public EnumMap<MatcherType, MatcherResultElem> getAllParticipantMatchersWithResults() {
-		EnumMap<MatcherType, MatcherResultElem> matcherResultMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
-		matcherResultMap.put(matcherType, this);
-		return matcherResultMap;
+	public EnumMap<MatcherType, MatcherResultElem> getChildMatchersWithResult() {
+		EnumMap<MatcherType, MatcherResultElem> res = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
+		res.put(matcherType, this);
+		return res;
 	}
 	
 	@Override
-	public MatcherType getMatcherSelectedByPriority(){
+	public EnumMap<MatcherType, MatcherResultElem> getAllLeafMatchersWithResult(){
+		EnumMap<MatcherType, MatcherResultElem> res = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
+		res.put(matcherType, this);
+		return res;
+	}
+	
+	@Override
+	public MatcherType getFinalMatcher(){
 		return matcherType;
 	}
 

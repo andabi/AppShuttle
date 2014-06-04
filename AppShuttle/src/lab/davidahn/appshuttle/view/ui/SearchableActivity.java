@@ -1,13 +1,16 @@
 package lab.davidahn.appshuttle.view.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
-import lab.davidahn.appshuttle.view.ViewableUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.view.CandidateFavoriteBhv;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -26,7 +29,7 @@ import android.widget.TextView;
 
 public class SearchableActivity extends Activity implements OnItemClickListener {
 	private SearchListAdapter adapter;
-	private List<ViewableUserBhv> bhvList;
+	private List<CandidateFavoriteBhv> bhvList;
 	private ListView mListView;
 
 	@Override
@@ -34,15 +37,21 @@ public class SearchableActivity extends Activity implements OnItemClickListener 
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.searchlayout);
 	    
-	    bhvList = new ArrayList<ViewableUserBhv>();
+	    bhvList = new ArrayList<CandidateFavoriteBhv>();
 	    
-	    List<UserBhv> appUserBhvList = AppBhvCollector.getInstance().getInstalledAppList(false);
+	    AppBhvCollector appBhvCollector = AppBhvCollector.getInstance();
+	    List<UserBhv> appUserBhvList = appBhvCollector.getInstalledAppList(false);
 	    for(UserBhv bhv : appUserBhvList)
-	    	bhvList.add(new ViewableUserBhv(bhv));
+	    	bhvList.add(new CandidateFavoriteBhv(bhv, appBhvCollector.getFirstInstalledTime(bhv.getBhvName())));
 	    
-	    List<UserBhv> callUserBhvList = CallBhvCollector.getContactList();
-	    for(UserBhv bhv : callUserBhvList)
-	    	bhvList.add(new ViewableUserBhv(bhv));
+	    CallBhvCollector callBhvCollector = CallBhvCollector.getInstance();
+	    List<String> phoneNumList = callBhvCollector.getContactList();
+	    for(String phoneNum : phoneNumList)
+	    	bhvList.add(new CandidateFavoriteBhv(
+	    			BaseUserBhv.create(UserBhvType.CALL, phoneNum),
+	    			callBhvCollector.getLastCallTime(phoneNum)));
+	    
+	    Collections.sort(bhvList, Collections.reverseOrder());
 	    
 	    onSearchRequested();
 	    mListView.setOnItemClickListener(this);
@@ -103,10 +112,10 @@ public class SearchableActivity extends Activity implements OnItemClickListener 
         return true;
     }*/
 	
-	public class SearchListAdapter extends ArrayAdapter<ViewableUserBhv> {
-		private List<ViewableUserBhv> items;
+	public class SearchListAdapter extends ArrayAdapter<CandidateFavoriteBhv> {
+		private List<CandidateFavoriteBhv> items;
 		
-		public SearchListAdapter(Context context, int textViewResourceId, List<ViewableUserBhv> items) 
+		public SearchListAdapter(Context context, int textViewResourceId, List<CandidateFavoriteBhv> items) 
         {
             super(context, textViewResourceId, items);
             this.items = items;
@@ -116,13 +125,16 @@ public class SearchableActivity extends Activity implements OnItemClickListener 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View itemView = inflater.inflate(R.layout.listview_contact_item, parent, false);
-			ViewableUserBhv contact = this.items.get(position);
+			CandidateFavoriteBhv contact = this.items.get(position);
 
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_contact_item_image);
 			iconView.setImageDrawable(contact.getIcon());
 			
 			TextView nameView = (TextView) itemView.findViewById(R.id.listview_contact_item_name);
-			nameView.setText(contact.getUserBhv().getBhvName());
+			nameView.setText(contact.getBhvNameText());
+
+			TextView timeView = (TextView) itemView.findViewById(R.id.listview_contact_item_time);
+			timeView.setText(contact.getViewMsg());
 
 			return itemView;
 		}

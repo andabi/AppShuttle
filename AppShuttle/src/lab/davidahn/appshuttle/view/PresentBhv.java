@@ -2,9 +2,7 @@ package lab.davidahn.appshuttle.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
@@ -12,54 +10,25 @@ import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
-import lab.davidahn.appshuttle.predict.PredictedBhv;
-import lab.davidahn.appshuttle.predict.matcher.MatcherResultElem;
-import lab.davidahn.appshuttle.predict.matcher.MatcherType;
-import lab.davidahn.appshuttle.predict.matcher.MatcherTypeComparator;
 import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 
 public abstract class PresentBhv extends ViewableUserBhv {
-	private long time;
-	private long endTime;
+//	private long time;
+//	private long endTime;
 	
 	public PresentBhv(UserBhv uBhv) {
 		super(uBhv);
 	}
 
-	public long getTime() {
-		return time;
-	}
-	public long getEndTime() {
-		return endTime;
-	}
+//	public long getTime() {
+//		return time;
+//	}
+//	public long getEndTime() {
+//		return endTime;
+//	}
 
-	public abstract PresentBhvType getType();
-
-	@Override
-	public String getViewMsg() {
-		StringBuffer msg = new StringBuffer();
-		viewMsg = msg.toString();
-		PredictedBhv predictedBhv = PredictedBhv.getPredictedBhv(uBhv);
-		
-		if(predictedBhv == null)
-			return viewMsg;
-
-		Map<MatcherType, MatcherResultElem> macherResults = predictedBhv.getMatcherResultMap();
-		List<MatcherType> matcherTypeList = new ArrayList<MatcherType>(macherResults.keySet());
-		Collections.sort(matcherTypeList, new MatcherTypeComparator());
-		Collections.reverse(matcherTypeList);
-		
-		for (MatcherType matcherType : matcherTypeList) {
-			msg.append(macherResults.get(matcherType).getViewMsg()).append(", ");
-		}
-		msg.delete(msg.length() - 2, msg.length());
-		viewMsg = msg.toString();
-		
-		return viewMsg;
-	}
-	
 	@Override
 	public Integer getNotibarContainerId() {
 		return R.id.noti_present_container;

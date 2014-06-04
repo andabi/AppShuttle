@@ -71,4 +71,14 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 		else if(setTime == uBhv.setTime) return 0;
 		else return -1;
 	}
+
+	@Override
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.FAVORITE;
+	}
+	
+//	@Override
+//	public String getSharingMsg() {
+//		return AppShuttleApplication.getContext().getResources().getString(R.string.action_favorite);
+//	}
 }

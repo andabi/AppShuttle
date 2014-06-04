@@ -9,6 +9,7 @@ import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.PredictionService;
+import lab.davidahn.appshuttle.report.ShareUtils;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
@@ -225,7 +226,7 @@ public class AppShuttleMainActivity extends Activity {
 		}
 		return title;
 	}
-		
+
 	public void doPostAction() {
 		updateView();
 		NotiBarNotifier.getInstance().updateNotification();
@@ -419,6 +420,9 @@ public class AppShuttleMainActivity extends Activity {
 	    			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
 	    			actionMsg = ((BlockedBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unignore);
 	    			break;
+	    		case ACTION_SHARE:
+	    			ShareUtils.shareTextPlain(AppShuttleMainActivity.this, getResources().getString(R.string.name), bhv.getSharingMsg());
+	    			return;
     			default:
             }
 			doPostAction();

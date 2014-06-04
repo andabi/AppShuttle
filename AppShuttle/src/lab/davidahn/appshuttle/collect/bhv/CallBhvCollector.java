@@ -9,14 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import android.app.AlarmManager;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 
 public class CallBhvCollector extends BaseBhvCollector {
@@ -76,6 +74,9 @@ public class CallBhvCollector extends BaseBhvCollector {
 				null, 
 				CallLog.Calls.DATE + " ASC"
 				);
+		
+		if(cursor == null) return null;
+
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while(cursor.moveToNext()) {
 			int nameIdx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
@@ -125,88 +126,56 @@ public class CallBhvCollector extends BaseBhvCollector {
 	 * @param phoneNumber
 	 * @return contactName (null if not exists)
 	 */
-	public static String getContactName(String phoneNumber) {
-		ContentResolver cr = AppShuttleApplication.getContext().getContentResolver();
+	public String getContactName(String phoneNumber) {
 		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-		Cursor cursor = cr.query(uri, new String[]{PhoneLookup.DISPLAY_NAME}, null, null, null);
+		Cursor cursor = contentResolver.query(uri, new String[]{PhoneLookup.DISPLAY_NAME}, null, null, null);
 
-		if (cursor == null)
-			return null;
-
+		if(cursor == null) return null;
+		
 		String contactName = null;
 
 		if (cursor.moveToFirst()) {
 			contactName = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
 		}
 
-		if (!cursor.isClosed())
-			cursor.close();
+		cursor.close();
 
 		return contactName;
 	}
 	
-	/**
-	 * @return List of contactName & icon
-	 */
-	//TODO fix
-	public static List<UserBhv> getContactList() {
-		 // �ּҷ� URI        
-        Uri people = Contacts.CONTENT_URI;
-        
-        // �˻��� �÷� ���ϱ�
-        String[] projection = new String[] { Contacts._ID, Contacts.DISPLAY_NAME, Contacts.HAS_PHONE_NUMBER };
-        
-        // ���� ������ Ŀ�� ���
+	public List<String> getContactList() {
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED};
         String[] selectionArgs = null;
-        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";    
+        String sortOrder = ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED + " DESC";
+        Cursor cursor = contentResolver.query(uri, projection, null, selectionArgs, sortOrder);
 
-        ContentResolver cr = AppShuttleApplication.getContext().getContentResolver();
-        Cursor cursor = cr.query(people, projection, null, selectionArgs, sortOrder);
-        // return managedQuery(people, projection, null, selectionArgs, sortOrder);
-        
-        // ��ȭ��ȣ���� ���� ����
-        int end = cursor.getCount();                
-        // ��ȭ��ȣ���� (�̸�,����)�� ������ �迭 ����
-        List<UserBhv> res = new ArrayList<UserBhv>();
-        // ��ȭ��ȣ���� ��ȣ�� ������ �迭 ����
-        //String [] phone = new String[end];    
-        int count = 0;    
+        if(cursor == null) return null;
 
-        if(cursor.moveToFirst()) 
-        {
-            // �÷������� �÷� �ε��� ã�� 
-            int idIndex = cursor.getColumnIndex("_id");
+        List<String> res = new ArrayList<String>();
+		while (cursor.moveToNext()) {
+			String number = cursor.getString(0);
+			res.add(number);
+		}
+		
+		cursor.close();
 
-            do 
-            {
-                // ��Ұ� ���
-//                int id = cursor.getInt(idIndex);        
-//                String phoneChk = cursor.getString(2);
-//                if (phoneChk.equals("1")) {
-//                    Cursor phones = cr.query(
-//                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-//                            null,
-//                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-//                                    + " = " + id, null, null);
-//
-//                    while (phones.moveToNext()) {
-//                        phone[count] = phones
-//                                .getString(phones
-//                                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//                    }        
-//                }
-                String name = cursor.getString(1);
-                // TODO: ����ó ������ ���� ��������.
-                // �ӽ÷� ��ȭ�� ������ ���������� ��.
-//                Drawable icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
-                res.add(BaseUserBhv.create(UserBhvType.CALL, name));
-                //name[count] = cursor.getString(1);
-
-                //Log.i("ANDROES", "id=" + id +", name["+count+"]=" + names.get(count));
-                count++;
-                
-            } while(cursor.moveToNext() || count > end);
-        }
         return res;
+	}
+	
+	public long getLastCallTime(String phoneNumber){
+		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+		Cursor cursor = contentResolver.query(uri, new String[]{PhoneLookup.LAST_TIME_CONTACTED}, null, null, null);
+
+		if(cursor == null) return 0;
+
+		long lastTimeContacted = 0;
+		if (cursor.moveToFirst()) {
+			lastTimeContacted = cursor.getLong(cursor.getColumnIndex(PhoneLookup.LAST_TIME_CONTACTED));
+		}
+
+		cursor.close();
+
+		return lastTimeContacted;
 	}
 }

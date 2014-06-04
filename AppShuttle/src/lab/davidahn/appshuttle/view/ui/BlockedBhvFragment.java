@@ -94,7 +94,6 @@ public class BlockedBhvFragment extends ListFragment {
 		if(intent == null)
 			return;
 		
-		//TODO 수집시 캐치하는 새 앱과 중복되어 캐치될 수 있지 않나? isClick는 지금 당장 안쓰고 있으니 이 코드가 필요한지 확인 필요
 		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
@@ -147,15 +146,6 @@ public class BlockedBhvFragment extends ListFragment {
 				public void onClick(View v) {
 					Message msg = new Message();
 					switch(v.getId()){
-					case R.id.listview_present_menu_favorite:
-						msg.what = AppShuttleMainActivity.ACTION_FAVORITE;
-						break;
-					case R.id.listview_present_menu_ignore:
-						msg.what = AppShuttleMainActivity.ACTION_IGNORE;
-						break;
-					case R.id.listview_favorite_menu_unfavorite:
-						msg.what = AppShuttleMainActivity.ACTION_UNFAVORITE;
-						break;
 					case R.id.listview_ignore_menu_unignore:
 						msg.what = AppShuttleMainActivity.ACTION_UNIGNORE;
 						break;

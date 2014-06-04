@@ -112,6 +112,8 @@ public class FavoriteBhvFragment extends ListFragment {
 			StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		}
 		
+//		if(intent == null) return;
+		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
 
@@ -194,17 +196,8 @@ public class FavoriteBhvFragment extends ListFragment {
 				public void onClick(View v) {
 					Message msg = new Message();
 					switch(v.getId()){
-					case R.id.listview_present_menu_favorite:
-						msg.what = AppShuttleMainActivity.ACTION_FAVORITE;
-						break;
-					case R.id.listview_present_menu_ignore:
-						msg.what = AppShuttleMainActivity.ACTION_IGNORE;
-						break;
 					case R.id.listview_favorite_menu_unfavorite:
 						msg.what = AppShuttleMainActivity.ACTION_UNFAVORITE;
-						break;
-					case R.id.listview_ignore_menu_unignore:
-						msg.what = AppShuttleMainActivity.ACTION_UNIGNORE;
 						break;
 					}
 					msg.obj = favoriteBhvList.get(posMenuOpened);

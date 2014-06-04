@@ -135,7 +135,15 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 	
-	private static boolean isSystemApp(ApplicationInfo appInfo) {
+	public long getFirstInstalledTime(String packageName){
+		try {
+			return cxt.getPackageManager().getPackageInfo(packageName, 0).firstInstallTime;
+		} catch (NameNotFoundException e) {
+			return 0;
+		}	
+	}
+	
+	private boolean isSystemApp(ApplicationInfo appInfo) {
 	    return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true : false;
 	}
 

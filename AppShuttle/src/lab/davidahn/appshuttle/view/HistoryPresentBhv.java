@@ -32,8 +32,8 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 	}
 
 	@Override
-	public PresentBhvType getType() {
-		return PresentBhvType.HISTORY;
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.HISTORY;
 	}
 
 	@Override
