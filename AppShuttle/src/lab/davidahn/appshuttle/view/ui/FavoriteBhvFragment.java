@@ -3,7 +3,10 @@ package lab.davidahn.appshuttle.view.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
@@ -11,6 +14,7 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +53,11 @@ public class FavoriteBhvFragment extends ListFragment {
 
 //		setEmptyText(getResources().getString(R.string.msg_manual_favorite));
 
-		favoriteBhvList = new ArrayList<FavoriteBhv>(FavoriteBhvManager.getInstance().getFavoriteBhvListSorted());
+		favoriteBhvList = new ArrayList<FavoriteBhv>();
+		// add dummy Bhv
+		favoriteBhvList.add(new FavoriteBhv(BaseUserBhv.create(UserBhvType.NONE, ""), 0, false, 0));
+
+		favoriteBhvList.addAll(FavoriteBhvManager.getInstance().getFavoriteBhvListSorted());
 		
 		adapter = new FavoriteBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -93,25 +101,28 @@ public class FavoriteBhvFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		if(posMenuOpened == position)
 			return;
+
+		Intent intent = null;
+		if (position == 0) {
+			// search activity
+			intent = new Intent(AppShuttleApplication.getContext(), SearchableActivity.class);
+		} else {
+			intent = adapter.getItem(position).getLaunchIntent();
+			StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
+		}
 		
-		Intent intent = adapter.getItem(position).getLaunchIntent();
-		if(intent == null)
-			return;
-		
-		//TODO 수집시 캐치하는 새 앱과 중복되어 캐치될 수 있지 않나? isClick는 지금 당장 안쓰고 있으니 이 코드가 필요한지 확인 필요
-		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
 
 	private void openMenu(View v, int pos) {
-		if(pos < 0) return;
+		if(pos <= 0) return;
 		View menu = v.findViewById(R.id.listview_favorite_menu);
 		menu.setVisibility(View.VISIBLE);
 		posMenuOpened = pos;
 	}
 	
 	private void closeMenu() {
-		for(int i=0;i<getListView().getChildCount();i++){
+		for(int i=1;i<getListView().getChildCount();i++){
 			View menu = getListView().getChildAt(i).findViewById(R.id.listview_favorite_menu);
 			menu.setVisibility(View.GONE);
 		}
@@ -119,20 +130,26 @@ public class FavoriteBhvFragment extends ListFragment {
 	}
 	
 	private boolean isMenuOpened(){
-		if(posMenuOpened < 0 ) return false;
+		if(posMenuOpened <= 0 ) return false;
 		else return true;
 	}
 	
-	private TouchListView.DropListener onDrop=new TouchListView.DropListener() {
+	private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
 		@Override
 		public void drop(int fromPos, int toPos) {
+			//pos for add 
+			if(fromPos == 0 || toPos == 0) return;
+				
 			FavoriteBhv bhv = adapter.getItem(fromPos);
+			
+			Log.d("test", bhv.getBhvName());
+			
 			adapter.remove(bhv);
 			adapter.insert(bhv, toPos);
 			
 			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
-			for(int i=0; i<adapter.getCount();i++)
-				favoriteBhvManager.updateOrder(adapter.getItem(i), i+1);
+			for(int i=1; i<adapter.getCount();i++)
+				favoriteBhvManager.updateOrder(adapter.getItem(i), i);
 			
 			NotiBarNotifier.getInstance().updateNotification();
 		}
@@ -147,6 +164,12 @@ public class FavoriteBhvFragment extends ListFragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			if (position == 0) {
+				View addView = inflater.inflate(R.layout.listview_add, parent, false);
+				return addView;
+			}
+			
 			View itemView = inflater.inflate(R.layout.favorite_listview, parent, false);
 			FavoriteBhv favoriteUserBhv = favoriteBhvList.get(position);
 

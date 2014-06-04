@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.commons.math3.util.Pair;
+
+import lab.davidahn.appshuttle.AppShuttleApplication;
+
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlarmManager;
@@ -17,6 +21,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.PowerManager;
 
 public class AppBhvCollector extends BaseBhvCollector {
@@ -106,18 +112,26 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 
-	@SuppressWarnings("unused")
-	private List<String> getInstalledAppList(boolean includeSystemApp){
-		List<String> res = new ArrayList<String>();
-		for(ApplicationInfo appInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){
+	/**
+	 * @param boolean value about whether systemApp is included or not
+	 * @return List of appName & icon
+	 */
+	public static List<Pair<String, Drawable>> getInstalledAppList(boolean includeSystemApp){
+		PackageManager pm = AppShuttleApplication.getContext().getPackageManager();
+		List<Pair<String, Drawable>> res = new ArrayList<Pair<String, Drawable>>();
+		for(ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)){
 			if(!includeSystemApp && isSystemApp(appInfo))
 				continue;
-			res.add(appInfo.packageName);
+			try {
+				Drawable icon = (BitmapDrawable) pm.getApplicationIcon(appInfo.packageName);
+				String appname = pm.getApplicationLabel(appInfo).toString();
+				res.add(new Pair<String, Drawable>(appname, icon));
+			} catch (NameNotFoundException e) {}
 		}
 		return res;
 	}
 
-	private boolean isSystemApp(ApplicationInfo appInfo) {
+	private static boolean isSystemApp(ApplicationInfo appInfo) {
 	    return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true : false;
 	}
 

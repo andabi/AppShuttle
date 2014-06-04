@@ -3,4 +3,5 @@
     <color name="white">#ffffffff</color>
     <color name="indigo">#ff4b0082</color>
     <color name="semi_indigo">#804b0082</color>
+    <color name="lite_gray">#808080</color>
 </resources>

@@ -61,4 +61,8 @@
     <string name="settings_info_facebook">Facebook 페이지 보기</string>
     <string name="settings_info_facebook_summary">좋아요를 눌러주세요.</string>
     
+    <string name="menu_search">검색</string>
+    <string name="search_hint">검색할 앱이름/연락처</string>
+    <string name="activity_search_label">앱/연락처 검색</string>
+    <string name="search_instructions">겁색할 앱이름 또는 연락처 (이름/번호)를 입력하세요.</string>
 </resources>
