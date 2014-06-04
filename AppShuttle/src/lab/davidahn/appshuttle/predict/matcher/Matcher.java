@@ -65,7 +65,6 @@ public abstract class Matcher<C extends BaseMatcherConf> extends MatcherElem {
 		matcherResult.setLikelihood(likelihood);
 		matcherResult.setInverseEntropy(inverseEntropy);
 		matcherResult.setScore(computeScore(matcherResult));
-		matcherResult.setViewMsg(getType().viewMsg);
 
 		return matcherResult;
 	}

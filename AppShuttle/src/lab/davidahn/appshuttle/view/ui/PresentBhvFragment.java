@@ -93,7 +93,6 @@ public class PresentBhvFragment extends ListFragment {
 		if(intent == null)
 			return;
 		
-		//TODO 수집시 캐치하는 새 앱과 중복되어 캐치될 수 있지 않나? isClick는 지금 당장 안쓰고 있으니 이 코드가 필요한지 확인 필요
 		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
@@ -150,13 +149,11 @@ public class PresentBhvFragment extends ListFragment {
 					case R.id.listview_present_menu_ignore:
 						msg.what = AppShuttleMainActivity.ACTION_IGNORE;
 						break;
-					case R.id.listview_favorite_menu_unfavorite:
-						msg.what = AppShuttleMainActivity.ACTION_UNFAVORITE;
-						break;
-					case R.id.listview_ignore_menu_unignore:
-						msg.what = AppShuttleMainActivity.ACTION_UNIGNORE;
+					case R.id.listview_present_menu_share:
+						msg.what = AppShuttleMainActivity.ACTION_SHARE;
 						break;
 					}
+
 					msg.obj = presentBhvList.get(posMenuOpened);
 					AppShuttleMainActivity.userActionHandler.sendMessage(msg);
 				}
@@ -166,6 +163,13 @@ public class PresentBhvFragment extends ListFragment {
 
 			ImageView ignoreView = (ImageView) itemView.findViewById(R.id.listview_present_menu_ignore);
 			ignoreView.setOnClickListener(menuItemListener);
+			
+			ImageView shareView = (ImageView) itemView.findViewById(R.id.listview_present_menu_share);
+			if(presentBhv.isSharable()){
+				shareView.setOnClickListener(menuItemListener);
+			} else {
+				shareView.setVisibility(View.GONE);
+			}
 			
 			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_present_menu_cancel);
 			cancelView.setOnClickListener(new View.OnClickListener() {

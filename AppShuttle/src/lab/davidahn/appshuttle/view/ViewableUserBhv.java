@@ -11,6 +11,8 @@ import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.report.Sharable;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -18,7 +20,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public class ViewableUserBhv implements UserBhv, Viewable {
+public class ViewableUserBhv implements UserBhv, Viewable, Sharable {
 	protected UserBhv uBhv;
 	protected Drawable icon;
 	protected String bhvNameText;
@@ -60,6 +62,10 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 	@Override
 	public boolean isValid() {
 		return uBhv.isValid();
+	}
+	
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.NONE;
 	}
 
 	@Override
@@ -174,5 +180,49 @@ public class ViewableUserBhv implements UserBhv, Viewable {
 		res.removeAll(FavoriteBhvManager.getInstance().getFavoriteBhvSet());
 		res.removeAll(BlockedBhvManager.getInstance().getBlockedBhvSet());
 		return res;
+	}
+
+	@Override
+	public boolean isSharable(){
+		switch(getBhvType()){
+		case SENSOR_ON:
+			return false;
+		default:
+			return true;
+		}
+	}
+	
+	@Override
+	public String getSharingMsg() {
+		if(!isSharable())
+			return null;
+		
+		return String.format(getSharingMsgFormat(), 
+				getViewMsg(),
+				getBhvNameText(),
+				getSharingLink());
+	}
+	
+	protected String getSharingMsgFormat() {
+		final Context cxt = AppShuttleApplication.getContext();
+		switch(getBhvType()){
+		case APP:
+			return cxt.getString(R.string.action_msg_share_app);
+		case CALL:
+			return cxt.getString(R.string.action_msg_share_call);
+		default:
+			return null;
+		}
+	}
+	
+	protected String getSharingLink(){
+		switch(getBhvType()){
+		case APP:
+			return "https://play.google.com/store/apps/details?id=" + getBhvName();
+		case CALL:
+			return getBhvName();
+		default:
+			return null;
+		}
 	}
 }

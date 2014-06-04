@@ -1,6 +1,9 @@
 package lab.davidahn.appshuttle.view;
 
-public enum PresentBhvType {
+public enum ViewableBhvType {
+	NONE,
+	FAVORITE,
+	BLOCKED,
 	PREDICTED,
 	HISTORY,
 	SELECTED,

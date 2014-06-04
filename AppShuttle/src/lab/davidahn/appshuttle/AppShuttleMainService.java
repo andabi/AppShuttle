@@ -40,6 +40,7 @@ public class AppShuttleMainService extends Service {
 		startPeriodicOperationsAlways();
 	    if(((PowerManager)getSystemService(Context.POWER_SERVICE)).isScreenOn())
 	    	startPeriodicOperationsScreenOn();
+	    
 	}
 	
 	@Override

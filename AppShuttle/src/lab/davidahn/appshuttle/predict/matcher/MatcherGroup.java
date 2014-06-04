@@ -37,20 +37,12 @@ public abstract class MatcherGroup extends MatcherElem {
 		for(MatcherResultElem matcherResult : matcherResults)
 			matcherGroupResult.addMatcherResult(matcherResult);
 		matcherGroupResult.setScore(computeScore(matcherResults));
-		matcherGroupResult.setViewMsg(extractViewMsg(matcherResults));
 		
 		return matcherGroupResult;
 	}
 
 	public void registerMatcher(MatcherElem matcher) {
 		matchers.put(matcher.getType(), matcher);
-	}
-
-	protected String extractViewMsg(List<MatcherResultElem> matcherResults) {
-		assert(!matcherResults.isEmpty());
-
-		MatcherResultElem maxPriority = Collections.max(matcherResults);
-		return maxPriority.getMatcherType().viewMsg;
 	}
 
 	protected double computeScore(List<MatcherResultElem> matcherResults) {
