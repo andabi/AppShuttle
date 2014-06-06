@@ -395,6 +395,7 @@ public class AppShuttleMainActivity extends Activity {
 	public static final int ACTION_IGNORE = 2;
 	public static final int ACTION_UNIGNORE = 3;
 	public static final int ACTION_SHARE = 4;
+	public static final int ACTION_FAVORITE_UPDATE_ORDER = 5;
 	
 	class UserActionHandler extends Handler {
 		@Override
@@ -406,27 +407,37 @@ public class AppShuttleMainActivity extends Activity {
 	    			UserBhvManager.getInstance().register(bhv.getUserBhv());
 	    			FavoriteBhv favoriteBhv = FavoriteBhvManager.getInstance().favorite(bhv);
 	    			actionMsg = favoriteBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
+	    			break;
+	    		case ACTION_UNFAVORITE:
+	    			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
+	    			actionMsg = ((FavoriteBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
+	    			break;
+	    		case ACTION_FAVORITE_UPDATE_ORDER:
+	    			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+	    			favoriteBhvManager.updateOrder((FavoriteBhv)bhv, msg.arg1);
 	    			break;
 	    		case ACTION_IGNORE:
 	    			UserBhvManager.getInstance().register(bhv.getUserBhv());
 	    			BlockedBhv blockedBhv = BlockedBhvManager.getInstance().block(bhv);
 	    			actionMsg =  blockedBhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
-	    			break;
-	    		case ACTION_UNFAVORITE:
-	    			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
-	    			actionMsg = ((FavoriteBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
 	    			break;
 	    		case ACTION_UNIGNORE:
 	    			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
 	    			actionMsg = ((BlockedBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unignore);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
 	    			break;
 	    		case ACTION_SHARE:
 	    			ShareUtils.shareTextPlain(AppShuttleMainActivity.this, getResources().getString(R.string.name), bhv.getSharingMsg());
-	    			return;
+	    			break;
     			default:
             }
-			doPostAction();
-			showToastMsg(actionMsg);
         }
     };
 }

@@ -10,6 +10,7 @@ import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.FavoriteBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
+import lab.davidahn.appshuttle.view.ViewService;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -145,16 +146,18 @@ public class FavoriteBhvFragment extends ListFragment {
 				
 			FavoriteBhv bhv = adapter.getItem(fromPos);
 			
-			Log.d("test", bhv.getBhvName());
-			
 			adapter.remove(bhv);
 			adapter.insert(bhv, toPos);
-			
-			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
-			for(int i=1; i<adapter.getCount();i++)
-				favoriteBhvManager.updateOrder(adapter.getItem(i), i);
-			
-			NotiBarNotifier.getInstance().updateNotification();
+
+			for(int i=1; i<adapter.getCount(); i++){
+				Message msg = new Message();
+				msg.what = AppShuttleMainActivity.ACTION_FAVORITE_UPDATE_ORDER;
+				msg.arg1 = i;
+				msg.obj = adapter.getItem(i);
+				AppShuttleMainActivity.userActionHandler.sendMessage(msg);
+			}
+
+			getActivity().startService(new Intent(getActivity(), ViewService.class).putExtra("isOnlyNotibar", true));
 		}
 	};
 	

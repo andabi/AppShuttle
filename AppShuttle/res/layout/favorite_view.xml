@@ -7,6 +7,7 @@
     <com.commonsware.cwac.tlv.TouchListView
         xmlns:tlv="http://schemas.android.com/apk/res/lab.davidahn.appshuttle"
         android:id="@id/android:list"
+        style="?android:attr/listViewStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

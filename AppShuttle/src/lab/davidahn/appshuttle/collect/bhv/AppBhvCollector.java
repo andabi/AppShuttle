@@ -125,12 +125,12 @@ public class AppBhvCollector extends BaseBhvCollector {
 //		return res;
 //	}
 	
-	public List<UserBhv> getInstalledAppList(boolean includeSystemApp){
-		List<UserBhv> res = new ArrayList<UserBhv>();
+	public List<String> getInstalledAppList(boolean includeSystemApp){
+		List<String> res = new ArrayList<String>();
 		for(ApplicationInfo appInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){
 			if(!includeSystemApp && isSystemApp(appInfo))
 				continue;
-			res.add(create(UserBhvType.APP, appInfo.packageName));
+			res.add(appInfo.packageName);
 		}
 		return res;
 	}
@@ -138,6 +138,14 @@ public class AppBhvCollector extends BaseBhvCollector {
 	public long getFirstInstalledTime(String packageName){
 		try {
 			return cxt.getPackageManager().getPackageInfo(packageName, 0).firstInstallTime;
+		} catch (NameNotFoundException e) {
+			return 0;
+		}	
+	}
+	
+	public long getLastUpdatedTime(String packageName){
+		try {
+			return cxt.getPackageManager().getPackageInfo(packageName, 0).lastUpdateTime;
 		} catch (NameNotFoundException e) {
 			return 0;
 		}	

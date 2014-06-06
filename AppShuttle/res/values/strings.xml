@@ -64,7 +64,8 @@
     <string name="settings_info_version">Version</string>
     <string name="settings_info_facebook">Facebook page</string>
     <string name="settings_info_facebook_summary">Please click \'Like\' button. </string>
-
+    
+    <string name="add_bhv">Touch to add App</string>
     <string name="menu_search">Search</string>
     <string name="search_hint">App or contact for searching</string>
     <string name="activity_search_label">Add favorites</string>

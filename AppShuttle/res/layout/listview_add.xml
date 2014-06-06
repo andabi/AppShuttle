@@ -1,20 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:gravity="left"
+    android:layout_height="?android:attr/listPreferredItemHeightSmall"
     android:orientation="horizontal"
     android:padding="6dp" >
 
-        <TextView
-            android:id="@+id/listview_add_item"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="앱/연락처 추가"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#80000000"
-            android:actionViewClass="android.widget.SearchView" />
+    <TextView
+        android:id="@+id/listview_add_bhv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:actionViewClass="android.widget.SearchView"
+        android:gravity="center"
+        android:text="@string/add_bhv"
+        android:textAppearance="?android:attr/textAppearanceButton"
+        android:textColor="?android:attr/colorActivatedHighlight" />
 
 </LinearLayout>
