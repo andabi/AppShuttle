@@ -13,9 +13,10 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = AppShuttleApplication.getContext().getPreferences().getString("database.name", "AppShuttle.db");
 	private static final int DB_VERSION = 44;
 
-	private static AppShuttleDBHelper dbHelper = new AppShuttleDBHelper(AppShuttleApplication.getContext());
-	public static AppShuttleDBHelper getInstance() {
-		return dbHelper;
+	private static SQLiteDatabase db = new AppShuttleDBHelper(AppShuttleApplication.getContext()).getWritableDatabase();
+
+	public static SQLiteDatabase getDatabase() {
+		return db;
 	}
 
 	private AppShuttleDBHelper(Context cxt) {
@@ -23,13 +24,14 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void onCreate(SQLiteDatabase db) {
-		DurationUserEnvDao.getInstance().createTable();
-		DurationUserBhvDao.getInstance().createTable();
-		UserBhvDao.getInstance().createTable();
-		HistoryPresentBhvDao.getInstance().createTable();
-		StatCollector.getInstance().createTable();
+		DurationUserEnvDao.DDL.createTable(db);
+		DurationUserBhvDao.DDL.createTable(db);
+		UserBhvDao.DDL.createTable(db);
+		HistoryPresentBhvDao.DDL.createTable(db);
+		StatCollector.DDL.createTable(db);
+//		Log.d("AppShuttleDBHelper", "tables created.");
 	}
-
+	
 	/*
 	 * Comments on DB_VERSION
 	 * 
@@ -39,10 +41,10 @@ public class AppShuttleDBHelper extends SQLiteOpenHelper {
 	 */
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if(oldVersion <= 41)
-			HistoryPresentBhvDao.getInstance().createTable();
+			HistoryPresentBhvDao.DDL.createTable(db);
 
 		if(oldVersion <= 42)
-			StatCollector.getInstance().createTable();
+			StatCollector.DDL.createTable(db);
 		
 		if(oldVersion <= 43){
 			db.execSQL(String.format("ALTER TABLE %s ADD COLUMN %s INTEGER DEFAULT 0", 

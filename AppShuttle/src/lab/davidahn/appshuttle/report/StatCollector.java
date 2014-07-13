@@ -50,7 +50,7 @@ public class StatCollector {
 	private UserBhv prevBhv;
 	
 	private StatCollector(){
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getDatabase();
 		gson = new Gson();
 //		Log.d("Stat", "New Collector created / " + created);
 	}
@@ -257,18 +257,6 @@ public class StatCollector {
 		return;
 	}
 	
-	public void createTable() {
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
-				+ columnTime + " INTEGER, "
-				+ columnBhvType + " TEXT, "
-				+ columnBhvName + " TEXT, "
-				+ columnMatchers + " TEXT, "
-				+ columnPredicted + " INTEGER, "
-				+ columnClicked + " INTEGER, "
-				+ "PRIMARY KEY (" + columnTime + ") "
-				+ ");");
-	}
-
 	public void store(StatEntry entry){
 		ContentValues row = new ContentValues();
 		row.put(columnTime, entry.timestamp);
@@ -350,6 +338,20 @@ public class StatCollector {
 					"uBhv count: " + totalCount + "\n" +
 					"Hit ratio: " + hitRatio + " %\n" +
 					"Use ratio: " + clickRatio + " %\n"; 
+		}
+	}
+	
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+					+ columnTime + " INTEGER, "
+					+ columnBhvType + " TEXT, "
+					+ columnBhvName + " TEXT, "
+					+ columnMatchers + " TEXT, "
+					+ columnPredicted + " INTEGER, "
+					+ columnClicked + " INTEGER, "
+					+ "PRIMARY KEY (" + columnTime + ") "
+					+ ");");
 		}
 	}
 }

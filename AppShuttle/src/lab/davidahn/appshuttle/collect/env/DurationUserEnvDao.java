@@ -27,7 +27,7 @@ public class DurationUserEnvDao {
 	private Gson gson;
 	
 	private DurationUserEnvDao() {
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getDatabase();
 		gson = new Gson();
 	}
 
@@ -35,22 +35,6 @@ public class DurationUserEnvDao {
 		return durationUserEnvDao;
 	}
 
-	public void createTable() {
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
-			+ columnTime + " INTEGER, "
-			+ columnDuration + " INTEGER, "
-			+ columnEndTime + " INTEGER, "
-			+ columnTimeZone + " TEXT, "
-			+ columnEnvType + " TEXT, "
-			+ columnEnv + " TEXT, "
-			+ "PRIMARY KEY (" + columnTime + ", " + columnTimeZone + ", " + columnEnvType + ") "
-			+ ");");
-		db.execSQL("CREATE INDEX " + index1Name + " on " + tableName + " (" 
-			+ columnTime + ")");
-		db.execSQL("CREATE INDEX " + index2Name + " on " + tableName + " (" 
-			+ columnTime + ", " + columnEndTime + ", " + columnEnvType +")");
-	}
-	
 	public void store(DurationUserEnv durationUserEnv) {
 		ContentValues row = new ContentValues();
 		row.put(columnTime, durationUserEnv.getTime());
@@ -146,5 +130,23 @@ public class DurationUserEnvDao {
 	public void deleteBetween(long beginTime, long endTime) {
 		db.execSQL("DELETE FROM " + tableName + " WHERE " + columnTime + " >= " + beginTime +
 				" AND " + columnTime + " < " + endTime + "';");
+	}
+
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+				+ columnTime + " INTEGER, "
+				+ columnDuration + " INTEGER, "
+				+ columnEndTime + " INTEGER, "
+				+ columnTimeZone + " TEXT, "
+				+ columnEnvType + " TEXT, "
+				+ columnEnv + " TEXT, "
+				+ "PRIMARY KEY (" + columnTime + ", " + columnTimeZone + ", " + columnEnvType + ") "
+				+ ");");
+			db.execSQL("CREATE INDEX " + index1Name + " on " + tableName + " (" 
+				+ columnTime + ")");
+			db.execSQL("CREATE INDEX " + index2Name + " on " + tableName + " (" 
+				+ columnTime + ", " + columnEndTime + ", " + columnEnvType +")");
+		}
 	}
 }

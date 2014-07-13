@@ -12,7 +12,7 @@
         android:actionViewClass="android.widget.SearchView"
         android:gravity="center"
         android:text="@string/add_bhv"
-        android:textAppearance="?android:attr/textAppearanceButton"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="?android:attr/colorActivatedHighlight" />
 
 </LinearLayout>

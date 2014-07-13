@@ -22,20 +22,10 @@ public class HistoryPresentBhvDao {
 	
 	private static HistoryPresentBhvDao presentBhvDao = new HistoryPresentBhvDao();
 	private HistoryPresentBhvDao() {
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getDatabase();
 	}
 	public static HistoryPresentBhvDao getInstance() {
 		return presentBhvDao;
-	}
-
-	public void createTable() {
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
-				+ columnBhvType + " TEXT, "
-				+ columnBhvName + " TEXT, "
-				+ columnRecentPredTime + " INTEGER DEFAULT 0, "
-				+ columnRecentPredScore + " INTEGER DEFAULT 0, "
-				+ "PRIMARY KEY (" + columnBhvType + ", " + columnBhvName + ") "
-				+ ");");
 	}
 	
 	public void store(HistoryPresentBhv bhv) {
@@ -75,4 +65,17 @@ public class HistoryPresentBhvDao {
 	}
 
 	public void delete(HistoryPresentBhv bhv) {}
+	
+
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+					+ columnBhvType + " TEXT, "
+					+ columnBhvName + " TEXT, "
+					+ columnRecentPredTime + " INTEGER DEFAULT 0, "
+					+ columnRecentPredScore + " INTEGER DEFAULT 0, "
+					+ "PRIMARY KEY (" + columnBhvType + ", " + columnBhvName + ") "
+					+ ");");
+		}
+	}
 }

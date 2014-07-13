@@ -33,28 +33,13 @@ public class UserBhvDao {
 	
 	private static UserBhvDao userBhvDao = new UserBhvDao();
 	private UserBhvDao() {
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getDatabase();
 		gson = new Gson();
 	}
 	public static UserBhvDao getInstance() {
 		return userBhvDao;
 	}
 
-	public void createTable() {
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
-				+ columnBhvType + " TEXT, "
-				+ columnBhvName + " TEXT, "
-				+ columnMetas + " TEXT, "
-				+ columnBlocked + " INTEGER DEFAULT 0, "
-				+ columnBlockedTime + " INTEGER DEFAULT 0, "
-				+ columnFavorite + " INTEGER DEFAULT 0, "
-				+ columnFavoriteTime + " INTEGER DEFAULT 0, "
-				+ columnIsNotifiable + " INTEGER DEFAULT 0, "
-				+ columnFavoriteOrder + " INTEGER DEFAULT 0, "
-				+ "PRIMARY KEY (" + columnBhvType + ", " + columnBhvName + ") "
-				+ ");");
-	}
-	
 	public void storeUserBhv(UserBhv uBhv) {
 		ContentValues row = new ContentValues();
 		row.put(columnBhvType, uBhv.getBhvType().toString());
@@ -204,5 +189,22 @@ public class UserBhvDao {
 				" SET " + columnBlocked + " = 0" +
 				" WHERE " + columnBhvType + " = '" + uBhv.getBhvType() + "'" +
 					" AND " + columnBhvName + " = '" + uBhv.getBhvName() + "';");
+	}
+	
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+					+ columnBhvType + " TEXT, "
+					+ columnBhvName + " TEXT, "
+					+ columnMetas + " TEXT, "
+					+ columnBlocked + " INTEGER DEFAULT 0, "
+					+ columnBlockedTime + " INTEGER DEFAULT 0, "
+					+ columnFavorite + " INTEGER DEFAULT 0, "
+					+ columnFavoriteTime + " INTEGER DEFAULT 0, "
+					+ columnIsNotifiable + " INTEGER DEFAULT 0, "
+					+ columnFavoriteOrder + " INTEGER DEFAULT 0, "
+					+ "PRIMARY KEY (" + columnBhvType + ", " + columnBhvName + ") "
+					+ ");");
+		}
 	}
 }

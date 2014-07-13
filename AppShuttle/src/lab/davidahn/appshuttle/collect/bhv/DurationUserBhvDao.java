@@ -24,28 +24,11 @@ public class DurationUserBhvDao {
 	private SQLiteDatabase db;
 
 	private DurationUserBhvDao() {
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getDatabase();
 	}
 
 	public static DurationUserBhvDao getInstance() {
 		return durationUserBhvDao;
-	}
-
-	public void createTable() {
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
-				+ columnTime + " INTEGER, "
-				+ columnDuration + " INTEGER, "
-				+ columnEndTime + " INTEGER, "
-				+ columnTimeZone + " TEXT, "
-				+ columnBhvType + " TEXT, "
-				+ columnBhvName + " TEXT, "
-				+ "PRIMARY KEY (" + columnTime + ", " + columnTimeZone + ", "
-					+ columnBhvType + ", " + columnBhvName + ") "
-				+ ");");
-		db.execSQL("CREATE INDEX " + index1Name + " on " + tableName + " (" 
-				+ columnTime + ")");
-		db.execSQL("CREATE INDEX " + index2Name + " on " + tableName + " (" 
-				+ columnTime + ", " + columnBhvType + ", " + columnBhvName +")");
 	}
 	
 	public void store(DurationUserBhv durationUserBhv) {
@@ -149,6 +132,25 @@ public class DurationUserBhvDao {
 		db.execSQL(
 				"DELETE FROM " + tableName +
 				" WHERE " + columnTime + " < " + time + ";");
+	}
+	
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+					+ columnTime + " INTEGER, "
+					+ columnDuration + " INTEGER, "
+					+ columnEndTime + " INTEGER, "
+					+ columnTimeZone + " TEXT, "
+					+ columnBhvType + " TEXT, "
+					+ columnBhvName + " TEXT, "
+					+ "PRIMARY KEY (" + columnTime + ", " + columnTimeZone + ", "
+						+ columnBhvType + ", " + columnBhvName + ") "
+					+ ");");
+			db.execSQL("CREATE INDEX " + index1Name + " on " + tableName + " (" 
+					+ columnTime + ")");
+			db.execSQL("CREATE INDEX " + index2Name + " on " + tableName + " (" 
+					+ columnTime + ", " + columnBhvType + ", " + columnBhvName +")");
+		}
 	}
 
 //	//TODO fix
