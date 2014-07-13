@@ -1,7 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
-import android.text.format.DateUtils;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import android.text.format.DateUtils;
 
 public class SelectedPresentBhv extends PresentBhv implements Comparable<SelectedPresentBhv> {
 	private long lastUsedTime;
