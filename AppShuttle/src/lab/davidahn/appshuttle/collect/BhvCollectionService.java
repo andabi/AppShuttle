@@ -123,6 +123,7 @@ public class BhvCollectionService extends Service {
 
 	private void registerAndStoreDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			if(!durationUserBhv.isValid()) continue;
 			BaseUserBhv uBhv = (BaseUserBhv)durationUserBhv.getUserBhv();
 			UserBhvManager.getInstance().register(uBhv);
 			DurationUserBhvDao.getInstance().store(durationUserBhv);

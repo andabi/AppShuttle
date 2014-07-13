@@ -74,6 +74,10 @@ public class PredictedPresentBhv extends PresentBhv implements
 		viewMsg = msg.toString();
 
 		List<MatcherType> matchers = getFinalMatchers();
+		
+		if(matchers.isEmpty())
+			return viewMsg;
+			
 		Collections.sort(matchers, new MatcherTypeComparator());
 		Collections.reverse(matchers);
 		
