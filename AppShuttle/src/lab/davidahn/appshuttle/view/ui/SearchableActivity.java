@@ -20,10 +20,11 @@ import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,9 +32,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
-public class SearchableActivity extends Activity implements OnItemClickListener {
+public class SearchableActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener {
 	private SearchListAdapter adapter;
 	private List<CandidateFavoriteBhv> bhvList;
 	private ListView mListView;
@@ -44,7 +46,8 @@ public class SearchableActivity extends Activity implements OnItemClickListener 
 	    setContentView(R.layout.add_view);
 	    
 	    bhvList = new ArrayList<CandidateFavoriteBhv>();
-	    
+
+	    //TODO
 	    AppBhvCollector appBhvCollector = AppBhvCollector.getInstance();
 	    List<String> installedAppList = appBhvCollector.getInstalledAppList(false);
 	    for(String packageName : installedAppList){
@@ -71,42 +74,30 @@ public class SearchableActivity extends Activity implements OnItemClickListener 
 	    
 	    Collections.sort(bhvList, Collections.reverseOrder());
 	    
-	    onSearchRequested();
-	    mListView.setOnItemClickListener(this);
-	}
-	
-	@Override
-    protected void onNewIntent(Intent intent) {
-        // Because this activity has set launchMode="singleTop", the system calls this method
-        // to deliver the intent if this activity is currently the foreground activity when
-        // invoked again (when the user executes a search from this activity, we don't create
-        // a new instance of this activity, so the system delivers the search intent here)
-        handleIntent(intent);
-    }
-	
-	private void handleIntent(Intent intent) {
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            // handles a click on a search suggestion; launches activity to show word
-//            Intent wordIntent = new Intent(this, WordActivity.class);
-//            wordIntent.setData(intent.getData());
-//            startActivity(wordIntent);
-        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            // handles a search query
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //showResults(query);
-        }
-    }
-	
-	@Override
-	public boolean onSearchRequested() {
-		//pauseSomeStuff();
 	    mListView = (ListView) findViewById(R.id.list_search_results);
+	    mListView.setOnItemClickListener(this);
 	    adapter = new SearchListAdapter(this, R.layout.add_listview, bhvList);
 	    mListView.setAdapter(adapter);
-		
-		return super.onSearchRequested();
 	}
-
+	
+//	@Override
+//    protected void onNewIntent(Intent intent) {
+//        handleIntent(intent);
+//    }
+//	
+//	private void handleIntent(Intent intent) {
+//        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+//            // handles a click on a search suggestion; launches activity to show word
+////            Intent wordIntent = new Intent(this, WordActivity.class);
+////            wordIntent.setData(intent.getData());
+////            startActivity(wordIntent);
+//        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+//            // handles a search query
+//            String query = intent.getStringExtra(SearchManager.QUERY);
+////            showResults(query);
+//        }
+//    }
+	
 	@Override
 	public void onItemClick(AdapterView<?> parentView, View v, int pos, long id) {
 		Message msg = new Message();
@@ -114,21 +105,33 @@ public class SearchableActivity extends Activity implements OnItemClickListener 
 		msg.obj = bhvList.get(pos);
 		AppShuttleMainActivity.userActionHandler.sendMessage(msg);
 		finish();
-	}	
-
+	}
 	
-/*	@Override
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.searchable_actionmode, menu);
+        inflater.inflate(R.menu.search_actionmode, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-    
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(this);
+
         return true;
-    }*/
+    }
+	
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		//TODO
+		return true;
+	}
+	
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		//TODO
+		return true;
+	}
 	
 	public class SearchListAdapter extends ArrayAdapter<CandidateFavoriteBhv> {
 		private List<CandidateFavoriteBhv> items;
