@@ -18,13 +18,17 @@ import lab.davidahn.appshuttle.view.BlockedBhvManager;
 import lab.davidahn.appshuttle.view.CandidateFavoriteBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,74 +39,35 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class SearchableActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener {
+public class SearchableActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener, LoaderManager.LoaderCallbacks<Object> {
 	private SearchListAdapter adapter;
-	private List<CandidateFavoriteBhv> bhvList;
+	private List<CandidateFavoriteBhv> allBhvListSorted = new ArrayList<CandidateFavoriteBhv>();
+	private List<CandidateFavoriteBhv> adapterBhvList = new ArrayList<CandidateFavoriteBhv>();
 	private ListView mListView;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.add_view);
-	    
-	    bhvList = new ArrayList<CandidateFavoriteBhv>();
 
-	    //TODO
-	    AppBhvCollector appBhvCollector = AppBhvCollector.getInstance();
-	    List<String> installedAppList = appBhvCollector.getInstalledAppList(false);
-	    for(String packageName : installedAppList){
-	    	UserBhv base = create(UserBhvType.APP, packageName);
-	    	if(base.isValid())
-		    	bhvList.add(new CandidateFavoriteBhv(base,
-		    			appBhvCollector.getLastUpdatedTime(packageName)));
-	    }
-	    
-	    CallBhvCollector callBhvCollector = CallBhvCollector.getInstance();
-	    List<String> phoneNumList = callBhvCollector.getContactList();
-	    for(String phoneNum : phoneNumList){
-	    	UserBhv base = create(UserBhvType.CALL, phoneNum);
-	    	if(base.isValid())
-		    	bhvList.add(new CandidateFavoriteBhv(
-		    			BaseUserBhv.create(UserBhvType.CALL, phoneNum),
-		    			callBhvCollector.getLastCallTime(phoneNum)));
-	    }
-	    
-	    Set<UserBhv> toBeFiltered = new HashSet<UserBhv>();
-	    toBeFiltered.addAll(FavoriteBhvManager.getInstance().getFavoriteBhvSet());
-	    toBeFiltered.addAll(BlockedBhvManager.getInstance().getBlockedBhvSet());
-	    bhvList.removeAll(toBeFiltered);
-	    
-	    Collections.sort(bhvList, Collections.reverseOrder());
+	    setContentView(R.layout.add_view);
+	    setProgressBarIndeterminateVisibility(true);
 	    
 	    mListView = (ListView) findViewById(R.id.list_search_results);
 	    mListView.setOnItemClickListener(this);
-	    adapter = new SearchListAdapter(this, R.layout.add_listview, bhvList);
+	    adapter = new SearchListAdapter(this, R.layout.add_listview, adapterBhvList);
 	    mListView.setAdapter(adapter);
+	    
+		allBhvListSorted = getAllCandidateFavoriteBhvListSorted();
+	    updateCandidateFavoriteBhvListMatching(null);
+
+//	    getLoaderManager().initLoader(0, null, this);
 	}
-	
-//	@Override
-//    protected void onNewIntent(Intent intent) {
-//        handleIntent(intent);
-//    }
-//	
-//	private void handleIntent(Intent intent) {
-//        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-//            // handles a click on a search suggestion; launches activity to show word
-////            Intent wordIntent = new Intent(this, WordActivity.class);
-////            wordIntent.setData(intent.getData());
-////            startActivity(wordIntent);
-//        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-//            // handles a search query
-//            String query = intent.getStringExtra(SearchManager.QUERY);
-////            showResults(query);
-//        }
-//    }
 	
 	@Override
 	public void onItemClick(AdapterView<?> parentView, View v, int pos, long id) {
 		Message msg = new Message();
 		msg.what = AppShuttleMainActivity.ACTION_FAVORITE;
-		msg.obj = bhvList.get(pos);
+		msg.obj = adapterBhvList.get(pos);
 		AppShuttleMainActivity.userActionHandler.sendMessage(msg);
 		finish();
 	}
@@ -117,20 +82,88 @@ public class SearchableActivity extends Activity implements OnItemClickListener,
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(this);
+        menu.findItem(R.id.search).setOnActionExpandListener(new OnActionExpandListener() {
+			
+        	@Override
+        	public boolean onMenuItemActionCollapse(MenuItem menu) {
+        		return updateCandidateFavoriteBhvListMatching(null);
+        	}
+
+        	@Override
+        	public boolean onMenuItemActionExpand(MenuItem menu) {
+        		return true;
+        	}
+    	});
 
         return true;
     }
 	
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		//TODO
-		return true;
+		return updateCandidateFavoriteBhvListMatching(query);
 	}
 	
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		//TODO
+		if(allBhvListSorted.size() <= 200)
+			return updateCandidateFavoriteBhvListMatching(newText);
+		else
+			return false;
+	}
+	
+	private boolean updateCandidateFavoriteBhvListMatching(String text){
+		if(text == null || text.isEmpty()) {
+			adapterBhvList = new ArrayList<CandidateFavoriteBhv>(allBhvListSorted);
+		} else {
+			adapterBhvList = getCandidateFavoriteBhvListMatchSorted(allBhvListSorted, text);
+		}
+		adapter.clear();
+		adapter.addAll(adapterBhvList);
+		adapter.notifyDataSetChanged();
+		
 		return true;
+	}
+	
+	private List<CandidateFavoriteBhv> getCandidateFavoriteBhvListMatchSorted(List<CandidateFavoriteBhv> list, String text) {
+		List<CandidateFavoriteBhv> res = new ArrayList<CandidateFavoriteBhv>();
+		for(CandidateFavoriteBhv bhv : list) {
+			if(bhv.getBhvNameText().toLowerCase().contains(text.toLowerCase()))
+				res.add(bhv);
+		}
+	    Collections.sort(res, Collections.reverseOrder());
+		return res;
+	}
+	
+	private List<CandidateFavoriteBhv> getAllCandidateFavoriteBhvListSorted() {
+		List<CandidateFavoriteBhv> res = new ArrayList<CandidateFavoriteBhv>();
+
+	    AppBhvCollector appBhvCollector = AppBhvCollector.getInstance();
+	    List<String> installedAppList = appBhvCollector.getInstalledAppList(false);
+	    for(String packageName : installedAppList){
+	    	UserBhv base = create(UserBhvType.APP, packageName);
+	    	if(base.isValid())
+		    	res.add(new CandidateFavoriteBhv(base,
+		    			appBhvCollector.getLastUpdatedTime(packageName)));
+	    }
+	    
+	    CallBhvCollector callBhvCollector = CallBhvCollector.getInstance();
+	    List<String> phoneNumList = callBhvCollector.getContactList();
+	    for(String phoneNum : phoneNumList){
+	    	UserBhv base = create(UserBhvType.CALL, phoneNum);
+	    	if(base.isValid())
+		    	res.add(new CandidateFavoriteBhv(
+		    			BaseUserBhv.create(UserBhvType.CALL, phoneNum),
+		    			callBhvCollector.getLastCallTime(phoneNum)));
+	    }
+	    
+	    Set<UserBhv> toBeFiltered = new HashSet<UserBhv>();
+	    toBeFiltered.addAll(FavoriteBhvManager.getInstance().getFavoriteBhvSet());
+	    toBeFiltered.addAll(BlockedBhvManager.getInstance().getBlockedBhvSet());
+	    res.removeAll(toBeFiltered);
+	    
+	    Collections.sort(res, Collections.reverseOrder());
+
+	    return res;
 	}
 	
 	public class SearchListAdapter extends ArrayAdapter<CandidateFavoriteBhv> {
@@ -160,4 +193,15 @@ public class SearchableActivity extends Activity implements OnItemClickListener,
 			return itemView;
 		}
 	}
+
+	@Override
+	public Loader<Object> onCreateLoader(int id, Bundle args) {
+		return null;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Object> arg0, Object arg1) {}
+
+	@Override
+	public void onLoaderReset(Loader<Object> arg0) {}
 }
