@@ -12,7 +12,6 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvDao;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 /*
  * @thread safe
@@ -72,8 +71,6 @@ public class FavoriteBhvManager {
 		userBhvDao.favorite(favoriteUserBhv);
 		favoriteBhvs.put(favoriteUserBhv.getUserBhv(), favoriteUserBhv);
 
-		Log.d("test", favoriteBhvs.size()+"");
-		
 		return favoriteUserBhv;
 	}
 

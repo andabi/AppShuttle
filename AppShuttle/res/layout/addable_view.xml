@@ -15,9 +15,19 @@
     -->
 
     <ListView
-        android:id="@+id/list_search_results"
+        android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <TextView
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="@string/favorite_add_empty_msg"
+        android:textSize="20sp" />
 
 </LinearLayout>

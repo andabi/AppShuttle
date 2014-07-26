@@ -67,7 +67,12 @@
     
     <string name="add_bhv">눌러서 앱 추가</string>
     <string name="menu_search">검색</string>
-    <string name="search_hint">검색할 앱이름/연락처</string>
-    <string name="activity_search_label">앱/연락처 검색</string>
+    <string name="search_hint">검색할 앱/연락처</string>
+    <string name="favorite_add_activity_label">앱/연락처 추가</string>
+    <string name="favorite_add_empty_msg">검색된 앱/연락처가 없습니다.</string>
+    <string name="add_bhv_loading_msg">앱/연락처 가져오는 중...</string>
+    <string name="addable_bhv_view_msg_app">%1$s에 업데이트됨</string>
+    <string name="addable_bhv_view_msg_call">%1$s에 통화</string>
+    
 <!--     <string name="search_instructions">겁색할 앱이름 또는 연락처 (이름/번호)를 입력하세요.</string>
  --></resources>

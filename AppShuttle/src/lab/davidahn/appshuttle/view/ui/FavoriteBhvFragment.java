@@ -55,7 +55,7 @@ public class FavoriteBhvFragment extends ListFragment {
 //		setEmptyText(getResources().getString(R.string.msg_manual_favorite));
 
 		favoriteBhvList = new ArrayList<FavoriteBhv>();
-		// add dummy Bhv
+		// add dummy Bhv for add button
 		favoriteBhvList.add(new FavoriteBhv(BaseUserBhv.create(UserBhvType.NONE, ""), 0, false, 0));
 
 		favoriteBhvList.addAll(FavoriteBhvManager.getInstance().getFavoriteBhvListSorted());
@@ -105,11 +105,11 @@ public class FavoriteBhvFragment extends ListFragment {
 
 		Intent intent = null;
 		if (position == 0) {
-			// search activity
-			intent = new Intent(AppShuttleApplication.getContext(), SearchableActivity.class);
+			// add bhv activity
+			intent = new Intent(AppShuttleApplication.getContext(), AddBhvActivity.class);
+			intent.putExtra("actionOnItemClick", AppShuttleMainActivity.ACTION_FAVORITE);
 		} else {
 			intent = adapter.getItem(position).getLaunchIntent();
-			StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		}
 		
 //		if(intent == null) return;

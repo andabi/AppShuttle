@@ -3,7 +3,10 @@ package lab.davidahn.appshuttle.view.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.BlockedBhv;
 import lab.davidahn.appshuttle.view.BlockedBhvManager;
@@ -48,7 +51,12 @@ public class BlockedBhvFragment extends ListFragment {
 		
 //		setEmptyText(getResources().getString(R.string.msg_manual_ignore));
 
-		blockedBhvList = new ArrayList<BlockedBhv>(BlockedBhvManager.getInstance().getBlockedBhvListSorted());
+		blockedBhvList = new ArrayList<BlockedBhv>();
+		
+		// add dummy Bhv for add button
+		blockedBhvList.add(new BlockedBhv(BaseUserBhv.create(UserBhvType.NONE, ""), 0));
+
+		blockedBhvList.addAll(BlockedBhvManager.getInstance().getBlockedBhvListSorted());
 		
 		adapter = new BlockedBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -90,23 +98,28 @@ public class BlockedBhvFragment extends ListFragment {
 		if(posMenuOpened == position)
 			return;
 		
-		Intent intent = adapter.getItem(position).getLaunchIntent();
-		if(intent == null)
-			return;
-		
+		Intent intent = null;
+		if (position == 0) {
+			// add bhv activity
+			intent = new Intent(AppShuttleApplication.getContext(), AddBhvActivity.class);
+			intent.putExtra("actionOnItemClick", AppShuttleMainActivity.ACTION_IGNORE);
+		} else {
+			intent = adapter.getItem(position).getLaunchIntent();
+		}
+
 		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
 	}
 	
 	private void openMenu(View v, int pos) {
-		if(pos < 0) return;
+		if(pos <= 0) return;
 		View menu = v.findViewById(R.id.listview_ignore_menu);
 		menu.setVisibility(View.VISIBLE);
 		posMenuOpened = pos;
 	}
 	
 	private void closeMenu() {
-		for(int i=0;i<getListView().getChildCount();i++){
+		for(int i=1;i<getListView().getChildCount();i++){
 			View menu = getListView().getChildAt(i).findViewById(R.id.listview_ignore_menu);
 			menu.setVisibility(View.GONE);
 		}
@@ -114,7 +127,7 @@ public class BlockedBhvFragment extends ListFragment {
 	}
 	
 	private boolean isMenuOpened(){
-		if(posMenuOpened < 0 ) return false;
+		if(posMenuOpened <= 0 ) return false;
 		else return true;
 	}
 	
@@ -128,6 +141,12 @@ public class BlockedBhvFragment extends ListFragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			if (position == 0) {
+				View addView = inflater.inflate(R.layout.listview_add, parent, false);
+				return addView;
+			}
+			
 			View itemView = inflater.inflate(R.layout.ignore_listview, parent, false);
 			BlockedBhv blockedUserBhv = blockedBhvList.get(position);
 
