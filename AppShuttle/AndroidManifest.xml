@@ -29,7 +29,7 @@
         android:debuggable="true"
         android:icon="@drawable/appshuttle"
         android:label="@string/name"
-        android:theme="@style/AppBaseTheme" >
+        android:theme="@style/AppShuttleTheme" >
         <activity
             android:name="lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity"
             android:launchMode="singleTop" >

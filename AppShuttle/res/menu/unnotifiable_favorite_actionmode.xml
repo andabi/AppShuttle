@@ -7,10 +7,10 @@
         android:showAsAction="always|withText"
         android:title="@string/action_unfavorite"/>
     
-    <item
+<!--     <item
 	    android:id="@+id/favorite_notify"
 	    android:showAsAction="always|withText"
 	    android:icon="@drawable/notifiable"
 	    android:title="@string/action_favorite_notify"/>
-
+ -->
 </menu>

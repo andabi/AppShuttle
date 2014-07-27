@@ -102,7 +102,7 @@ public class ViewableUserBhv implements UserBhv, Viewable, Sharable {
 			} catch (NameNotFoundException e) {}
 			break;
 		case CALL:
-			icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+			icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.call);
 			break;
 		case SENSOR_ON:
 			if(bhvName.equals(SensorType.WIFI.name()))
