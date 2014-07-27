@@ -59,7 +59,7 @@
         android:id="@+id/listview_ignore_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@color/lite_gray"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone" >
@@ -92,9 +92,9 @@
                 android:gravity="center"
                 android:text="@string/action_unignore"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
-<!--                 android:drawableLeft="@drawable/present"
-                android:drawablePadding="5dp" -->
+                android:textSize="18sp"
+                android:drawableLeft="@drawable/ignore"
+                android:drawablePadding="10dp" />
 
             <!--
              <ImageView

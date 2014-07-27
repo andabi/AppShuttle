@@ -59,7 +59,7 @@
         android:id="@+id/listview_present_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@color/lite_gray"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone" >
@@ -88,7 +88,7 @@
             android:minHeight="30dp"
             android:minWidth="30dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/favorite" />
+            android:src="@drawable/favorite_on" />
 
         <ImageView
             android:id="@+id/listview_present_menu_ignore"
@@ -100,7 +100,7 @@
             android:minHeight="30dp"
             android:minWidth="30dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ignore" />
+            android:src="@drawable/ignore_on" />
 
         <ImageView
             android:id="@+id/listview_present_menu_share"
@@ -112,7 +112,7 @@
             android:minHeight="30dp"
             android:minWidth="30dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/share" />
+            android:src="@drawable/share_on" />
     </LinearLayout>
 
 </RelativeLayout><!--

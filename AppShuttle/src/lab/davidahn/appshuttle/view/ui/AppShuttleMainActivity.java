@@ -100,24 +100,27 @@ public class AppShuttleMainActivity extends Activity {
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.present),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 0)),
 				PresentBhvFragment.class, bundle);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.favorite),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 1)),
 				FavoriteBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ignore),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 2)),
 				BlockedBhvFragment.class, null);
 		
-		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
-			mTabsAdapter.addTab(bar.newTab()
-					.setIcon(R.drawable.info),
-					InfoFragment.class, null);
-		}
+//		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
+//			mTabsAdapter.addTab(bar.newTab()
+//					.setIcon(R.drawable.info),
+//					InfoFragment.class, null);
+//		}
 		
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
-		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
-
+		
+		int selectedTabIndex = bar.getSelectedNavigationIndex();
+		bar.setTitle(getActionbarTitle(this, selectedTabIndex));
+		bar.getSelectedTab().setIcon(getIconSelected(this, selectedTabIndex));
+		
 		startService(new Intent(this, AppShuttleMainService.class));
 		// sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
 	}
@@ -204,9 +207,9 @@ public class AppShuttleMainActivity extends Activity {
 //		this.startActivity(launchIntent);
 //	}
 
-	public static CharSequence getActionbarTitle(Context cxt, int position) {
-		String title;
-		switch (position) {
+	public static CharSequence getActionbarTitle(Context cxt, int index) {
+		String title = "";
+		switch (index) {
 		case 0:
 			title = cxt.getResources().getString(
 					R.string.actionbar_tab_text_present);
@@ -220,11 +223,44 @@ public class AppShuttleMainActivity extends Activity {
 					R.string.actionbar_tab_text_ignore);
 			break;
 		default:
-			title = "";
 		}
 		return title;
 	}
+	
+	public static int getIcon(Context cxt, int index) {
+		int iconId = R.drawable.info;
+		switch (index) {
+		case 0:
+			iconId = R.drawable.present;
+			break;
+		case 1:
+			iconId = R.drawable.favorite;
+			break;
+		case 2:
+			iconId = R.drawable.ignore;
+			break;
+		default:
+		}
+		return iconId;
+	}
 
+	public static int getIconSelected(Context cxt, int selectedIndex) {
+		int iconId = R.drawable.info_on;
+		switch (selectedIndex) {
+		case 0:
+			iconId = R.drawable.present_on;
+			break;
+		case 1:
+			iconId = R.drawable.favorite_on;
+			break;
+		case 2:
+			iconId = R.drawable.ignore_on;
+			break;
+		default:
+		}
+		return iconId;
+	}
+	
 	public void doPostAction() {
 		updateView();
 		NotiBarNotifier.getInstance().updateNotification();
@@ -308,6 +344,16 @@ public class AppShuttleMainActivity extends Activity {
 		public void onPageSelected(int position) {
 			mActionBar.setSelectedNavigationItem(position);
 			mActionBar.setTitle(getActionbarTitle(mContext, position));
+			switchOnIconForSelectedTab(position);
+		}
+		
+		private void switchOnIconForSelectedTab(int selectedPos){
+			for(int pos = 0; pos < mActionBar.getTabCount(); pos++) {
+				if(selectedPos == pos)
+					mActionBar.getTabAt(pos).setIcon(getIconSelected(mContext, pos));
+				else
+					mActionBar.getTabAt(pos).setIcon(getIcon(mContext, pos));
+			}
 		}
 
 		@Override
@@ -395,7 +441,7 @@ public class AppShuttleMainActivity extends Activity {
 	public static final int ACTION_SHARE = 4;
 	public static final int ACTION_FAVORITE_UPDATE_ORDER = 5;
 	
-	class UserActionHandler extends Handler {
+	public class UserActionHandler extends Handler {
 		@Override
         public void handleMessage(Message msg) {
         	ViewableUserBhv bhv = (ViewableUserBhv)msg.obj;

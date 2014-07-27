@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#ffffffff</color>
-    <color name="indigo">#ff4b0082</color>
-    <color name="semi_indigo">#804b0082</color>
-    <color name="lite_gray">#808080</color>
+    <color name="white">#ffffff</color>
+    <color name="lite_gray">#cccccc</color>
+    <color name="tombstone">#4c4c4c</color>
+    <color name="seven_b_pencil">#3c3c3d</color>
+    <color name="not_quite_black">#303030</color>
 </resources>
