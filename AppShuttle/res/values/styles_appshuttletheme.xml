@@ -41,32 +41,6 @@
       <item name="android:maxWidth">180dip</item>
   </style>
 
-  <style name="ProgressBarAppShuttleTheme" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
-      <item name="android:progressDrawable">@drawable/appshuttletheme_progress_horizontal_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appshuttletheme_progress_indeterminate_horizontal_holo_light</item>
-  </style>
-
-  <style name="SeekBarAppShuttleTheme" parent="android:Widget.Holo.Light.SeekBar">
-      <item name="android:progressDrawable">@drawable/appshuttletheme_scrubber_progress_horizontal_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appshuttletheme_scrubber_progress_horizontal_holo_light</item>
-      <item name="android:thumb">@drawable/appshuttletheme_scrubber_control_selector_holo_light</item>
-  </style>
-
-  <style name="RatingBarAppShuttleTheme" parent="android:Widget.Holo.Light.RatingBar">
-      <item name="android:progressDrawable">@drawable/appshuttletheme_ratingbar_full_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appshuttletheme_ratingbar_full_holo_light</item>
-  </style>
-
-  <style name="RatingBarBigAppShuttleTheme" parent="android:Widget.Holo.Light.RatingBar.Indicator">
-      <item name="android:progressDrawable">@drawable/appshuttletheme_ratingbar_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appshuttletheme_ratingbar_holo_light</item>
-  </style>
-
-  <style name="RatingBarSmallAppShuttleTheme" parent="android:Widget.Holo.Light.RatingBar.Small">
-      <item name="android:progressDrawable">@drawable/appshuttletheme_ratingbar_small_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appshuttletheme_ratingbar_small_holo_light</item>
-  </style>
-
   <style name="ToggleAppShuttleTheme" parent="android:Widget.Holo.Light.Button.Toggle">
       <item name="android:background">@drawable/appshuttletheme_btn_toggle_holo_light</item>
   </style>

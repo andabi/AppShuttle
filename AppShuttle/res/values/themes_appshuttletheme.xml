@@ -9,7 +9,7 @@
 
     <item name="android:editTextBackground">@drawable/appshuttletheme_edit_text_holo_light</item>
 
-    <item name="android:textColorHighlight">#99ff8800</item>
+    <item name="android:textColorHighlight">#99ff4000</item>
     <item name="android:textSelectHandleLeft">@drawable/appshuttletheme_text_select_handle_left</item>
     <item name="android:textSelectHandleRight">@drawable/appshuttletheme_text_select_handle_right</item>
     <item name="android:textSelectHandle">@drawable/appshuttletheme_text_select_handle_middle</item>
@@ -25,16 +25,6 @@
     <item name="android:imageButtonStyle">@style/ImageButtonAppShuttleTheme</item>
 
     <item name="android:dropDownSpinnerStyle">@style/SpinnerAppShuttleTheme</item>
-
-    <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppShuttleTheme</item>
-
-    <item name="android:seekBarStyle">@style/SeekBarAppShuttleTheme</item>
-
-    <item name="android:ratingBarStyle">@style/RatingBarAppShuttleTheme</item>
-
-    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigAppShuttleTheme</item>
-
-    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallAppShuttleTheme</item>
 
     <item name="android:buttonStyleToggle">@style/ToggleAppShuttleTheme</item>
 
