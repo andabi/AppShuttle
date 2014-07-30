@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:drawSelectorOnTop="false"
         tlv:expanded_height="128dip"
-        tlv:grabber="@id/listview_favorite_item_image_rightside"
+        tlv:grabber="@id/listview_favorite_item_image_grabber"
         tlv:normal_height="64dip" />
 
     <LinearLayout
@@ -25,12 +25,13 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-<!--         <ImageView
+        <!--
+             <ImageView
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_marginBottom="10dp"
             android:src="@drawable/appshuttle_cartoon" />
- -->
+        -->
         <!--
              <TextView
             android:layout_width="wrap_content"
@@ -45,7 +46,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/msg_manual_favorite"
-            android:textSize="20sp" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
 </LinearLayout>

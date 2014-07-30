@@ -60,59 +60,62 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/lite_gray"
-        android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone" >
 
         <ImageView
             android:id="@+id/listview_present_menu_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_gravity="center"
-            android:layout_weight="0"
-            android:adjustViewBounds="true"
-            android:minHeight="20dp"
-            android:minWidth="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scaleType="fitCenter"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="27dp"
             android:src="@drawable/cancel" />
 
-        <ImageView
-            android:id="@+id/listview_present_menu_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:minHeight="30dp"
-            android:minWidth="30dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/favorite_on" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="27dp"
+            android:paddingRight="27dp" >
 
-        <ImageView
-            android:id="@+id/listview_present_menu_ignore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:minHeight="30dp"
-            android:minWidth="30dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ignore_on" />
+            <ImageView
+                android:id="@+id/listview_present_menu_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/favorite" />
 
-        <ImageView
-            android:id="@+id/listview_present_menu_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:minHeight="30dp"
-            android:minWidth="30dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/share_on" />
+            <ImageView
+                android:id="@+id/listview_present_menu_ignore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ignore" />
+
+            <ImageView
+                android:id="@+id/listview_present_menu_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/share" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout><!--
@@ -142,7 +145,7 @@
                 android:gravity="center"
                 android:text="@string/action_favorite"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="22sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -161,6 +164,6 @@
                 android:gravity="center"
                 android:text="@string/action_ignore"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="22sp" />
         </LinearLayout>
 -->

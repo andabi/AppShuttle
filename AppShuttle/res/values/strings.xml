@@ -70,7 +70,7 @@
     <string name="search_hint">App or contact for searching</string>
     <string name="favorite_add_activity_label">Add favorites</string>
     <string name="search_instructions">Enter app name or contact to serach</string>
-    <string name="favorite_add_empty_msg">no data</string>
+    <string name="addable_empty_msg">no data</string>
     <string name="add_bhv_loading_msg">Loading...</string>
     <string name="addable_bhv_view_msg_app">last updated %1$s ago</string>
     <string name="addable_bhv_view_msg_call">last call %1$s ago</string>

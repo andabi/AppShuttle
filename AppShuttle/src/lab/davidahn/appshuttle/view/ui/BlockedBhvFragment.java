@@ -101,7 +101,7 @@ public class BlockedBhvFragment extends ListFragment {
 		Intent intent = null;
 		if (position == 0) {
 			// add bhv activity
-			intent = new Intent(AppShuttleApplication.getContext(), AddBhvActivity.class);
+			intent = new Intent(AppShuttleApplication.getContext(), AddableBhvActivity.class);
 			intent.putExtra("actionOnItemClick", AppShuttleMainActivity.ACTION_IGNORE);
 		} else {
 			intent = adapter.getItem(position).getLaunchIntent();
@@ -159,20 +159,38 @@ public class BlockedBhvFragment extends ListFragment {
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_ignore_item_secondline);
 			secondLineView.setText(blockedUserBhv.getViewMsg());
 
-			TextView presentView = (TextView) itemView.findViewById(R.id.listview_ignore_menu_unignore);
-			presentView.setOnClickListener(new View.OnClickListener() {
+			View.OnClickListener menuItemListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Message msg = new Message();
 					switch(v.getId()){
+					case R.id.listview_ignore_menu_favorite:
+						msg.what = AppShuttleMainActivity.ACTION_FAVORITE;
+						break;
 					case R.id.listview_ignore_menu_unignore:
 						msg.what = AppShuttleMainActivity.ACTION_UNIGNORE;
+						break;
+					case R.id.listview_ignore_menu_share:
+						msg.what = AppShuttleMainActivity.ACTION_SHARE;
 						break;
 					}
 					msg.obj = blockedBhvList.get(posMenuOpened);
 					AppShuttleMainActivity.userActionHandler.sendMessage(msg);
 				}
-			});
+			};
+
+			ImageView favoriteView = (ImageView) itemView.findViewById(R.id.listview_ignore_menu_favorite);
+			favoriteView.setOnClickListener(menuItemListener);
+
+			ImageView unignoreView = (ImageView) itemView.findViewById(R.id.listview_ignore_menu_unignore);
+			unignoreView.setOnClickListener(menuItemListener);
+
+			ImageView shareView = (ImageView) itemView.findViewById(R.id.listview_ignore_menu_share);
+			if(blockedUserBhv.isSharable()){
+				shareView.setOnClickListener(menuItemListener);
+			} else {
+				shareView.setVisibility(View.GONE);
+			}
 			
 			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_ignore_menu_cancel);
 			cancelView.setOnClickListener(new View.OnClickListener() {

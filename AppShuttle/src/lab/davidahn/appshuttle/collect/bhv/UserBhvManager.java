@@ -38,7 +38,7 @@ public class UserBhvManager {
 		return null;
 	}
 
-	public synchronized void register(UserBhv bhv) {
+	public synchronized void registerIfNotExist(UserBhv bhv) {
 		if (userBhvSet.contains(bhv))
 			return;
 		userBhvDao.storeUserBhv(bhv);

@@ -106,7 +106,7 @@ public class FavoriteBhvFragment extends ListFragment {
 		Intent intent = null;
 		if (position == 0) {
 			// add bhv activity
-			intent = new Intent(AppShuttleApplication.getContext(), AddBhvActivity.class);
+			intent = new Intent(AppShuttleApplication.getContext(), AddableBhvActivity.class);
 			intent.putExtra("actionOnItemClick", AppShuttleMainActivity.ACTION_FAVORITE);
 		} else {
 			intent = adapter.getItem(position).getLaunchIntent();
@@ -187,13 +187,12 @@ public class FavoriteBhvFragment extends ListFragment {
 			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_favorite_item_secondline);
 			secondLineView.setText(favoriteUserBhv.getViewMsg());
 			
-			ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_favorite_item_image_rightside);
+			ImageView rightSideImageView = (ImageView) itemView.findViewById(R.id.listview_favorite_item_image_grabber);
 //			if(favoriteUserBhv.isNotifiable())
 //				rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.notifiable_dark));
 			rightSideImageView.setImageDrawable(getResources().getDrawable(R.drawable.grabber));
 				
-			TextView unfavoriteView = (TextView) itemView.findViewById(R.id.listview_favorite_menu_unfavorite);
-			unfavoriteView.setOnClickListener(new View.OnClickListener() {
+			View.OnClickListener menuItemListener = new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Message msg = new Message();
@@ -201,11 +200,31 @@ public class FavoriteBhvFragment extends ListFragment {
 					case R.id.listview_favorite_menu_unfavorite:
 						msg.what = AppShuttleMainActivity.ACTION_UNFAVORITE;
 						break;
+					case R.id.listview_favorite_menu_ignore:
+						msg.what = AppShuttleMainActivity.ACTION_IGNORE;
+						break;
+					case R.id.listview_favorite_menu_share:
+						msg.what = AppShuttleMainActivity.ACTION_SHARE;
+						break;
 					}
+					
 					msg.obj = favoriteBhvList.get(posMenuOpened);
 					AppShuttleMainActivity.userActionHandler.sendMessage(msg);
 				}
-			});
+			};
+			
+			ImageView unfavoriteView = (ImageView) itemView.findViewById(R.id.listview_favorite_menu_unfavorite);
+			unfavoriteView.setOnClickListener(menuItemListener);
+					
+			ImageView ignoreView = (ImageView) itemView.findViewById(R.id.listview_favorite_menu_ignore);
+			ignoreView.setOnClickListener(menuItemListener);
+
+			ImageView shareView = (ImageView) itemView.findViewById(R.id.listview_favorite_menu_share);
+			if(favoriteUserBhv.isSharable()){
+				shareView.setOnClickListener(menuItemListener);
+			} else {
+				shareView.setVisibility(View.GONE);
+			}
 			
 			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_favorite_menu_cancel);
 			cancelView.setOnClickListener(new View.OnClickListener() {

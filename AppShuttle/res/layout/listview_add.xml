@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
-    android:orientation="horizontal"
-	android:layout_gravity="center"
+    android:layout_gravity="center"
     android:gravity="center"
+    android:orientation="horizontal"
     android:padding="6dp" >
 
     <TextView
@@ -11,11 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:actionViewClass="android.widget.SearchView"
-        android:drawableLeft="@android:drawable/ic_menu_add"
+        android:drawableLeft="@drawable/add"
         android:drawablePadding="10dp"
         android:gravity="center"
         android:text="@string/add_bhv"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black"/>
-    
+        android:textColor="@color/not_quite_black" />
+
 </LinearLayout>

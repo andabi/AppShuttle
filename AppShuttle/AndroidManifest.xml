@@ -29,7 +29,7 @@
         android:debuggable="true"
         android:icon="@drawable/appshuttle"
         android:label="@string/name"
-        android:theme="@style/AppShuttleTheme" >
+        android:theme="@style/Theme.Appshuttletheme" >
         <activity
             android:name="lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity"
             android:launchMode="singleTop" >
@@ -53,7 +53,7 @@
                 android:value="lab.davidahn.appshuttle.view.ui.AddBhvActivity" />
  -->
         <activity
-            android:name="lab.davidahn.appshuttle.view.ui.AddBhvActivity"
+            android:name="lab.davidahn.appshuttle.view.ui.AddableBhvActivity"
             android:label="@string/favorite_add_activity_label"
             android:launchMode="singleTop" >
             <intent-filter>

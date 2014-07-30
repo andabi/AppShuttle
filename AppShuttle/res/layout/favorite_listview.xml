@@ -47,12 +47,17 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/listview_favorite_item_image_rightside"
+            android:id="@+id/listview_favorite_item_image_grabber"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="6dp"
-            android:layout_weight="0" />
+            android:layout_weight="0"
+            android:adjustViewBounds="true"
+            android:maxHeight="30dp"
+            android:maxWidth="30dp"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
     <LinearLayout
@@ -66,51 +71,56 @@
 
         <ImageView
             android:id="@+id/listview_favorite_menu_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_gravity="center"
-            android:layout_weight="0"
-            android:adjustViewBounds="true"
-            android:minHeight="20dp"
-            android:minWidth="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scaleType="fitCenter"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="27dp"
             android:src="@drawable/cancel" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingLeft="27dp"
+            android:paddingRight="27dp" >
 
-            <TextView
+            <ImageView
                 android:id="@+id/listview_favorite_menu_unfavorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/action_unfavorite"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:drawableLeft="@drawable/favorite"
-                android:drawablePadding="10dp" />
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/favorite_on" />
 
-            <!--
-             <ImageView
-            android:id="@+id/listview_favorite_menu_present"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/present" />
-            -->
-            <!--
-             <ImageView
-            android:id="@+id/listview_favorite_menu_ignore"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/ignore" />
-            -->
+            <ImageView
+                android:id="@+id/listview_favorite_menu_ignore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ignore" />
+
+            <ImageView
+                android:id="@+id/listview_favorite_menu_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/share" />
         </LinearLayout>
     </LinearLayout>
 
