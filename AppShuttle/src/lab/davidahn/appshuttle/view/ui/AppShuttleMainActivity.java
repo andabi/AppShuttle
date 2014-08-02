@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -414,12 +413,23 @@ public class AppShuttleMainActivity extends Activity {
 				}
 			});
 
-			ImageView preferences = (ImageView) layout
+			ImageView settings = (ImageView) layout
 					.findViewById(R.id.settings);
-			preferences.setOnClickListener(new ImageView.OnClickListener() {
+			settings.setOnClickListener(new ImageView.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
+				}
+			});
+			
+			ImageView share = (ImageView) layout
+					.findViewById(R.id.share);
+			share.setOnClickListener(new ImageView.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String subject = cxt.getResources().getString(R.string.name);
+					String text = cxt.getResources().getString(R.string.share_msg);
+	    			ShareUtils.shareTextPlain(cxt, subject, text);
 				}
 			});
 			

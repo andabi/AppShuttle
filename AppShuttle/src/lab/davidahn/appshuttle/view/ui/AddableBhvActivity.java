@@ -64,6 +64,9 @@ public class AddableBhvActivity extends Activity implements OnItemClickListener 
 	
 	@Override
 	public void onItemClick(AdapterView<?> parentView, View v, int pos, long id) {
+		if (!adapterBhvList.get(pos).isValid())
+			return;
+		
 		Message msg = new Message();
 		msg.what = getIntent().getIntExtra("actionOnItemClick", -1);
 		msg.obj = adapterBhvList.get(pos);
@@ -127,17 +130,32 @@ public class AddableBhvActivity extends Activity implements OnItemClickListener 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.addable_listview, parent, false);
-			AddableBhv contact = this.items.get(position);
 
+			View itemView = inflater.inflate(R.layout.addable_listview, parent, false);
+			AddableBhv addableBhv = this.items.get(position);
+
+			//info msg
+			if (!addableBhv.isValid()) {
+				View infoView = inflater.inflate(R.layout.listview_info_msg, parent, false);
+
+				TextView infoSubject = (TextView) infoView.findViewById(R.id.listview_info_subject);
+				infoSubject.setText(R.string.addable_empty_msg_subject);
+				
+				TextView infoText = (TextView) infoView.findViewById(R.id.listview_info_text);
+				infoText.setText(R.string.addable_empty_msg_text);
+
+				return infoView;
+			}
+
+			
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.add_listview_image);
-			iconView.setImageDrawable(contact.getIcon());
+			iconView.setImageDrawable(addableBhv.getIcon());
 			
 			TextView textView = (TextView) itemView.findViewById(R.id.add_listview_text);
-			textView.setText(contact.getBhvNameText());
+			textView.setText(addableBhv.getBhvNameText());
 
 			TextView subTextView = (TextView) itemView.findViewById(R.id.add_listview_subtext);
-			subTextView.setText(contact.getViewMsg());
+			subTextView.setText(addableBhv.getViewMsg());
 
 			return itemView;
 		}
@@ -174,6 +192,10 @@ public class AddableBhvActivity extends Activity implements OnItemClickListener 
 	        super.onPostExecute(result);
 	        progressDialog.dismiss();
 
+			// add dummy for info msg
+			if(adapterBhvList.isEmpty())
+				adapterBhvList.add(new AddableBhv(BaseUserBhv.create(UserBhvType.NONE, ""), 0));
+	        
 	        adapter.clear();
 			adapter.addAll(adapterBhvList);
 			adapter.notifyDataSetChanged();

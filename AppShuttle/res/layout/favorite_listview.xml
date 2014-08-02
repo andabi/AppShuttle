@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/listview_favorite_item_image"
                 android:layout_toRightOf="@id/listview_favorite_item_image"
-                android:textColor="#ff000000"
+                android:textColor="@color/not_quite_black"
                 android:textSize="15sp" />
 
             <TextView
@@ -42,7 +42,7 @@
                 android:layout_toRightOf="@id/listview_favorite_item_image"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="#80000000"
+                android:textColor="@color/light_light_gray"
                 android:textSize="12sp" />
         </RelativeLayout>
 
@@ -64,18 +64,21 @@
         android:id="@+id/listview_favorite_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/lite_gray"
+        android:background="@color/light_gray"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone" >
 
         <ImageView
             android:id="@+id/listview_favorite_menu_cancel"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="27dp"
-            android:layout_marginRight="27dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="72dp"
+            android:paddingLeft="27dp"
+            android:paddingRight="27dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/cancel" />
 
         <LinearLayout

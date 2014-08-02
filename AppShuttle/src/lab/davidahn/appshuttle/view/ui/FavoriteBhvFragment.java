@@ -55,10 +55,15 @@ public class FavoriteBhvFragment extends ListFragment {
 //		setEmptyText(getResources().getString(R.string.msg_manual_favorite));
 
 		favoriteBhvList = new ArrayList<FavoriteBhv>();
-		// add dummy Bhv for add button
+		
+		//add dummy for add button
 		favoriteBhvList.add(new FavoriteBhv(BaseUserBhv.create(UserBhvType.NONE, ""), 0, false, 0));
 
 		favoriteBhvList.addAll(FavoriteBhvManager.getInstance().getFavoriteBhvListSorted());
+		
+		//add dummy for info msg
+		if(favoriteBhvList.size() <= 1)
+			favoriteBhvList.add(new FavoriteBhv(BaseUserBhv.create(UserBhvType.NONE, ""), 0, false, 0));
 		
 		adapter = new FavoriteBhvInfoAdapter();
 		setListAdapter(adapter);
@@ -102,13 +107,17 @@ public class FavoriteBhvFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		if(posMenuOpened == position)
 			return;
-
+		
 		Intent intent = null;
 		if (position == 0) {
 			// add bhv activity
 			intent = new Intent(AppShuttleApplication.getContext(), AddableBhvActivity.class);
 			intent.putExtra("actionOnItemClick", AppShuttleMainActivity.ACTION_FAVORITE);
 		} else {
+			//info msg
+			if (!favoriteBhvList.get(position).isValid())
+				return;
+
 			intent = adapter.getItem(position).getLaunchIntent();
 		}
 		
@@ -118,14 +127,18 @@ public class FavoriteBhvFragment extends ListFragment {
 	}
 
 	private void openMenu(View v, int pos) {
-		if(pos <= 0) return;
+		if (!favoriteBhvList.get(pos).isValid())
+			return;
+
 		View menu = v.findViewById(R.id.listview_favorite_menu);
 		menu.setVisibility(View.VISIBLE);
 		posMenuOpened = pos;
 	}
 	
 	private void closeMenu() {
-		for(int i=1;i<getListView().getChildCount();i++){
+		for(int i=0;i<getListView().getChildCount();i++){
+			if (!favoriteBhvList.get(i).isValid())
+				continue;
 			View menu = getListView().getChildAt(i).findViewById(R.id.listview_favorite_menu);
 			menu.setVisibility(View.GONE);
 		}
@@ -133,8 +146,10 @@ public class FavoriteBhvFragment extends ListFragment {
 	}
 	
 	private boolean isMenuOpened(){
-		if(posMenuOpened <= 0 ) return false;
-		else return true;
+		if(posMenuOpened <= 0 ) 
+			return false;
+		else 
+			return true;
 	}
 	
 	private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
@@ -170,14 +185,27 @@ public class FavoriteBhvFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+			//add button
 			if (position == 0) {
 				View addView = inflater.inflate(R.layout.listview_add, parent, false);
 				return addView;
 			}
-			
+
 			View itemView = inflater.inflate(R.layout.favorite_listview, parent, false);
 			FavoriteBhv favoriteUserBhv = favoriteBhvList.get(position);
 
+			//info msg
+			if (!favoriteUserBhv.isValid()) {
+				View infoView = inflater.inflate(R.layout.listview_info_msg, parent, false);
+				
+				TextView infoSubject = (TextView) infoView.findViewById(R.id.listview_info_subject);
+				infoSubject.setText(R.string.msg_manual_favorite_subject);
+				
+				TextView infoText = (TextView) infoView.findViewById(R.id.listview_info_text);
+				infoText.setText(R.string.msg_manual_favorite_text);
+				return infoView;
+			}
+			
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_favorite_item_image);
 			iconView.setImageDrawable(favoriteUserBhv.getIcon());
 

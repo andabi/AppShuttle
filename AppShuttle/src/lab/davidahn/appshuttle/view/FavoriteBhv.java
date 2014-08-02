@@ -1,7 +1,9 @@
 package lab.davidahn.appshuttle.view;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import android.content.Context;
 import android.text.format.DateUtils;
 
 public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteBhv> {
@@ -41,13 +43,16 @@ public class FavoriteBhv extends ViewableUserBhv implements Comparable<FavoriteB
 		StringBuffer msg = new StringBuffer();
 		viewMsg = msg.toString();
 		
-		msg.append(DateUtils.getRelativeTimeSpanString(setTime, 
+		CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(setTime, 
 				System.currentTimeMillis(), 
 				DateUtils.MINUTE_IN_MILLIS, 
-				0
-				));
-		viewMsg = msg.toString();
+				0);
 		
+		Context cxt = AppShuttleApplication.getContext();
+		msg.append(String.format(cxt.getString(R.string.favorite_bhv_view_msg), relativeTimeSpan));
+
+		viewMsg = msg.toString();
+
 		return viewMsg;
 	}
 	

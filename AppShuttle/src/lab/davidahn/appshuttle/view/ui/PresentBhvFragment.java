@@ -4,7 +4,10 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
+import lab.davidahn.appshuttle.view.PredictedPresentBhv;
 import lab.davidahn.appshuttle.view.PresentBhv;
 import android.app.ListFragment;
 import android.content.Context;
@@ -46,10 +49,14 @@ public class PresentBhvFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 	
 		TextView emptyMsgView = (TextView)getView().findViewById(R.id.present_empty_msg);
-		if(System.currentTimeMillis() - AppShuttleApplication.launchTime < 3000)
-			emptyMsgView.setText(R.string.msg_wait);
+		if(System.currentTimeMillis() - AppShuttleApplication.launchTime > 3000)
+			emptyMsgView.setVisibility(View.GONE);
 
 		presentBhvList = PresentBhv.getPresentBhvListFilteredSorted(Integer.MAX_VALUE);
+
+		// add dummy for info msg
+		if(presentBhvList.isEmpty())
+			presentBhvList.add(new PredictedPresentBhv(BaseUserBhv.create(UserBhvType.NONE, "")));
 		
 		adapter = new PresentBhvAdapter();
 		setListAdapter(adapter);
@@ -89,9 +96,10 @@ public class PresentBhvFragment extends ListFragment {
 		if(posMenuOpened == position)
 			return;
 			
-		Intent intent = adapter.getItem(position).getLaunchIntent();
-		if(intent == null)
+		if (!presentBhvList.get(position).isValid())
 			return;
+
+		Intent intent = adapter.getItem(position).getLaunchIntent();
 		
 		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
@@ -126,9 +134,23 @@ public class PresentBhvFragment extends ListFragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
 			View itemView = inflater.inflate(R.layout.present_listview, parent, false);
 			PresentBhv presentBhv = presentBhvList.get(position);
 
+			//info msg
+			if (!presentBhv.isValid()) {
+				View infoView = inflater.inflate(R.layout.listview_info_msg, parent, false);
+
+				TextView infoSubject = (TextView) infoView.findViewById(R.id.listview_info_subject);
+				infoSubject.setText(R.string.msg_no_results_subject);
+				
+				TextView infoText = (TextView) infoView.findViewById(R.id.listview_info_text);
+				infoText.setText(R.string.msg_no_results_text);
+
+				return infoView;
+			}
+			
 			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_present_item_image);
 			iconView.setImageDrawable(presentBhv.getIcon());
 
