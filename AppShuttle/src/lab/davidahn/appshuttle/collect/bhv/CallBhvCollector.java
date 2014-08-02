@@ -147,7 +147,7 @@ public class CallBhvCollector extends BaseBhvCollector {
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         String[] projection = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED};
         String[] selectionArgs = null;
-        String sortOrder = ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED + " DESC";
+        String sortOrder = ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED;
         Cursor cursor = contentResolver.query(uri, projection, null, selectionArgs, sortOrder);
 
         if(cursor == null) return null;
