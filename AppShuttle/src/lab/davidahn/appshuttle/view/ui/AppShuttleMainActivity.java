@@ -96,7 +96,10 @@ public class AppShuttleMainActivity extends Activity {
 		final ActionBar bar = getActionBar();
 		bar.setIcon(new ColorDrawable(getResources().getColor(
 				android.R.color.transparent)));
-		bar.setDisplayUseLogoEnabled(false);
+		bar.setDisplayHomeAsUpEnabled(false);
+	    bar.setDisplayShowCustomEnabled(false);
+	    bar.setDisplayShowTitleEnabled(true);
+	    bar.setDisplayUseLogoEnabled(false);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 //		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
