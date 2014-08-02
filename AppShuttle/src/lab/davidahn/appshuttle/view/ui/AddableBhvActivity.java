@@ -234,11 +234,15 @@ public class AddableBhvActivity extends Activity implements OnItemClickListener 
 		    CallBhvCollector callBhvCollector = CallBhvCollector.getInstance();
 		    List<String> phoneNumList = callBhvCollector.getContactList();
 		    for(String phoneNum : phoneNumList){
+		    	long lastCallTime = callBhvCollector.getLastCallTime(phoneNum);
+		    	if(lastCallTime == 0)
+		    		continue;
+		    	
 		    	UserBhv base = create(UserBhvType.CALL, phoneNum);
 		    	if(base.isValid())
 			    	res.add(new AddableBhv(
 			    			BaseUserBhv.create(UserBhvType.CALL, phoneNum),
-			    			callBhvCollector.getLastCallTime(phoneNum)));
+			    			lastCallTime));
 		    }
 		    
 		    Set<UserBhv> toBeFiltered = new HashSet<UserBhv>();
