@@ -66,6 +66,9 @@ public class StatCollector {
 
 		switch(entry.presentBhvType){
 		case PREDICTED:
+			if(entry.matchers.isEmpty())
+				break;
+			
 			valuePredicted /= entry.matchers.size();
 			for(MatcherType matcherType : entry.matchers) {
 				String label = matcherType.name();

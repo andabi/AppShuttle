@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvDao;
-import android.content.SharedPreferences;
 
 /*
  * @thread safe
@@ -65,8 +63,8 @@ public class FavoriteBhvManager {
 			order = favoriteBhvListSorted.get(favoriteBhvListSorted.size() - 1).getOrder() + 1;
 		FavoriteBhv favoriteUserBhv = new FavoriteBhv(uBhv, currTime, false, order);
 		
-		if (!isFullProperNumFavorite())
-			FavoriteBhvManager.getInstance().trySetNotifiable(favoriteUserBhv);
+//		if (!isFullProperNumFavorite())
+		FavoriteBhvManager.getInstance().trySetNotifiable(favoriteUserBhv);
 
 		userBhvDao.favorite(favoriteUserBhv);
 		favoriteBhvs.put(favoriteUserBhv.getUserBhv(), favoriteUserBhv);
@@ -85,20 +83,16 @@ public class FavoriteBhvManager {
 	public synchronized boolean trySetNotifiable(FavoriteBhv favoriteUserBhv) {
 		if(favoriteUserBhv.isNotifiable())
 			return true;
-		if(!isFullProperNumFavorite()) {
-			favoriteUserBhv.setNotifiable(true);
-//			AppShuttleApplication.numFavoriteNotifiable++;
-			UserBhvDao.getInstance().updateNotifiable(favoriteUserBhv);
-			return true;
-		}
-		return false;
+//		if(!isFullProperNumFavorite()) {
+		favoriteUserBhv.setNotifiable(true);
+		UserBhvDao.getInstance().updateNotifiable(favoriteUserBhv);
+		return true;
 	}
 
 	public synchronized void setUnNotifiable(FavoriteBhv favoriteUserBhv) {
 		if(!favoriteUserBhv.isNotifiable())
 			return ;
 		favoriteUserBhv.setNotifiable(false);
-//		AppShuttleApplication.numFavoriteNotifiable--;
 		UserBhvDao.getInstance().updateUnNotifiable(favoriteUserBhv);
 	}
 
@@ -123,18 +117,18 @@ public class FavoriteBhvManager {
 		return Collections.unmodifiableList(favorateBhvList);
 	}
 
-	public boolean isFullProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		int properNumFavorite = preferences.getInt("viewer.noti.proper_num_favorite", 3);
-	
-		if(getNotifiableFavoriteBhvSet().size() >= properNumFavorite)
-			return true;
-		
-		return false;
-	}
-	
-	public int getProperNumFavorite() {
-		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
-		return preferences.getInt("viewer.noti.proper_num_favorite", 3);
-	}
+//	public boolean isFullProperNumFavorite() {
+//		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
+//		int properNumFavorite = preferences.getInt("viewer.noti.proper_num_favorite", 6);
+//	
+//		if(getNotifiableFavoriteBhvSet().size() >= properNumFavorite)
+//			return true;
+//		
+//		return false;
+//	}
+//	
+//	public int getProperNumFavorite() {
+//		SharedPreferences preferences = AppShuttleApplication.getContext().getPreferences();
+//		return preferences.getInt("viewer.noti.proper_num_favorite", 6);
+//	}
 }
