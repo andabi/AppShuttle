@@ -3,8 +3,11 @@ package lab.davidahn.appshuttle.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.PredictedBhv;
+import android.content.Context;
 import android.text.format.DateUtils;
 
 public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryPresentBhv>{
@@ -32,8 +35,8 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 	}
 
 	@Override
-	public PresentBhvType getType() {
-		return PresentBhvType.HISTORY;
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.HISTORY;
 	}
 
 	@Override
@@ -41,11 +44,14 @@ public class HistoryPresentBhv extends PresentBhv implements Comparable<HistoryP
 		StringBuffer msg = new StringBuffer();
 		viewMsg = msg.toString();
 		
-		msg.append(DateUtils.getRelativeTimeSpanString(recentPredictionTime, 
+		CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(recentPredictionTime, 
 				System.currentTimeMillis(), 
 				DateUtils.MINUTE_IN_MILLIS, 
-				0
-				));
+				0);
+		
+		Context cxt = AppShuttleApplication.getContext();
+		msg.append(String.format(cxt.getString(R.string.history_present_bhv_view_msg), relativeTimeSpan));
+
 		viewMsg = msg.toString();
 		
 		return viewMsg;

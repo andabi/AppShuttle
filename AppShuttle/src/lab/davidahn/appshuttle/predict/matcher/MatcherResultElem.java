@@ -16,7 +16,6 @@ public abstract class MatcherResultElem implements Comparable<MatcherResultElem>
 	protected Map<EnvType, UserEnv> userEnvs;
 	protected UserBhv bhv;
 	protected double score;
-	protected String viewMsg;
 
 	public MatcherResultElem(long _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnv){
 		time = _time;
@@ -63,16 +62,12 @@ public abstract class MatcherResultElem implements Comparable<MatcherResultElem>
 	public void setScore(double _score) {
 		score = _score;
 	}
-	public String getViewMsg() {
-		return viewMsg;
-	}
-	public void setViewMsg(String _viewMsg) {
-		viewMsg = _viewMsg;
-	}
 	
-	public abstract EnumMap<MatcherType, MatcherResultElem> getAllParticipantMatchersWithResults();
+	public abstract EnumMap<MatcherType, MatcherResultElem> getChildMatchersWithResult();
 	
-	public abstract MatcherType getMatcherSelectedByPriority();
+	public abstract EnumMap<MatcherType, MatcherResultElem> getAllLeafMatchersWithResult();
+	
+	public abstract MatcherType getFinalMatcher();
 
 	@Override
 	public int compareTo(MatcherResultElem matcherResult){

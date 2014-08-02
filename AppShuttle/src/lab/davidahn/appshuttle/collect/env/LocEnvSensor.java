@@ -1,6 +1,5 @@
 package lab.davidahn.appshuttle.collect.env;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -16,10 +15,6 @@ public class LocEnvSensor extends BaseEnvSensor {
 	private Location lastKnownLoc;
 	private String bestProvider;
 	
-	private UserLoc prevULoc;
-	private UserLoc currULoc;
-    private DurationUserEnv.Builder durationUserEnvBuilder;
-
     private static LocEnvSensor locEnvSensor = new LocEnvSensor();
 	
 	public static LocEnvSensor getInstance(){
@@ -30,7 +25,7 @@ public class LocEnvSensor extends BaseEnvSensor {
 		super();
 		
 		locationManager = (LocationManager) cxt.getSystemService(Context.LOCATION_SERVICE);
-		prevULoc = currULoc = InvalidUserLoc.getInstance();
+		prevEnv = currEnv = InvalidUserLoc.getInstance();
 
 		extractBestProvider();
 		extractLocation();
@@ -56,28 +51,16 @@ public class LocEnvSensor extends BaseEnvSensor {
 				break;
 		}
 	}
-
-	public UserLoc getCurrULoc() {
-		return currULoc;
-	}
-	
-	public UserLoc getPrevULoc() {
-		return prevULoc;
-	}
 	
 	@Override
 	public UserLoc sense(long currTime, TimeZone currTimeZone){
-		prevULoc = currULoc;
-		
 		if(lastKnownLoc == null) {
-			currULoc =  InvalidUserLoc.getInstance();
+			return InvalidUserLoc.getInstance();
 //			Log.i("location", "sensing failure");
 		} else {
-			currULoc =  UserLoc.create(lastKnownLoc.getLatitude(), lastKnownLoc.getLongitude());
+			return  UserLoc.create(lastKnownLoc.getLatitude(), lastKnownLoc.getLongitude());
 //			Log.i("location", currULoc.toString());
 		}
-
-		return currULoc;
 	}
 	
 	private void extractBestProvider() {
@@ -99,55 +82,6 @@ public class LocEnvSensor extends BaseEnvSensor {
 				locationListener);
 	}
 
-	@Override
-	public boolean isChanged(){
-//		if(_prevULoc == null)
-//			return false;
-		
-		if(!currULoc.equals(prevULoc)) {
-//			Log.i("user env", "location moved");
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public List<DurationUserEnv> preExtractDurationUserEnv(long currTime,
-			TimeZone currTimeZone) {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public DurationUserEnv extractDurationUserEnv(long currTime, TimeZone currTimeZone, UserEnv uEnv) {
-		DurationUserEnv res = null;
-		if(durationUserEnvBuilder == null) {
-			durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone, uEnv);
-		} else {
-			if(isChanged() || isAutoExtractionTime(currTime, currTimeZone)){
-				res = durationUserEnvBuilder.setEndTime(currTime).setTimeZone(currTimeZone).build();
-				durationUserEnvBuilder = makeDurationUserEnvBuilder(currTime, currTimeZone, uEnv);
-			}
-		}
-		return res;
-	}
-	
-	@Override
-	public DurationUserEnv postExtractDurationUserEnv(long currTime, TimeZone currTimeZone) {
-		DurationUserEnv res = durationUserEnvBuilder.setEndTime(currTime).setTimeZone(currTimeZone).build();
-		durationUserEnvBuilder = null;
-		return res;
-	}
-	
-	private DurationUserEnv.Builder makeDurationUserEnvBuilder(long currTimeDate, TimeZone currTimeZone, UserEnv uEnv) {
-		return new DurationUserEnv.Builder()
-			.setTime(currTimeDate)
-			.setEndTime(currTimeDate)
-			.setTimeZone(currTimeZone)
-			.setEnvType(uEnv.getEnvType())
-			.setUserEnv(uEnv);
-	}
-	
 	LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
 //			Log.i("changed location", "latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());

@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab92b1c857b0fdd635723335be0bde5e7" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getInstance" alt="" coords="440,32,827,61"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a35528d215a6d76f66a5825ede1890f10" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.setUnNotifiable" alt="" coords="429,85,837,115"/>
+<area shape="rect" id="node23" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a0e8f1168bc8d9b114d11210fa9e39b31" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.unfavorite" alt="" coords="913,165,1279,195"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv.html#a519adb4bd072ef46e5011832b70314fa" title="lab.davidahn.appshuttle.view.FavoriteBhv.setNotifiable" alt="" coords="925,59,1267,88"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a9ef19f5e1ff5108d26dff21e09c791ee" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.getInstance" alt="" coords="908,5,1284,35"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a099111fae2af5ede8cc6cda35cafc49c" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.updateUnNotifiable" alt="" coords="887,112,1305,141"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv.html#a7023e6858239f8bbdef260d8e22e9d6c" title="lab.davidahn.appshuttle.view.FavoriteBhv.isNotifiable" alt="" coords="1377,59,1711,88"/>
+<area shape="rect" id="node15" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#a3a584c304446a7f9e856f18222aa9a90" title="lab.davidahn.appshuttle.view.ViewableUserBhv.getBhvType" alt="" coords="1359,112,1729,141"/>
+<area shape="rect" id="node19" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#a956879b6b47ea49ee3f9a12f5fdd55db" title="lab.davidahn.appshuttle.view.ViewableUserBhv.getBhvName" alt="" coords="1355,165,1733,195"/>
+<area shape="rect" id="node17" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#aa40041afff60cca4cb2b7351bc4614bb" title="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvType" alt="" coords="1785,112,2140,141"/>
+<area shape="rect" id="node21" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#a16c8cfa47dc39ba10e931c730295a3f3" title="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvName" alt="" coords="1783,165,2143,195"/>
+</map>

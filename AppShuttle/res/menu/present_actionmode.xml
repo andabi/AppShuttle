@@ -10,6 +10,6 @@
         android:id="@+id/block"
         android:icon="@drawable/ignore"
         android:showAsAction="always|withText"
-        android:title="@string/action_block"/>
+        android:title="@string/action_ignore"/>
 
 </menu>

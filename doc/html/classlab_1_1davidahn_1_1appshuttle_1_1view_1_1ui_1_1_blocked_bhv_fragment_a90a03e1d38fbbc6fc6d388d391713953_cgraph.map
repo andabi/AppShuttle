@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_blocked_bhv_manager.html#aa1653bd9d6f56293bcbfa9dafd017dd0" title="lab.davidahn.appshuttle.view.BlockedBhvManager.getInstance" alt="" coords="536,5,923,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_blocked_bhv_manager.html#a7f4135bd719ba80f982e53391bde9075" title="lab.davidahn.appshuttle.view.BlockedBhvManager.getBlockedBhvListSorted" alt="" coords="497,59,961,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_blocked_bhv_manager.html#a3adb57c6599b945e538f892372790358" title="lab.davidahn.appshuttle.view.BlockedBhvManager.updateBlockedBhvSet" alt="" coords="1012,32,1457,61"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_blocked_bhv_manager.html#a200d33e8f25498abf577c410e671f86d" title="lab.davidahn.appshuttle.view.BlockedBhvManager.getBlockedBhvSet" alt="" coords="1021,85,1448,115"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a1e7dfd630cac9e84c4f06d1dc85657de" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.retrieveBlockedUserBhv" alt="" coords="1507,32,1957,61"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_user_bhv.html#a21cee262eff40050a1d57ae743ad8a37" title="lab.davidahn.appshuttle.collect.bhv.BaseUserBhv.setMetas" alt="" coords="2007,32,2375,61"/>
+</map>

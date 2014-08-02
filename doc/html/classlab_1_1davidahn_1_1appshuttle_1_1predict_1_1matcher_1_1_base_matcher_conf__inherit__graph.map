@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1headset_1_1_headset_matcher_conf.html" title="{lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcherConf\n||}" alt="" coords="5,305,435,391"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_position_matcher_conf.html" title="{lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherConf\n||+ getToleranceInMeter()\l}" alt="" coords="459,305,885,391"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_recent_matcher_conf.html" title="{lab.davidahn.appshuttle.predict.matcher.recent.RecentMatcherConf\n||}" alt="" coords="909,305,1323,391"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_conf.html" title="{lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherConf\n||+ getPeriod()\l+ getTolerance()\l}" alt="" coords="1347,297,1736,399"/>
+</map>

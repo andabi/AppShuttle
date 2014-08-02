@@ -1,0 +1,15 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResultElem.getMatcherType",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="lab.davidahn.appshuttle.predict.matcher.MatcherGroup.extractViewMsg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group.html#a53f5f4c916fc06c718a16200bc0cc9cd"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="lab.davidahn.appshuttle.predict.matcher.MatcherGroup.matchAndGetResult",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group.html#a95cbc5879b7443cbb5fa3adaa1701806"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="lab.davidahn.appshuttle.predict.matcher.MatcherGroupResult.addMatcherResult",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group_result.html#a059c4f01b60e07f370a9d4a30dafca6e"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_position_matcher.html" title="lab.davidahn.appshuttle.predict.matcher.position.PositionMatcher" alt="" coords="5,59,405,88"/>
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_location_position_matcher.html" title="lab.davidahn.appshuttle.predict.matcher.position.LocationPositionMatcher" alt="" coords="455,5,903,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_move_position_matcher.html" title="lab.davidahn.appshuttle.predict.matcher.position.MovePositionMatcher" alt="" coords="463,59,895,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_place_position_matcher.html" title="lab.davidahn.appshuttle.predict.matcher.position.PlacePositionMatcher" alt="" coords="463,112,895,141"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector.html" title="lab.davidahn.appshuttle.collect.bhv.BhvCollector" alt="" coords="7,59,311,88"/>
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector.html" title="lab.davidahn.appshuttle.collect.bhv.BaseBhvCollector" alt="" coords="361,59,695,88"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_app_bhv_collector.html" title="lab.davidahn.appshuttle.collect.bhv.AppBhvCollector" alt="" coords="751,5,1079,35"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_call_bhv_collector.html" title="lab.davidahn.appshuttle.collect.bhv.CallBhvCollector" alt="" coords="751,59,1079,88"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_sensor_on_collector.html" title="lab.davidahn.appshuttle.collect.bhv.SensorOnCollector" alt="" coords="745,112,1084,141"/>
+</map>

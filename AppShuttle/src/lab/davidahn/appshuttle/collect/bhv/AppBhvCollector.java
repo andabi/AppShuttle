@@ -26,7 +26,9 @@ public class AppBhvCollector extends BaseBhvCollector {
 	private KeyguardManager keyguardManager;
 
 	private static AppBhvCollector appBhvCollector = new AppBhvCollector();
-
+	private String recentRunningAppPackageName = "";
+//	private List<String> recentApps = new ArrayList<String>();
+	
 	private AppBhvCollector(){
 		super();
 		activityManager = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
@@ -41,7 +43,8 @@ public class AppBhvCollector extends BaseBhvCollector {
 	
 	@Override
 	public List<DurationUserBhv> preExtractDurationUserBhv(long currTime, TimeZone currTimeZone) {
-		List<String> recentApps = getRecentApp(Integer.MAX_VALUE, true);
+		List<String> recentApps = getRecentAppHistory(Integer.MAX_VALUE, true);
+		
 		if(recentApps.isEmpty())
 			return Collections.emptyList();
 		
@@ -56,6 +59,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 			.setTimeZone(currTimeZone)
 			.build());
 		}
+		
 		return res;
 	}
 	
@@ -63,26 +67,65 @@ public class AppBhvCollector extends BaseBhvCollector {
 		List<UserBhv> res = new ArrayList<UserBhv>();
 		res.addAll(collectActivityBhv());
 //		res.addAll(collectServiceBhv());
+
 		return res;
 	}
 	
 	private List<BaseUserBhv> collectActivityBhv() {
 		List<BaseUserBhv> res = new ArrayList<BaseUserBhv>();
 		
+		//Currently running app
+		BaseUserBhv runningAppBhv;
 	    if (!powerManager.isScreenOn()) { //screen off
-	    	res.add(create(UserBhvType.NONE, "screen.off"));
+	    	runningAppBhv = create(UserBhvType.NONE, "screen.off");
         } else if (keyguardManager.inKeyguardRestrictedInputMode()) { //lock screen on
-				res.add(create(UserBhvType.NONE, "lock.screen.on"));
-	    } else {
-			for(String bhvName : getPresentApp(1, true)){
-				res.add(create(UserBhvType.APP, bhvName));
+        	runningAppBhv = create(UserBhvType.NONE, "lock.screen.on");
+	    } else
+	    	runningAppBhv = create(UserBhvType.APP, getPresentApp(1, true).get(0));
+	    res.add(runningAppBhv);
+	
+	    /**
+	     * New apps in history. 
+	     * This is NOT complete even though the best currently.
+	     * Some apps may not be caught in case recentRunningAppPackageName become same or
+	     * user explicitly delete app history.
+	     */
+		List<String> recentApps = getRecentAppHistory(Integer.MAX_VALUE, true);
+		List<BaseUserBhv> newAppBhvs = new ArrayList<BaseUserBhv>();
+		if(recentApps.contains(recentRunningAppPackageName)){ //user did not manage history
+			for(String app : recentApps){
+				if(app.equals(recentRunningAppPackageName)) break;
+				if(app.equals(runningAppBhv.getBhvName())) continue;
+				newAppBhvs.add(create(UserBhvType.APP, app));
 			}
-	    }
-	    return res;
+		}
+		res.addAll(newAppBhvs);
+		
+		recentRunningAppPackageName = runningAppBhv.getBhvName();
+		
+		return res;
 	}
 
-	@SuppressWarnings("unused")
-	private List<String> getInstalledAppList(boolean includeSystemApp){
+	/**
+	 * @param boolean value about whether systemApp is included or not
+	 * @return List of appName & icon
+	 */
+//	public static List<Pair<String, Drawable>> getInstalledAppList(boolean includeSystemApp){
+//		PackageManager pm = AppShuttleApplication.getContext().getPackageManager();
+//		List<Pair<String, Drawable>> res = new ArrayList<Pair<String, Drawable>>();
+//		for(ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)){
+//			if(!includeSystemApp && isSystemApp(appInfo))
+//				continue;
+//			try {
+//				Drawable icon = (BitmapDrawable) pm.getApplicationIcon(appInfo.packageName);
+////				String appname = pm.getApplicationLabel(appInfo).toString();
+//				res.add(new Pair<String, Drawable>(appInfo.packageName, icon));
+//			} catch (NameNotFoundException e) {}
+//		}
+//		return res;
+//	}
+	
+	public List<String> getInstalledAppList(boolean includeSystemApp){
 		List<String> res = new ArrayList<String>();
 		for(ApplicationInfo appInfo : packageManager.getInstalledApplications(PackageManager.GET_META_DATA)){
 			if(!includeSystemApp && isSystemApp(appInfo))
@@ -91,7 +134,23 @@ public class AppBhvCollector extends BaseBhvCollector {
 		}
 		return res;
 	}
-
+	
+	public long getFirstInstalledTime(String packageName){
+		try {
+			return cxt.getPackageManager().getPackageInfo(packageName, 0).firstInstallTime;
+		} catch (NameNotFoundException e) {
+			return 0;
+		}	
+	}
+	
+	public long getLastUpdatedTime(String packageName){
+		try {
+			return cxt.getPackageManager().getPackageInfo(packageName, 0).lastUpdateTime;
+		} catch (NameNotFoundException e) {
+			return 0;
+		}	
+	}
+	
 	private boolean isSystemApp(ApplicationInfo appInfo) {
 	    return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true : false;
 	}
@@ -117,7 +176,7 @@ public class AppBhvCollector extends BaseBhvCollector {
 		return res;
 	}
 	
-	private List<String> getRecentApp(int max, boolean includeSystemApp) {
+	private List<String> getRecentAppHistory(int max, boolean includeSystemApp) {
 		if(max < 0) return null;
 		if(max == 0) max = Integer.MAX_VALUE;
 		

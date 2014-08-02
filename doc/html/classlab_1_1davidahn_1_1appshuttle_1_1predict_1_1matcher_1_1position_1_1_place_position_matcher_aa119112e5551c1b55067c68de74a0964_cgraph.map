@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env_manager.html#a5a8d696ef319e68f873be04b81f4693b" title="lab.davidahn.appshuttle.collect.env.DurationUserEnvManager.getInstance" alt="" coords="631,5,1081,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_place.html#a0bee57545f1cf3aac45dd367b5b2f05a" title="lab.davidahn.appshuttle.collect.env.UserPlace.equals" alt="" coords="689,59,1023,88"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a46ad5b008899b7d7e89d3a48f2e64e69" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getEndTime" alt="" coords="655,112,1057,141"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#a3aaf27429843b2eb05fdd33f20be8f86" title="lab.davidahn.appshuttle.AppShuttleApplication.getContext" alt="" coords="1144,5,1501,35"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#ae46ed63b120534585fb15e7d5ed5593a" title="lab.davidahn.appshuttle.AppShuttleApplication.getPreferences" alt="" coords="1132,59,1513,88"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_place.html#af1129fa8c7790329fde68cb385fe1c99" title="lab.davidahn.appshuttle.collect.env.UserPlace.UserPlace" alt="" coords="1145,112,1500,141"/>
+</map>

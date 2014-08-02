@@ -1,6 +1,9 @@
 package lab.davidahn.appshuttle.view;
 
+import lab.davidahn.appshuttle.AppShuttleApplication;
+import lab.davidahn.appshuttle.R;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import android.content.Context;
 import android.text.format.DateUtils;
 
 
@@ -28,15 +31,17 @@ public class BlockedBhv extends ViewableUserBhv implements Comparable<BlockedBhv
 
 	@Override
 	public String getViewMsg() {
-//		long blockedTime = ((BlockedUserBhv)_uBhv).getBlockedTime();
 		StringBuffer msg = new StringBuffer();
 		viewMsg = msg.toString();
 		
-		msg.append(DateUtils.getRelativeTimeSpanString(blockedTime, 
+		CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(blockedTime, 
 				System.currentTimeMillis(), 
 				DateUtils.MINUTE_IN_MILLIS, 
-				0
-				));
+				0);
+		
+		Context cxt = AppShuttleApplication.getContext();
+		msg.append(String.format(cxt.getString(R.string.ignore_bhv_view_msg), relativeTimeSpan));
+
 		viewMsg = msg.toString();
 		
 		return viewMsg;
@@ -45,5 +50,10 @@ public class BlockedBhv extends ViewableUserBhv implements Comparable<BlockedBhv
 	@Override
 	public Integer getNotibarContainerId() {
 		return null;
+	}
+
+	@Override
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.BLOCKED;
 	}
 }

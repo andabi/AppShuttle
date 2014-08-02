@@ -22,7 +22,7 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	private final long time;
 	private final TimeZone timeZone;
 	private final Map<EnvType, UserEnv> uEnvs;
-	private final EnumMap<MatcherType, MatcherResultElem> matcherResults;
+	private final EnumMap<MatcherType, MatcherResultElem> matchersWithResult;
 	private final double score;
 
 	public PredictedBhv(long _time, TimeZone _timeZone, Map<EnvType, UserEnv> _userEnvs, UserBhv _uBhv, EnumMap<MatcherType, MatcherResultElem> _matcherResults, double _score){
@@ -30,7 +30,7 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 		timeZone = _timeZone;
 		uEnvs = _userEnvs;
 		uBhv = _uBhv;
-		matcherResults = _matcherResults;
+		matchersWithResult = _matcherResults;
 		score = _score;
 	}
 
@@ -50,24 +50,24 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 		return uBhv;
 	}
 
-	public Map<MatcherType, MatcherResultElem> getMatcherResultMap() {
-		return matcherResults;
+	public Map<MatcherType, MatcherResultElem> getMatchersWithResult() {
+		return matchersWithResult;
 	}
 	
 	public MatcherResultElem getMatcherResult(MatcherType matcherType) {
-		return matcherResults.get(matcherType);
+		return matchersWithResult.get(matcherType);
 	}
 
 	public double getScore() {
 		return score;
 	}
 	
-	public EnumMap<MatcherType, MatcherResultElem> getAllMatcherWithResult(){
-		EnumMap<MatcherType, MatcherResultElem> matcherResultMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
-		for(MatcherType matcherType : matcherResults.keySet())
-			matcherResultMap.putAll(matcherResults.get(matcherType).getAllParticipantMatchersWithResults());
-		return matcherResultMap;
-	}
+//	public EnumMap<MatcherType, MatcherResultElem> getAllLeafMatcherWithResult(){
+//		EnumMap<MatcherType, MatcherResultElem> matcherResultMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
+//		for(MatcherType matcherType : matcherResults.keySet())
+//			matcherResultMap.putAll(matcherResults.get(matcherType).getChildMatcherWithResult());
+//		return matcherResultMap;
+//	}
 	
 	@Override
 	public boolean equals(Object o) {
@@ -98,7 +98,7 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 		StringBuffer msg = new StringBuffer();
 		msg.append("bhv: ").append(uBhv.toString()).append(", ");
 		msg.append("time: ").append(new Date(time).toString()).append(", ");
-		msg.append("matcherResults: ").append(matcherResults.toString()).append(", ");
+		msg.append("matcherResults: ").append(matchersWithResult.toString()).append(", ");
 		msg.append("score: ").append(score);
 		return msg.toString();
 	}
@@ -143,14 +143,18 @@ public class PredictedBhv implements UserBhv, Comparable<PredictedBhv> {
 	}
 
 	@Override
-	public Object getMeta(String key) {
-		return uBhv.getMeta(key);
+	public Map<String, Object> getMetas() {
+		return uBhv.getMetas();
+	}
+	@Override
+	public void setMetas(Map<String, Object> metas) {
+		uBhv.setMetas(metas);
+	}
+	@Override
+	public boolean isValid() {
+		return uBhv.isValid();
 	}
 
-	@Override
-	public void setMeta(String key, Object val) {
-		uBhv.setMeta(key, val);
-	}
 	
 	public Intent getLaunchIntent(){
 		if (uBhv == null)

@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group.html" title="{lab.davidahn.appshuttle.predict.matcher.MatcherGroup\n|# matchers\l|+ MatcherGroup()\l+ matchAndGetResult()\l+ registerMatcher()\l# extractViewMsg()\l# computeScore()\l}" alt="" coords="95,344,433,499"/>
+<area shape="rect" id="node4" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_elem.html" title="{lab.davidahn.appshuttle.predict.matcher.MatcherElem\n||+ getType()\l+ matchAndGetResult()\l+ getPriority()\l}" alt="" coords="5,157,339,277"/>
+</map>

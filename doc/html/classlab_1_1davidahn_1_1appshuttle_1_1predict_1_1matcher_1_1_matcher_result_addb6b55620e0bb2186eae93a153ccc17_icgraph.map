@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1headset_1_1_headset_matcher.html#a649ea089f5ed21991e19920131d51243" title="lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcher.computeScore" alt="" coords="492,5,983,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_move_position_matcher.html#a9b963792f61c3d8a0226f02575523a7c" title="lab.davidahn.appshuttle.predict.matcher.position.MovePositionMatcher.computeScore" alt="" coords="477,59,997,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_position_matcher.html#ad811c47dc634267265dcb872b18f1018" title="lab.davidahn.appshuttle.predict.matcher.position.PositionMatcher.computeScore" alt="" coords="493,112,981,141"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_recent_matcher.html#aa9a3097a4aa951cfba62693d43d14284" title="lab.davidahn.appshuttle.predict.matcher.recent.RecentMatcher.computeScore" alt="" coords="500,165,975,195"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher.html#a3f17275ef78859372c4631f4e5c61430" title="lab.davidahn.appshuttle.predict.matcher.time.TimeMatcher.computeScore" alt="" coords="512,219,963,248"/>
+</map>

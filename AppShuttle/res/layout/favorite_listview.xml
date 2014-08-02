@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight" >
+
+    <LinearLayout
+        android:id="@+id/listview_favorite_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="left"
+        android:orientation="horizontal"
+        android:padding="6dp" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/listview_favorite_item_image"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="12dp"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/listview_favorite_item_firstline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/listview_favorite_item_image"
+                android:layout_toRightOf="@id/listview_favorite_item_image"
+                android:textColor="@color/not_quite_black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/listview_favorite_item_secondline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/listview_favorite_item_firstline"
+                android:layout_toRightOf="@id/listview_favorite_item_image"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/light_light_gray"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/listview_favorite_item_image_grabber"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="6dp"
+            android:layout_weight="0"
+            android:adjustViewBounds="true"
+            android:maxHeight="30dp"
+            android:maxWidth="30dp"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/listview_favorite_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_gray"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/listview_favorite_menu_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:maxWidth="72dp"
+            android:paddingLeft="27dp"
+            android:paddingRight="27dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cancel" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="27dp"
+            android:paddingRight="27dp" >
+
+            <ImageView
+                android:id="@+id/listview_favorite_menu_unfavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/favorite_on" />
+
+            <ImageView
+                android:id="@+id/listview_favorite_menu_ignore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ignore" />
+
+            <ImageView
+                android:id="@+id/listview_favorite_menu_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="22dp"
+                android:maxWidth="22dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/share" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

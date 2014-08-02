@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_headset_env_sensor.html" title="{lab.davidahn.appshuttle.collect.env.HeadsetEnvSensor\n||+ sense()\l+ extractDurationUserEnv()\l+ isHeadsetPlugged()\l+ getInstance()\l# isAutoExtractionTimeHeadsetOn()\l}" alt="" coords="5,619,347,773"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_loc_env_sensor.html" title="{lab.davidahn.appshuttle.collect.env.LocEnvSensor\n|~ locationListener\l|+ sense()\l+ getInstance()\l}" alt="" coords="371,645,685,747"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_place_env_sensor.html" title="{lab.davidahn.appshuttle.collect.env.PlaceEnvSensor\n||+ sense()\l+ getInstance()\l}" alt="" coords="709,645,1035,747"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_speed_env_sensor.html" title="{lab.davidahn.appshuttle.collect.env.SpeedEnvSensor\n||+ sense()\l+ extractDurationUserEnv()\l+ getInstance()\l# isAfterAcceptableWaitingTime()\l}" alt="" coords="1059,627,1389,765"/>
+<area shape="rect" id="node2" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_env_sensor.html" title="{lab.davidahn.appshuttle.collect.env.EnvSensor\n||+ senseAndGet()\l+ isChanged()\l+ preExtractDurationUserEnv()\l+ extractDurationUserEnv()\l+ postExtractDurationUserEnv()\l}" alt="" coords="553,5,847,160"/>
+</map>

@@ -1,0 +1,10 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.predict.matcher.time.TimeMatcher.computeInverseEntropy",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.utils.Time.isIncludedIn",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1utils_1_1_time.html#a5edb0fa8b0bb73935ade287b4bb692a1"];
+}

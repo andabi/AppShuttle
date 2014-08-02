@@ -10,36 +10,47 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DurationUserBhvDao {
+	private static final String tableName = "history_user_bhv";
+	private static final String columnTime = "time";
+	private static final String columnDuration = "duration";
+	private static final String columnEndTime = "end_time";
+	private static final String columnTimeZone = "timezone";
+	private static final String columnBhvType = "bhv_type";
+	private static final String columnBhvName = "bhv_name";
+	private static final String index1Name = "idx1_history_user_bhv";
+	private static final String index2Name = "idx2_history_user_bhv";
+	
 	private static DurationUserBhvDao durationUserBhvDao = new DurationUserBhvDao();
 	private SQLiteDatabase db;
 
 	private DurationUserBhvDao() {
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getDatabase();
 	}
 
 	public static DurationUserBhvDao getInstance() {
 		return durationUserBhvDao;
 	}
-
+	
 	public void store(DurationUserBhv durationUserBhv) {
 		ContentValues row = new ContentValues();
-		row.put("time", durationUserBhv.getTime());
-		row.put("duration", durationUserBhv.getDuration());
-		row.put("end_time", durationUserBhv.getEndTime());
-		row.put("timezone", durationUserBhv.getTimeZone().getID());
-		row.put("bhv_type", durationUserBhv.getUserBhv().getBhvType().toString());
-		row.put("bhv_name", durationUserBhv.getUserBhv().getBhvName());
+		row.put(columnTime, durationUserBhv.getTime());
+		row.put(columnDuration, durationUserBhv.getDuration());
+		row.put(columnEndTime, durationUserBhv.getEndTime());
+		row.put(columnTimeZone, durationUserBhv.getTimeZone().getID());
+		row.put(columnBhvType, durationUserBhv.getUserBhv().getBhvType().toString());
+		row.put(columnBhvName, durationUserBhv.getUserBhv().getBhvName());
 //		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_IGNORE);
-		db.insertWithOnConflict("history_user_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
+		db.insertWithOnConflict(tableName, null, row, SQLiteDatabase.CONFLICT_REPLACE);
 //		Log.i("stored duration bhv", durationUserBhv.toString());
 	}
 
 	public List<DurationUserBhv> retrieve(long beginTime, long endTime) {
-		Cursor cur = db.rawQuery("" +
-				"SELECT * " +
-				"FROM history_user_bhv" +
-				"WHERE time >= " + beginTime + " " +
-					"AND time < " + endTime+";", null);
+		Cursor cur = db.rawQuery(
+				"SELECT *" +
+				" FROM " + tableName +
+				" WHERE " + columnTime + " >= " + beginTime +
+					" AND " + columnTime + " < " + endTime + ";"
+			, null);
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
 		while (cur.moveToNext()) {
 //			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
@@ -59,67 +70,87 @@ public class DurationUserBhvDao {
 		return res;
 	}
 	
+	public List<DurationUserBhv> retrieveByBhv(long beginTime, long endTime, UserBhv uBhv) {
+			Cursor cur = db.rawQuery(
+					"SELECT *" +
+					" FROM " + tableName +
+					" WHERE " + columnTime + " >= " + beginTime +
+						" AND " + columnTime + " < " + endTime +
+						" AND " + columnBhvType + " = '" + uBhv.getBhvType() + "' " +
+						" AND " + columnBhvName + " = '" + uBhv.getBhvName() + "';"
+				, null);
+			
+			List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+			while (cur.moveToNext()) {
+	//			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
+				DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
+					.setTime(cur.getLong(0))
+					.setDuration(cur.getLong(1))
+					.setEndTime(cur.getLong(2))
+					.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
+					.setBhv(uBhv)
+					.build();
+				res.add(durationUserBhv);
+			}
+			cur.close();
+			return res;
+		}
+
+	public List<DurationUserBhv> retrieveOnEndTimeByBhv(long beginTime, long endTime, UserBhv uBhv) {
+			Cursor cur = db.rawQuery(
+					"SELECT *" +
+					" FROM " + tableName +
+					" WHERE " + columnEndTime + " >= " + beginTime +
+						" AND " + columnEndTime + " < " + endTime +
+						" AND " + columnBhvType + " = '" + uBhv.getBhvType() + "' " +
+						" AND " + columnBhvName + " = '" + uBhv.getBhvName() + "';"
+				, null);
+			List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+			while (cur.moveToNext()) {
+	//			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
+				DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
+					.setTime(cur.getLong(0))
+					.setDuration(cur.getLong(1))
+					.setEndTime(cur.getLong(2))
+					.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
+					.setBhv(uBhv)
+					.build();
+				res.add(durationUserBhv);
+			}
+			cur.close();
+			return res;
+		}
+
 	public void delete(long beginTime, long endTime){
-		db.execSQL("" +
-				"DELETE " +
-				"FROM history_user_bhv " +
-				"WHERE time >= " + beginTime + " " +
-					"AND time < " + endTime +";");
+		db.execSQL(
+				"DELETE FROM " + tableName +
+				" WHERE " + columnTime + " >= " + beginTime +
+					" AND " + columnTime + " < " + endTime + ";");
 	}
 	
 	public void deleteBefore(long time){
-		db.execSQL("" +
-				"DELETE " +
-				"FROM history_user_bhv " +
-				"WHERE time < " + time +";");
+		db.execSQL(
+				"DELETE FROM " + tableName +
+				" WHERE " + columnTime + " < " + time + ";");
 	}
 	
-	public List<DurationUserBhv> retrieveByBhv(long beginTime, long endTime, UserBhv uBhv) {
-		Cursor cur = db.rawQuery(
-				"SELECT * " +
-				"FROM history_user_bhv " +
-				"WHERE time >= " + beginTime + " " +
-					"AND time < " + endTime + " " +
-					"AND bhv_type = '"+uBhv.getBhvType()+"' " +
-					"AND bhv_name = '"+uBhv.getBhvName()+"';", null);
-		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		while (cur.moveToNext()) {
-//			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
-			DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
-				.setTime(cur.getLong(0))
-				.setDuration(cur.getLong(1))
-				.setEndTime(cur.getLong(2))
-				.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
-				.setBhv(uBhv)
-				.build();
-			res.add(durationUserBhv);
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+					+ columnTime + " INTEGER, "
+					+ columnDuration + " INTEGER, "
+					+ columnEndTime + " INTEGER, "
+					+ columnTimeZone + " TEXT, "
+					+ columnBhvType + " TEXT, "
+					+ columnBhvName + " TEXT, "
+					+ "PRIMARY KEY (" + columnTime + ", " + columnTimeZone + ", "
+						+ columnBhvType + ", " + columnBhvName + ") "
+					+ ");");
+			db.execSQL("CREATE INDEX " + index1Name + " on " + tableName + " (" 
+					+ columnTime + ")");
+			db.execSQL("CREATE INDEX " + index2Name + " on " + tableName + " (" 
+					+ columnTime + ", " + columnBhvType + ", " + columnBhvName +")");
 		}
-		cur.close();
-		return res;
-	}
-	
-	public List<DurationUserBhv> retrieveOnEndTimeByBhv(long beginTime, long endTime, UserBhv uBhv) {
-		Cursor cur = db.rawQuery(
-				"SELECT * " +
-				"FROM history_user_bhv " +
-				"WHERE end_time >= " + beginTime + " " +
-					"AND end_time < " + endTime + " " +
-					"AND bhv_type = '"+uBhv.getBhvType()+"' " +
-					"AND bhv_name = '"+uBhv.getBhvName()+"';", null);
-		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		while (cur.moveToNext()) {
-//			Type listType = new TypeToken<HashMap<EnvType, UserEnv>>(){}.getType();
-			DurationUserBhv durationUserBhv = new DurationUserBhv.Builder()
-				.setTime(cur.getLong(0))
-				.setDuration(cur.getLong(1))
-				.setEndTime(cur.getLong(2))
-				.setTimeZone(TimeZone.getTimeZone(cur.getString(3)))
-				.setBhv(uBhv)
-				.build();
-			res.add(durationUserBhv);
-		}
-		cur.close();
-		return res;
 	}
 
 //	//TODO fix

@@ -1,0 +1,22 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$class_comparable.html" title="Comparable" alt="" coords="456,348,547,377"/>
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result_elem.html" title="lab.davidahn.appshuttle.predict.matcher.MatcherResultElem" alt="" coords="716,272,1087,301"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1_predicted_bhv.html" title="lab.davidahn.appshuttle.predict.PredictedBhv" alt="" coords="760,219,1043,248"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_blocked_bhv.html" title="lab.davidahn.appshuttle.view.BlockedBhv" alt="" coords="769,480,1033,509"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv.html" title="lab.davidahn.appshuttle.view.FavoriteBhv" alt="" coords="769,427,1033,456"/>
+<area shape="rect" id="node15" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_history_present_bhv.html" title="lab.davidahn.appshuttle.view.HistoryPresentBhv" alt="" coords="1173,441,1477,471"/>
+<area shape="rect" id="node17" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_predicted_present_bhv.html" title="lab.davidahn.appshuttle.view.PredictedPresentBhv" alt="" coords="1167,364,1484,393"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group_result.html" title="lab.davidahn.appshuttle.predict.matcher.MatcherGroupResult" alt="" coords="1137,299,1513,328"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html" title="lab.davidahn.appshuttle.predict.matcher.MatcherResult" alt="" coords="1155,245,1496,275"/>
+<area shape="rect" id="node18" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html" title="lab.davidahn.appshuttle.collect.bhv.UserBhv" alt="" coords="7,179,287,208"/>
+<area shape="rect" id="node20" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_user_bhv.html" title="lab.davidahn.appshuttle.collect.bhv.BaseUserBhv" alt="" coords="347,139,656,168"/>
+<area shape="rect" id="node30" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv" alt="" coords="336,85,667,115"/>
+<area shape="rect" id="node33" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html" title="lab.davidahn.appshuttle.view.ViewableUserBhv" alt="" coords="352,453,651,483"/>
+<area shape="rect" id="node22" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_app_user_bhv.html" title="lab.davidahn.appshuttle.collect.bhv.AppUserBhv" alt="" coords="749,5,1053,35"/>
+<area shape="rect" id="node24" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_call_user_bhv.html" title="lab.davidahn.appshuttle.collect.bhv.CallUserBhv" alt="" coords="749,59,1053,88"/>
+<area shape="rect" id="node26" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_none_user_bhv.html" title="lab.davidahn.appshuttle.collect.bhv.NoneUserBhv" alt="" coords="745,112,1057,141"/>
+<area shape="rect" id="node28" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_sensor_on_user_bhv.html" title="lab.davidahn.appshuttle.collect.bhv.SensorOnUserBhv" alt="" coords="732,165,1071,195"/>
+<area shape="rect" id="node37" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_present_bhv.html" title="lab.davidahn.appshuttle.view.PresentBhv" alt="" coords="771,533,1032,563"/>
+<area shape="rect" id="node41" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_selected_present_bhv.html" title="lab.davidahn.appshuttle.view.SelectedPresentBhv" alt="" coords="1169,533,1481,563"/>
+<area shape="rect" id="node42" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable.html" title="lab.davidahn.appshuttle.view.Viewable" alt="" coords="24,453,269,483"/>
+</map>

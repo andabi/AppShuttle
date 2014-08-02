@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_speed.html#a982d9aa83bb15bb007367f933411db61" title="lab.davidahn.appshuttle.collect.env.UserSpeed.UserSpeed" alt="" coords="404,32,767,61"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_speed.html#a8cb93d1c4aa02f6fb02816b7c99d2062" title="lab.davidahn.appshuttle.collect.env.UserSpeed.create" alt="" coords="817,32,1151,61"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_speed_env_sensor.html#a977654629824005ac4a745c700111354" title="lab.davidahn.appshuttle.collect.env.SpeedEnvSensor.sense" alt="" coords="1252,5,1623,35"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_speed_env_sensor.html#a4741b543901607a0f22e49fc64276c5f" title="lab.davidahn.appshuttle.collect.env.SpeedEnvSensor.extractDurationUserEnv" alt="" coords="1200,59,1675,88"/>
+</map>

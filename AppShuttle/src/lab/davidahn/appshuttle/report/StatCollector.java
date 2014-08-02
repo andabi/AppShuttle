@@ -7,8 +7,8 @@ import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleDBHelper;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.view.BlockedBhv;
@@ -17,105 +17,100 @@ import lab.davidahn.appshuttle.view.FavoriteBhv;
 import lab.davidahn.appshuttle.view.FavoriteBhvManager;
 import lab.davidahn.appshuttle.view.PredictedPresentBhv;
 import lab.davidahn.appshuttle.view.PresentBhv;
+import lab.davidahn.appshuttle.view.ViewableBhvType;
+import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class StatCollector {
-	/* Statistics Collector
-	 * 
-	 */
-	
-	// Structure-style manifestation of a DB entry
-	private class StatEntry{
-		long timestamp = System.currentTimeMillis();
-		UserBhvType bhvType = UserBhvType.NONE;
-		String bhvName = "";
-		String matchers = "";				// Matcher 이름
-		boolean isPredicted = false;		// Top 6개 안에 들었는가?
-		boolean isClicked = false;			// 앱셔틀을 통해 실행했는가?
-		
-		public String toString(){
-			return timestamp + " / " + bhvType.toString() + " / " + bhvName.toString() + " / "
-					+ matchers.toString() + " / " + isPredicted + " / " + isClicked; 
-		}
+
+	private static final String tableName = "stat_bhv_transition";
+	private static final String columnTime = "time";
+	private static final String columnBhvType = "bhv_type";
+	private static final String columnBhvName = "bhv_name";
+	private static final String columnMatchers = "matchers";
+	private static final String columnPredicted = "predicted";
+	private static final String columnClicked = "clicked";
+
+	private static StatCollector statCollector = new StatCollector();
+	public static StatCollector getInstance(){
+		return statCollector;
 	}
 	
-	private class StatResult {
-		// Meta
-		long from  = System.currentTimeMillis();
-		long until = System.currentTimeMillis();
-		
-		// in percent (0~100)
-		int hit_ratio = 0;		
-		int click_ratio = 0;
-		
-		// in hit (0~N)
-		int clicked_count = 0;
-		int hit_count = 0;
-		int total_count = 0;
-		
-		// You can add additional measures.
-		
-		public String toString(){
-			return new Date(from).toString() + " ~ " + new Date(until).toString() + "\n" +
-					"uBhv count: " + total_count + "\n" +
-					"Hit ratio: " + hit_ratio + " %\n" +
-					"Use ratio: " + click_ratio + " %\n"; 
-		}
-	}
-	
-	private volatile static StatCollector instance;
-	
-	/* Internal variables */
 	private SQLiteDatabase db;
+	private Gson gson;
+	private UserBhv prevBhv;
 	
-	private UserBhv old_uBhv;		// 직전에 관측된 Bhv
-	
-	private long created;	// obsolete
 	private StatCollector(){
-		old_uBhv = null;
-		
-		created = System.currentTimeMillis();	// 현재 시간 저장
-		
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
-		
-		Log.i("Stat", "New Collector created / " + created);
-	}
-	
-	/**
-	 * 지난 24시간의 (혹은 마지막 통계 전송 후의 모든) 데이터를 분석하여 통계 서버로 전송.
-	 * Caller 가 그보다 더 짧은 간격으로 호출하면 동작하지 않음.
-	 */
-	public void sendDailyCollectedData(){
-		// TODO: 이 함수는 IntentService 상속하는 애에서 처리하도록 옮김
-		
-		// TODO: Send statistics data to the server
-		
-		// TODO: If it's okay => Delete entries
-		
-		// TODO: 기타 고정 수 등 추가 통계 업데이트
-		
-		return;
+		db = AppShuttleDBHelper.getDatabase();
+		gson = new Gson();
+//		Log.d("Stat", "New Collector created / " + created);
 	}
 	
 	/**
 	 * 사용자 행동의 변화를 발견할 때마다 매번 보내야 하는 통계자료의 전송
-	 * @param observedData
 	 */
-	private void sendEachEntry(StatEntry entry){
+	private void sendEvent(StatEntry entry){
 		Tracker tracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
+
+		String strPredicted = (entry.isPredicted) ? "Predicted" : "Not Predicted";
+		long valuePredicted = (entry.isPredicted) ? 100 : 0; //percent
+
+		switch(entry.presentBhvType){
+		case PREDICTED:
+			if(entry.matchers.isEmpty())
+				break;
+			
+			valuePredicted /= entry.matchers.size();
+			for(MatcherType matcherType : entry.matchers) {
+				String label = matcherType.name();
+				tracker.send(MapBuilder
+						.createEvent("algorithm", strPredicted,	label, valuePredicted).build());
+
+//				List<MatcherType> withMatchers = new ArrayList<MatcherType>(entry.matchers);
+//				withMatchers.remove(matcherType);
+//				if(!withMatchers.isEmpty()) {
+//					Collections.sort(withMatchers);
+//					String label = matcherType.name() 
+//							+ " (with " + withMatchers.toString().replace("[", "").replace("]", "") + ")";
+//					tracker.send(MapBuilder
+//							.createEvent("algorithm", strPredicted, label, valuePredicted).build());
+//				}
+			}
+			break;
+		default:
+			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+					entry.presentBhvType.name() , valuePredicted).build());
+		}
+//		case FAVORITE:
+//			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+//							entry.presentBhvType.name() , valuePredicted).build());
+//			break;
+//		case HISTORY:
+//			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+//					entry.presentBhvType.name() , valuePredicted).build());
+//			break;
+//		case SELECTED:
+//			tracker.send(MapBuilder.createEvent("algorithm", strPredicted, 
+//					entry.presentBhvType.name() , valuePredicted).build());
+//			break;
 		
-		String strPredicted = (entry.isPredicted == true ? "Predicted" : "Not Predicted");
-		long valuePredicted = (entry.isPredicted == true ? 100 : 0);
+		// tracker.set(Fields.customDimension(1), strPredicted + strClicked);
 		
-		String strClicked = (entry.isClicked == true ? "Clicked" : "Not Clicked");
-		long valueClicked = (entry.isClicked == true ? 100 : 0);
+//		String strClicked = (entry.isClicked) ? "Clicked" : "Not Clicked";
+//		long valueClicked = (entry.isClicked) ? 100 : 0;
+//		tracker.send(MapBuilder
+//				.createEvent("usage", strClicked, entry.bhvName, valueClicked)
+//				.build()
+//			);
 		
 		/* FIXME:
 		 * Clicked and Predicted 일 경우,
@@ -126,99 +121,39 @@ public class StatCollector {
 		 * 이에 대한 bias 수정
 		 */
 		//Clicked / Predicted 쪽이 가중치가 더 있음. 그에 대한 대처 방안
-		
-		// tracker.set(Fields.customDimension(1), strPredicted + strClicked);
-		// Accuracy tracking
-		tracker.send(MapBuilder
-				.createEvent("algorithm", strPredicted, entry.matchers, valuePredicted)
-				.build()
-			);
-		
-		// Usage tracking
-		tracker.send(MapBuilder
-				.createEvent("usage", strClicked, entry.bhvName, valueClicked)
-				.build()
-			);
-		
-		return;
 	}
 	
 	/**
 	 * 해당 기간의 통계 자료를 추출 
-	 * @param from
+	 * @param fromTime
 	 * 			통계에 포함되는 시작 시각. null 을 주면 until을 기준으로 24시간 전의 시점부터 통계 
-	 * @param until
+	 * @param toTime
 	 * 			통계에 포함되는 끝 시각. null 을 주면 현재를 기준으로 통계
 	 */
-	protected StatResult getStatistics(long from, long until){
-		if (until == 0)
-			until = System.currentTimeMillis(); // 현재 시각
-		if (from == 0)
-			from = until - (24 * 60 * 60 * 1000);
+	protected StatResult getStatistics(long fromTime, long toTime){
+		if (toTime == 0)
+			toTime = System.currentTimeMillis();
+		if (fromTime == 0)
+			fromTime = toTime - (24 * 60 * 60 * 1000);
 		
-		StatResult statReturn = new StatResult();
-		statReturn.from = from;
-		statReturn.until = until;
+		StatResult statResult = new StatResult();
+		statResult.fromTime = fromTime;
+		statResult.toTime = toTime;
+		statResult.totalCount = (int)DatabaseUtils.queryNumEntries(db, tableName,
+				columnTime + " > " + fromTime + " AND " + columnTime + " <= " + toTime);
+		statResult.clickedCount = (int)DatabaseUtils.queryNumEntries(db, tableName,
+				columnTime + " > " + fromTime + " AND " + columnTime + " <= " + toTime + " AND " + columnClicked + " > 0");
+		statResult.hitCount = (int)DatabaseUtils.queryNumEntries(db, tableName,
+				columnTime + " > " + fromTime + " AND " + columnTime + " <= " + toTime + " AND " + columnPredicted + " > 0");
+		statResult.clickRatio = statResult.clickedCount * 100.0f / statResult.totalCount;
+		statResult.hitRatio = statResult.hitCount * 100.0f / statResult.totalCount;
 		
-		/*
-		 *  Utilize this if needed.
-		// Retrieve entries from DB
-		Cursor cur = db.rawQuery("SELECT * " +
-				"FROM stat_bhv_transition" +
-				"WHERE time > " + from.getTime() + " " +
-					"AND time <= " + until.getTime() + ";", null);
-		
-		List <StatEntry> statEntries = new ArrayList<StatEntry>();
-		while (cur.moveToNext()) {
-			StatEntry entry = new StatEntry();
-			
-			entry.timestamp = new Date(cur.getLong(0));
-			entry.bhvType = UserBhvType.valueOf(cur.getString(1));
-			entry.bhvName = cur.getString(2);
-			entry.matchers = cur.getString(3);
-			entry.isPredicted = (cur.getInt(4) > 0 ? true : false);
-			entry.isClicked = (cur.getInt(5) > 0 ? true : false);
-			
-			statEntries.add(entry);
-			
-			
-		}
-		cur.close();
-		*/
-		
-		
-		// 로그 데이터에서 통계 값 계산
-		statReturn.total_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-						"time > " + from + " AND time <= " + until);
-		
-		statReturn.clicked_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-				"time > " + from + " AND time <= " + until + " AND clicked > 0");
-		
-		statReturn.hit_count = (int)DatabaseUtils.queryNumEntries(db, "stat_bhv_transition",
-				"time > " + from + " AND time <= " + until + " AND predicted > 0");
-		
-		statReturn.click_ratio = (int)(statReturn.clicked_count * 100.0f / statReturn.total_count);
-		statReturn.hit_ratio = (int)(statReturn.hit_count * 100.0f / statReturn.total_count);
-		
-		// You can add additional measures.
-		
-		return statReturn;
+		return statResult;
 	}
 	
 	public StatResult getStatistics(){
 		return this.getStatistics(0, 0);
 	}	
-	
-	public static StatCollector getInstance(){
-		if (instance == null) {
-			synchronized(StatCollector.class) {
-				if (instance == null)
-					instance = new StatCollector();
-			}
-		}
-		
-		return instance;
-	}
 	
 //	public void setPredictedBhvList(List <ViewableUserBhv> l){
 //		// FIXME: Matcher 종류 알 수 있는 데이터 구조로 전달 받기
@@ -236,33 +171,27 @@ public class StatCollector {
 	 * @param uCxt
 	 * @param isClicked
 	 */
+	// TODO: App 말고 다른 타입에 대한 고려
+	// TODO: 24시간이 지나면, 통계사이트로 전송하고 객체 초기화하는 코드 추가
 	public void notifyBhvTransition(UserBhv userBhv, boolean isClicked){
-		// TODO: App 말고 다른 타입에 대한 고려
-		// TODO: 24시간이 지나면, 통계사이트로 전송하고 객체 초기화하는 코드 추가
-		
 		//Log.d("Stat", "Input: " + userBhv.toString());
-		
-		// 화면 OFF 등 앱이 아닌 경우, 무시
 		if (userBhv.getBhvType() != UserBhvType.APP)
 			return;
 		
 		// Same UserBhv (Screen ON -> OFF -> ON) 무시
-		//if (old_uBhv != null)
-		//	Log.d("Stat", "old Ubhv: " + old_uBhv.toString());
-		if (old_uBhv != null && old_uBhv.equals(userBhv))
+		//Log.d("Stat", "old Ubhv: " + old_uBhv.toString());
+		if (prevBhv != null && prevBhv.equals(userBhv))
 			return;
-		this.old_uBhv = userBhv; // FIXME: Is this okay? Reference
+
+		prevBhv = userBhv;
 		
 		// 런쳐 / 앱셔틀 등 통계낼 필요 없는 앱 무시
-		if (userBhv instanceof BaseUserBhv) {
-			BaseUserBhv b = (BaseUserBhv) userBhv;
-			if (!b.isValid()) {
-				Log.i("Stat", "Tracking is not needed.");
-				return;
-			}
+		if (!(UserBhvManager.getInstance().getRegisteredUserBhv(userBhv)).isValid()) {
+//			Log.d("Stat", "Tracking is not needed.");
+			return;
 		}
-		
-		Log.i("Stat", "Bhv transition caught");
+			
+//		Log.d("Stat", "Bhv transition caught");
 		StatEntry newEntry = new StatEntry();
 		newEntry.bhvType = userBhv.getBhvType();
 		newEntry.bhvName = userBhv.getBhvName();
@@ -271,7 +200,7 @@ public class StatCollector {
 		/* 차단된 앱에 속해 있으면 무시 */
 		Set<BlockedBhv> setBlockedBhvs = BlockedBhvManager.getInstance().getBlockedBhvSet();
 		if (setBlockedBhvs.contains(userBhv)){
-			Log.i("Stat", "Blocked bhv: " + userBhv.getBhvName().toString());
+//			Log.d("Stat", "Blocked bhv: " + userBhv.getBhvName().toString());
 			return;
 		}
 		
@@ -279,89 +208,153 @@ public class StatCollector {
 		Set<FavoriteBhv> setFavoriteBhvs = FavoriteBhvManager.getInstance().getFavoriteBhvSet();
 		if (setFavoriteBhvs.contains(userBhv)){
 			newEntry.isPredicted = true;
-			newEntry.matchers = "Favorite";
+			newEntry.presentBhvType = ViewableBhvType.FAVORITE;
 		}
 		
 		/* 현재 앱 처리 */
-		// 고정앱 포함해서 최대 6개까지만 비교하도록
-		int numPrediction = 6 - setFavoriteBhvs.size();
-		numPrediction = (numPrediction < 0 ? 0 : numPrediction);
-		
-		List<PresentBhv> listPredictedBhvs = PresentBhv.getPresentBhvListFilteredSorted(numPrediction, false);
-
-		for (int l=0; l<listPredictedBhvs.size(); l++){
-			PresentBhv uBhvPredicted = listPredictedBhvs.get(l); 
-			if (uBhvPredicted.getBhvName().equals(newEntry.bhvName)) {
-				Log.i("Stat", "Bhv transition hit.");
-				
-				newEntry.isPredicted = true;
-				
-				switch (uBhvPredicted.getType()){
-					case HISTORY:
-						newEntry.matchers = "History";
-						break;
-					case PREDICTED:
-						PredictedPresentBhv p = (PredictedPresentBhv)uBhvPredicted;
-						List<MatcherType> matcherList = p.getMatchers();
-						List<String> matcherStrList = new ArrayList<String>();
-						
-						for (MatcherType m: matcherList)
-							matcherStrList.add(m.toString());
-						
-						/* FIXME: 여러개의 matcher에 대한 고려 (현재는 그냥 ARRAY를 출력)
-						if (matcherStrList.size() > 0)
-							newEntry.matchers = matcherStrList.get(0);
-						*/
-						
-						newEntry.matchers = matcherStrList.toString().replace("[", "").replace("]", "");
-						break;
-					case SELECTED:
-						newEntry.matchers = "Dummy";
-						break;
-					default:
-						
-				}				
+		int numPrediction = NotiBarNotifier.getInstance().getNumPresentElem();
+		//현재 쓰는 앱은 알림창에 표시가 안되어 사용자가 한칸을 더 볼 수 있으므로 1을 더한다.
+		List<PresentBhv> listPredictedBhvs = PresentBhv.getPresentBhvListFilteredSorted(numPrediction + 1, false);
+		for (int i=0; i<listPredictedBhvs.size(); i++){
+			PresentBhv uBhvPredicted = listPredictedBhvs.get(i); 
+			if (!uBhvPredicted.getBhvName().equals(newEntry.bhvName))
+				continue;
+//			Log.d("Stat", "Bhv transition hit.");
+			newEntry.isPredicted = true;
+			
+			switch (uBhvPredicted.getViewableBhvType()){
+				case HISTORY:
+					newEntry.presentBhvType = ViewableBhvType.HISTORY;
+					break;
+				case PREDICTED:
+					newEntry.presentBhvType = ViewableBhvType.PREDICTED;
+					newEntry.matchers = ((PredictedPresentBhv)uBhvPredicted).getFinalMatchers();
+					break;
+				case SELECTED:
+					newEntry.presentBhvType = ViewableBhvType.SELECTED;
+					break;
+				default:
 			}
 		}
 		
 		newEntry.isClicked = isClicked;
 		
-		if (newEntry.isClicked == true && newEntry.isPredicted == false) {
-			// View 차이 때문에 생길 수 있음. (7번째 예상 앱인데, 현재 사용중인 앱을 제외하다보니 보이게 된 경우)
-			newEntry.isPredicted = true;
-			newEntry.matchers = "Unknown Matcher";
-		}
-		
+//		// View 차이 때문에 생길 수 있음. (7번째 예상 앱인데, 현재 사용중인 앱을 제외하다보니 보이게 된 경우)
+//		if (newEntry.isClicked == true && newEntry.isPredicted == false) {
+//			newEntry.isPredicted = true;
+//			newEntry.matchers = "Unknown Matcher";
+//		}
+		store(newEntry);
+		sendEvent(newEntry);
+	}
 	
-		/* Store into DB */
+	/**
+	  * 지난 24시간의 (혹은 마지막 통계 전송 후의 모든) 데이터를 분석하여 통계 서버로 전송.
+	 * Caller 가 그보다 더 짧은 간격으로 호출하면 동작하지 않음.
+	 */
+	public void sendDailyCollectedData(){
+		// TODO: 이 함수는 IntentService 상속하는 애에서 처리하도록 옮김
+		// TODO: Send statistics data to the server
+		// TODO: If it's okay => Delete entries
+		// TODO: 기타 고정 수 등 추가 통계 업데이트
+		return;
+	}
+	
+	public void store(StatEntry entry){
 		ContentValues row = new ContentValues();
-		row.put("time", newEntry.timestamp);
-		row.put("bhv_type", newEntry.bhvType.toString());
-		row.put("bhv_name", newEntry.bhvName);
-		row.put("matchers", newEntry.matchers);
-		row.put("predicted", (newEntry.isPredicted ? 1 : 0));
-		row.put("clicked",  (newEntry.isClicked ? 1 : 0));
-		
-		db.insertWithOnConflict("stat_bhv_transition", null, row, SQLiteDatabase.CONFLICT_REPLACE);
-		Log.i("Stat", row.toString());
-		
-		this.sendEachEntry(newEntry);
+		row.put(columnTime, entry.timestamp);
+		row.put(columnBhvType, entry.bhvType.toString());
+		row.put(columnBhvName, entry.bhvName);
+		row.put(columnMatchers, gson.toJson(entry.matchers));
+		row.put(columnPredicted, (entry.isPredicted ? 1 : 0));
+		row.put(columnClicked, (entry.isClicked ? 1 : 0));
+		db.insertWithOnConflict(tableName, null, row, SQLiteDatabase.CONFLICT_REPLACE);
+//		Log.d("Stat", row.toString());
 	}
 	
+	public List<StatEntry> retrieve(long fromTime, long toTime){
+		Cursor cur = db.rawQuery(
+				"SELECT *" +
+				" FROM stat_bhv_transition" +
+				" WHERE time > " + fromTime +
+					" AND time <= " + toTime + ";", null);
+		
+		List <StatEntry> statEntries = new ArrayList<StatEntry>();
+		while (cur.moveToNext()) {
+			StatEntry entry = new StatEntry();
+			entry.timestamp = cur.getLong(0);
+			entry.bhvType = UserBhvType.valueOf(cur.getString(1));
+			entry.bhvName = cur.getString(2);
+			entry.matchers = gson.fromJson(cur.getString(3), new TypeToken<List<MatcherType>>(){}.getType());
+			entry.isPredicted = (cur.getInt(4) > 0) ? true : false;
+			entry.isClicked = (cur.getInt(5) > 0) ? true : false;
+			statEntries.add(entry);
+		}
+		cur.close();
+		return statEntries;
+	}
+
 	public void deleteAllBefore(long time){
-		db.execSQL("DELETE " +
-				"FROM stat_bhv_transition " +
-				"WHERE time < " + time +";");
+		db.execSQL("DELETE FROM " + tableName +
+				" WHERE " + columnTime + " < " + time + ";");
 	}
 	
-		
 	@Override
 	public String toString(){
-		return this.getStatistics().toString();
-		/*
-		return "Since " + created.toString() +
-				"\nTotalClicked = " + this.numTotalClicked + 
-				"\nBhvTransition: " + this.numBhvTransitionHit + " / " + this.numBhvTransitionTotal;
-				*/
+		return getStatistics().toString();
+	}
+	
+	/**
+	 *  Structure-style manifestation of a DB entry
+	 */
+	private class StatEntry{
+		long timestamp = System.currentTimeMillis();
+		UserBhvType bhvType = UserBhvType.NONE;
+		String bhvName = "";
+		List<MatcherType> matchers = new ArrayList<MatcherType>();
+		ViewableBhvType presentBhvType = ViewableBhvType.NONE;
+		boolean isPredicted = false;		// Top 6개 안에 들었는가?
+		boolean isClicked = false;			// 앱셔틀을 통해 실행했는가?
+		
+		public String toString(){
+			return timestamp + " / " + bhvType.toString() + " / " + bhvName.toString() + " / "
+					+ matchers.toString() + " / " + isPredicted + " / " + isClicked; 
+		}
+	}
+
+	private class StatResult {
+		// Meta
+		long fromTime  = System.currentTimeMillis();
+		long toTime = System.currentTimeMillis();
+		
+		// in percent (0~100)
+		float hitRatio = 0;		
+		float clickRatio = 0;
+		
+		// in hit (0~N)
+		int clickedCount = 0;
+		int hitCount = 0;
+		int totalCount = 0;
+		
+		public String toString(){
+			return new Date(fromTime).toString() + " ~ " + new Date(toTime).toString() + "\n" +
+					"uBhv count: " + totalCount + "\n" +
+					"Hit ratio: " + hitRatio + " %\n" +
+					"Use ratio: " + clickRatio + " %\n"; 
+		}
+	}
+	
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+					+ columnTime + " INTEGER, "
+					+ columnBhvType + " TEXT, "
+					+ columnBhvName + " TEXT, "
+					+ columnMatchers + " TEXT, "
+					+ columnPredicted + " INTEGER, "
+					+ columnClicked + " INTEGER, "
+					+ "PRIMARY KEY (" + columnTime + ") "
+					+ ");");
+		}
 	}
 }

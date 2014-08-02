@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a1767610bc1073de8a066025c17146a38" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.getLaunchIntent" alt="" coords="432,5,859,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1_predicted_bhv.html#ac5748e139cc7923862461634349d010a" title="lab.davidahn.appshuttle.predict.PredictedBhv.getLaunchIntent" alt="" coords="455,59,836,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#ad3970abd627658ac7cabbc82ce4ad9bb" title="lab.davidahn.appshuttle.view.ViewableUserBhv.getLaunchIntent" alt="" coords="448,112,843,141"/>
+</map>

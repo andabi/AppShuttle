@@ -24,6 +24,7 @@ public class AppShuttleApplication extends Application {
 	
 	public AppShuttleApplication(){}
 
+	@Override
 	public void onCreate(){
 		instance = this;
 		launchTime = System.currentTimeMillis();

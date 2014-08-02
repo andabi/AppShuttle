@@ -1,0 +1,14 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.collect.bhv.UserBhv.setMeta",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.setMeta",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a6f4b60bb74ca483348a04512a74c5c31"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="lab.davidahn.appshuttle.predict.PredictedBhv.setMeta",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1_predicted_bhv.html#ad7b23c48885ed3a3501ff7c523e3caa0"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="lab.davidahn.appshuttle.view.ViewableUserBhv.setMeta",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#a4a943e168a46e85e75b1aeb25b00d4b9"];
+}

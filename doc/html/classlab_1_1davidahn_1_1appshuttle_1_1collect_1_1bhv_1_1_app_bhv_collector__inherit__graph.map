@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector.html" title="{lab.davidahn.appshuttle.collect.bhv.BaseBhvCollector\n|# cxt\l# preferenceSettings\l|+ BaseBhvCollector()\l+ collect()\l+ preExtractDurationUserBhv()\l+ extractDurationUserBhv()\l+ postExtractDurationUserBhv()\l+ createDurationUserBhvBuilder()\l+ isTrackedForDurationUserBhv()\l}" alt="" coords="5,193,339,399"/>
+<area shape="rect" id="node4" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector.html" title="{lab.davidahn.appshuttle.collect.bhv.BhvCollector\n||+ collect()\l+ preExtractDurationUserBhv()\l+ extractDurationUserBhv()\l+ postExtractDurationUserBhv()\l}" alt="" coords="20,6,324,143"/>
+</map>

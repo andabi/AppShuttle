@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_elem.html" title="lab.davidahn.appshuttle.predict.matcher.MatcherElem" alt="" coords="7,32,340,61"/>
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_3_01_c_01extends_01_base_matcher_conf_01_4.html" title="lab.davidahn.appshuttle.predict.matcher.Matcher\&lt; C extends BaseMatcherConf \&gt;" alt="" coords="391,5,887,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group.html" title="lab.davidahn.appshuttle.predict.matcher.MatcherGroup" alt="" coords="469,59,808,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_position_matcher_group.html" title="lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherGroup" alt="" coords="936,5,1371,35"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_recent_matcher_group.html" title="lab.davidahn.appshuttle.predict.matcher.recent.RecentMatcherGroup" alt="" coords="943,59,1364,88"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_group.html" title="lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherGroup" alt="" coords="955,112,1352,141"/>
+</map>

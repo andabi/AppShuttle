@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1headset_1_1_headset_matcher.html#a649ea089f5ed21991e19920131d51243" title="lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcher.computeScore" alt="" coords="548,5,1039,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1position_1_1_move_position_matcher.html#a9b963792f61c3d8a0226f02575523a7c" title="lab.davidahn.appshuttle.predict.matcher.position.MovePositionMatcher.computeScore" alt="" coords="533,59,1053,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher.html#a3f17275ef78859372c4631f4e5c61430" title="lab.davidahn.appshuttle.predict.matcher.time.TimeMatcher.computeScore" alt="" coords="568,112,1019,141"/>
+</map>

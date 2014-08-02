@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_app_bhv_collector.html" title="{lab.davidahn.appshuttle.collect.bhv.AppBhvCollector\n||+ preExtractDurationUserBhv()\l+ collect()\l+ getPresentApp()\l+ getHomePackageName()\l+ getInstance()\l}" alt="" coords="5,448,333,603"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_call_bhv_collector.html" title="{lab.davidahn.appshuttle.collect.bhv.CallBhvCollector\n||+ preExtractDurationUserBhv()\l+ extractDurationUserBhv()\l+ postExtractDurationUserBhv()\l+ getInstance()\l+ getContactName()\l}" alt="" coords="357,448,685,603"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_sensor_on_collector.html" title="{lab.davidahn.appshuttle.collect.bhv.SensorOnCollector\n||+ collect()\l+ getInstance()\l}" alt="" coords="709,474,1048,577"/>
+<area shape="rect" id="node2" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector.html" title="{lab.davidahn.appshuttle.collect.bhv.BhvCollector\n||+ collect()\l+ preExtractDurationUserBhv()\l+ extractDurationUserBhv()\l+ postExtractDurationUserBhv()\l}" alt="" coords="369,6,673,143"/>
+</map>

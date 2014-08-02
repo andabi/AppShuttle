@@ -1,16 +1,18 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
-import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.CallBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
+import lab.davidahn.appshuttle.report.Sharable;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -18,7 +20,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public abstract class ViewableUserBhv implements UserBhv, Viewable {
+public class ViewableUserBhv implements UserBhv, Viewable, Sharable {
 	protected UserBhv uBhv;
 	protected Drawable icon;
 	protected String bhvNameText;
@@ -50,12 +52,20 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		uBhv.setBhvName(bhvName);
 	}
 	@Override
-	public Object getMeta(String key) {
-		return uBhv.getMeta(key);
+	public Map<String, Object> getMetas() {
+		return uBhv.getMetas();
 	}
 	@Override
-	public void setMeta(String key, Object val){
-		uBhv.setMeta(key, val);
+	public void setMetas(Map<String, Object> metas) {
+		uBhv.setMetas(metas);
+	}
+	@Override
+	public boolean isValid() {
+		return uBhv.isValid();
+	}
+	
+	public ViewableBhvType getViewableBhvType() {
+		return ViewableBhvType.NONE;
 	}
 
 	@Override
@@ -92,7 +102,7 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 			} catch (NameNotFoundException e) {}
 			break;
 		case CALL:
-			icon = AppShuttleApplication.getContext().getResources().getDrawable(android.R.drawable.sym_action_call);
+			icon = AppShuttleApplication.getContext().getResources().getDrawable(R.drawable.call);
 			break;
 		case SENSOR_ON:
 			if(bhvName.equals(SensorType.WIFI.name()))
@@ -127,11 +137,11 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 			} catch (NameNotFoundException e) {}
 			break;
 		case CALL:
-			bhvNameText = CallBhvCollector.getContactName(uBhv.getBhvName());
+			bhvNameText = CallBhvCollector.getInstance().getContactName(bhvName);
 			if (bhvNameText == null)
-				bhvNameText = (String) (uBhv).getMeta("cachedName");
+				bhvNameText = (String) uBhv.getMetas().get("cachedName");
 			if(bhvNameText == null || bhvNameText.equals(""))
-				bhvNameText = uBhv.getBhvName();
+				bhvNameText = bhvName;
 			break;
 		case SENSOR_ON:
 			if(bhvName.equals(SensorType.WIFI.name()))
@@ -146,7 +156,9 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		return bhvNameText;
 	}
 
-	public abstract String getViewMsg();
+	public String getViewMsg() {
+		return null;
+	}
 	
 	@Override
 	public Intent getLaunchIntent() {
@@ -156,16 +168,61 @@ public abstract class ViewableUserBhv implements UserBhv, Viewable {
 		return uBhv.getLaunchIntent();
 	}
 	
-	@Override
-	public abstract Integer getNotibarContainerId();
+	public Integer getNotibarContainerId() {
+		return null;
+	}
 	
 	/**
 	 * normal = not favorite & not blocked
 	 */
-	public static Set<BaseUserBhv> getNormalBhvSet() {
-		Set<BaseUserBhv> res = new HashSet<BaseUserBhv>(UserBhvManager.getInstance().getRegisteredBhvSet());
+	public static Set<UserBhv> getNormalBhvSet() {
+		Set<UserBhv> res = new HashSet<UserBhv>(UserBhvManager.getInstance().getRegisteredBhvSet());
 		res.removeAll(FavoriteBhvManager.getInstance().getFavoriteBhvSet());
 		res.removeAll(BlockedBhvManager.getInstance().getBlockedBhvSet());
 		return res;
+	}
+
+	@Override
+	public boolean isSharable(){
+		switch(getBhvType()){
+		case SENSOR_ON:
+			return false;
+		default:
+			return true;
+		}
+	}
+	
+	@Override
+	public String getSharingMsg() {
+		if(!isSharable())
+			return null;
+		
+		return String.format(getSharingMsgFormat(), 
+				getViewMsg(),
+				getBhvNameText(),
+				getSharingLink());
+	}
+	
+	protected String getSharingMsgFormat() {
+		final Context cxt = AppShuttleApplication.getContext();
+		switch(getBhvType()){
+		case APP:
+			return cxt.getString(R.string.action_msg_share_app);
+		case CALL:
+			return cxt.getString(R.string.action_msg_share_call);
+		default:
+			return null;
+		}
+	}
+	
+	protected String getSharingLink(){
+		switch(getBhvType()){
+		case APP:
+			return "https://play.google.com/store/apps/details?id=" + getBhvName();
+		case CALL:
+			return getBhvName();
+		default:
+			return null;
+		}
 	}
 }

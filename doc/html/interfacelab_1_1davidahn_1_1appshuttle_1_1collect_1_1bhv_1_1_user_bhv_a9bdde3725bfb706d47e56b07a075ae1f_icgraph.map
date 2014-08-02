@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv.html#a705dba630b1df39ff9a5f8d150f774d4" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhv.setBhvName" alt="" coords="416,5,827,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1_predicted_bhv.html#aaf7fcf5bbdd7b1b7c683bbc90ed3e1d6" title="lab.davidahn.appshuttle.predict.PredictedBhv.setBhvName" alt="" coords="440,59,803,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_viewable_user_bhv.html#a065cfc17964fe1140cd103e02d114f43" title="lab.davidahn.appshuttle.view.ViewableUserBhv.setBhvName" alt="" coords="432,112,811,141"/>
+</map>

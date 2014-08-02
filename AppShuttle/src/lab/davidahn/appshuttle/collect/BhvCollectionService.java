@@ -48,7 +48,7 @@ public class BhvCollectionService extends Service {
 		super.onStartCommand(intent, flags, startId);
 		Log.d("BhvCollectionService", "started.");
 		senseTime();
-		senseBhvs();
+		collectBhvs();
 		extractAndStoreSnapshotAppUserBhvAsDurationUserBhv();
 		extractAndStoreDurationUserBhv();
 		catchNewAppBhvForStatistics();
@@ -61,7 +61,7 @@ public class BhvCollectionService extends Service {
 		Set<UserBhv> newBhvs = new HashSet<UserBhv>(collectedBhvs);
 		newBhvs.removeAll(prevBhvs);
 		for(UserBhv bhv : newBhvs) {
-//			Log.i("statistics", "uBhv changed (" + bhv.getBhvName() + ")");
+			Log.i("statistics", "uBhv changed (" + bhv.getBhvName() + ")");
 			StatCollector.getInstance().notifyBhvTransition(bhv, false);
 		}
 	}
@@ -83,10 +83,13 @@ public class BhvCollectionService extends Service {
 		collectors.add(SensorOnCollector.getInstance());
 	}
 
-	private void senseBhvs() {
+	private void collectBhvs() {
 		collectedBhvs.clear();
 		for(BhvCollector collector : collectors)
-			collectedBhvs.addAll(collector.collect());
+			for(UserBhv bhv : collector.collect()){
+				if(!((BaseUserBhv)bhv).isValid()) continue;
+				collectedBhvs.add(bhv);
+			}
 	}
 	
 	private void updateCxt(SnapshotUserCxt uCxt) {
@@ -120,11 +123,10 @@ public class BhvCollectionService extends Service {
 
 	private void registerAndStoreDurationUserBhv(List<DurationUserBhv> durationUserBhvList) {
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
+			if(!durationUserBhv.isValid()) continue;
 			BaseUserBhv uBhv = (BaseUserBhv)durationUserBhv.getUserBhv();
-			if(uBhv.isValid()){
-				UserBhvManager.getInstance().register(uBhv);
-				DurationUserBhvDao.getInstance().store(durationUserBhv);
-			}
+			UserBhvManager.getInstance().registerIfNotExist(uBhv);
+			DurationUserBhvDao.getInstance().store(durationUserBhv);
 		}
 	}
 

@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_group_result.html" title="{lab.davidahn.appshuttle.predict.matcher.MatcherGroupResult\n||+ MatcherGroupResult()\l+ addMatcherResult()\l+ getAllParticipantMatchersWithResults()\l+ getMatcherSelectedByPriority()\l+ toString()\l}" alt="" coords="5,601,381,756"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html" title="{lab.davidahn.appshuttle.predict.matcher.MatcherResult\n||+ MatcherResult()\l+ getLikelihood()\l+ setLikelihood()\l+ getInverseEntropy()\l+ setInverseEntropy()\l+ getNumTotalHistory()\l+ setNumTotalHistory()\l+ getNumRelatedHistory()\l+ setNumRelatedHistory()\l+ getRelatedHistory()\land 4 more...}" alt="" coords="405,549,747,808"/>
+<area shape="rect" id="node2" href="$class_comparable.html" title="{Comparable\&lt; MatcherResultElem \&gt;\n||}" alt="" coords="269,5,499,91"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_unregister_bhv_service.html#ae07557aa8f7cc83f82cb7d77b21f1c3c" title="lab.davidahn.appshuttle.collect.bhv.UnregisterBhvService.onHandleIntent" alt="" coords="521,19,969,48"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1report_1_1_stat_collector.html#a5bd75c6d139e4eca7332a424e2d346bc" title="lab.davidahn.appshuttle.report.StatCollector.notifyBhvTransition" alt="" coords="549,72,941,101"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_history_present_bhv_dao.html#a27e9e765af44214c4df1cca0c745a04c" title="lab.davidahn.appshuttle.view.HistoryPresentBhvDao.retrieveRecent" alt="" coords="537,152,953,181"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_blocked_bhv_fragment.html#a1e667f2329fe439b56161a5e5dd0c562" title="lab.davidahn.appshuttle.view.ui.BlockedBhvFragment.onListItemClick" alt="" coords="1065,5,1492,35"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_favorite_bhv_fragment.html#abb791eb9585f7f5b2ae9f1cdaacb2a5a" title="lab.davidahn.appshuttle.view.ui.FavoriteBhvFragment.onListItemClick" alt="" coords="1065,59,1492,88"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_present_bhv_fragment.html#acd4463cc478da3595ed8e421df544b4c" title="lab.davidahn.appshuttle.view.ui.PresentBhvFragment.onListItemClick" alt="" coords="1065,112,1492,141"/>
+<area shape="rect" id="node15" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_history_present_bhv.html#a2c2091974b4ef03bd8262641795c92fa" title="lab.davidahn.appshuttle.view.HistoryPresentBhv.retrieveHistoryPresentBhvListSorted" alt="" coords="1019,165,1539,195"/>
+<area shape="rect" id="node17" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_present_bhv.html#ae787746dc64ec3aeab061fe28cfae683" title="lab.davidahn.appshuttle.view.PresentBhv.getPresentBhvListFilteredSorted" alt="" coords="1588,165,2041,195"/>
+</map>

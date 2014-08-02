@@ -4,7 +4,6 @@ import lab.davidahn.appshuttle.view.ui.AppShuttleMainActivity;
 import lab.davidahn.appshuttle.view.ui.NotiBarNotifier;
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 public class ViewService extends IntentService {
 	public ViewService() {
@@ -21,10 +20,10 @@ public class ViewService extends IntentService {
 	
 	@Override
 	public void onHandleIntent(Intent intent) {
-		Log.d("viewer","update view");
-		NotiBarNotifier.getInstance().updateNotification();
+//		Log.d("viewer","update view");
 		if(!intent.getBooleanExtra("isOnlyNotibar", false))
 			sendBroadcast(new Intent().setAction(AppShuttleMainActivity.UPDATE_ACTIVITY));
+		NotiBarNotifier.getInstance().updateNotification();
 	}
 	
 	@Override

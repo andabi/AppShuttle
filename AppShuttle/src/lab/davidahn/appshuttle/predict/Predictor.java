@@ -30,10 +30,6 @@ import lab.davidahn.appshuttle.predict.matcher.time.TimeMatcherGroup;
 import android.app.AlarmManager;
 import android.content.SharedPreferences;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
-
 public class Predictor {
 	private List<MatcherElem> matcherList;
 	
@@ -177,8 +173,6 @@ public class Predictor {
 		if(currUserCxt.getUserEnvs().isEmpty())
 			return ;
 		
-		long startTime = System.currentTimeMillis();	// Start time
-				
 		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
 		for(UserBhv uBhv : userBhvManager.getRegisteredBhvSet()){
@@ -201,19 +195,6 @@ public class Predictor {
 			predictedBhvList.add(predictedBhv);
 		}
 		PredictedBhv.updatePredictedBhvList(predictedBhvList);
-		
-		long endTime = System.currentTimeMillis();	// End time
-
-		// Statistics
-		// Report (end time - start time)
-		Tracker easyTracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
-		easyTracker.send(MapBuilder
-				.createTiming("algorithm",    // Timing category (required)
-							endTime - startTime,       // Timing interval in milliseconds (required)
-							"overall_prediction_cost",  // Timing name
-							null)           // Timing label
-				.build()
-			);
 	}
 	private double computePredictionScore(EnumMap<MatcherType, MatcherResultElem> matcherResults){
 		double PredictionScore = 0;

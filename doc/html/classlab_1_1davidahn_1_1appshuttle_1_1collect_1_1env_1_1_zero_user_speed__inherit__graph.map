@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_speed.html" title="{lab.davidahn.appshuttle.collect.env.UserSpeed\n|# speed\l# level\l|+ UserSpeed()\l+ getSpeed()\l+ setSpeed()\l+ getLevel()\l+ setLevel()\l+ getEnvType()\l+ isSpeedVehicle()\l+ toString()\l+ equals()\l+ hashCode()\l+ create()\l}" alt="" coords="19,174,312,450"/>
+<area shape="rect" id="node4" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_env.html" title="{lab.davidahn.appshuttle.collect.env.UserEnv\n||+ isValid()\l+ getEnvType()\l+ toString()\l}" alt="" coords="25,5,305,125"/>
+</map>

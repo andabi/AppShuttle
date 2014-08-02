@@ -1,0 +1,11 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab92b1c857b0fdd635723335be0bde5e7" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getInstance" alt="" coords="523,5,909,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a93308cece9a6a14f27a3866986730e8d" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getNotifiableFavoriteBhvList" alt="" coords="475,59,957,88"/>
+<area shape="rect" id="node15" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_noti_bar_notifier.html#ae9ddd6bb783d361bc8b7c7f88625255f" title="lab.davidahn.appshuttle.view.ui.NotiBarNotifier.getNumElem" alt="" coords="529,112,903,141"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#aba5d587e43f97309c98ccd9e4fe42ca4" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getFavoriteBhvListSorted" alt="" coords="1007,59,1471,88"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#a512ba14af7e6330d226a026384514a8b" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.updateFavoriteBhv" alt="" coords="1520,32,1947,61"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_favorite_bhv_manager.html#ab20144f0da1fe5a22731ac49d6c5c05a" title="lab.davidahn.appshuttle.view.FavoriteBhvManager.getFavoriteBhvSet" alt="" coords="1520,85,1947,115"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv_dao.html#a25e1efeaeec8508360a9d8a4c417a9e1" title="lab.davidahn.appshuttle.collect.bhv.UserBhvDao.retrieveFavoriteUserBhv" alt="" coords="1995,32,2445,61"/>
+<area shape="rect" id="node17" href="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#ae46ed63b120534585fb15e7d5ed5593a" title="lab.davidahn.appshuttle.AppShuttleApplication.getPreferences" alt="" coords="1048,112,1429,141"/>
+<area shape="rect" id="node19" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_noti_bar_notifier.html#a6ea620431f38a93a4937640b3d00a861" title="lab.davidahn.appshuttle.view.ui.NotiBarNotifier.getNotibarWidth" alt="" coords="1043,165,1435,195"/>
+</map>

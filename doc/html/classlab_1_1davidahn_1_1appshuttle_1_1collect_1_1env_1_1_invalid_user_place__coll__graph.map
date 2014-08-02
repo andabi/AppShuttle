@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_place.html" title="{lab.davidahn.appshuttle.collect.env.UserPlace\n|# name\l# coordinates\l|+ UserPlace()\l+ getName()\l+ setName()\l+ getCoordinates()\l+ setCoordinates()\l+ getEnvType()\l+ toString()\l+ equals()\l+ hashCode()\l+ create()\l}" alt="" coords="176,568,467,827"/>
+<area shape="rect" id="node4" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_env.html" title="{lab.davidahn.appshuttle.collect.env.UserEnv\n||+ isValid()\l+ getEnvType()\l+ toString()\l}" alt="" coords="5,5,285,125"/>
+<area shape="rect" id="node8" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_loc.html" title="{lab.davidahn.appshuttle.collect.env.UserLoc\n|# latitude\l# longitude\l|+ UserLoc()\l+ getLatitude()\l+ getLongitude()\l+ setLatitude()\l+ setLongitude()\l+ proximity()\l+ distanceTo()\l+ getEnvType()\l+ toString()\l+ equals()\l+ hashCode()\l+ create()\l}" alt="" coords="183,208,460,501"/>
+</map>

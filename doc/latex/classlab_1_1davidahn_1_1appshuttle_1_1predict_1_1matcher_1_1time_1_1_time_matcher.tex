@@ -1,0 +1,173 @@
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher}{\section{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher \-Class \-Reference}
+\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher}\index{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher@{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher}}
+}
+
+
+\-Inheritance diagram for lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher__inherit__graph}
+\end{center}
+\end{figure}
+
+
+\-Collaboration diagram for lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a31abd2e25e84d146bc8795836f57d58c}{\-Time\-Matcher} (\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_conf}{\-Time\-Matcher\-Conf} conf)
+\item 
+abstract \hyperlink{enumlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_type}{\-Matcher\-Type} \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a72f444c4d05394718f0b1e8f637d7537}{get\-Type} ()
+\end{DoxyCompactItemize}
+\subsection*{\-Protected \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv}{\-Duration\-User\-Bhv} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a902ae5d9c21e50a3db1c49e5be034bd8}{get\-Involved\-Duration\-User\-Bhv} (\hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv} u\-Bhv, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} curr\-U\-Cxt)
+\item 
+\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_af349a420be679d9d1be3e34ba7a4cb1a}{make\-Matcher\-Count\-Unit} (\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv}{\-Duration\-User\-Bhv} $>$ duration\-User\-Bhv\-List, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} u\-Cxt)
+\item 
+double \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a81a7ce149aa48014fa07ca03aa5f9760}{compute\-Inverse\-Entropy} (\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit} $>$ matcher\-Count\-Unit\-List)
+\item 
+double \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a5156068d7a6fb6eaeb79005535bea95a}{compute\-Relatedness} (\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit} unit, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} u\-Cxt)
+\item 
+double \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_ad1f4a383478fce9ca18d3c363bd7dd49}{compute\-Likelihood} (int num\-Total\-History, \-Map$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit}{\-Matcher\-Count\-Unit}, \-Double $>$ related\-History\-Map, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt}{\-Snapshot\-User\-Cxt} u\-Cxt)
+\item 
+double \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a3f17275ef78859372c4631f4e5c61430}{compute\-Score} (\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result}{\-Matcher\-Result} matcher\-Result)
+\item 
+boolean \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a22588eada0f0714a22d504922a13e427}{is\-Week\-Day} (long date)
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+
+
+\-Definition at line 26 of file \-Time\-Matcher.\-java.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a31abd2e25e84d146bc8795836f57d58c}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!\-Time\-Matcher@{\-Time\-Matcher}}
+\index{\-Time\-Matcher@{\-Time\-Matcher}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{\-Time\-Matcher}]{\setlength{\rightskip}{0pt plus 5cm}{\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-Time\-Matcher} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Time\-Matcher\-Conf}}]{conf}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a31abd2e25e84d146bc8795836f57d58c}
+
+
+\-Definition at line 28 of file \-Time\-Matcher.\-java.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a81a7ce149aa48014fa07ca03aa5f9760}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!compute\-Inverse\-Entropy@{compute\-Inverse\-Entropy}}
+\index{compute\-Inverse\-Entropy@{compute\-Inverse\-Entropy}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{compute\-Inverse\-Entropy}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-compute\-Inverse\-Entropy} (
+\begin{DoxyParamCaption}
+\item[{\-List$<$ {\bf \-Matcher\-Count\-Unit} $>$}]{matcher\-Count\-Unit\-List}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a81a7ce149aa48014fa07ca03aa5f9760}
+
+
+\-Definition at line 87 of file \-Time\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_ad1f4a383478fce9ca18d3c363bd7dd49}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!compute\-Likelihood@{compute\-Likelihood}}
+\index{compute\-Likelihood@{compute\-Likelihood}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{compute\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-compute\-Likelihood} (
+\begin{DoxyParamCaption}
+\item[{int}]{num\-Total\-History, }
+\item[{\-Map$<$ {\bf \-Matcher\-Count\-Unit}, \-Double $>$}]{related\-History\-Map, }
+\item[{{\bf \-Snapshot\-User\-Cxt}}]{u\-Cxt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_ad1f4a383478fce9ca18d3c363bd7dd49}
+
+
+\-Definition at line 149 of file \-Time\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a5156068d7a6fb6eaeb79005535bea95a}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!compute\-Relatedness@{compute\-Relatedness}}
+\index{compute\-Relatedness@{compute\-Relatedness}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{compute\-Relatedness}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-compute\-Relatedness} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Matcher\-Count\-Unit}}]{unit, }
+\item[{{\bf \-Snapshot\-User\-Cxt}}]{u\-Cxt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a5156068d7a6fb6eaeb79005535bea95a}
+
+
+\-Definition at line 125 of file \-Time\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a3f17275ef78859372c4631f4e5c61430}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!compute\-Score@{compute\-Score}}
+\index{compute\-Score@{compute\-Score}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{compute\-Score}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-compute\-Score} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Matcher\-Result}}]{matcher\-Result}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a3f17275ef78859372c4631f4e5c61430}
+
+
+\-Definition at line 164 of file \-Time\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a902ae5d9c21e50a3db1c49e5be034bd8}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!get\-Involved\-Duration\-User\-Bhv@{get\-Involved\-Duration\-User\-Bhv}}
+\index{get\-Involved\-Duration\-User\-Bhv@{get\-Involved\-Duration\-User\-Bhv}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{get\-Involved\-Duration\-User\-Bhv}]{\setlength{\rightskip}{0pt plus 5cm}\-List$<${\bf \-Duration\-User\-Bhv}$>$ {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-get\-Involved\-Duration\-User\-Bhv} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-User\-Bhv}}]{u\-Bhv, }
+\item[{{\bf \-Snapshot\-User\-Cxt}}]{curr\-U\-Cxt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a902ae5d9c21e50a3db1c49e5be034bd8}
+
+
+\-Reimplemented in \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_daily_weekday_time_matcher_aa2fbe7415cc1e7e0ff58c1498818944c}{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Daily\-Weekday\-Time\-Matcher}, and \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_daily_weekend_time_matcher_ad9adedaf2a35c09d429e5ce4aaeec3b5}{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Daily\-Weekend\-Time\-Matcher}.
+
+
+
+\-Definition at line 36 of file \-Time\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a72f444c4d05394718f0b1e8f637d7537}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!get\-Type@{get\-Type}}
+\index{get\-Type@{get\-Type}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{get\-Type}]{\setlength{\rightskip}{0pt plus 5cm}abstract {\bf \-Matcher\-Type} {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-get\-Type} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a72f444c4d05394718f0b1e8f637d7537}
+
+
+\-Implemented in \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_daily_weekday_time_matcher_af839a6247a9d1593c3d91b8c802806bb}{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Daily\-Weekday\-Time\-Matcher}, \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_daily_weekend_time_matcher_a142bbddf03bd016ab3617f8782bf0da1}{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Daily\-Weekend\-Time\-Matcher}, and \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_daily_time_matcher_aae84e38493b36082088d3d6a5dd24eb7}{lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Daily\-Time\-Matcher}.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a22588eada0f0714a22d504922a13e427}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!is\-Week\-Day@{is\-Week\-Day}}
+\index{is\-Week\-Day@{is\-Week\-Day}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{is\-Week\-Day}]{\setlength{\rightskip}{0pt plus 5cm}boolean {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-is\-Week\-Day} (
+\begin{DoxyParamCaption}
+\item[{long}]{date}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_a22588eada0f0714a22d504922a13e427}
+
+
+\-Definition at line 176 of file \-Time\-Matcher.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_af349a420be679d9d1be3e34ba7a4cb1a}{\index{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}!make\-Matcher\-Count\-Unit@{make\-Matcher\-Count\-Unit}}
+\index{make\-Matcher\-Count\-Unit@{make\-Matcher\-Count\-Unit}!lab::davidahn::appshuttle::predict::matcher::time::TimeMatcher@{lab\-::davidahn\-::appshuttle\-::predict\-::matcher\-::time\-::\-Time\-Matcher}}
+\subsubsection[{make\-Matcher\-Count\-Unit}]{\setlength{\rightskip}{0pt plus 5cm}\-List$<${\bf \-Matcher\-Count\-Unit}$>$ {\bf lab.\-davidahn.\-appshuttle.\-predict.\-matcher.\-time.\-Time\-Matcher.\-make\-Matcher\-Count\-Unit} (
+\begin{DoxyParamCaption}
+\item[{\-List$<$ {\bf \-Duration\-User\-Bhv} $>$}]{duration\-User\-Bhv\-List, }
+\item[{{\bf \-Snapshot\-User\-Cxt}}]{u\-Cxt}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1time_1_1_time_matcher_af349a420be679d9d1be3e34ba7a4cb1a}
+
+
+\-Definition at line 53 of file \-Time\-Matcher.\-java.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\-App\-Shuttle/src/lab/davidahn/appshuttle/predict/matcher/time/\hyperlink{_time_matcher_8java}{\-Time\-Matcher.\-java}\end{DoxyCompactItemize}

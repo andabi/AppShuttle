@@ -6,7 +6,14 @@ import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.AppShuttleMainService;
 import lab.davidahn.appshuttle.AppShuttlePreferences;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.PredictionService;
+import lab.davidahn.appshuttle.report.ShareUtils;
+import lab.davidahn.appshuttle.view.BlockedBhv;
+import lab.davidahn.appshuttle.view.BlockedBhvManager;
+import lab.davidahn.appshuttle.view.FavoriteBhv;
+import lab.davidahn.appshuttle.view.FavoriteBhvManager;
+import lab.davidahn.appshuttle.view.ViewableUserBhv;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -16,20 +23,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ActionProvider;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -37,11 +49,15 @@ import com.google.analytics.tracking.android.EasyTracker;
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
+	public static final int TAB_ICON_SIZE = 40;
+	public static UserActionHandler userActionHandler;
 	
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		userActionHandler = new UserActionHandler();
+		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		AppShuttlePreferences.setDefaultPreferences();
 
@@ -80,32 +96,34 @@ public class AppShuttleMainActivity extends Activity {
 		final ActionBar bar = getActionBar();
 		bar.setIcon(new ColorDrawable(getResources().getColor(
 				android.R.color.transparent)));
-		bar.setStackedBackgroundDrawable(new ColorDrawable(Color
-				.rgb(48, 48, 48)));
-		bar.setDisplayUseLogoEnabled(false);
+//		bar.setStackedBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
+		bar.setDisplayUseLogoEnabled(true);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.predicted),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 0, TAB_ICON_SIZE)),
 				PresentBhvFragment.class, bundle);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.favorite),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 1, TAB_ICON_SIZE)),
 				FavoriteBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.ignore),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 2, TAB_ICON_SIZE)),
 				BlockedBhvFragment.class, null);
 		
-		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
-			mTabsAdapter.addTab(bar.newTab()
-					.setIcon(R.drawable.info),
-					InfoFragment.class, null);
-		}
+//		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
+//			mTabsAdapter.addTab(bar.newTab()
+//					.setIcon(R.drawable.info),
+//					InfoFragment.class, null);
+//		}
 		
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
-		bar.setTitle(getActionbarTitle(this, bar.getSelectedNavigationIndex()));
-
+		
+		int selectedTabIndex = bar.getSelectedNavigationIndex();
+		bar.setTitle(getActionbarTitle(this, selectedTabIndex));
+		bar.getSelectedTab().setIcon(getIconSelected(this, selectedTabIndex, TAB_ICON_SIZE));
+		
 		startService(new Intent(this, AppShuttleMainService.class));
 		// sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
 	}
@@ -132,7 +150,7 @@ public class AppShuttleMainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mTabsAdapter.notifyDataSetChanged();
+		updateView();
 	}
 
 	@Override
@@ -150,6 +168,10 @@ public class AppShuttleMainActivity extends Activity {
 		inflater.inflate(R.menu.actionbarmenu, menu);
 
 		return true;
+	}
+
+	public void updateView(){
+		mTabsAdapter.notifyDataSetChanged();
 	}
 	
 //	@Override
@@ -188,9 +210,9 @@ public class AppShuttleMainActivity extends Activity {
 //		this.startActivity(launchIntent);
 //	}
 
-	public static CharSequence getActionbarTitle(Context cxt, int position) {
-		String title;
-		switch (position) {
+	public static CharSequence getActionbarTitle(Context cxt, int index) {
+		String title = "";
+		switch (index) {
 		case 0:
 			title = cxt.getResources().getString(
 					R.string.actionbar_tab_text_present);
@@ -201,28 +223,67 @@ public class AppShuttleMainActivity extends Activity {
 			break;
 		case 2:
 			title = cxt.getResources().getString(
-					R.string.actionbar_tab_text_blocked);
+					R.string.actionbar_tab_text_ignore);
 			break;
 		default:
-			title = "";
 		}
 		return title;
 	}
-
-	public static void doEmphasisChildViewInListView(ListView listview,
-			int position) {
-		for (int i = 0; i < listview.getChildCount(); i++) {
-			if (i == position)
-				listview.getChildAt(i).setAlpha(1);
-			else
-				listview.getChildAt(i).setAlpha(0.2f);
+	
+	public static Drawable getIcon(Context cxt, int index, int size) {
+		int iconId = R.drawable.info;
+		switch (index) {
+		case 0:
+			iconId = R.drawable.present;
+			break;
+		case 1:
+			iconId = R.drawable.favorite;
+			break;
+		case 2:
+			iconId = R.drawable.ignore;
+			break;
+		default:
 		}
+		
+		Drawable drawable = cxt.getResources().getDrawable(iconId);
+		Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+		Drawable d = new BitmapDrawable(cxt.getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
+		return d;
 	}
 
-	public static void cancelEmphasisInListView(ListView listview) {
-		for (int i = 0; i < listview.getChildCount(); i++) {
-			listview.getChildAt(i).setAlpha(1);
+	public static Drawable getIconSelected(Context cxt, int selectedIndex, int size) {
+		int iconId = R.drawable.ic_launcher;
+		switch (selectedIndex) {
+		case 0:
+			iconId = R.drawable.present_on;
+			break;
+		case 1:
+			iconId = R.drawable.favorite_on;
+			break;
+		case 2:
+			iconId = R.drawable.ignore_on;
+			break;
+		default:
 		}
+		
+		Drawable drawable = cxt.getResources().getDrawable(iconId);
+		Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+		Drawable d = new BitmapDrawable(cxt.getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
+		return d;
+	}
+	
+	public void doPostAction() {
+		updateView();
+		NotiBarNotifier.getInstance().updateNotification();
+	}
+	
+	public void showToastMsg(String actionMsg){
+		if(actionMsg == null)
+			return ;
+		
+		Toast t = Toast.makeText(this, actionMsg, Toast.LENGTH_SHORT);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
 	}
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements
@@ -294,6 +355,16 @@ public class AppShuttleMainActivity extends Activity {
 		public void onPageSelected(int position) {
 			mActionBar.setSelectedNavigationItem(position);
 			mActionBar.setTitle(getActionbarTitle(mContext, position));
+			switchOnIconForSelectedTab(position);
+		}
+		
+		private void switchOnIconForSelectedTab(int selectedPos){
+			for(int pos = 0; pos < mActionBar.getTabCount(); pos++) {
+				if(selectedPos == pos)
+					mActionBar.getTabAt(pos).setIcon(getIconSelected(mContext, pos, TAB_ICON_SIZE));
+				else
+					mActionBar.getTabAt(pos).setIcon(getIcon(mContext, pos, TAB_ICON_SIZE));
+			}
 		}
 
 		@Override
@@ -327,12 +398,14 @@ public class AppShuttleMainActivity extends Activity {
 			cxt = _cxt;
 		}
 
+		@Override
 		public View onCreateActionView() {
 			LayoutInflater inflator = LayoutInflater.from(cxt);
 			View layout = inflator.inflate(R.layout.actionbarlayout, null);
 
 			ImageView refresh = (ImageView) layout.findViewById(R.id.refresh);
 			refresh.setOnClickListener(new ImageView.OnClickListener() {
+				@Override
 				public void onClick(View v) {
 					cxt.sendBroadcast(new Intent().setAction(
 							PredictionService.PREDICT)
@@ -340,11 +413,23 @@ public class AppShuttleMainActivity extends Activity {
 				}
 			});
 
-			ImageView preferences = (ImageView) layout
+			ImageView settings = (ImageView) layout
 					.findViewById(R.id.settings);
-			preferences.setOnClickListener(new ImageView.OnClickListener() {
+			settings.setOnClickListener(new ImageView.OnClickListener() {
+				@Override
 				public void onClick(View v) {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
+				}
+			});
+			
+			ImageView share = (ImageView) layout
+					.findViewById(R.id.share);
+			share.setOnClickListener(new ImageView.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String subject = cxt.getResources().getString(R.string.name);
+					String text = cxt.getResources().getString(R.string.share_msg);
+	    			ShareUtils.shareTextPlain(cxt, subject, text);
 				}
 			});
 			
@@ -353,12 +438,14 @@ public class AppShuttleMainActivity extends Activity {
 	}
 
 	BroadcastReceiver updateReceiver = new BroadcastReceiver() {
+		@Override
 		public void onReceive(Context context, Intent intent) {
-			mTabsAdapter.notifyDataSetChanged();
+			updateView();
 		}
 	};
 
 	BroadcastReceiver progressVisibilityReceiver = new BroadcastReceiver() {
+		@Override
 		public void onReceive(Context context, Intent intent) {
 			boolean isOn = intent.getBooleanExtra("isOn", false);
 
@@ -373,4 +460,83 @@ public class AppShuttleMainActivity extends Activity {
 	};
 	public static final String UPDATE_ACTIVITY = "lab.davidahn.appshuttle.UPDATE_VIEW_ACTIVITY";
 	public static final String PROGRESS_VISIBILITY = "lab.davidahn.appshuttle.PROGRESS_VISIBILITY";
+	
+	public static final int ACTION_FAVORITE = 0;
+	public static final int ACTION_UNFAVORITE = 1;
+	public static final int ACTION_IGNORE = 2;
+	public static final int ACTION_UNIGNORE = 3;
+	public static final int ACTION_SHARE = 4;
+	public static final int ACTION_FAVORITE_UPDATE_ORDER = 5;
+	
+	public class UserActionHandler extends Handler {
+		@Override
+        public void handleMessage(Message msg) {
+        	ViewableUserBhv bhv = (ViewableUserBhv)msg.obj;
+        	String actionMsg = "";
+            switch (msg.what) {
+	    		case ACTION_FAVORITE:
+	    			UserBhvManager.getInstance().registerIfNotExist(bhv.getUserBhv());
+	    			FavoriteBhv favoriteBhv = FavoriteBhvManager.getInstance().favorite(bhv);
+	    			
+	    			if(bhv instanceof BlockedBhv)
+	    				BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
+	    			
+	    			actionMsg = favoriteBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
+	    			break;
+	    		case ACTION_UNFAVORITE:
+	    			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
+	    			actionMsg = ((FavoriteBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
+	    			break;
+	    		case ACTION_FAVORITE_UPDATE_ORDER:
+	    			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+	    			favoriteBhvManager.updateOrder((FavoriteBhv)bhv, msg.arg1);
+	    			break;
+	    		case ACTION_IGNORE:
+	    			UserBhvManager.getInstance().registerIfNotExist(bhv.getUserBhv());
+	    			BlockedBhv blockedBhv = BlockedBhvManager.getInstance().block(bhv);
+	    			
+	    			if(bhv instanceof FavoriteBhv)
+	    				FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
+	    			
+	    			actionMsg =  blockedBhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
+	    			break;
+	    		case ACTION_UNIGNORE:
+	    			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
+	    			actionMsg = ((BlockedBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unignore);
+	    			doPostAction();
+	    			showToastMsg(actionMsg);
+	    			break;
+	    		case ACTION_SHARE:
+	    			ShareUtils.shareTextPlain(AppShuttleMainActivity.this, getResources().getString(R.string.name), bhv.getSharingMsg());
+	    			break;
+    			default:
+            }
+        }
+    };
 }
+
+//case R.id.favorite_notify:
+//FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+//boolean isSuccess = favoriteBhvManager.trySetNotifiable((FavoriteBhv)bhv);
+//if(isSuccess){
+//	String msg = bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
+//	if(favoriteBhvManager.isFullProperNumFavorite()){
+//		msg += " " 
+//				+ favoriteBhvManager.getProperNumFavorite() 
+//				+ getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
+//	}
+//	return msg;
+//} else {
+//	return getResources().getString(R.string.action_msg_favorite_notifiable_failure);
+//}
+//case R.id.favorite_unnotify:
+//FavoriteBhvManager.getInstance().setUnNotifiable((FavoriteBhv)bhv);
+//return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
+
+

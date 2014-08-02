@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_frequently_recent_matcher.html" title="{lab.davidahn.appshuttle.predict.matcher.recent.FrequentlyRecentMatcher\n||+ FrequentlyRecentMatcher()\l+ getType()\l# computeRelatedness()\l# computeLikelihood()\l}" alt="" coords="5,377,451,514"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1recent_1_1_instantly_recent_matcher.html" title="{lab.davidahn.appshuttle.predict.matcher.recent.InstantlyRecentMatcher\n||+ InstantlyRecentMatcher()\l+ getType()\l# getInvolvedDurationUserBhv()\l# computeLikelihood()\l}" alt="" coords="475,377,909,514"/>
+</map>

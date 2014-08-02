@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1report_1_1_stat_collector.html#a5bd75c6d139e4eca7332a424e2d346bc" title="lab.davidahn.appshuttle.report.StatCollector.notifyBhvTransition" alt="" coords="448,59,840,88"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_blocked_bhv_fragment.html#a1e667f2329fe439b56161a5e5dd0c562" title="lab.davidahn.appshuttle.view.ui.BlockedBhvFragment.onListItemClick" alt="" coords="889,5,1316,35"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_favorite_bhv_fragment.html#abb791eb9585f7f5b2ae9f1cdaacb2a5a" title="lab.davidahn.appshuttle.view.ui.FavoriteBhvFragment.onListItemClick" alt="" coords="889,59,1316,88"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1ui_1_1_present_bhv_fragment.html#acd4463cc478da3595ed8e421df544b4c" title="lab.davidahn.appshuttle.view.ui.PresentBhvFragment.onListItemClick" alt="" coords="889,112,1316,141"/>
+</map>

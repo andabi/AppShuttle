@@ -1,0 +1,14 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.view.PredictedPresentBhv.compareTo",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="lab.davidahn.appshuttle.view.PredictedPresentBhv.getRecentPredictedBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1view_1_1_predicted_present_bhv.html#aec571bdb1694ce4953b37b01b2c9bf9d"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="lab.davidahn.appshuttle.predict.PredictedBhv.getTime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1_predicted_bhv.html#aa0a6c0d62a339a9f1f3be191e5767c2b"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="lab.davidahn.appshuttle.predict.PredictedBhv.getScore",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1_predicted_bhv.html#a2867689f6721fc93999376b631071d84"];
+}

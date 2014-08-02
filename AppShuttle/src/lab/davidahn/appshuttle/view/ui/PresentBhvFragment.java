@@ -4,35 +4,32 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
-import lab.davidahn.appshuttle.view.BlockedBhvManager;
-import lab.davidahn.appshuttle.view.FavoriteBhvManager;
+import lab.davidahn.appshuttle.view.PredictedPresentBhv;
 import lab.davidahn.appshuttle.view.PresentBhv;
-import lab.davidahn.appshuttle.view.ViewService;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ActionMode;
-import android.view.Gravity;
+import android.os.Message;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PresentBhvFragment extends ListFragment {
 	private PresentBhvAdapter adapter;
-	private ActionMode actionMode;
 	private List<PresentBhv> presentBhvList;
+	private int posMenuOpened = -1; //menu closed
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +39,7 @@ public class PresentBhvFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(android.R.layout.list_content, container,
+		View v = inflater.inflate(R.layout.present_view, container,
 				false);
 		return v;
 	}
@@ -50,135 +47,175 @@ public class PresentBhvFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+	
+		TextView emptyMsgView = (TextView)getView().findViewById(R.id.present_empty_msg);
+		if(System.currentTimeMillis() - AppShuttleApplication.launchTime > 3000)
+			emptyMsgView.setVisibility(View.GONE);
 
-		if(System.currentTimeMillis() - AppShuttleApplication.launchTime < 3000)
-			setEmptyText(getResources().getString(R.string.msg_wait));
-		else
-			setEmptyText(getResources().getString(R.string.msg_no_results));
-		
 		presentBhvList = PresentBhv.getPresentBhvListFilteredSorted(Integer.MAX_VALUE);
+
+		// add dummy for info msg
+		if(presentBhvList.isEmpty())
+			presentBhvList.add(new PredictedPresentBhv(BaseUserBhv.create(UserBhvType.NONE, "")));
 		
 		adapter = new PresentBhvAdapter();
 		setListAdapter(adapter);
 
-		if (presentBhvList == null) {
-			setListShown(false);
-		} else {
-			setListShown(true);
-		}
+		posMenuOpened = -1;
 		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 	        @Override
 	        public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
-	    		if(actionMode == null) {
-	    			actionMode = getActivity().startActionMode(actionCallback);
-	    			actionMode.setTag(position);
-//	    			actionMode.setTitle("")
-//	    			AppShuttleMainActivity.doEmphasisChildViewInListView(getListView(), position);
-	    			
-	    		}
+	        	if(!isMenuOpened()){
+	        		openMenu(v, position);
+	        	} else {
+	        		if(posMenuOpened != position) {
+	        			closeMenu();
+		        		openMenu(v, position);
+	        		}
+	        	}
 	            return true;
 	        }
 	    });
+		
+		getListView().setOnScrollListener(new OnScrollListener() {
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+						closeMenu();
+			}
+		});
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = adapter.getItem(position).getLaunchIntent();
-		if(intent == null)
+		if(posMenuOpened == position)
+			return;
+			
+		if (!presentBhvList.get(position).isValid())
 			return;
 
+		Intent intent = adapter.getItem(position).getLaunchIntent();
+		
 		StatCollector.getInstance().notifyBhvTransition(adapter.getItem(position).getUserBhv(), true);
 		getActivity().startActivity(intent);
+	}
+	
+	private void openMenu(View v, int pos) {
+		if(pos < 0) return;
+		View menu = v.findViewById(R.id.listview_present_menu);
+		menu.setVisibility(View.VISIBLE);
+		posMenuOpened = pos;
+	}
+	
+	private void closeMenu() {
+		for(int i=0;i<getListView().getChildCount();i++){
+			View menu = getListView().getChildAt(i).findViewById(R.id.listview_present_menu);
+			menu.setVisibility(View.GONE);
+		}
+		posMenuOpened = -1;
+	}
+	
+	private boolean isMenuOpened(){
+		if(posMenuOpened < 0 ) return false;
+		else return true;
 	}
 	
 	public class PresentBhvAdapter extends ArrayAdapter<PresentBhv> {
 
 		public PresentBhvAdapter() {
-			super(getActivity(), R.layout.listview_item, presentBhvList);
+			super(getActivity(), R.layout.present_listview, presentBhvList);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View itemView = inflater.inflate(R.layout.listview_item, parent, false);
+
+			View itemView = inflater.inflate(R.layout.present_listview, parent, false);
 			PresentBhv presentBhv = presentBhvList.get(position);
 
-			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_item_image);
+			//info msg
+			if (!presentBhv.isValid()) {
+				View infoView = inflater.inflate(R.layout.listview_info_msg, parent, false);
+
+				TextView infoSubject = (TextView) infoView.findViewById(R.id.listview_info_subject);
+				infoSubject.setText(R.string.msg_no_results_subject);
+				
+				TextView infoText = (TextView) infoView.findViewById(R.id.listview_info_text);
+				infoText.setText(R.string.msg_no_results_text);
+
+				return infoView;
+			}
+			
+			ImageView iconView = (ImageView) itemView.findViewById(R.id.listview_present_item_image);
 			iconView.setImageDrawable(presentBhv.getIcon());
 
-			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_item_firstline);
+			TextView firstLineView = (TextView) itemView.findViewById(R.id.listview_present_item_firstline);
 			firstLineView.setText(presentBhv.getBhvNameText());
 
-			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_item_secondline);
+			TextView secondLineView = (TextView) itemView.findViewById(R.id.listview_present_item_secondline);
 			secondLineView.setText(presentBhv.getViewMsg());
 
+			View.OnClickListener menuItemListener = new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Message msg = new Message();
+					switch(v.getId()){
+					case R.id.listview_present_menu_favorite:
+						msg.what = AppShuttleMainActivity.ACTION_FAVORITE;
+						break;
+					case R.id.listview_present_menu_ignore:
+						msg.what = AppShuttleMainActivity.ACTION_IGNORE;
+						break;
+					case R.id.listview_present_menu_share:
+						msg.what = AppShuttleMainActivity.ACTION_SHARE;
+						break;
+					}
+
+					msg.obj = presentBhvList.get(posMenuOpened);
+					AppShuttleMainActivity.userActionHandler.sendMessage(msg);
+				}
+			};
+			ImageView favoriteView = (ImageView) itemView.findViewById(R.id.listview_present_menu_favorite);
+			favoriteView.setOnClickListener(menuItemListener);
+
+			ImageView ignoreView = (ImageView) itemView.findViewById(R.id.listview_present_menu_ignore);
+			ignoreView.setOnClickListener(menuItemListener);
+			
+			ImageView shareView = (ImageView) itemView.findViewById(R.id.listview_present_menu_share);
+			if(presentBhv.isSharable()){
+				shareView.setOnClickListener(menuItemListener);
+			} else {
+				shareView.setVisibility(View.GONE);
+			}
+			
+			ImageView cancelView = (ImageView) itemView.findViewById(R.id.listview_present_menu_cancel);
+			cancelView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					closeMenu();
+				}
+			});
+			
 			return itemView;
 		}
 	}
-	
-	ActionMode.Callback actionCallback = new ActionMode.Callback() {
-		
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.present_actionmode, menu);
-			return true;
-		}
-		
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false;
-		}
-		
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			actionMode = null;
-//			AppShuttleMainActivity.cancelEmphasisInListView(getListView());
-		}
-		
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			int pos = (Integer)actionMode.getTag();
-
-			if(presentBhvList.size() < pos + 1)
-				return false;
-
-			String actionMsg = doActionAndGetMsg(pos, item.getItemId());
-			doPostAction();
-			showToastMsg(actionMsg);
-			
-			if(actionMode != null)
-				actionMode.finish();
-			
-			return true;
-		}
-	};
-	
-	private String doActionAndGetMsg(int pos, int itemId) {
-		PresentBhv presentBhv = presentBhvList.get(pos);
-		switch(itemId) {
-		case R.id.favorate:	
-			FavoriteBhvManager.getInstance().favorite(presentBhv);
-			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
-		case R.id.block:
-			BlockedBhvManager.getInstance().block(presentBhv);
-			return presentBhv.getBhvNameText() + getResources().getString(R.string.action_msg_block);
-		default:
-			return null;
-		}
-	}
-
-	private void doPostAction() {
-		getActivity().startService(new Intent(getActivity(), ViewService.class));
-	}
-	
-	private void showToastMsg(String actionMsg){
-		if(actionMsg == null)
-			return ;
-		
-		Toast t = Toast.makeText(getActivity(), actionMsg, Toast.LENGTH_SHORT);
-		t.setGravity(Gravity.CENTER, 0, 0);
-		t.show();
-	}
 }
+
+//			ViewGroup menu = (ViewGroup)itemView.findViewById(R.id.listview_menu);
+//			menu.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 
+//					ViewGroup.LayoutParams.MATCH_PARENT));
+
+//			ImageView favoriteView = new ImageView(getContext());
+//			favoriteView.setLayoutParams(new android.view.ViewGroup.LayoutParams(30,30));
+//			favoriteView.setImageResource(R.id.favorate);
+//			menu.addView(favoriteView);
+//
+//			ImageView ignoreView = new ImageView(getContext());
+//			ignoreView.setLayoutParams(new android.view.ViewGroup.LayoutParams(30,30));
+//			ignoreView.setImageResource(R.id.block);
+//			menu.addView(ignoreView);

@@ -12,31 +12,37 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class HistoryPresentBhvDao {
+	private static final String tableName = "history_present_bhv";
+	private static final String columnBhvType = "bhv_type";
+	private static final String columnBhvName = "bhv_name";
+	private static final String columnRecentPredTime = "recent_pred_time";
+	private static final String columnRecentPredScore = "recent_pred_score";
+	
 	private SQLiteDatabase db;
 	
 	private static HistoryPresentBhvDao presentBhvDao = new HistoryPresentBhvDao();
 	private HistoryPresentBhvDao() {
-		db = AppShuttleDBHelper.getInstance().getWritableDatabase();
+		db = AppShuttleDBHelper.getDatabase();
 	}
 	public static HistoryPresentBhvDao getInstance() {
 		return presentBhvDao;
 	}
-
+	
 	public void store(HistoryPresentBhv bhv) {
 		ContentValues row = new ContentValues();
-		row.put("bhv_type", bhv.getBhvType().toString());
-		row.put("bhv_name", bhv.getBhvName());
-		row.put("recent_pred_time", bhv.getRecentPredictionTime());
-		row.put("recent_pred_score", bhv.getRecentPredictionScore());
-		db.insertWithOnConflict("history_present_bhv", null, row, SQLiteDatabase.CONFLICT_REPLACE);
+		row.put(columnBhvType, bhv.getBhvType().toString());
+		row.put(columnBhvName, bhv.getBhvName());
+		row.put(columnRecentPredTime, bhv.getRecentPredictionTime());
+		row.put(columnRecentPredScore, bhv.getRecentPredictionScore());
+		db.insertWithOnConflict(tableName, null, row, SQLiteDatabase.CONFLICT_REPLACE);
 //		Log.d("PresentBhvDao", "store: " + bhv.toString());
 	}
 	
 	public List<HistoryPresentBhv> retrieveRecent() {
 		Cursor cur = db.rawQuery(
-				"SELECT * " +
-				"FROM history_present_bhv " +
-				"ORDER BY recent_pred_time DESC, recent_pred_score DESC "
+				"SELECT *" +
+				" FROM " + tableName +
+				" ORDER BY " + columnRecentPredTime + " DESC, " + columnRecentPredScore + " DESC "
 //				"LIMIT " + topN
 				, null);
 		List<HistoryPresentBhv> res = new ArrayList<HistoryPresentBhv>();
@@ -58,7 +64,18 @@ public class HistoryPresentBhvDao {
 		return res;
 	}
 
-	public void delete(HistoryPresentBhv bhv) {
-		
+	public void delete(HistoryPresentBhv bhv) {}
+	
+
+	public static class DDL {
+		public static void createTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " ("
+					+ columnBhvType + " TEXT, "
+					+ columnBhvName + " TEXT, "
+					+ columnRecentPredTime + " INTEGER DEFAULT 0, "
+					+ columnRecentPredScore + " INTEGER DEFAULT 0, "
+					+ "PRIMARY KEY (" + columnBhvType + ", " + columnBhvName + ") "
+					+ ");");
+		}
 	}
 }

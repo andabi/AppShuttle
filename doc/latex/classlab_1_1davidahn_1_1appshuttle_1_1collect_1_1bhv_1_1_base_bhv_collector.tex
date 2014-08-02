@@ -1,0 +1,198 @@
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector}{\section{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector \-Class \-Reference}
+\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector}\index{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector@{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector}}
+}
+
+
+\-Inheritance diagram for lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector__inherit__graph}
+\end{center}
+\end{figure}
+
+
+\-Collaboration diagram for lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a031a9e735cbb2b6a083bcef9cad85825}{\-Base\-Bhv\-Collector} ()
+\item 
+\-List$<$ \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_aab4a8a64d8d5ea4a8439a977505cd23a}{collect} ()
+\item 
+\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv}{\-Duration\-User\-Bhv} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a3f53a3734fc6d695a0e9032adbcee039}{pre\-Extract\-Duration\-User\-Bhv} (long curr\-Time, \-Time\-Zone curr\-Time\-Zone)
+\item 
+\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv}{\-Duration\-User\-Bhv} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a76745b2106da9aba911b9ff9bb48de3c}{extract\-Duration\-User\-Bhv} (long curr\-Time, \-Time\-Zone curr\-Timezone, \-List$<$ \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv} $>$ user\-Bhv\-List)
+\item 
+\-List$<$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv}{\-Duration\-User\-Bhv} $>$ \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a77c788394d3a568d0d7254be2c04b2e7}{post\-Extract\-Duration\-User\-Bhv} (long curr\-Time, \-Time\-Zone curr\-Time\-Zone)
+\item 
+\-Duration\-User\-Bhv.\-Builder \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_afb466450bed595e6fe1ae2ba964c3906}{create\-Duration\-User\-Bhv\-Builder} (long time, long end\-Time, \-Time\-Zone curr\-Time\-Zone, \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv} bhv)
+\item 
+boolean \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_aa3bd7893a53487268237ced0c670a9b4}{is\-Tracked\-For\-Duration\-User\-Bhv} (\hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv}{\-User\-Bhv} u\-Bhv)
+\end{DoxyCompactItemize}
+\subsection*{\-Protected \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application}{\-App\-Shuttle\-Application} \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a0de552027d0f2521beb2344ce413ada5}{cxt}
+\item 
+\-Shared\-Preferences \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_adb576a69ed10e145d7b2300e163fa4a7}{preference\-Settings}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+
+
+\-Definition at line 13 of file \-Base\-Bhv\-Collector.\-java.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a031a9e735cbb2b6a083bcef9cad85825}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!\-Base\-Bhv\-Collector@{\-Base\-Bhv\-Collector}}
+\index{\-Base\-Bhv\-Collector@{\-Base\-Bhv\-Collector}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{\-Base\-Bhv\-Collector}]{\setlength{\rightskip}{0pt plus 5cm}{\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-Base\-Bhv\-Collector} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a031a9e735cbb2b6a083bcef9cad85825}
+
+
+\-Definition at line 17 of file \-Base\-Bhv\-Collector.\-java.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_aab4a8a64d8d5ea4a8439a977505cd23a}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!collect@{collect}}
+\index{collect@{collect}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{collect}]{\setlength{\rightskip}{0pt plus 5cm}\-List$<${\bf \-User\-Bhv}$>$ {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-collect} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_aab4a8a64d8d5ea4a8439a977505cd23a}
+
+
+\-Implements \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector_a817cc0819ccc06eec91fd8ea51f2a660}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Bhv\-Collector}.
+
+
+
+\-Reimplemented in \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_app_bhv_collector_a9ef5881f1933eed96f54e5645965e44a}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-App\-Bhv\-Collector}, and \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_sensor_on_collector_a07aec1c8ba1283ef42ca0237482bac17}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Sensor\-On\-Collector}.
+
+
+
+\-Definition at line 23 of file \-Base\-Bhv\-Collector.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_afb466450bed595e6fe1ae2ba964c3906}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!create\-Duration\-User\-Bhv\-Builder@{create\-Duration\-User\-Bhv\-Builder}}
+\index{create\-Duration\-User\-Bhv\-Builder@{create\-Duration\-User\-Bhv\-Builder}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{create\-Duration\-User\-Bhv\-Builder}]{\setlength{\rightskip}{0pt plus 5cm}\-Duration\-User\-Bhv.\-Builder {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-create\-Duration\-User\-Bhv\-Builder} (
+\begin{DoxyParamCaption}
+\item[{long}]{time, }
+\item[{long}]{end\-Time, }
+\item[{\-Time\-Zone}]{curr\-Time\-Zone, }
+\item[{{\bf \-User\-Bhv}}]{bhv}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_afb466450bed595e6fe1ae2ba964c3906}
+
+
+\-Definition at line 84 of file \-Base\-Bhv\-Collector.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a76745b2106da9aba911b9ff9bb48de3c}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!extract\-Duration\-User\-Bhv@{extract\-Duration\-User\-Bhv}}
+\index{extract\-Duration\-User\-Bhv@{extract\-Duration\-User\-Bhv}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{extract\-Duration\-User\-Bhv}]{\setlength{\rightskip}{0pt plus 5cm}\-List$<${\bf \-Duration\-User\-Bhv}$>$ {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-extract\-Duration\-User\-Bhv} (
+\begin{DoxyParamCaption}
+\item[{long}]{curr\-Time, }
+\item[{\-Time\-Zone}]{curr\-Timezone, }
+\item[{\-List$<$ {\bf \-User\-Bhv} $>$}]{user\-Bhv\-List}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a76745b2106da9aba911b9ff9bb48de3c}
+
+
+\-Implements \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector_a62223fc02f20dae19536502f0d49dd91}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Bhv\-Collector}.
+
+
+
+\-Reimplemented in \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_call_bhv_collector_aca0984e631fcda500e21c9f58f7d4e02}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Call\-Bhv\-Collector}.
+
+
+
+\-Definition at line 33 of file \-Base\-Bhv\-Collector.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_aa3bd7893a53487268237ced0c670a9b4}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!is\-Tracked\-For\-Duration\-User\-Bhv@{is\-Tracked\-For\-Duration\-User\-Bhv}}
+\index{is\-Tracked\-For\-Duration\-User\-Bhv@{is\-Tracked\-For\-Duration\-User\-Bhv}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{is\-Tracked\-For\-Duration\-User\-Bhv}]{\setlength{\rightskip}{0pt plus 5cm}boolean {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-is\-Tracked\-For\-Duration\-User\-Bhv} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-User\-Bhv}}]{u\-Bhv}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_aa3bd7893a53487268237ced0c670a9b4}
+
+
+\-Definition at line 93 of file \-Base\-Bhv\-Collector.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a77c788394d3a568d0d7254be2c04b2e7}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!post\-Extract\-Duration\-User\-Bhv@{post\-Extract\-Duration\-User\-Bhv}}
+\index{post\-Extract\-Duration\-User\-Bhv@{post\-Extract\-Duration\-User\-Bhv}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{post\-Extract\-Duration\-User\-Bhv}]{\setlength{\rightskip}{0pt plus 5cm}\-List$<${\bf \-Duration\-User\-Bhv}$>$ {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-post\-Extract\-Duration\-User\-Bhv} (
+\begin{DoxyParamCaption}
+\item[{long}]{curr\-Time, }
+\item[{\-Time\-Zone}]{curr\-Time\-Zone}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a77c788394d3a568d0d7254be2c04b2e7}
+
+
+\-Implements \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector_a1b1a845cd527902ba4420eb4be69ec89}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Bhv\-Collector}.
+
+
+
+\-Reimplemented in \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_call_bhv_collector_a6828e1db3c42799b8850eea045c07831}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Call\-Bhv\-Collector}.
+
+
+
+\-Definition at line 68 of file \-Base\-Bhv\-Collector.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a3f53a3734fc6d695a0e9032adbcee039}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!pre\-Extract\-Duration\-User\-Bhv@{pre\-Extract\-Duration\-User\-Bhv}}
+\index{pre\-Extract\-Duration\-User\-Bhv@{pre\-Extract\-Duration\-User\-Bhv}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{pre\-Extract\-Duration\-User\-Bhv}]{\setlength{\rightskip}{0pt plus 5cm}\-List$<${\bf \-Duration\-User\-Bhv}$>$ {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-pre\-Extract\-Duration\-User\-Bhv} (
+\begin{DoxyParamCaption}
+\item[{long}]{curr\-Time, }
+\item[{\-Time\-Zone}]{curr\-Time\-Zone}
+\end{DoxyParamCaption}
+)}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a3f53a3734fc6d695a0e9032adbcee039}
+
+
+\-Implements \hyperlink{interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector_aa14deace7c39af4f0587dae8689bd640}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Bhv\-Collector}.
+
+
+
+\-Reimplemented in \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_app_bhv_collector_ac455d99ad4599564c640158e466aa42e}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-App\-Bhv\-Collector}, and \hyperlink{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_call_bhv_collector_ab7baeddab018af5b1efe3fea22766ddf}{lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Call\-Bhv\-Collector}.
+
+
+
+\-Definition at line 28 of file \-Base\-Bhv\-Collector.\-java.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a0de552027d0f2521beb2344ce413ada5}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!cxt@{cxt}}
+\index{cxt@{cxt}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{cxt}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-App\-Shuttle\-Application} {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-cxt}\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_a0de552027d0f2521beb2344ce413ada5}
+
+
+\-Definition at line 14 of file \-Base\-Bhv\-Collector.\-java.
+
+\hypertarget{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_adb576a69ed10e145d7b2300e163fa4a7}{\index{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}!preference\-Settings@{preference\-Settings}}
+\index{preference\-Settings@{preference\-Settings}!lab::davidahn::appshuttle::collect::bhv::BaseBhvCollector@{lab\-::davidahn\-::appshuttle\-::collect\-::bhv\-::\-Base\-Bhv\-Collector}}
+\subsubsection[{preference\-Settings}]{\setlength{\rightskip}{0pt plus 5cm}\-Shared\-Preferences {\bf lab.\-davidahn.\-appshuttle.\-collect.\-bhv.\-Base\-Bhv\-Collector.\-preference\-Settings}\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}\label{classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_base_bhv_collector_adb576a69ed10e145d7b2300e163fa4a7}
+
+
+\-Definition at line 15 of file \-Base\-Bhv\-Collector.\-java.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\-App\-Shuttle/src/lab/davidahn/appshuttle/collect/bhv/\hyperlink{_base_bhv_collector_8java}{\-Base\-Bhv\-Collector.\-java}\end{DoxyCompactItemize}

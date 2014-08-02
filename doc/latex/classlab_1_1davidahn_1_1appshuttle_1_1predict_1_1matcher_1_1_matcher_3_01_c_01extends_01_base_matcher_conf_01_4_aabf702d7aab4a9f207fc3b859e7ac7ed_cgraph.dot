@@ -1,0 +1,32 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.predict.matcher.Matcher\< C extends BaseMatcherConf \>.matchAndGetResult",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.collect.SnapshotUserCxt.getTime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt.html#a0641846d7e2540996053bbde0e797976"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="lab.davidahn.appshuttle.collect.SnapshotUserCxt.getTimeZone",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt.html#a65620c3ef88efde0f0c57c6d9fba97be"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="lab.davidahn.appshuttle.collect.SnapshotUserCxt.getUserEnvs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt.html#a7732017a3c377fce3ff617983d1df6e3"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResultElem.setUserBhv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result_elem.html#a2ac0822626db66597bbf58cb6d0252bf"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResultElem.setMatcherType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result_elem.html#ae09f99c25880eae7d4b1e68565fd5fc6"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResult.setNumTotalHistory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html#af44bfa8d97d52752d5603c8e0f406b20"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResult.setNumRelatedHistory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html#a138c20a983c5cc7aad6809179fcedf22"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResult.setRelatedHistory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html#a4bfbdf5925e9cbf13518a3c11f4336fc"];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResult.setLikelihood",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html#a7094704b124754cf5db3033685b6c5df"];
+  Node1 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResult.setInverseEntropy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html#ae3cf488987f20c769b733da55eab3f3f"];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResultElem.setScore",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result_elem.html#ab6df94f56d43c77163293c0c369f1e58"];
+  Node1 -> Node13 [color="midnightblue",fontsize="10",style="solid"];
+  Node13 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResultElem.setViewMsg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result_elem.html#a69280cf2115178fb022e2cad487c4718"];
+}

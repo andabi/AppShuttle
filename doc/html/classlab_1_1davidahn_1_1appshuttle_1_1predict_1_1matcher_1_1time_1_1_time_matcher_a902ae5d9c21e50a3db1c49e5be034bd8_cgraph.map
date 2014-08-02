@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv_dao.html#a48dc3a542af6ad8c5c4862aadca5444a" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao.getInstance" alt="" coords="593,5,1020,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt.html#a0641846d7e2540996053bbde0e797976" title="lab.davidahn.appshuttle.collect.SnapshotUserCxt.getTime" alt="" coords="627,59,987,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_duration_user_bhv_dao.html#a57f7c7cc2c499dff99f46d365eecf6e6" title="lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao.retrieveByBhv" alt="" coords="587,112,1027,141"/>
+<area shape="rect" id="node9" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#aa40041afff60cca4cb2b7351bc4614bb" title="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvType" alt="" coords="1079,85,1433,115"/>
+<area shape="rect" id="node11" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_user_bhv.html#a16c8cfa47dc39ba10e931c730295a3f3" title="lab.davidahn.appshuttle.collect.bhv.UserBhv.getBhvName" alt="" coords="1076,139,1436,168"/>
+</map>

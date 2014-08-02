@@ -1,0 +1,12 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcher.computeScore",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResult.getLikelihood",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html#addb6b55620e0bb2186eae93a153ccc17"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="lab.davidahn.appshuttle.predict.matcher.MatcherResult.getNumRelatedHistory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_result.html#ab26bcec96fb688e6186243a044eb6b2c"];
+}

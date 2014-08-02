@@ -1,0 +1,20 @@
+digraph G
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="lab.davidahn.appshuttle.predict.matcher.position.PlacePositionMatcher.computeRelatedness",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="lab.davidahn.appshuttle.collect.SnapshotUserCxt.getUserEnv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt.html#a12d1d092400c17366cafba6ede4db47d"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="lab.davidahn.appshuttle.collect.env.UserPlace.equals",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_place.html#a0bee57545f1cf3aac45dd367b5b2f05a"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="lab.davidahn.appshuttle.AppShuttleApplication.getContext",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#a3aaf27429843b2eb05fdd33f20be8f86"];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="lab.davidahn.appshuttle.AppShuttleApplication.getPreferences",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html#ae46ed63b120534585fb15e7d5ed5593a"];
+  Node3 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="lab.davidahn.appshuttle.collect.env.UserPlace.UserPlace",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_place.html#af1129fa8c7790329fde68cb385fe1c99"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.getProperty",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classlab_1_1davidahn_1_1appshuttle_1_1predict_1_1matcher_1_1_matcher_count_unit.html#ab902feccf554924b14f25088a4d8d0fe"];
+}

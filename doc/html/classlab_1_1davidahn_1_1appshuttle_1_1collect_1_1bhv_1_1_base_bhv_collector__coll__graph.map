@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$interfacelab_1_1davidahn_1_1appshuttle_1_1collect_1_1bhv_1_1_bhv_collector.html" title="{lab.davidahn.appshuttle.collect.bhv.BhvCollector\n||+ collect()\l+ preExtractDurationUserBhv()\l+ extractDurationUserBhv()\l+ postExtractDurationUserBhv()\l}" alt="" coords="299,551,603,689"/>
+<area shape="rect" id="node4" href="$classlab_1_1davidahn_1_1appshuttle_1_1_app_shuttle_application.html" title="{lab.davidahn.appshuttle.AppShuttleApplication\n|+ launchTime\l+ lastPredictionTime\l+ durationUserBhvBuilderMap\l+ currUserCxt\l+ predictedBhvMap\l+ predictedPresentBhvMap\l+ numFavoriteNotifiable\l|+ AppShuttleApplication()\l+ onCreate()\l+ getPreferences()\l+ getContext()\l}" alt="" coords="627,499,917,741"/>
+<area shape="rect" id="node20" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1_snapshot_user_cxt.html" title="{lab.davidahn.appshuttle.collect.SnapshotUserCxt\n||+ SnapshotUserCxt()\l+ SnapshotUserCxt()\l+ getTime()\l+ setTime()\l+ getTimeZone()\l+ setTimeZone()\l+ getUserEnv()\l+ getUserEnvs()\l+ getUserBhvs()\l+ updateUserEnv()\land 5 more...}" alt="" coords="1029,157,1339,416"/>
+</map>

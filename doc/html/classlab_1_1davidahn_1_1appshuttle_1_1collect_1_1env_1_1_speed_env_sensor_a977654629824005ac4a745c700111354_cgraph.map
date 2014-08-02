@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_base_env_sensor.html#aa5992b75385c4e5d09d96bb3a0bd0c4c" title="lab.davidahn.appshuttle.collect.env.BaseEnvSensor.isChanged" alt="" coords="432,5,821,35"/>
+<area shape="rect" id="node5" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_invalid_user_speed.html#a16eef05aa3573bd3c9c8a9a7fdb2aa0e" title="lab.davidahn.appshuttle.collect.env.InvalidUserSpeed.getInstance" alt="" coords="424,59,829,88"/>
+<area shape="rect" id="node7" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_base_env_sensor.html#a8f60be11546f38684ddf9436a691ca3f" title="lab.davidahn.appshuttle.collect.env.BaseEnvSensor.getCurrEnv" alt="" coords="429,112,824,141"/>
+<area shape="rect" id="node9" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_base_env_sensor.html#a7004f40c10ac9fcaf0782d9870c92b5b" title="lab.davidahn.appshuttle.collect.env.BaseEnvSensor.getPrevEnv" alt="" coords="429,165,824,195"/>
+<area shape="rect" id="node11" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_env.html#afcea1d24283d8c862ad4740be2be7038" title="lab.davidahn.appshuttle.collect.env.UserEnv.isValid" alt="" coords="465,219,788,248"/>
+<area shape="rect" id="node13" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_duration_user_env.html#a3f1d20dade84330873041688f89fac4d" title="lab.davidahn.appshuttle.collect.env.DurationUserEnv.getTime" alt="" coords="436,272,817,301"/>
+<area shape="rect" id="node15" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_loc.html#ad36c63363171d1c8d618010760e694b2" title="lab.davidahn.appshuttle.collect.env.UserLoc.distanceTo" alt="" coords="453,325,800,355"/>
+<area shape="rect" id="node17" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_speed.html#a8cb93d1c4aa02f6fb02816b7c99d2062" title="lab.davidahn.appshuttle.collect.env.UserSpeed.create" alt="" coords="460,379,793,408"/>
+<area shape="rect" id="node19" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_zero_user_speed.html#aa5934f4f673bb3b59c98aae43e3537ca" title="lab.davidahn.appshuttle.collect.env.ZeroUserSpeed.getInstance" alt="" coords="879,352,1271,381"/>
+<area shape="rect" id="node21" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_speed.html#a982d9aa83bb15bb007367f933411db61" title="lab.davidahn.appshuttle.collect.env.UserSpeed.UserSpeed" alt="" coords="893,405,1256,435"/>
+<area shape="rect" id="node23" href="$classlab_1_1davidahn_1_1appshuttle_1_1collect_1_1env_1_1_user_speed.html#adbaecfee8c115d3d49d4cdf353888a3d" title="lab.davidahn.appshuttle.collect.env.UserSpeed.getLevel" alt="" coords="1321,405,1668,435"/>
+</map>
