@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import android.app.AlarmManager;
@@ -157,6 +159,28 @@ public class CallBhvCollector extends BaseBhvCollector {
 		while (cursor.moveToNext()) {
 			String number = cursor.getString(0);
 			res.add(number);
+		}
+		
+		cursor.close();
+
+        return res;
+	}
+
+	public Map<String,Long> getContactNumAndLastTimeContactedList() {
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED};
+        String selection = ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED + "> 0";
+        String[] selectionArgs = null;
+//        String sortOrder = ContactsContract.CommonDataKinds.Phone.LAST_TIME_CONTACTED + " DESC";
+        Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, null);
+
+        if(cursor == null) return null;
+
+        Map<String,Long> res = new HashMap<String,Long>();
+		while (cursor.moveToNext()) {
+			String number = cursor.getString(0);
+			long lastTimeContacted = cursor.getLong(1);
+			res.put(number, lastTimeContacted);
 		}
 		
 		cursor.close();

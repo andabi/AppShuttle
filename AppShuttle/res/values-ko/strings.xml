@@ -18,8 +18,8 @@
 	<string name="predict_headset_msg">이어폰 쓸때 주로 사용</string>
     <string name="predict_notibar_msg_sensor_wifi">와이파이</string>
     <string name="actionbar_tab_text_present">지금 셔틀된 앱</string>
-    <string name="actionbar_tab_text_favorite">내가 고정한 앱</string>
-    <string name="actionbar_tab_text_ignore">내가 무시한 앱</string>
+    <string name="actionbar_tab_text_favorite">고정한 앱</string>
+    <string name="actionbar_tab_text_ignore">무시한 앱</string>
     <string name="action_favorite">고정</string>
     <string name="action_unfavorite">고정 안함</string>
     <string name="action_ignore">무시</string>
@@ -72,11 +72,11 @@
     <string name="addable_empty_msg_subject">검색된 결과가 없습니다.</string>
     <string name="addable_empty_msg_text">다른 이름으로 다시 검색해보세요.</string>
     <string name="add_bhv_loading_msg">가져오는 중입니다...</string>
-    <string name="addable_bhv_view_msg_app">%1$s에 업데이트됨</string>
-    <string name="addable_bhv_view_msg_call">%1$s에 통화</string>
+    <string name="addable_bhv_view_msg_app">마지막 업데이트: %1$s</string>
+    <string name="addable_bhv_view_msg_call">상대와 마지막 통화: %1$s</string>
     
-    <string name="favorite_bhv_view_msg">%1$s에 고정됨</string>
-    <string name="ignore_bhv_view_msg">%1$s에 무시됨</string>
+    <string name="favorite_bhv_view_msg">%1$s에 고정함</string>
+    <string name="ignore_bhv_view_msg">%1$s에 무시함</string>
     <string name="history_present_bhv_view_msg">%1$s에 셔틀됨</string>
     
     <string name="share_msg">앱, 연락처.. 일일이 찾기 힘드셨죠? 이제는 알아서 셔틀해드려요! http://goo.gl/XymWJ0</string>

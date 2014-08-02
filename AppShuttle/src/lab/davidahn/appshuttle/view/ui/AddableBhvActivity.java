@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.R;
@@ -211,8 +213,9 @@ public class AddableBhvActivity extends Activity implements OnItemClickListener 
 		
 		private List<AddableBhv> getAddableBhvListMatchSorted(List<AddableBhv> list, String text) {
 			List<AddableBhv> res = new ArrayList<AddableBhv>();
+			text = text.toLowerCase(Locale.getDefault());
 			for(AddableBhv bhv : list) {
-				if(bhv.getBhvNameText().toLowerCase().contains(text.toLowerCase()))
+				if(bhv.getBhvNameText().toLowerCase(Locale.getDefault()).contains(text))
 					res.add(bhv);
 			}
 		    Collections.sort(res, Collections.reverseOrder());
@@ -232,9 +235,9 @@ public class AddableBhvActivity extends Activity implements OnItemClickListener 
 		    }
 		    
 		    CallBhvCollector callBhvCollector = CallBhvCollector.getInstance();
-		    List<String> phoneNumList = callBhvCollector.getContactList();
-		    for(String phoneNum : phoneNumList){
-		    	long lastCallTime = callBhvCollector.getLastCallTime(phoneNum);
+		    Map<String, Long> contactNumAndLastTimeContactedList = callBhvCollector.getContactNumAndLastTimeContactedList();
+		    for(String phoneNum : contactNumAndLastTimeContactedList.keySet()){
+		    	long lastCallTime = contactNumAndLastTimeContactedList.get(phoneNum);
 		    	if(lastCallTime == 0)
 		    		continue;
 		    	
