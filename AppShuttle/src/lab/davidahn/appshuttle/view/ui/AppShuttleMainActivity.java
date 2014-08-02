@@ -49,7 +49,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 public class AppShuttleMainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
-	public static final int TAB_ICON_SIZE = 40;
+	public static final int TAB_ICON_SIZE_DP = 20;
 	public static UserActionHandler userActionHandler;
 	
     @Override
@@ -96,18 +96,17 @@ public class AppShuttleMainActivity extends Activity {
 		final ActionBar bar = getActionBar();
 		bar.setIcon(new ColorDrawable(getResources().getColor(
 				android.R.color.transparent)));
-//		bar.setStackedBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
-		bar.setDisplayUseLogoEnabled(true);
+		bar.setDisplayUseLogoEnabled(false);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		// bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+//		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 0, TAB_ICON_SIZE)),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 0, TAB_ICON_SIZE_DP)),
 				PresentBhvFragment.class, bundle);
-		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 1, TAB_ICON_SIZE)),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 1, TAB_ICON_SIZE_DP)),
 				FavoriteBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 2, TAB_ICON_SIZE)),
+		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 2, TAB_ICON_SIZE_DP)),
 				BlockedBhvFragment.class, null);
 		
 //		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
@@ -122,7 +121,7 @@ public class AppShuttleMainActivity extends Activity {
 		
 		int selectedTabIndex = bar.getSelectedNavigationIndex();
 		bar.setTitle(getActionbarTitle(this, selectedTabIndex));
-		bar.getSelectedTab().setIcon(getIconSelected(this, selectedTabIndex, TAB_ICON_SIZE));
+		bar.getSelectedTab().setIcon(getIconSelected(this, selectedTabIndex, TAB_ICON_SIZE_DP));
 		
 		startService(new Intent(this, AppShuttleMainService.class));
 		// sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
@@ -247,6 +246,8 @@ public class AppShuttleMainActivity extends Activity {
 		
 		Drawable drawable = cxt.getResources().getDrawable(iconId);
 		Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+		float density = cxt.getResources().getDisplayMetrics().density;
+		size *= density;
 		Drawable d = new BitmapDrawable(cxt.getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
 		return d;
 	}
@@ -268,6 +269,8 @@ public class AppShuttleMainActivity extends Activity {
 		
 		Drawable drawable = cxt.getResources().getDrawable(iconId);
 		Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+		float density = cxt.getResources().getDisplayMetrics().density;
+		size *= density;
 		Drawable d = new BitmapDrawable(cxt.getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
 		return d;
 	}
@@ -361,9 +364,9 @@ public class AppShuttleMainActivity extends Activity {
 		private void switchOnIconForSelectedTab(int selectedPos){
 			for(int pos = 0; pos < mActionBar.getTabCount(); pos++) {
 				if(selectedPos == pos)
-					mActionBar.getTabAt(pos).setIcon(getIconSelected(mContext, pos, TAB_ICON_SIZE));
+					mActionBar.getTabAt(pos).setIcon(getIconSelected(mContext, pos, TAB_ICON_SIZE_DP));
 				else
-					mActionBar.getTabAt(pos).setIcon(getIcon(mContext, pos, TAB_ICON_SIZE));
+					mActionBar.getTabAt(pos).setIcon(getIcon(mContext, pos, TAB_ICON_SIZE_DP));
 			}
 		}
 

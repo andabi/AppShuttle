@@ -52,7 +52,7 @@
   	<string name="settings_pref_sleep_mode">잠시 꺼두기</string>
     <string name="settings_pref_sleep_mode_summary">알림창에서 앱셔틀을 안 보이게 설정합니다.</string>
     <string name="settings_pref_system_area_icon_hide">아이콘 숨기기</string>
-    <string name="settings_pref_system_area_icon_hide_summary">상단 바에 있는 아이콘을 안 보이게 설정합니다. 대신 알림창에서 앱셔틀의 위치가 변할 수 있습니다.</string>
+    <string name="settings_pref_system_area_icon_hide_summary">상단 바에 있는 아이콘을 안 보이게 설정합니다.</string>
     <string name="settings_pref_system_area_icon_hide_warn_msg">알림창에서 앱셔틀의 위치가 변할 수 있습니다.</string>
     <string name="settings_info_feedback">피드백 보내기</string>
     <string name="settings_info_feedback_summary">오류를 알리거나 개선 사항을 요청합니다.</string>

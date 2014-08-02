@@ -64,12 +64,12 @@ public class NotiBarNotifier {
 	}
 	
 	public int getNumElem() {
-		int maxNumElem = cxt.getPreferences().getInt("viewer.noti.max_num", 24);
+//		int maxNumElem = cxt.getPreferences().getInt("viewer.noti.max_num", 24);
 		int NotibarIconAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_icon_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
 		int NotibarBhvAreaWidth = (int) ((cxt.getResources().getDimension(R.dimen.notibar_bhv_area_width) / 
 				cxt.getResources().getDisplayMetrics().density));
-		return Math.min(maxNumElem, (getNotibarWidth() - NotibarIconAreaWidth) / NotibarBhvAreaWidth);
+		return (getNotibarWidth() - NotibarIconAreaWidth) / NotibarBhvAreaWidth;
 	}
 	
 	public int getNumFavoriteElem() {
