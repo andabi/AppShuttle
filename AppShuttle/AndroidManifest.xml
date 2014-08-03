@@ -54,7 +54,7 @@
         -->
         <activity
             android:name="lab.davidahn.appshuttle.view.ui.AddableBhvActivity"
-            android:label="@string/favorite_add_activity_label"
+            android:label="@string/addable_activity_label"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" >

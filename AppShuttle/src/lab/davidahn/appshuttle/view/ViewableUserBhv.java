@@ -1,6 +1,7 @@
 package lab.davidahn.appshuttle.view;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -198,7 +199,7 @@ public class ViewableUserBhv implements UserBhv, Viewable, Sharable {
 			return null;
 		
 		return String.format(getSharingMsgFormat(), 
-				getViewMsg(),
+				getViewMsg().toLowerCase(Locale.getDefault()),
 				getBhvNameText(),
 				getSharingLink());
 	}
