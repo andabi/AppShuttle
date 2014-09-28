@@ -10,10 +10,10 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 
-public abstract class Matcher<C extends BaseMatcherConf> extends MatcherElem {
-	protected C conf;
+public abstract class Matcher extends MatcherElem {
+	protected MatcherConf conf;
 	
-	public Matcher(C _conf) {
+	public Matcher(MatcherConf _conf) {
 		conf = _conf;
 	}
 	
@@ -112,25 +112,3 @@ public abstract class Matcher<C extends BaseMatcherConf> extends MatcherElem {
 	protected abstract double computeScore(MatcherResult matcherResult);
 
 }
-
-//protected List<MatcherCountUnit> mergeMatcherCountUnit(List<MatcherCountUnit> matcherCountUnitList) {
-//	List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-//
-//	MatcherCountUnit lastUnit = null;
-//	for(MatcherCountUnit unit : matcherCountUnitList){
-//		if(lastUnit == null){
-//			continue;
-//		}
-//		
-//		long time = unit.getDurationUserBhvList().get(0).getTime();
-//		long lastTime = lastUnit.getDurationUserBhvList().get(0).getTime;
-//		if(time - lastTime	>= conf.getAcceptanceDelay()){
-//			res.add(lastUnit);
-//		}
-//		
-//		lastUnit = unit;
-//	}
-//	res.add(lastUnit);
-//	
-//	return res;
-//}

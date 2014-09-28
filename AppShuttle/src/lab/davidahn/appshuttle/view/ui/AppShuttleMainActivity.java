@@ -51,13 +51,13 @@ public class AppShuttleMainActivity extends Activity {
 	TabsAdapter mTabsAdapter;
 	public static final int TAB_ICON_SIZE_DP = 20;
 	public static UserActionHandler userActionHandler;
-	
-    @Override
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		userActionHandler = new UserActionHandler();
-		
+
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		AppShuttlePreferences.setDefaultPreferences();
 
@@ -65,19 +65,20 @@ public class AppShuttleMainActivity extends Activity {
 				.getBoolean("mode.debug", false))
 			BugSenseHandler.initAndStartSession(this, "a3573081");
 
-		/* Intent를 받아서 doExec 이면 해당 앱을 실행시킨다.
+		/*
+		 * Intent를 받아서 doExec 이면 해당 앱을 실행시킨다.
 		 * 
-		 * onNewIntent(~) 핸들러에서만 동작시키면, 앱셔틀이 메모리 부족으로 킬 됐을때
-		 * 첫 인텐트가 제대로 동작하지 않음. (앱셔틀 켜지기만 하고 해당 앱이 실행이 안 됨)
+		 * onNewIntent(~) 핸들러에서만 동작시키면, 앱셔틀이 메모리 부족으로 킬 됐을때 첫 인텐트가 제대로 동작하지 않음.
+		 * (앱셔틀 켜지기만 하고 해당 앱이 실행이 안 됨)
 		 * 
-		 * 즉, 앱셔틀이 꺼졌다 켜질 때는 onCreate() 가 처리하고,
-		 * 이미 켜져있는 상태에서는 onNewIntent() 가 처리함.
+		 * 즉, 앱셔틀이 꺼졌다 켜질 때는 onCreate() 가 처리하고, 이미 켜져있는 상태에서는 onNewIntent() 가
+		 * 처리함.
 		 */
-//		Intent intent = getIntent();
-//		if (intent != null) {
-//			Log.i("MainActivity", "onCreate:" + intent.toString());
-//			handleExecutionIntent(intent);
-//		}
+		// Intent intent = getIntent();
+		// if (intent != null) {
+		// Log.i("MainActivity", "onCreate:" + intent.toString());
+		// handleExecutionIntent(intent);
+		// }
 
 		IntentFilter filter = new IntentFilter();
 		filter = new IntentFilter();
@@ -97,35 +98,39 @@ public class AppShuttleMainActivity extends Activity {
 		bar.setIcon(new ColorDrawable(getResources().getColor(
 				android.R.color.transparent)));
 		bar.setDisplayHomeAsUpEnabled(false);
-	    bar.setDisplayShowCustomEnabled(false);
-	    bar.setDisplayShowTitleEnabled(true);
-	    bar.setDisplayUseLogoEnabled(false);
+		bar.setDisplayShowCustomEnabled(false);
+		bar.setDisplayShowTitleEnabled(true);
+		bar.setDisplayUseLogoEnabled(false);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+		// bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		Bundle bundle = new Bundle();
 		bundle.putString("tag", "predicted");
-		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 0, TAB_ICON_SIZE_DP)),
+		mTabsAdapter.addTab(
+				bar.newTab().setIcon(getIcon(this, 0, TAB_ICON_SIZE_DP)),
 				PresentBhvFragment.class, bundle);
-		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 1, TAB_ICON_SIZE_DP)),
+		mTabsAdapter.addTab(
+				bar.newTab().setIcon(getIcon(this, 1, TAB_ICON_SIZE_DP)),
 				FavoriteBhvFragment.class, null);
-		mTabsAdapter.addTab(bar.newTab().setIcon(getIcon(this, 2, TAB_ICON_SIZE_DP)),
+		mTabsAdapter.addTab(
+				bar.newTab().setIcon(getIcon(this, 2, TAB_ICON_SIZE_DP)),
 				BlockedBhvFragment.class, null);
-		
-//		if(AppShuttleApplication.getContext().getPreferences().getBoolean("mode.debug", false)){
-//			mTabsAdapter.addTab(bar.newTab()
-//					.setIcon(R.drawable.info),
-//					InfoFragment.class, null);
-//		}
-		
+
+		if (AppShuttleApplication.getContext().getPreferences()
+				.getBoolean("mode.debug", false)) {
+			mTabsAdapter.addTab(bar.newTab().setIcon(R.drawable.info),
+					InfoFragment.class, null);
+		}
+
 		if (savedInstanceState != null) {
 			bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
 		}
-		
+
 		int selectedTabIndex = bar.getSelectedNavigationIndex();
 		bar.setTitle(getActionbarTitle(this, selectedTabIndex));
-		bar.getSelectedTab().setIcon(getIconSelected(this, selectedTabIndex, TAB_ICON_SIZE_DP));
-		
+		bar.getSelectedTab().setIcon(
+				getIconSelected(this, selectedTabIndex, TAB_ICON_SIZE_DP));
+
 		startService(new Intent(this, AppShuttleMainService.class));
 		// sendBroadcast(new Intent().setAction(AppShuttleApplication.PREDICT));
 	}
@@ -142,13 +147,13 @@ public class AppShuttleMainActivity extends Activity {
 		// FIXME: Is this okay?
 		EasyTracker.getInstance(this).activityStart(this);
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -172,45 +177,46 @@ public class AppShuttleMainActivity extends Activity {
 		return true;
 	}
 
-	public void updateView(){
+	public void updateView() {
 		mTabsAdapter.notifyDataSetChanged();
 	}
-	
-//	@Override
-//	public void onNewIntent(Intent intent){
-//		if (intent != null) {
-//			Log.i("MainActivity", "onNewIntent:" + intent.toString());
-//			handleExecutionIntent(intent);
-//		}
-//	}
-//
-//	private void handleExecutionIntent(Intent intent){
-//		if (intent == null)
-//			return;
-//		
-//		Bundle b = intent.getExtras();
-//		if (b == null || (b.getBoolean("doExec", false) == false))
-//			return;
-//		
-//		/* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
-//		UserBhvType bhvType = UserBhvType.NONE;
-//		String bhvName = b.getString("bhvName");
-//		if (b.containsKey("bhvType"))
-//			bhvType = (UserBhvType)b.getSerializable("bhvType");
-//		
-//		if (bhvType == UserBhvType.NONE || bhvName == null)
-//			return;
-//		
-//		BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
-//		
-//		Log.i("MainActivity", "Exec req " + uBhv.toString());
-//	
-//		StatCollector.getInstance().notifyBhvTransition(uBhv, true);	// 통계 데이터 전송
-//		
-//		Intent launchIntent = uBhv.getLaunchIntent();
-//		launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서 필요
-//		this.startActivity(launchIntent);
-//	}
+
+	// @Override
+	// public void onNewIntent(Intent intent){
+	// if (intent != null) {
+	// Log.i("MainActivity", "onNewIntent:" + intent.toString());
+	// handleExecutionIntent(intent);
+	// }
+	// }
+	//
+	// private void handleExecutionIntent(Intent intent){
+	// if (intent == null)
+	// return;
+	//
+	// Bundle b = intent.getExtras();
+	// if (b == null || (b.getBoolean("doExec", false) == false))
+	// return;
+	//
+	// /* 이 아래의 코드들은 doExec 이 true일 때만 사용됨 */
+	// UserBhvType bhvType = UserBhvType.NONE;
+	// String bhvName = b.getString("bhvName");
+	// if (b.containsKey("bhvType"))
+	// bhvType = (UserBhvType)b.getSerializable("bhvType");
+	//
+	// if (bhvType == UserBhvType.NONE || bhvName == null)
+	// return;
+	//
+	// BaseUserBhv uBhv = new BaseUserBhv(bhvType, bhvName);
+	//
+	// Log.i("MainActivity", "Exec req " + uBhv.toString());
+	//
+	// StatCollector.getInstance().notifyBhvTransition(uBhv, true); // 통계 데이터 전송
+	//
+	// Intent launchIntent = uBhv.getLaunchIntent();
+	// launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 전화 bhv 띄우기 위해서
+	// 필요
+	// this.startActivity(launchIntent);
+	// }
 
 	public static CharSequence getActionbarTitle(Context cxt, int index) {
 		String title = "";
@@ -231,7 +237,7 @@ public class AppShuttleMainActivity extends Activity {
 		}
 		return title;
 	}
-	
+
 	public static Drawable getIcon(Context cxt, int index, int size) {
 		int iconId = R.drawable.info;
 		switch (index) {
@@ -246,16 +252,18 @@ public class AppShuttleMainActivity extends Activity {
 			break;
 		default:
 		}
-		
+
 		Drawable drawable = cxt.getResources().getDrawable(iconId);
 		Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 		float density = cxt.getResources().getDisplayMetrics().density;
 		size *= density;
-		Drawable d = new BitmapDrawable(cxt.getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
+		Drawable d = new BitmapDrawable(cxt.getResources(),
+				Bitmap.createScaledBitmap(bitmap, size, size, true));
 		return d;
 	}
 
-	public static Drawable getIconSelected(Context cxt, int selectedIndex, int size) {
+	public static Drawable getIconSelected(Context cxt, int selectedIndex,
+			int size) {
 		int iconId = R.drawable.ic_launcher;
 		switch (selectedIndex) {
 		case 0:
@@ -269,24 +277,25 @@ public class AppShuttleMainActivity extends Activity {
 			break;
 		default:
 		}
-		
+
 		Drawable drawable = cxt.getResources().getDrawable(iconId);
 		Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 		float density = cxt.getResources().getDisplayMetrics().density;
 		size *= density;
-		Drawable d = new BitmapDrawable(cxt.getResources(), Bitmap.createScaledBitmap(bitmap, size, size, true));
+		Drawable d = new BitmapDrawable(cxt.getResources(),
+				Bitmap.createScaledBitmap(bitmap, size, size, true));
 		return d;
 	}
-	
+
 	public void doPostAction() {
 		updateView();
 		NotiBarNotifier.getInstance().updateNotification();
 	}
-	
-	public void showToastMsg(String actionMsg){
-		if(actionMsg == null)
-			return ;
-		
+
+	public void showToastMsg(String actionMsg) {
+		if (actionMsg == null)
+			return;
+
 		Toast t = Toast.makeText(this, actionMsg, Toast.LENGTH_SHORT);
 		t.setGravity(Gravity.CENTER, 0, 0);
 		t.show();
@@ -363,13 +372,15 @@ public class AppShuttleMainActivity extends Activity {
 			mActionBar.setTitle(getActionbarTitle(mContext, position));
 			switchOnIconForSelectedTab(position);
 		}
-		
-		private void switchOnIconForSelectedTab(int selectedPos){
-			for(int pos = 0; pos < mActionBar.getTabCount(); pos++) {
-				if(selectedPos == pos)
-					mActionBar.getTabAt(pos).setIcon(getIconSelected(mContext, pos, TAB_ICON_SIZE_DP));
+
+		private void switchOnIconForSelectedTab(int selectedPos) {
+			for (int pos = 0; pos < mActionBar.getTabCount(); pos++) {
+				if (selectedPos == pos)
+					mActionBar.getTabAt(pos).setIcon(
+							getIconSelected(mContext, pos, TAB_ICON_SIZE_DP));
 				else
-					mActionBar.getTabAt(pos).setIcon(getIcon(mContext, pos, TAB_ICON_SIZE_DP));
+					mActionBar.getTabAt(pos).setIcon(
+							getIcon(mContext, pos, TAB_ICON_SIZE_DP));
 			}
 		}
 
@@ -419,26 +430,26 @@ public class AppShuttleMainActivity extends Activity {
 				}
 			});
 
-			ImageView settings = (ImageView) layout
-					.findViewById(R.id.settings);
+			ImageView settings = (ImageView) layout.findViewById(R.id.settings);
 			settings.setOnClickListener(new ImageView.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					cxt.startActivity(new Intent(cxt, SettingsActivity.class));
 				}
 			});
-			
-			ImageView share = (ImageView) layout
-					.findViewById(R.id.share);
+
+			ImageView share = (ImageView) layout.findViewById(R.id.share);
 			share.setOnClickListener(new ImageView.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					String subject = cxt.getResources().getString(R.string.name);
-					String text = cxt.getResources().getString(R.string.share_msg);
-	    			ShareUtils.shareTextPlain(cxt, subject, text);
+					String subject = cxt.getResources()
+							.getString(R.string.name);
+					String text = cxt.getResources().getString(
+							R.string.share_msg);
+					ShareUtils.shareTextPlain(cxt, subject, text);
 				}
 			});
-			
+
 			return layout;
 		}
 	}
@@ -466,83 +477,101 @@ public class AppShuttleMainActivity extends Activity {
 	};
 	public static final String UPDATE_ACTIVITY = "lab.davidahn.appshuttle.UPDATE_VIEW_ACTIVITY";
 	public static final String PROGRESS_VISIBILITY = "lab.davidahn.appshuttle.PROGRESS_VISIBILITY";
-	
+
 	public static final int ACTION_FAVORITE = 0;
 	public static final int ACTION_UNFAVORITE = 1;
 	public static final int ACTION_IGNORE = 2;
 	public static final int ACTION_UNIGNORE = 3;
 	public static final int ACTION_SHARE = 4;
 	public static final int ACTION_FAVORITE_UPDATE_ORDER = 5;
-	
+
 	public class UserActionHandler extends Handler {
 		@Override
-        public void handleMessage(Message msg) {
-        	ViewableUserBhv bhv = (ViewableUserBhv)msg.obj;
-        	String actionMsg = "";
-            switch (msg.what) {
-	    		case ACTION_FAVORITE:
-	    			UserBhvManager.getInstance().registerIfNotExist(bhv.getUserBhv());
-	    			FavoriteBhv favoriteBhv = FavoriteBhvManager.getInstance().favorite(bhv);
-	    			
-	    			if(bhv instanceof BlockedBhv)
-	    				BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
-	    			
-	    			actionMsg = favoriteBhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite);
-	    			doPostAction();
-	    			showToastMsg(actionMsg);
-	    			break;
-	    		case ACTION_UNFAVORITE:
-	    			FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
-	    			actionMsg = ((FavoriteBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unfavorite);
-	    			doPostAction();
-	    			showToastMsg(actionMsg);
-	    			break;
-	    		case ACTION_FAVORITE_UPDATE_ORDER:
-	    			FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
-	    			favoriteBhvManager.updateOrder((FavoriteBhv)bhv, msg.arg1);
-	    			break;
-	    		case ACTION_IGNORE:
-	    			UserBhvManager.getInstance().registerIfNotExist(bhv.getUserBhv());
-	    			BlockedBhv blockedBhv = BlockedBhvManager.getInstance().block(bhv);
-	    			
-	    			if(bhv instanceof FavoriteBhv)
-	    				FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv)bhv);
-	    			
-	    			actionMsg =  blockedBhv.getBhvNameText() + getResources().getString(R.string.action_msg_ignore);
-	    			doPostAction();
-	    			showToastMsg(actionMsg);
-	    			break;
-	    		case ACTION_UNIGNORE:
-	    			BlockedBhvManager.getInstance().unblock((BlockedBhv)bhv);
-	    			actionMsg = ((BlockedBhv)bhv).getBhvNameText() + getResources().getString(R.string.action_msg_unignore);
-	    			doPostAction();
-	    			showToastMsg(actionMsg);
-	    			break;
-	    		case ACTION_SHARE:
-	    			ShareUtils.shareTextPlain(AppShuttleMainActivity.this, getResources().getString(R.string.name), bhv.getSharingMsg());
-	    			break;
-    			default:
-            }
-        }
-    };
+		public void handleMessage(Message msg) {
+			ViewableUserBhv bhv = (ViewableUserBhv) msg.obj;
+			String actionMsg = "";
+			switch (msg.what) {
+			case ACTION_FAVORITE:
+				UserBhvManager.getInstance().registerIfNotExist(
+						bhv.getUserBhv());
+				FavoriteBhv favoriteBhv = FavoriteBhvManager.getInstance()
+						.favorite(bhv);
+
+				if (bhv instanceof BlockedBhv)
+					BlockedBhvManager.getInstance().unblock((BlockedBhv) bhv);
+
+				actionMsg = favoriteBhv.getBhvNameText()
+						+ getResources()
+								.getString(R.string.action_msg_favorite);
+				doPostAction();
+				showToastMsg(actionMsg);
+				break;
+			case ACTION_UNFAVORITE:
+				FavoriteBhvManager.getInstance().unfavorite((FavoriteBhv) bhv);
+				actionMsg = ((FavoriteBhv) bhv).getBhvNameText()
+						+ getResources().getString(
+								R.string.action_msg_unfavorite);
+				doPostAction();
+				showToastMsg(actionMsg);
+				break;
+			case ACTION_FAVORITE_UPDATE_ORDER:
+				FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager
+						.getInstance();
+				favoriteBhvManager.updateOrder((FavoriteBhv) bhv, msg.arg1);
+				break;
+			case ACTION_IGNORE:
+				UserBhvManager.getInstance().registerIfNotExist(
+						bhv.getUserBhv());
+				BlockedBhv blockedBhv = BlockedBhvManager.getInstance().block(
+						bhv);
+
+				if (bhv instanceof FavoriteBhv)
+					FavoriteBhvManager.getInstance().unfavorite(
+							(FavoriteBhv) bhv);
+
+				actionMsg = blockedBhv.getBhvNameText()
+						+ getResources().getString(R.string.action_msg_ignore);
+				doPostAction();
+				showToastMsg(actionMsg);
+				break;
+			case ACTION_UNIGNORE:
+				BlockedBhvManager.getInstance().unblock((BlockedBhv) bhv);
+				actionMsg = ((BlockedBhv) bhv).getBhvNameText()
+						+ getResources()
+								.getString(R.string.action_msg_unignore);
+				doPostAction();
+				showToastMsg(actionMsg);
+				break;
+			case ACTION_SHARE:
+				ShareUtils.shareTextPlain(AppShuttleMainActivity.this,
+						getResources().getString(R.string.name),
+						bhv.getSharingMsg());
+				break;
+			default:
+			}
+		}
+	};
 }
 
-//case R.id.favorite_notify:
-//FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
-//boolean isSuccess = favoriteBhvManager.trySetNotifiable((FavoriteBhv)bhv);
-//if(isSuccess){
-//	String msg = bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_notifiable);
-//	if(favoriteBhvManager.isFullProperNumFavorite()){
-//		msg += " " 
-//				+ favoriteBhvManager.getProperNumFavorite() 
-//				+ getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
-//	}
-//	return msg;
-//} else {
-//	return getResources().getString(R.string.action_msg_favorite_notifiable_failure);
-//}
-//case R.id.favorite_unnotify:
-//FavoriteBhvManager.getInstance().setUnNotifiable((FavoriteBhv)bhv);
-//return bhv.getBhvNameText() + getResources().getString(R.string.action_msg_favorite_unnotifiable);
-
+// case R.id.favorite_notify:
+// FavoriteBhvManager favoriteBhvManager = FavoriteBhvManager.getInstance();
+// boolean isSuccess = favoriteBhvManager.trySetNotifiable((FavoriteBhv)bhv);
+// if(isSuccess){
+// String msg = bhv.getBhvNameText() +
+// getResources().getString(R.string.action_msg_favorite_notifiable);
+// if(favoriteBhvManager.isFullProperNumFavorite()){
+// msg += " "
+// + favoriteBhvManager.getProperNumFavorite()
+// +
+// getResources().getString(R.string.action_msg_favorite_notifiable_num_proper);
+// }
+// return msg;
+// } else {
+// return
+// getResources().getString(R.string.action_msg_favorite_notifiable_failure);
+// }
+// case R.id.favorite_unnotify:
+// FavoriteBhvManager.getInstance().setUnNotifiable((FavoriteBhv)bhv);
+// return bhv.getBhvNameText() +
+// getResources().getString(R.string.action_msg_favorite_unnotifiable);
 

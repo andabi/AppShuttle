@@ -12,14 +12,15 @@ import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.HeadsetEnv;
 import lab.davidahn.appshuttle.collect.env.HeadsetEnvSensor;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-public class HeadsetMatcher extends Matcher<HeadsetMatcherConf>{
+public class HeadsetMatcher extends Matcher {
 	
-	public HeadsetMatcher(HeadsetMatcherConf conf){
+	public HeadsetMatcher(MatcherConf conf){
 		super(conf);
 	}
 	

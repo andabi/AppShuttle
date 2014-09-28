@@ -13,7 +13,8 @@ public enum MatcherType {
 	POSITION(10, 0, false),
 		PLACE(10, R.string.predict_place_msg, false),
 		LOCATION(11, R.string.predict_loc_msg, false),
-		MOVE(12, R.string.predict_move_msg, false),
+		LOCATION_TIME(12, R.string.predict_loc_time_msg, false),
+		MOVE(13, R.string.predict_move_msg, false),
 	//	UNFAMILIER_PLACE
 
 	//time

@@ -3,6 +3,7 @@ package lab.davidahn.appshuttle.predict.matcher.recent;
 import java.util.Map;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
@@ -10,7 +11,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 public class FrequentlyRecentMatcher extends RecentMatcher {
 	
-	public FrequentlyRecentMatcher(RecentMatcherConf conf){
+	public FrequentlyRecentMatcher(MatcherConf conf){
 		super(conf);
 	}
 	

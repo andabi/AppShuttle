@@ -14,6 +14,7 @@
     <string name="predict_time_daily_weekend_msg">Used mainly at this time of weekend</string>
     <string name="predict_place_msg">Used frequently at this place</string>
     <string name="predict_loc_msg">Used frequently at this location</string>
+    <string name="predict_loc_time_msg">Used at this time and location</string>
     <string name="predict_move_msg">Used in a vehicle</string>
     <string name="predict_headset_msg">Used with headset</string>
     <string name="predict_notibar_msg_sensor_wifi">Wi-Fi</string>

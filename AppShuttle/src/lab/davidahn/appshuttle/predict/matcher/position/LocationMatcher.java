@@ -14,17 +14,20 @@ import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.InvalidUserEnvException;
 import lab.davidahn.appshuttle.collect.env.UserLoc;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
+
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 /**
  * K-NN based algorithm
  * @author andabi
  *
  */
-public class LocationPositionMatcher extends PositionMatcher {
+public class LocationMatcher extends PositionMatcher {
 	
-	public LocationPositionMatcher(PositionMatcherConf conf){
+	public LocationMatcher(MatcherConf conf){
 		super(conf);
 	}
 	
@@ -72,8 +75,7 @@ public class LocationPositionMatcher extends PositionMatcher {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= conf.getMinNumRelatedHistory());
-		
+
 		double inverseEntropy = 0;
 		Set<UserLoc> uniqueLoc = new HashSet<UserLoc>();
 		
@@ -85,7 +87,7 @@ public class LocationPositionMatcher extends PositionMatcher {
 				while(it.hasNext()){
 					UserLoc uniqueLocElem = it.next();
 					try {
-						if(uLoc.proximity(uniqueLocElem, conf.getToleranceInMeter())){
+						if(uLoc.proximity(uniqueLocElem, conf.getPositionToleranceInMeter())){
 							unique = false;
 							break;
 						}
@@ -111,29 +113,28 @@ public class LocationPositionMatcher extends PositionMatcher {
 
 	@Override
 	protected double computeRelatedness(MatcherCountUnit unit, SnapshotUserCxt uCxt) {
-		return 1;
+		UserLoc userLoc = ((UserLoc) unit.getProperty("location"));
+		try{
+			UserLoc currLoc = (UserLoc)uCxt.getUserEnv(EnvType.LOCATION);
+			int toleranceInMeter = conf.getPositionToleranceInMeter();
+			if(userLoc.proximity(currLoc, toleranceInMeter))
+				return userLoc.distanceTo(currLoc) / toleranceInMeter;
+			else
+				return 0;
+		} catch (InvalidUserEnvException e) {
+			return 0;
+		}
 	}
 	
 	@Override
 	protected double computeLikelihood(int numTotalHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
-		long totalSpentTime = 0, validSpentTime = 0;
+		if(numTotalHistory <= 0)
+			return 0;
+
+		SummaryStatistics relatednessStat = new SummaryStatistics();
+		for(double relatedness : relatedHistoryMap.values())
+			relatednessStat.addValue(relatedness);
 		
-		for(MatcherCountUnit unit : relatedHistoryMap.keySet()){
-			UserLoc userLoc = ((UserLoc) unit.getProperty("location"));
-			long duration = ((Long) unit.getProperty("duration"));
-			totalSpentTime += duration;
-			try{
-				if(userLoc.proximity((UserLoc)uCxt.getUserEnv(EnvType.LOCATION), ((PositionMatcherConf)conf).getToleranceInMeter())){
-					validSpentTime += duration;
-				}
-			} catch (InvalidUserEnvException e) {
-				;
-			}
-		}
-		
-		double likelihood = 0;
-		if(totalSpentTime > 0)
-			likelihood = 1.0 * validSpentTime / totalSpentTime;
-		return likelihood;
+		return relatednessStat.getMean();
 	}
 }

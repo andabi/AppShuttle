@@ -13,13 +13,14 @@ import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnvManager;
 import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserPlace;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
-public class PlacePositionMatcher extends PositionMatcher {
+public class PlaceMatcher extends PositionMatcher {
 
-	public PlacePositionMatcher(PositionMatcherConf conf){
+	public PlaceMatcher(MatcherConf conf){
 		super(conf);
 	}
 	
@@ -74,8 +75,7 @@ public class PlacePositionMatcher extends PositionMatcher {
 
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= conf.getMinNumRelatedHistory());
-		
+
 		double inverseEntropy = 0;
 		Set<UserPlace> uniquePlace = new HashSet<UserPlace>();
 		

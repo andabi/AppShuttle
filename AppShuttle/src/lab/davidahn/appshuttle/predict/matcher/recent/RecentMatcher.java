@@ -10,12 +10,13 @@ import lab.davidahn.appshuttle.collect.bhv.SensorType;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 
-public abstract class RecentMatcher extends Matcher<RecentMatcherConf>{
+public abstract class RecentMatcher extends Matcher {
 	
-	public RecentMatcher(RecentMatcherConf conf){
+	public RecentMatcher(MatcherConf conf){
 		super(conf);
 	}
 	

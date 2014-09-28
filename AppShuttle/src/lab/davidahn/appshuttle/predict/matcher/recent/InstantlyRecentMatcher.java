@@ -9,12 +9,13 @@ import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class InstantlyRecentMatcher extends RecentMatcher {
 	
-	public InstantlyRecentMatcher(RecentMatcherConf conf){
+	public InstantlyRecentMatcher(MatcherConf conf){
 		super(conf);
 	}
 	

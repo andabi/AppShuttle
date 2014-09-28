@@ -9,7 +9,7 @@ public class AppShuttlePreferences {
 		SharedPreferences.Editor editor = pref.edit();
 		
 		//general
-		editor.putBoolean("mode.debug", false);
+		editor.putBoolean("mode.debug", true);
 		editor.putString("database.name", "AppShuttle.db");
 
 		//collection
@@ -81,11 +81,18 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.position.move.min_num_related_history", 3);
 
 		editor.putLong("matcher.position.loc.duration", 5 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.position.loc.min_likelihood", 0.5f);
-		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0.3f);
+		editor.putFloat("matcher.position.loc.min_likelihood", 0);
+		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0);
 		editor.putInt("matcher.position.loc.min_num_history", 5);
-		editor.putInt("matcher.position.loc.tolerance_in_meter", 100);
-		
+		editor.putInt("matcher.position.loc.tolerance", 500); //in meter
+
+		editor.putLong("matcher.position.loc_time.duration", 5 * AlarmManager.INTERVAL_DAY);
+		editor.putFloat("matcher.position.loc_time.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.loc_time.min_inverse_entropy", 0);
+		editor.putInt("matcher.position.loc_time.min_num_history", 5);
+		editor.putInt("matcher.position.loc_time.tolerance", 500); //in meter
+		editor.putLong("matcher.position.loc_time.tolerance_time", 2 * AlarmManager.INTERVAL_HOUR);
+
 		editor.putLong("matcher.headset.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.headset.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.headset.min_likelihood", 0.5f);

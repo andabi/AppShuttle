@@ -7,13 +7,14 @@ import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import android.app.AlarmManager;
 
 public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	private static final long INTERVAL_WEEK = 7 * AlarmManager.INTERVAL_DAY;
 
-	public DailyWeekdayTimeMatcher(TimeMatcherConf conf){
+	public DailyWeekdayTimeMatcher(MatcherConf conf){
 		super(conf);
 		
 		if(conf.getDuration() % INTERVAL_WEEK != 0)
@@ -35,7 +36,7 @@ public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	
 	@Override
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		long toTime = currUCxt.getTime() - conf.getTolerance();
+		long toTime = currUCxt.getTime() - conf.getTimeTolerance();
 		
 		assert(conf.getDuration() % INTERVAL_WEEK == 0);
 		

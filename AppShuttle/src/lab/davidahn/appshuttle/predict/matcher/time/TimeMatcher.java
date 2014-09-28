@@ -14,6 +14,7 @@ import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
+import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
@@ -23,9 +24,9 @@ import lab.davidahn.appshuttle.utils.Time;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
-public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
+public abstract class TimeMatcher extends Matcher {
 
-	public TimeMatcher(TimeMatcherConf conf){
+	public TimeMatcher(MatcherConf conf){
 		super(conf);
 	}
 	
@@ -36,7 +37,7 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
 		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
-		long toTime = currUCxt.getTime() - conf.getTolerance();
+		long toTime = currUCxt.getTime() - conf.getTimeTolerance();
 		long fromTime = toTime - conf.getDuration();
 		
 		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
@@ -85,22 +86,21 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {
-		assert(matcherCountUnitList.size() >= conf.getMinNumRelatedHistory());
 		
 		double inverseEntropy = 0;
 		Set<Long> uniqueTime = new HashSet<Long>();
 		
 		for(MatcherCountUnit unit : matcherCountUnitList){
 			long time = (Long)unit.getProperty("time");
-			long timePeriodic = time % conf.getPeriod();
+			long timePeriodic = time % conf.getTimePeriod();
 			Iterator<Long> it = uniqueTime.iterator();
 			boolean unique = true;
 			if(!uniqueTime.isEmpty()){
 				while(it.hasNext()){
 					Long uniqueTimeElem = it.next();
-					long from = (uniqueTimeElem - conf.getTolerance() + conf.getPeriod()) % conf.getPeriod();
-					long to = (uniqueTimeElem + conf.getTolerance()) % conf.getPeriod();
-					if(Time.isIncludedIn(from, timePeriodic, to, conf.getPeriod())){
+					long from = (uniqueTimeElem - conf.getTimeTolerance() + conf.getTimePeriod()) % conf.getTimePeriod();
+					long to = (uniqueTimeElem + conf.getTimeTolerance()) % conf.getTimePeriod();
+					if(Time.isIncludedIn(from, timePeriodic, to, conf.getTimePeriod())){
 						unique = false;
 						break;
 					}
@@ -126,18 +126,18 @@ public abstract class TimeMatcher extends Matcher<TimeMatcherConf> {
 		double relatedness = 0;
 		
 		long currTime = uCxt.getTime();
-		long currTimePeriodic = currTime % conf.getPeriod();
+		long currTimePeriodic = currTime % conf.getTimePeriod();
 		long targetTime = (Long) unit.getProperty("time");
-		long targetTimePeriodic = targetTime % conf.getPeriod();
+		long targetTimePeriodic = targetTime % conf.getTimePeriod();
 		
 		long mean = currTimePeriodic;
-		long std = conf.getTolerance() / 2;
+		long std = conf.getTimeTolerance() / 2;
 		NormalDistribution nd = new NormalDistribution(mean, std);
 
-		long from = (currTimePeriodic - conf.getTolerance() + conf.getPeriod()) % conf.getPeriod();
-		long to = (currTimePeriodic + conf.getTolerance()) % conf.getPeriod();
+		long from = (currTimePeriodic - conf.getTimeTolerance() + conf.getTimePeriod()) % conf.getTimePeriod();
+		long to = (currTimePeriodic + conf.getTimeTolerance()) % conf.getTimePeriod();
 				
-		if(Time.isIncludedIn(from, targetTimePeriodic, to, conf.getPeriod())){
+		if(Time.isIncludedIn(from, targetTimePeriodic, to, conf.getTimePeriod())){
 			relatedness = nd.density(targetTimePeriodic) / nd.density(mean);
 		} else {
 			relatedness = 0;
