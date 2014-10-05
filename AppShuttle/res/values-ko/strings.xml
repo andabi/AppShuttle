@@ -18,7 +18,7 @@
     <string name="predict_move_msg">이동 중에 주로 사용</string>
     <string name="predict_headset_msg">이어폰 쓸때 주로 사용</string>
     <string name="predict_notibar_msg_sensor_wifi">와이파이</string>
-    <string name="actionbar_tab_text_present">지금 셔틀된 앱</string>
+    <string name="actionbar_tab_text_present">예측된 앱</string>
     <string name="actionbar_tab_text_favorite">고정한 앱</string>
     <string name="actionbar_tab_text_ignore">무시한 앱</string>
     <string name="action_favorite">고정</string>
@@ -35,15 +35,15 @@
     <string name="action_msg_favorite_unnotifiable">을(를) 알림창에 표시하지 않도록 변경합니다.</string>
     <string name="action_msg_favorite_notifiable_num_proper">개가 보통 적당합니다.</string>
     <string name="action_msg_favorite_notifiable_failure">가능한 개수를 초과하여 변경이 되지 않았습니다.</string>
-    <string name="action_msg_share_app">친구가 \'%2$s\'을(를) 셔틀합니다.\n%3$s</string>
-    <string name="action_msg_share_call">\'%2$s\'의 전화번호를 셔틀합니다.\n%3$s</string>
-    <string name="action_msg_share_predicted_app">친구가 %1$s한 \'%2$s\'을(를) 셔틀합니다.\n%3$s</string>
-    <string name="action_msg_share_predicted_call">\'%2$s\'의 전화번호를 셔틀합니다.\n%3$s"</string>
+    <string name="action_msg_share_app">친구가 \'%2$s\'을(를) 공유합니다.\n%3$s</string>
+    <string name="action_msg_share_call">\'%2$s\'의 전화번호를 공유합니다.\n%3$s</string>
+    <string name="action_msg_share_predicted_app">친구가 %1$s한 \'%2$s\'을(를) 공유합니다.\n%3$s</string>
+    <string name="action_msg_share_predicted_call">\'%2$s\'의 전화번호를 공유합니다.\n%3$s"</string>
     <string name="msg_wait">잠시만 기다리세요. 곧 표시됩니다 :)</string>
     <string name="msg_manual_ignore_subject">원하지 않는 앱은 무시할 수 있습니다.</string>
-    <string name="msg_manual_ignore_text">앱 추가 버튼을 누르시거나, 셔틀된 앱을 길게 누른 후 메뉴에서 설정하세요.</string>
+    <string name="msg_manual_ignore_text">앱 추가 버튼을 누르시거나, 표시된 앱을 길게 누른 후 메뉴에서 설정하세요.</string>
     <string name="msg_manual_favorite_subject">자주 사용하는 앱은 고정할 수 있습니다.</string>
-    <string name="msg_manual_favorite_text">앱 추가 버튼을 누르시거나, 셔틀된 앱을 길게 누른 후 메뉴에서 설정하세요.</string>
+    <string name="msg_manual_favorite_text">앱 추가 버튼을 누르시거나, 표시된 앱을 길게 누른 후 메뉴에서 설정하세요.</string>
     <string name="msg_no_results">지금은 표시할 앱이 없습니다. 계속 사용하십시오. 당신의 앱 사용 패턴을 학습하고 있습니다.</string>
     <string name="msg_no_results_subject">지금은 표시할 앱이 없습니다.</string>
     <string name="msg_no_results_text">계속 사용하십시오. 당신의 앱 사용 패턴을 학습하고 있습니다.</string>
@@ -59,7 +59,7 @@
     <string name="settings_info_feedback_summary">오류를 알리거나 개선 사항을 요청합니다.</string>
     <string name="settings_info_feedback_success_msg">피드백을 보내주셔서 감사합니다.</string>
     <string name="settings_info_feedback_failure_msg">피드백이 보내지지 않았습니다. 잠시 후 다시 시도해주세요.</string>
-    <string name="settings_info_shared">앱셔틀 소문내기</string>
+    <string name="settings_info_shared">앱셔틀 알리기</string>
     <string name="settings_info_shared_summary">친구들에게 앱셔틀을 알려주세요!</string>
     <string name="settings_info_shared_msg">앱셔틀 -  앱, 연락처.. 일일이 찾기 힘드셨죠? 이제는 알아서 셔틀해드려요! http://goo.gl/XymWJ0</string>
     <string name="settings_info_version">버전</string>
@@ -76,7 +76,7 @@
     <string name="addable_bhv_view_msg_call">상대와 마지막 통화: %1$s</string>
     <string name="favorite_bhv_view_msg">%1$s에 고정함</string>
     <string name="ignore_bhv_view_msg">%1$s에 무시함</string>
-    <string name="history_present_bhv_view_msg">%1$s에 셔틀됨</string>
+    <string name="history_present_bhv_view_msg">%1$s에 예측됨</string>
     <string name="share_msg">앱, 연락처.. 일일이 찾기 힘드셨죠? 이제는 알아서 셔틀해드려요! http://goo.gl/XymWJ0</string>
 
 </resources>

@@ -18,7 +18,7 @@
     <string name="predict_move_msg">Used in a vehicle</string>
     <string name="predict_headset_msg">Used with headset</string>
     <string name="predict_notibar_msg_sensor_wifi">Wi-Fi</string>
-    <string name="actionbar_tab_text_present">Recommanded</string>
+    <string name="actionbar_tab_text_present">Predicted</string>
     <string name="actionbar_tab_text_favorite">Favorites</string>
     <string name="actionbar_tab_text_ignore">Ignored</string>
     <string name="action_favorite">Set as favorite</string>
@@ -35,23 +35,23 @@
     <string name="action_msg_favorite_unnotifiable">Hiding in notification bar.</string>
     <string name="action_msg_favorite_notifiable_num_proper">is the proper number.</string>
     <string name="action_msg_favorite_notifiable_failure">No completed because of exceed the limit.</string>
-    <string name="action_msg_share_app">Your friend recommands \'%2$s\'.\n%3$s</string>
-    <string name="action_msg_share_call">Your friend recommands \'%2$s\'s phone number.\n%3$s</string>
-    <string name="action_msg_share_predicted_app">Your friend recommands \'%2$s\' which %1$s.\n%3$s</string>
-    <string name="action_msg_share_predicted_call">Your friend recommands \'%2$s\'s phone number.\n%3$s</string>
+    <string name="action_msg_share_app">Your friend shares \'%2$s\'.\n%3$s</string>
+    <string name="action_msg_share_call">Your friend shares \'%2$s\'s phone number.\n%3$s</string>
+    <string name="action_msg_share_predicted_app">Your friend shares \'%2$s\' which %1$s.\n%3$s</string>
+    <string name="action_msg_share_predicted_call">Your friend shares \'%2$s\'s phone number.\n%3$s</string>
     <string name="msg_wait">Wait for a second :)</string>
-    <string name="msg_manual_ignore_subject">You can set app ignored in recommandation.</string>
-    <string name="msg_manual_ignore_text">Touch \'Add new app\' button or long touch on a recommanded app.</string>
+    <string name="msg_manual_ignore_subject">You can set app ignored.</string>
+    <string name="msg_manual_ignore_text">Touch \'Add new app\' button or long touch on a app.</string>
     <string name="msg_manual_favorite_subject">You can set favorites for frequently used apps.</string>
-    <string name="msg_manual_favorite_text">Touch \'Add new app\' button or long touch on a recommanded app.</string>
-    <string name="msg_no_results">No recommanded apps. Wait until AppShuttle learns your app use pattern.</string>
-    <string name="msg_no_results_subject">No recommanded apps</string>
+    <string name="msg_manual_favorite_text">Touch \'Add new app\' button or long touch on a app.</string>
+    <string name="msg_no_results">No predicted apps. Wait until AppShuttle learns your app use pattern.</string>
+    <string name="msg_no_results_subject">No predicted apps</string>
     <string name="msg_no_results_text">Wait until AppShuttle learns your app use pattern.</string>
     <string name="settings_category_setting">Settings</string>
     <string name="settings_category_info">Info</string>
     <string name="settings_category_share">Share</string>
     <string name="settings_pref_sleep_mode">Sleep mode</string>
-    <string name="settings_pref_sleep_mode_summary">It hides the recommanded apps in notification bar.</string>
+    <string name="settings_pref_sleep_mode_summary">It hides the predicted apps in notification bar.</string>
     <string name="settings_pref_system_area_icon_hide">Hide icon</string>
     <string name="settings_pref_system_area_icon_hide_summary">It hides icon in system area.</string>
     <string name="settings_pref_system_area_icon_hide_warn_msg">The order would be flexible in notification bar.</string>
@@ -61,7 +61,7 @@
     <string name="settings_info_feedback_failure_msg">Feedback not sent. Try again.</string>
     <string name="settings_info_shared">Share AppShuttle</string>
     <string name="settings_info_shared_summary">Let friends of you enjoy AppShuttle.</string>
-    <string name="settings_info_shared_msg">AppShuttle - Launch your apps and call your friends in a fastest way with AppShuttle\'s context-aware recommandation. http://goo.gl/XymWJ0</string>
+    <string name="settings_info_shared_msg">AppShuttle - Launch your apps and call your friends in a fastest way with AppShuttle\'s context-aware prediction. http://goo.gl/XymWJ0</string>
     <string name="settings_info_version">Version</string>
     <string name="settings_info_facebook">Facebook page</string>
     <string name="settings_info_facebook_summary">Look around and click \'Like\' button. </string>
@@ -76,7 +76,7 @@
     <string name="addable_bhv_view_msg_call">Last call with: %1$s</string>
     <string name="favorite_bhv_view_msg">Set as favorite %1$s</string>
     <string name="ignore_bhv_view_msg">Set ignored %1$s</string>
-    <string name="history_present_bhv_view_msg">Recommanded %1$s</string>
-    <string name="share_msg">Launch your apps and call your friends in a fastest way with AppShuttle\'s context-aware recommandation. http://goo.gl/XymWJ0</string>
+    <string name="history_present_bhv_view_msg">Predicted %1$s</string>
+    <string name="share_msg">Launch your apps and call your friends in a fastest way with AppShuttle\'s context-aware prediction. http://goo.gl/XymWJ0</string>
 
 </resources>
