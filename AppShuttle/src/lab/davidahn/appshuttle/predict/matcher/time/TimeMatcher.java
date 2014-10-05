@@ -11,8 +11,6 @@ import java.util.Set;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
@@ -32,24 +30,18 @@ public abstract class TimeMatcher extends Matcher {
 	
 	@Override
 	public abstract MatcherType getType();
-	
-	@Override
-	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
 
-		long toTime = currUCxt.getTime() - conf.getTimeTolerance();
-		long fromTime = toTime - conf.getDuration();
-		
-		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
-		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
-		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-//			if(durationUserBhv.getEndTime() - durationUserBhv.getTime()	< noiseTimeTolerance)
-//				continue;
-			pureDurationUserBhvList.add(durationUserBhv);
+	@Override
+	protected List<DurationUserBhv> rejectNotUsedHistory(List<DurationUserBhv> durationUserBhvs, SnapshotUserCxt currUCxt) {
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+		for(DurationUserBhv durationUserBhv : durationUserBhvs){
+			long timePast = currUCxt.getTime() - durationUserBhv.getTime();
+			if(timePast < conf.getDuration() && timePast > conf.getTimeTolerance())
+				res.add(durationUserBhv);
 		}
-		return pureDurationUserBhvList;
+		return res;
 	}
-	
+
 	@Override
 	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
@@ -77,7 +69,7 @@ public abstract class TimeMatcher extends Matcher {
 		return res;
 	}
 	
-	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv) {
+	protected Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv) {
 		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
 		.setProperty("time", durationUserBhv.getTime())
 		.setProperty("endTime", durationUserBhv.getEndTime())
@@ -147,19 +139,19 @@ public abstract class TimeMatcher extends Matcher {
 	
 	@Override
 	protected double computeLikelihood(int numTotalHistory,
-		Map<MatcherCountUnit, Double> relatedHistoryMap,
-		SnapshotUserCxt uCxt) {
+			Map<MatcherCountUnit, Double> relatedHistoryMap,
+			SnapshotUserCxt uCxt) {
 
-		if(numTotalHistory <= 0)
+		if (numTotalHistory <= 0)
 			return 0;
 
 		SummaryStatistics relatednessStat = new SummaryStatistics();
-		for(double relatedness : relatedHistoryMap.values())
+		for (double relatedness : relatedHistoryMap.values())
 			relatednessStat.addValue(relatedness);
-		
+
 		return relatednessStat.getMean();
 	}
-	
+
 	@Override
 	protected double computeScore(MatcherResult matcherResult) {
 		double likelihood = matcherResult.getLikelihood();

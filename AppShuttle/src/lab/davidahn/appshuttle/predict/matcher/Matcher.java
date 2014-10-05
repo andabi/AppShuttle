@@ -7,30 +7,32 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 
 public abstract class Matcher extends MatcherElem {
 	protected MatcherConf conf;
-	
+
 	public Matcher(MatcherConf _conf) {
 		conf = _conf;
 	}
-	
-	public MatcherResultElem matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		if(!isCurrCxtMetPreConditions(currUCxt))
+
+	public MatcherResultElem matchAndGetResult(UserBhv uBhv,
+			SnapshotUserCxt currUCxt, List<DurationUserBhv> history) {
+		if (!isCurrCxtMetPreConditions(currUCxt))
 			return null;
 
-		if(!isBhvMetPreConditions(uBhv))
+		if (!isBhvMetPreConditions(uBhv))
 			return null;
-		
+
+		history = rejectNotUsedHistory(history, currUCxt);
+
 		List<MatcherCountUnit> matcherCountUnitList = makeMatcherCountUnit(
-				getInvolvedDurationUserBhv(uBhv, currUCxt), currUCxt);
+				history, currUCxt);
 
 		if (matcherCountUnitList.isEmpty()) {
 			return null;
 		}
-		
+
 		double inverseEntropy = computeInverseEntropy(matcherCountUnitList);
 		if (inverseEntropy < conf.getMinInverseEntropy()) {
 			return null;
@@ -50,8 +52,8 @@ public abstract class Matcher extends MatcherElem {
 		if (numRelatedHistory < conf.getMinNumRelatedHistory())
 			return null;
 
-		double likelihood = computeLikelihood(numTotalHistory,
-				relatedHistory, currUCxt);
+		double likelihood = computeLikelihood(numTotalHistory, relatedHistory,
+				currUCxt);
 		if (likelihood < conf.getMinLikelihood())
 			return null;
 
@@ -69,45 +71,35 @@ public abstract class Matcher extends MatcherElem {
 		return matcherResult;
 	}
 
-	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt){
-		return true;
-	}
-
-	protected boolean isBhvMetPreConditions(UserBhv uBhv){
-		return true;
-	}
-	
-	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv,
-			SnapshotUserCxt currUCxt) {
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
-
-		long toTime = currUCxt.getTime();
-		long fromTime = toTime - conf.getDuration();
-
-		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(
-				fromTime, toTime, uBhv);
-		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
-		for (DurationUserBhv durationUserBhv : durationUserBhvList) {
-			// if(durationUserBhv.getEndTime().getTime() -
-			// durationUserBhv.getTime().getTime() < noiseTimeTolerance)
-			// continue;
-			pureDurationUserBhvList.add(durationUserBhv);
+	protected List<DurationUserBhv> rejectNotUsedHistory(List<DurationUserBhv> history, SnapshotUserCxt currUCxt) {
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+		for(DurationUserBhv durationUserBhv : history){
+			if(currUCxt.getTime() - durationUserBhv.getTime()  < conf.getDuration())
+				res.add(durationUserBhv);
 		}
-		return pureDurationUserBhvList;
+		return res;
+	}
+
+	protected boolean isCurrCxtMetPreConditions(SnapshotUserCxt currUCxt) {
+		return true;
+	}
+
+	protected boolean isBhvMetPreConditions(UserBhv uBhv) {
+		return true;
 	}
 
 	protected abstract List<MatcherCountUnit> makeMatcherCountUnit(
-				List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt);
+			List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt);
 
 	protected abstract double computeInverseEntropy(
 			List<MatcherCountUnit> matcherCountUnitList);
-	
-	protected abstract double computeRelatedness(MatcherCountUnit durationUserBhv,
-	SnapshotUserCxt uCxt);
+
+	protected abstract double computeRelatedness(
+			MatcherCountUnit durationUserBhv, SnapshotUserCxt uCxt);
 
 	protected abstract double computeLikelihood(int numTotalHistory,
-				Map<MatcherCountUnit, Double> relatedHistoryMap,
-				SnapshotUserCxt uCxt);
+			Map<MatcherCountUnit, Double> relatedHistoryMap,
+			SnapshotUserCxt uCxt);
 
 	protected abstract double computeScore(MatcherResult matcherResult);
 

@@ -42,6 +42,7 @@ public class AppShuttlePreferences {
 		editor.putBoolean("predictor.store", false);
 		editor.putLong("predictor.period", 180000);
 		editor.putLong("predictor.delay_ignorance", 60000);
+		editor.putLong("predictor.max_duration", 21 * AlarmManager.INTERVAL_DAY);
 		
 		editor.putLong("matcher.recent.frequently.duration", 36 * AlarmManager.INTERVAL_HOUR);
 		editor.putLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR);
@@ -69,12 +70,6 @@ public class AppShuttlePreferences {
 		editor.putInt("matcher.time.daily_weekend.min_num_related_history", 3);
 		editor.putLong("matcher.time.daily_weekend.tolerance", 2 * AlarmManager.INTERVAL_HOUR);
 
-//		editor.putLong("matcher.position.place.duration", 5 * AlarmManager.INTERVAL_DAY);
-//		editor.putLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_HOUR);
-//		editor.putFloat("matcher.position.place.min_likelihood", 0.3f);
-//		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.1f);
-//		editor.putInt("matcher.position.place.min_num_history", 3);
-
 		editor.putLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.position.move.min_likelihood", 0.3f);
@@ -83,17 +78,23 @@ public class AppShuttlePreferences {
 		editor.putLong("matcher.position.loc.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.position.loc.min_likelihood", 0);
 		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0);
-		editor.putInt("matcher.position.loc.min_num_history", 5);
+		editor.putInt("matcher.position.loc.min_num_history", 3);
 		editor.putInt("matcher.position.loc.tolerance", 500); //in meter
 
 		editor.putLong("matcher.position.loc_time.duration", 5 * AlarmManager.INTERVAL_DAY);
-		editor.putFloat("matcher.position.loc_time.min_likelihood", 0.5f);
+		editor.putFloat("matcher.position.loc_time.min_likelihood", 0);
 		editor.putFloat("matcher.position.loc_time.min_inverse_entropy", 0);
-		editor.putInt("matcher.position.loc_time.min_num_history", 5);
+		editor.putInt("matcher.position.loc_time.min_num_history", 3);
 		editor.putInt("matcher.position.loc_time.tolerance", 500); //in meter
 		editor.putLong("matcher.position.loc_time.tolerance_time", 2 * AlarmManager.INTERVAL_HOUR);
 
-		editor.putLong("matcher.headset.duration", 5 * AlarmManager.INTERVAL_DAY);
+//		editor.putLong("matcher.position.place.duration", 5 * AlarmManager.INTERVAL_DAY);
+//		editor.putLong("matcher.position.place.acceptance_delay", AlarmManager.INTERVAL_HOUR);
+//		editor.putFloat("matcher.position.place.min_likelihood", 0.3f);
+//		editor.putFloat("matcher.position.place.min_inverse_entropy", 0.1f);
+//		editor.putInt("matcher.position.place.min_num_history", 3);
+
+		editor.putLong("matcher.headset.duration", 21 * AlarmManager.INTERVAL_DAY);
 		editor.putLong("matcher.headset.acceptance_delay", AlarmManager.INTERVAL_HOUR);
 		editor.putFloat("matcher.headset.min_likelihood", 0.5f);
 		editor.putInt("matcher.headset.min_num_related_history", 3);
@@ -102,7 +103,6 @@ public class AppShuttlePreferences {
 		editor.putLong("view.update_period", 10000);
 		editor.putInt("viewer.noti.max_num", 24);
 		editor.putInt("viewer.noti.proper_num_favorite", 6);
-		
 		
 		// TODO: 통계관련 패러미터 추가
 		

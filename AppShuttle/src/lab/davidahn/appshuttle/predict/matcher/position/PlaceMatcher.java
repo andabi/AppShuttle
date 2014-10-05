@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
@@ -119,65 +118,4 @@ public class PlaceMatcher extends PositionMatcher {
 		else
 			return 0;
 	}
-	
-	@Override
-	protected double computeLikelihood(int numTotalHistory,
-			Map<MatcherCountUnit, Double> relatedHistoryMap,
-			SnapshotUserCxt uCxt) {
-		if(numTotalHistory <= 0)
-			return 0;
-		
-		return relatedHistoryMap.size() / numTotalHistory;
-	}
 }
-
-//@Override
-//protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
-//	List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-//	MatcherCountUnit.Builder matcherCountUnitBuilder = null;
-//	
-//	for(DurationUserBhv durationUserBhv : durationUserBhvList){
-//		for(DurationUserEnv durationUserEnv : DurationUserEnvManager.getInstance().retrieve(durationUserBhv.getTimeDate()
-//				, durationUserBhv.getEndTimeDate(), EnvType.PLACE)){
-//			matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
-//				.addRelatedDurationUserBhv(durationUserBhv)
-//				.setProperty("place", (UserPlace)durationUserEnv.getUserEnv());
-//			res.add(matcherCountUnitBuilder.build());
-//		}
-//	}
-//	
-//	return res;
-//}
-
-//@Override
-//protected List<MatcherCountUnit> mergeMatcherCountUnit(List<MatcherCountUnit> matcherCountUnitList) {
-//	List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
-//
-//	MatcherCountUnit lastUnit = null;
-//	for(MatcherCountUnit unit : matcherCountUnitList){
-//		if(lastUnit == null){
-//			lastUnit = unit;
-//			continue;
-//		}
-//		
-//		UserPlace userPlace = (UserPlace)unit.getProperty("place");
-//		UserPlace lastUserPlace = (UserPlace)lastUnit.getProperty("place");
-//		if(!userPlace.equals(lastUserPlace)){
-//			res.add(lastUnit);
-//			lastUnit = unit;
-//			continue;
-//		}
-//		
-//		long time = unit.getDurationUserBhvList().get(0).getTimeDate().getTime();
-//		long lastTime = lastUnit.getDurationUserBhvList().get(0).getTimeDate().getTime();
-//		if(time - lastTime	>= conf.getAcceptanceDelay()){
-//			res.add(lastUnit);
-//		}
-//		
-//		lastUnit = unit;
-//	}
-//	
-//	res.add(lastUnit);
-//	
-//	return res;
-//}

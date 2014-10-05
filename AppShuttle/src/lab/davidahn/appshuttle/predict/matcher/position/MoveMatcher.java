@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.predict.matcher.position;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
@@ -99,17 +98,6 @@ public class MoveMatcher extends PositionMatcher {
 		return 0;
 	}
 
-	@Override
-	protected double computeLikelihood(int numTotalHistory,
-			Map<MatcherCountUnit, Double> relatedHistoryMap,
-			SnapshotUserCxt uCxt) {	
-//		return (double)relatedHistoryMap.size() / Integer.MAX_VALUE;
-		if(numTotalHistory <= 0)
-			return 0;
-		
-		return relatedHistoryMap.size() / numTotalHistory;
-	}
-	
 	@Override
 	protected double computeScore(MatcherResult matcherResult) {
 		double score = 1 + 0.5 * matcherResult.getLikelihood()

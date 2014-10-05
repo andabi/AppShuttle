@@ -6,6 +6,8 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvManager;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
@@ -30,10 +32,12 @@ import android.content.SharedPreferences;
 
 public class Predictor {
 	private List<MatcherElem> matcherList;
+	private long maxDuration;
 	
 	private static Predictor predictor = new Predictor();
 	private Predictor(){
 		matcherList = new ArrayList<MatcherElem>();
+		maxDuration = AppShuttleApplication.getContext().getPreferences().getLong("predictor.max_duration", 21 * AlarmManager.INTERVAL_DAY);
 		registerMatcher();
 	}
 	public static Predictor getInstance() {
@@ -188,10 +192,14 @@ public class Predictor {
 		
 		List<PredictedBhv> predictedBhvList = new ArrayList<PredictedBhv>();
 		UserBhvManager userBhvManager = UserBhvManager.getInstance();
+		long toTime = currUserCxt.getTime();
+		long fromTime = toTime - maxDuration;
 		for(UserBhv uBhv : userBhvManager.getRegisteredBhvSet()){
+			List<DurationUserBhv> history = getInvolvedDurationUserBhv(uBhv, fromTime, toTime);
+
 			EnumMap<MatcherType, MatcherResultElem> matcherMap = new EnumMap<MatcherType, MatcherResultElem>(MatcherType.class);
 			for(MatcherElem matcher : matcherList){
-				MatcherResultElem matcherResult = matcher.matchAndGetResult(uBhv, currUserCxt);
+				MatcherResultElem matcherResult = matcher.matchAndGetResult(uBhv, currUserCxt, history);
 				if(matcherResult == null)
 					continue;
 				matcherMap.put(matcher.getType(), matcherResult);
@@ -209,6 +217,22 @@ public class Predictor {
 		}
 		PredictedBhv.updatePredictedBhvList(predictedBhvList);
 	}
+	
+	private List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, long fromTime, long toTime) {
+		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
+
+		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(
+				fromTime, toTime, uBhv);
+		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
+		for (DurationUserBhv durationUserBhv : durationUserBhvList) {
+			// if(durationUserBhv.getEndTime().getTime() -
+			// durationUserBhv.getTime().getTime() < noiseTimeTolerance)
+			// continue;
+			pureDurationUserBhvList.add(durationUserBhv);
+		}
+		return pureDurationUserBhvList;
+	}
+	
 	private double computePredictionScore(EnumMap<MatcherType, MatcherResultElem> matcherResults){
 		double PredictionScore = 0;
 		

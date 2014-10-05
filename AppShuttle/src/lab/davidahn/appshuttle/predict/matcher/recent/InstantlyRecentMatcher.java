@@ -7,8 +7,6 @@ import java.util.Map;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
@@ -22,26 +20,6 @@ public class InstantlyRecentMatcher extends RecentMatcher {
 	@Override
 	public MatcherType getType(){
 		return MatcherType.INSTANTALY_RECENT;
-	}
-	
-	@Override
-	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv,
-			SnapshotUserCxt currUCxt) {
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
-
-		long toTime = currUCxt.getTime();
-		long fromTime = toTime - conf.getDuration();
-
-		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveOnEndTimeByBhv(
-				fromTime, toTime, uBhv);
-		List<DurationUserBhv> pureDurationUserBhvList = new ArrayList<DurationUserBhv>();
-		for (DurationUserBhv durationUserBhv : durationUserBhvList) {
-			// if(durationUserBhv.getEndTimeDate().getTime() -
-			// durationUserBhv.getTimeDate().getTime() < noiseTimeTolerance)
-			// continue;
-			pureDurationUserBhvList.add(durationUserBhv);
-		}
-		return pureDurationUserBhvList;
 	}
 	
 	@Override

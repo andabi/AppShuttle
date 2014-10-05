@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
@@ -17,8 +16,6 @@ import lab.davidahn.appshuttle.collect.env.UserLoc;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
-
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 /**
  * K-NN based algorithm
@@ -43,9 +40,10 @@ public class LocationMatcher extends PositionMatcher {
 
 		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 
+		UserLoc lastKnownUserLoc = null;
+		long accumulativeDuration = 0;
+		
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			UserLoc lastKnownUserLoc = null;
-			long accumulativeDuration = 0;
 			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTime()
 					, durationUserBhv.getEndTime(), EnvType.LOCATION)){
 				UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
@@ -65,11 +63,11 @@ public class LocationMatcher extends PositionMatcher {
 				accumulativeDuration += duration;
 				lastKnownUserLoc = userLoc;
 			}
-			
-			if(matcherCountUnitBuilder != null)
-				res.add(matcherCountUnitBuilder.build());
 		}
 		
+		if(matcherCountUnitBuilder != null)
+			res.add(matcherCountUnitBuilder.build());
+
 		return res;
 	}
 	
@@ -124,17 +122,5 @@ public class LocationMatcher extends PositionMatcher {
 		} catch (InvalidUserEnvException e) {
 			return 0;
 		}
-	}
-	
-	@Override
-	protected double computeLikelihood(int numTotalHistory, Map<MatcherCountUnit, Double> relatedHistoryMap, SnapshotUserCxt uCxt){
-		if(numTotalHistory <= 0)
-			return 0;
-
-		SummaryStatistics relatednessStat = new SummaryStatistics();
-		for(double relatedness : relatedHistoryMap.values())
-			relatednessStat.addValue(relatedness);
-		
-		return relatednessStat.getMean();
 	}
 }

@@ -2,7 +2,6 @@ package lab.davidahn.appshuttle.predict.matcher.recent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
@@ -67,14 +66,6 @@ public abstract class RecentMatcher extends Matcher {
 		return 1;
 	}
 
-	
-	@Override
-	protected double computeLikelihood(int numTotalHistory,
-			Map<MatcherCountUnit, Double> relatedHistoryMap,
-			SnapshotUserCxt uCxt) {
-	return 1;
-}
-	
 	@Override
 	protected double computeScore(MatcherResult matcherResult) {
 		double likelihood = matcherResult.getLikelihood();
@@ -85,50 +76,3 @@ public abstract class RecentMatcher extends Matcher {
 		return score;
 	}
 }
-
-//	private int getNumTotalCxt(UserCxt uCxt){
-//		int numTotalHistory = 0;
-//		long etime = uCxt.getTime().getTime();
-//		long sTime = etime - settings.getLong("matcher.duration", 5 * AlarmManager.INTERVAL_DAY);
-//
-//		for(UserBhv uBhv : userBhvManager.retrieveBhv()){
-//			List<RfdUserCxt> durationUserBhvList = contextManager.retrieveRfdCxtByBhv(sTime, etime, uBhv);
-//			numTotalHistory+=durationUserBhvList.size();
-//		}
-//		return numTotalHistory;
-//	}
-	
-//	@Override
-//	protected List<MergedRfdUserCxt> mergeCxtByCountUnit(List<RfdUserCxt> durationUserBhvList) {
-//		List<MergedRfdUserCxt> res = new ArrayList<MergedRfdUserCxt>();
-//		Map<UserBhv, RfdUserCxt> ongoingBhvMap = new HashMap<UserBhv, RfdUserCxt>();
-//
-//		for(RfdUserCxt durationUserBhv : durationUserBhvList){
-//			UserBhv uBhv = durationUserBhv.getBhv();
-//			if(ongoingBhvMap.isEmpty()) {
-//				ongoingBhvMap.put(uBhv, durationUserBhv);
-//			} else {
-//				if(ongoingBhvMap.containsKey(uBhv)){
-//					RfdUserCxt prevDurationUserBhv = ongoingBhvMap.get(uBhv);
-//					if(durationUserBhv.getStartTime().getTime() - prevDurationUserBhv.getEndTime().getTime()
-//							< settings.getLong("matcher.recent.frequently.acceptance_delay", AlarmManager.INTERVAL_HOUR / 6)){
-//						MergedRfdUserCxt mergedDurationUserBhv = prevDurationUserBhv;
-//						mergedDurationUserBhv.setEndTime(durationUserBhv.getEndTime());
-//						mergedDurationUserBhv.setLocs(durationUserBhv.getLocs());
-//						mergedDurationUserBhv.setPlaces(durationUserBhv.getPlaces());
-//						ongoingBhvMap.put(uBhv, mergedDurationUserBhv);
-//					} else {
-//						res.add(ongoingBhvMap.remove(uBhv));
-//						ongoingBhvMap.put(uBhv, durationUserBhv);
-//					}
-//				} else {
-//					ongoingBhvMap.put(uBhv, durationUserBhv);
-//				}
-//			}
-//		}
-//		for(UserBhv ongoingBhv : ongoingBhvMap.keySet()){
-//			RfdUserCxt restDurationUserBhv = ongoingBhvMap.get(ongoingBhv);
-//			res.add(restDurationUserBhv);
-//		}
-//		return res;
-//	}

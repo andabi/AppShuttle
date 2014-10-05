@@ -5,8 +5,6 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
-import lab.davidahn.appshuttle.collect.bhv.DurationUserBhvDao;
-import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import android.app.AlarmManager;
@@ -35,22 +33,14 @@ public class DailyWeekdayTimeMatcher extends TimeMatcher {
 	}
 	
 	@Override
-	protected List<DurationUserBhv> getInvolvedDurationUserBhv(UserBhv uBhv, SnapshotUserCxt currUCxt) {
-		long toTime = currUCxt.getTime() - conf.getTimeTolerance();
-		
-		assert(conf.getDuration() % INTERVAL_WEEK == 0);
-		
-		long fromTime = toTime - conf.getDuration();
-
-		DurationUserBhvDao durationUserBhvDao = DurationUserBhvDao.getInstance();
-		List<DurationUserBhv> durationUserBhvList = durationUserBhvDao.retrieveByBhv(fromTime, toTime, uBhv);
-		
+	protected List<DurationUserBhv> rejectNotUsedHistory(List<DurationUserBhv> durationUserBhvs, SnapshotUserCxt currUCxt) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			if(isWeekDay(durationUserBhv.getTime()))
+		for(DurationUserBhv durationUserBhv : durationUserBhvs){
+			long timePast = currUCxt.getTime() - durationUserBhv.getTime();
+			if(timePast < conf.getDuration() && timePast > conf.getTimeTolerance() 
+					&& isWeekDay(durationUserBhv.getTime()))
 				res.add(durationUserBhv);
 		}
-		
 		return res;
 	}
 }

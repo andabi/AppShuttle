@@ -6,6 +6,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
+import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhv;
 
 public abstract class MatcherGroup extends MatcherElem {
@@ -16,14 +17,14 @@ public abstract class MatcherGroup extends MatcherElem {
 	}
 
 	@Override
-	public MatcherResultElem matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt){
+	public MatcherResultElem matchAndGetResult(UserBhv uBhv, SnapshotUserCxt currUCxt, List<DurationUserBhv> history){
 		
 		if(matchers.isEmpty())
 			return null;
 
 		List<MatcherResultElem> matcherResults = new ArrayList<MatcherResultElem>();
 		for(MatcherElem matcher : matchers.values()) {
-			MatcherResultElem matcherResult = matcher.matchAndGetResult(uBhv, currUCxt);
+			MatcherResultElem matcherResult = matcher.matchAndGetResult(uBhv, currUCxt, history);
 			if(matcherResult != null)
 				matcherResults.add(matcherResult);
 		}

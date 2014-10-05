@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
 import lab.davidahn.appshuttle.collect.bhv.DurationUserBhv;
 import lab.davidahn.appshuttle.collect.env.DurationUserEnv;
@@ -93,10 +95,16 @@ public class HeadsetMatcher extends Matcher {
 	@Override
 	protected double computeLikelihood(int numTotalHistory,
 			Map<MatcherCountUnit, Double> relatedHistoryMap,
-			SnapshotUserCxt uCxt) {	
-		if(numTotalHistory <= 0) return 0;
-		
-		return relatedHistoryMap.size() / numTotalHistory;
+			SnapshotUserCxt uCxt) {
+
+		if (numTotalHistory <= 0)
+			return 0;
+
+		SummaryStatistics relatednessStat = new SummaryStatistics();
+		for (double relatedness : relatedHistoryMap.values())
+			relatednessStat.addValue(relatedness);
+
+		return relatednessStat.getMean();
 	}
 	
 	@Override
