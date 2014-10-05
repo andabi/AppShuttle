@@ -239,7 +239,7 @@ public class AppShuttleMainActivity extends Activity {
 	}
 
 	public static Drawable getIcon(Context cxt, int index, int size) {
-		int iconId = R.drawable.info;
+		int iconId = R.drawable.ic_launcher;
 		switch (index) {
 		case 0:
 			iconId = R.drawable.present;
@@ -249,6 +249,9 @@ public class AppShuttleMainActivity extends Activity {
 			break;
 		case 2:
 			iconId = R.drawable.ignore;
+			break;
+		case 3:
+			iconId = R.drawable.info;
 			break;
 		default:
 		}
@@ -275,6 +278,8 @@ public class AppShuttleMainActivity extends Activity {
 		case 2:
 			iconId = R.drawable.ignore_on;
 			break;
+		case 3:
+			iconId = R.drawable.info;
 		default:
 		}
 
@@ -438,17 +443,17 @@ public class AppShuttleMainActivity extends Activity {
 				}
 			});
 
-			ImageView share = (ImageView) layout.findViewById(R.id.share);
-			share.setOnClickListener(new ImageView.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					String subject = cxt.getResources()
-							.getString(R.string.name);
-					String text = cxt.getResources().getString(
-							R.string.share_msg);
-					ShareUtils.shareTextPlain(cxt, subject, text);
-				}
-			});
+//			ImageView share = (ImageView) layout.findViewById(R.id.share);
+//			share.setOnClickListener(new ImageView.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					String subject = cxt.getResources()
+//							.getString(R.string.name);
+//					String text = cxt.getResources().getString(
+//							R.string.share_msg);
+//					ShareUtils.shareTextPlain(cxt, subject, text);
+//				}
+//			});
 
 			return layout;
 		}
