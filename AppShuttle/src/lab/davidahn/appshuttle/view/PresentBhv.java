@@ -15,19 +15,10 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 
 public abstract class PresentBhv extends ViewableUserBhv {
-//	private long time;
-//	private long endTime;
 	
 	public PresentBhv(UserBhv uBhv) {
 		super(uBhv);
 	}
-
-//	public long getTime() {
-//		return time;
-//	}
-//	public long getEndTime() {
-//		return endTime;
-//	}
 
 	@Override
 	public Integer getNotibarContainerId() {

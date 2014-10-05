@@ -24,6 +24,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 
@@ -146,6 +147,15 @@ public class NotiBarNotifier {
 				continue;
 			
 			notiRemoteView.addView(notibarContainerId, notiElemRemoteView);
+
+			int predictedBhvListSize = PresentBhv.getPresentBhvListFilteredSorted(Integer.MAX_VALUE).size();
+			int extraNum = predictedBhvListSize - getNumPresentElem();
+			if(extraNum > 0) {
+				notiRemoteView.setViewVisibility(R.id.noti_icon, View.GONE);
+				notiRemoteView.setTextViewText(R.id.noti_extra_num, "+" + extraNum);
+				notiRemoteView.setViewVisibility(R.id.noti_extra_num, View.VISIBLE);
+				notiRemoteView.setOnClickPendingIntent(R.id.noti_extra_num, PendingIntent.getActivity(cxt, 0, new Intent(cxt, AppShuttleMainActivity.class), 0));
+			}
 		}
 
 		return notiRemoteView;
