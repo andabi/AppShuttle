@@ -24,9 +24,9 @@ public class AppShuttlePreferences {
 		editor.putLong("collection.env.place.auto_extraction_duration", AlarmManager.INTERVAL_FIFTEEN_MINUTES);
 
 		editor.putBoolean("collection.bhv.enabled", true);
-		editor.putLong("collection.bhv.period", 15000);
+		editor.putLong("collection.bhv.period", 30000);
 		editor.putLong("collection.bhv.app.pre.depreciation", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5);
-		editor.putLong("collection.bhv.call.pre.period", 6 * AlarmManager.INTERVAL_DAY);
+		editor.putLong("collection.bhv.call.pre.period", 21 * AlarmManager.INTERVAL_DAY);
 
 		//compaction
 		editor.putBoolean("compaction.enabled", true);
@@ -40,8 +40,8 @@ public class AppShuttlePreferences {
 		
 		//predictor
 		editor.putBoolean("predictor.store", false);
-		editor.putLong("predictor.period", 180000);
-		editor.putLong("predictor.delay_ignorance", 60000);
+		editor.putLong("predictor.period", 300000);
+		editor.putLong("predictor.delay_ignorance", 150000);
 		editor.putLong("predictor.max_duration", 21 * AlarmManager.INTERVAL_DAY);
 		
 		editor.putLong("matcher.recent.frequently.duration", 36 * AlarmManager.INTERVAL_HOUR);
@@ -78,13 +78,13 @@ public class AppShuttlePreferences {
 		editor.putLong("matcher.position.loc.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.position.loc.min_likelihood", 0);
 		editor.putFloat("matcher.position.loc.min_inverse_entropy", 0);
-		editor.putInt("matcher.position.loc.min_num_history", 3);
+		editor.putInt("matcher.position.loc.min_num_history", 4);
 		editor.putInt("matcher.position.loc.tolerance", 500); //in meter
 
 		editor.putLong("matcher.position.loc_time.duration", 5 * AlarmManager.INTERVAL_DAY);
 		editor.putFloat("matcher.position.loc_time.min_likelihood", 0);
 		editor.putFloat("matcher.position.loc_time.min_inverse_entropy", 0);
-		editor.putInt("matcher.position.loc_time.min_num_history", 3);
+		editor.putInt("matcher.position.loc_time.min_num_history", 4);
 		editor.putInt("matcher.position.loc_time.tolerance", 500); //in meter
 		editor.putLong("matcher.position.loc_time.tolerance_time", 2 * AlarmManager.INTERVAL_HOUR);
 
