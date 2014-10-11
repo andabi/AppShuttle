@@ -25,6 +25,17 @@ public class LocationTimeMatcher extends LocationMatcher {
 	public MatcherType getType() {
 		return MatcherType.LOCATION_TIME;
 	}
+	
+	@Override
+	protected List<DurationUserBhv> rejectNotUsedHistory(List<DurationUserBhv> durationUserBhvs, SnapshotUserCxt currUCxt) {
+		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
+		for(DurationUserBhv durationUserBhv : durationUserBhvs){
+			long timePast = currUCxt.getTime() - durationUserBhv.getTime();
+			if(timePast < conf.getDuration() && timePast > conf.getTimeTolerance())
+				res.add(durationUserBhv);
+		}
+		return res;
+	}
 
 	@Override
 	protected List<MatcherCountUnit> makeMatcherCountUnit(
