@@ -1,9 +1,11 @@
 package lab.davidahn.appshuttle.predict.matcher.position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import lab.davidahn.appshuttle.collect.SnapshotUserCxt;
@@ -34,18 +36,43 @@ public class LocationMatcher extends PositionMatcher {
 	}
 
 	@Override
-	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvList, SnapshotUserCxt uCxt) {
+	protected List<MatcherCountUnit> makeMatcherCountUnit(List<DurationUserBhv> durationUserBhvs, SnapshotUserCxt uCxt) {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
+		if(durationUserBhvs.isEmpty())
+			return res;
+		
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		long fromTime = durationUserBhvs.get(0).getTime();
+		long toTime = durationUserBhvs.get(durationUserBhvs.size() - 1).getEndTime();
+		List<DurationUserEnv> durationUserEnvs = durationUserEnvManager.retrieve(fromTime, toTime, EnvType.LOCATION);
+		
+		if(durationUserEnvs.isEmpty())
+			return res;
 
+		Map<DurationUserBhv, List<DurationUserEnv>> bhvEnvMapper = new HashMap<DurationUserBhv, List<DurationUserEnv>>();
+		Iterator<DurationUserEnv> it = durationUserEnvs.iterator();
+		DurationUserEnv durationUserEnv = it.next();
+		DurationUserEnv prevDurationUserEnv = null;
+		for(DurationUserBhv durationUserBhv : durationUserBhvs){
+			List<DurationUserEnv> envs = new ArrayList<DurationUserEnv>();
+			while(durationUserEnv.getTime() < durationUserBhv.getEndTime()) {
+				envs.add(durationUserEnv);
+				prevDurationUserEnv = durationUserEnv;
+				if(!it.hasNext()) break;
+				durationUserEnv = it.next();
+			}
+			bhvEnvMapper.put(durationUserBhv, envs);
+			durationUserEnv = prevDurationUserEnv;
+		}
+		
+		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
 		UserLoc lastKnownUserLoc = null;
 		long accumulativeDuration = 0;
 		
-		for(DurationUserBhv durationUserBhv : durationUserBhvList){
-			for(DurationUserEnv durationUserEnv : durationUserEnvManager.retrieve(durationUserBhv.getTime()
-					, durationUserBhv.getEndTime(), EnvType.LOCATION)){
+		for(DurationUserBhv durationUserBhv : durationUserBhvs){
+			while(it.hasNext() && durationUserEnv.getEndTime() < durationUserBhv.getEndTime()) {
+
 				UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 				long duration = durationUserEnv.getDuration();
 				if(lastKnownUserLoc == null) {
@@ -62,6 +89,8 @@ public class LocationMatcher extends PositionMatcher {
 				}
 				accumulativeDuration += duration;
 				lastKnownUserLoc = userLoc;
+				
+				durationUserEnv = it.next();
 			}
 		}
 		
