@@ -11,7 +11,6 @@ import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserSpeed;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
-import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
@@ -40,7 +39,7 @@ public class MoveMatcher extends PositionMatcher {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		MatcherCountUnit matcherCountUnit = null;
 
 		DurationUserBhv prevDurationUserBhv = null;
 		UserSpeed.Level lastKnownUserSpeedLevel = null;
@@ -49,17 +48,17 @@ public class MoveMatcher extends PositionMatcher {
 					, durationUserBhv.getEndTime(), EnvType.SPEED)){
 				UserSpeed.Level userSpeedLevel = ((UserSpeed)durationUserEnv.getUserEnv()).getLevel();
 				if(prevDurationUserBhv == null) {
-					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
+					matcherCountUnit = makeMatcherCountUnit(durationUserBhv, userSpeedLevel);
 				} else {
 					if(!userSpeedLevel.equals(lastKnownUserSpeedLevel)){
-						res.add(matcherCountUnitBuilder.build());
-						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
+						res.add(matcherCountUnit);
+						matcherCountUnit = makeMatcherCountUnit(durationUserBhv, userSpeedLevel);
 					} else {
 						long time = durationUserBhv.getTime();
 						long lastEndTime = prevDurationUserBhv.getEndTime();
 						if(time - lastEndTime >= conf.getAcceptanceDelay()){
-							res.add(matcherCountUnitBuilder.build());
-							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userSpeedLevel);
+							res.add(matcherCountUnit);
+							matcherCountUnit = makeMatcherCountUnit(durationUserBhv, userSpeedLevel);
 						}
 					}
 				}
@@ -69,15 +68,16 @@ public class MoveMatcher extends PositionMatcher {
 			}
 		}
 
-		if(matcherCountUnitBuilder != null)
-			res.add(matcherCountUnitBuilder.build());
+		if(matcherCountUnit != null)
+			res.add(matcherCountUnit);
 		
 		return res;
 	}
 
-	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv, UserSpeed.Level userSpeedLevel) {
-		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
-		.setProperty("speed_level", userSpeedLevel);
+	private MatcherCountUnit makeMatcherCountUnit(DurationUserBhv durationUserBhv, UserSpeed.Level userSpeedLevel) {
+		MatcherCountUnit matcherCountUnit = new MatcherCountUnit(durationUserBhv.getUserBhv());
+		matcherCountUnit.setProperty("speed_level", userSpeedLevel);
+		return matcherCountUnit;
 	}
 	
 	@Override

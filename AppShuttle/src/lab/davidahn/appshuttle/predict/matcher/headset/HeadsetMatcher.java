@@ -16,7 +16,6 @@ import lab.davidahn.appshuttle.collect.env.HeadsetEnvSensor;
 import lab.davidahn.appshuttle.predict.matcher.Matcher;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
-import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.MatcherResult;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
@@ -42,7 +41,7 @@ public class HeadsetMatcher extends Matcher {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		MatcherCountUnit matcherCountUnit = null;
 
 		DurationUserBhv prevDurationUserBhv = null;
 		HeadsetEnv lastKnownHeadsetEnv = null;
@@ -51,17 +50,17 @@ public class HeadsetMatcher extends Matcher {
 					, durationUserBhv.getEndTime(), EnvType.HEADSET)){
 				HeadsetEnv headsetEnv = ((HeadsetEnv)durationUserEnv.getUserEnv());
 				if(prevDurationUserBhv == null) {
-					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, headsetEnv);
+					matcherCountUnit = makeMatcherCountUnit(durationUserBhv, headsetEnv);
 				} else {
 					if(!headsetEnv.equals(lastKnownHeadsetEnv)){
-						res.add(matcherCountUnitBuilder.build());
-						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, headsetEnv);
+						res.add(matcherCountUnit);
+						matcherCountUnit = makeMatcherCountUnit(durationUserBhv, headsetEnv);
 					} else {
 						long time = durationUserBhv.getTime();
 						long lastEndTime = prevDurationUserBhv.getEndTime();
 						if(time - lastEndTime >= conf.getAcceptanceDelay()){
-							res.add(matcherCountUnitBuilder.build());
-							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, headsetEnv);
+							res.add(matcherCountUnit);
+							matcherCountUnit = makeMatcherCountUnit(durationUserBhv, headsetEnv);
 						}
 					}
 				}
@@ -70,16 +69,18 @@ public class HeadsetMatcher extends Matcher {
 			}
 		}
 
-		if(matcherCountUnitBuilder != null)
-			res.add(matcherCountUnitBuilder.build());
+		if(matcherCountUnit != null)
+			res.add(matcherCountUnit);
 		
 		return res;
 	}
 
-	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv, HeadsetEnv headsetEnv) {
-		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv())
-		.setProperty("headset_plugged", headsetEnv.isPlugged());
+	private MatcherCountUnit makeMatcherCountUnit(DurationUserBhv durationUserBhv, HeadsetEnv headsetEnv) {
+		MatcherCountUnit matcherCountUnit = new MatcherCountUnit(durationUserBhv.getUserBhv());
+		matcherCountUnit.setProperty("headset_plugged", headsetEnv.isPlugged());
+		return matcherCountUnit;
 	}
+
 	
 	@Override
 	protected double computeInverseEntropy(List<MatcherCountUnit> matcherCountUnitList) {

@@ -38,7 +38,7 @@ public class LocationMatcher extends PositionMatcher {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		MatcherCountUnit matcherCountUnit = null;
 
 		UserLoc lastKnownUserLoc = null;
 		long accumulativeDuration = 0;
@@ -49,15 +49,15 @@ public class LocationMatcher extends PositionMatcher {
 				UserLoc userLoc = (UserLoc)durationUserEnv.getUserEnv();
 				long duration = durationUserEnv.getDuration();
 				if(lastKnownUserLoc == null) {
-					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-					matcherCountUnitBuilder.setProperty("location", userLoc);
-					matcherCountUnitBuilder.setProperty("duration", duration);
+					matcherCountUnit = new MatcherCountUnit(durationUserBhv.getUserBhv());
+					matcherCountUnit.setProperty("location", userLoc);
+					matcherCountUnit.setProperty("duration", duration);
 				} else {
 					if(!userLoc.equals(lastKnownUserLoc)){
-						res.add(matcherCountUnitBuilder.build());
-						matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
-						matcherCountUnitBuilder.setProperty("location", userLoc);
-						matcherCountUnitBuilder.setProperty("duration", accumulativeDuration );
+						res.add(matcherCountUnit);
+						matcherCountUnit = new MatcherCountUnit(durationUserBhv.getUserBhv());
+						matcherCountUnit.setProperty("location", userLoc);
+						matcherCountUnit.setProperty("duration", accumulativeDuration );
 					}
 				}
 				accumulativeDuration += duration;
@@ -65,8 +65,8 @@ public class LocationMatcher extends PositionMatcher {
 			}
 		}
 		
-		if(matcherCountUnitBuilder != null)
-			res.add(matcherCountUnitBuilder.build());
+		if(matcherCountUnit != null)
+			res.add(matcherCountUnit);
 
 		return res;
 	}

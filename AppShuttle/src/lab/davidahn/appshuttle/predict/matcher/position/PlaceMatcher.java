@@ -14,7 +14,6 @@ import lab.davidahn.appshuttle.collect.env.EnvType;
 import lab.davidahn.appshuttle.collect.env.UserPlace;
 import lab.davidahn.appshuttle.predict.matcher.MatcherConf;
 import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit;
-import lab.davidahn.appshuttle.predict.matcher.MatcherCountUnit.Builder;
 import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 
 public class PlaceMatcher extends PositionMatcher {
@@ -33,7 +32,7 @@ public class PlaceMatcher extends PositionMatcher {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager.getInstance();
 
-		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		MatcherCountUnit matcherCountUnit = null;
 		
 		DurationUserBhv prevDurationUserBhv = null;
 		UserPlace lastKnownUserPlace = null;
@@ -42,17 +41,17 @@ public class PlaceMatcher extends PositionMatcher {
 					, durationUserBhv.getEndTime(), EnvType.PLACE)){
 				UserPlace userPlace = (UserPlace)durationUserEnv.getUserEnv();
 				if(prevDurationUserBhv == null) {
-					matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
+					matcherCountUnit = makeMatcherCountUnit(durationUserBhv, userPlace);
 				} else {
 					if(!userPlace.equals(lastKnownUserPlace)){
-						res.add(matcherCountUnitBuilder.build());
-						matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
+						res.add(matcherCountUnit);
+						matcherCountUnit = makeMatcherCountUnit(durationUserBhv, userPlace);
 					} else {
 						long time = durationUserBhv.getTime();
 						long lastEndTime = prevDurationUserBhv.getEndTime();
 						if(time - lastEndTime >= conf.getAcceptanceDelay()){
-							res.add(matcherCountUnitBuilder.build());
-							matcherCountUnitBuilder = makeMatcherCountUnitBuilder(durationUserBhv, userPlace);
+							res.add(matcherCountUnit);
+							matcherCountUnit = makeMatcherCountUnit(durationUserBhv, userPlace);
 						}
 					}
 				}
@@ -62,14 +61,16 @@ public class PlaceMatcher extends PositionMatcher {
 			}
 		}
 
-		if(matcherCountUnitBuilder != null)
-			res.add(matcherCountUnitBuilder.build());
+		if(matcherCountUnit != null)
+			res.add(matcherCountUnit);
 		
 		return res;
 	}
 
-	private Builder makeMatcherCountUnitBuilder(DurationUserBhv durationUserBhv, UserPlace userPlace) {
-		return new MatcherCountUnit.Builder(durationUserBhv.getUserBhv()).setProperty("place", userPlace);
+	private MatcherCountUnit makeMatcherCountUnit(DurationUserBhv durationUserBhv, UserPlace userPlace) {
+		MatcherCountUnit matcherCountUnit = new MatcherCountUnit(durationUserBhv.getUserBhv());
+		matcherCountUnit.setProperty("place", userPlace);
+		return matcherCountUnit;
 	}
 
 	@Override

@@ -32,24 +32,24 @@ public abstract class RecentMatcher extends Matcher {
 		List<MatcherCountUnit> res = new ArrayList<MatcherCountUnit>();
 
 		DurationUserBhv prevDurationUserBhv = null;
-		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		MatcherCountUnit matcherCountUnit = null;
 		for(DurationUserBhv durationUserBhv : durationUserBhvList){
 			if(prevDurationUserBhv == null){
-				matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+				matcherCountUnit = new MatcherCountUnit(durationUserBhv.getUserBhv());
 			} else {
 				long time = durationUserBhv.getTime();
 				long prevEndTime = prevDurationUserBhv.getEndTime();
 				if(time - prevEndTime >= conf.getAcceptanceDelay()){
-					res.add(matcherCountUnitBuilder.build());
-					matcherCountUnitBuilder = new MatcherCountUnit.Builder(durationUserBhv.getUserBhv());
+					res.add(matcherCountUnit);
+					matcherCountUnit = new MatcherCountUnit(durationUserBhv.getUserBhv());
 				}
 			}
-			matcherCountUnitBuilder.addRelatedDurationUserBhv(durationUserBhv);
+			matcherCountUnit.addRelatedDurationUserBhv(durationUserBhv);
 			prevDurationUserBhv = durationUserBhv;
 		}
 		
-		if(matcherCountUnitBuilder != null)
-			res.add(matcherCountUnitBuilder.build());
+		if(matcherCountUnit != null)
+			res.add(matcherCountUnit);
 		
 		return res;
 	}

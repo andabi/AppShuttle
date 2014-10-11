@@ -44,7 +44,7 @@ public class LocationTimeMatcher extends LocationMatcher {
 		DurationUserEnvManager durationUserEnvManager = DurationUserEnvManager
 				.getInstance();
 
-		MatcherCountUnit.Builder matcherCountUnitBuilder = null;
+		MatcherCountUnit matcherCountUnit = null;
 
 		UserLoc lastKnownUserLoc = null;
 		long accumulativeDuration = 0;
@@ -56,20 +56,20 @@ public class LocationTimeMatcher extends LocationMatcher {
 				long time = durationUserEnv.getTime();
 				long duration = durationUserEnv.getDuration();
 				if (lastKnownUserLoc == null) {
-					matcherCountUnitBuilder = new MatcherCountUnit.Builder(
+					matcherCountUnit = new MatcherCountUnit(
 							durationUserBhv.getUserBhv());
-					matcherCountUnitBuilder.setProperty("time", time);
-					matcherCountUnitBuilder.setProperty("location", userLoc);
-					matcherCountUnitBuilder.setProperty("duration", duration);
+					matcherCountUnit.setProperty("time", time);
+					matcherCountUnit.setProperty("location", userLoc);
+					matcherCountUnit.setProperty("duration", duration);
 				} else {
 					if (!userLoc.equals(lastKnownUserLoc)) {
-						res.add(matcherCountUnitBuilder.build());
-						matcherCountUnitBuilder = new MatcherCountUnit.Builder(
+						res.add(matcherCountUnit);
+						matcherCountUnit = new MatcherCountUnit(
 								durationUserBhv.getUserBhv());
-						matcherCountUnitBuilder.setProperty("time", time);
-						matcherCountUnitBuilder
+						matcherCountUnit.setProperty("time", time);
+						matcherCountUnit
 								.setProperty("location", userLoc);
-						matcherCountUnitBuilder.setProperty("duration",
+						matcherCountUnit.setProperty("duration",
 								accumulativeDuration);
 					}
 				}
@@ -78,8 +78,8 @@ public class LocationTimeMatcher extends LocationMatcher {
 			}
 		}
 		
-		if (matcherCountUnitBuilder != null)
-			res.add(matcherCountUnitBuilder.build());
+		if (matcherCountUnit != null)
+			res.add(matcherCountUnit);
 
 		return res;
 	}
