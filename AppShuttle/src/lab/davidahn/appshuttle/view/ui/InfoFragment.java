@@ -36,6 +36,7 @@ public class InfoFragment extends ListFragment {
 		infoList = new ArrayList<Map<String,String>>();
 		infoList.add(getContextInfo());
 		infoList.add(getStatisticsInfo());
+		infoList.add(getEfficiencyInfo());
 		
 		adapter = new SimpleAdapter(getActivity(), infoList, android.R.layout.simple_list_item_2,
 				new String[]{INFO_KEY, INFO_VALUE},
@@ -55,6 +56,16 @@ public class InfoFragment extends ListFragment {
 		Map<String, String> keyValue = new HashMap<String, String>();
 		keyValue.put(INFO_KEY, "Statistics");
 		keyValue.put(INFO_VALUE, StatCollector.getInstance().toString());
+		return keyValue;
+	}
+	
+	private Map<String, String> getEfficiencyInfo() {
+		Map<String, String> keyValue = new HashMap<String, String>();
+		keyValue.put(INFO_KEY, "Efficiency");
+		String value = "";
+		value += "last prediction latency: " + AppShuttleApplication.lastPredictionLatency + "\n";
+		value += "max prediction latency: " + AppShuttleApplication.maxPredictionLatency;
+		keyValue.put(INFO_VALUE, value);
 		return keyValue;
 	}
 }

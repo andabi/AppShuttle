@@ -35,10 +35,18 @@ public class PredictionService extends IntentService {
 		Predictor.getInstance().predict(AppShuttleApplication.currUserCxt);
 		long endTime = System.currentTimeMillis();
 
+		long latency = endTime - startTime;
+		long maxLatency = AppShuttleApplication.maxPredictionLatency;
+		if(latency > maxLatency)
+			maxLatency = latency;
+		
+		AppShuttleApplication.lastPredictionLatency = latency;
+		AppShuttleApplication.maxPredictionLatency = maxLatency;
+		
 		Tracker easyTracker = EasyTracker.getInstance(AppShuttleApplication.getContext());
 		easyTracker.send(MapBuilder
 				.createTiming("algorithm",
-							endTime - startTime,
+							latency,
 							"overall_prediction_cost",
 							null)
 				.build()

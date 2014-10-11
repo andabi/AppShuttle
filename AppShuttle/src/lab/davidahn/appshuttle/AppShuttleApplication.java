@@ -21,6 +21,8 @@ public class AppShuttleApplication extends Application {
 	public volatile static Map<UserBhv, PredictedBhv> predictedBhvMap;
 	public volatile static Map<UserBhv, PredictedPresentBhv> predictedPresentBhvMap;
 	public static int numFavoriteNotifiable;
+	public static long lastPredictionLatency;
+	public static long maxPredictionLatency;
 	
 	public AppShuttleApplication(){}
 

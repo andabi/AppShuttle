@@ -73,7 +73,7 @@ public abstract class Matcher extends MatcherElem {
 
 	protected List<DurationUserBhv> rejectNotUsedHistory(List<DurationUserBhv> history, SnapshotUserCxt currUCxt) {
 		List<DurationUserBhv> res = new ArrayList<DurationUserBhv>();
-		for(DurationUserBhv durationUserBhv : history){
+		for(DurationUserBhv durationUserBhv : history) {
 			if(currUCxt.getTime() - durationUserBhv.getTime()  < conf.getDuration())
 				res.add(durationUserBhv);
 		}
