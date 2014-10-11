@@ -18,9 +18,9 @@
     <string name="predict_move_msg">이동 중에 주로 사용</string>
     <string name="predict_headset_msg">이어폰 쓸때 주로 사용</string>
     <string name="predict_notibar_msg_sensor_wifi">와이파이</string>
-    <string name="actionbar_tab_text_present">예측된 앱</string>
-    <string name="actionbar_tab_text_favorite">고정한 앱</string>
-    <string name="actionbar_tab_text_ignore">무시한 앱</string>
+    <string name="actionbar_tab_text_present">예측 앱</string>
+    <string name="actionbar_tab_text_favorite">고정 앱</string>
+    <string name="actionbar_tab_text_ignore">무시 앱</string>
     <string name="action_favorite">고정</string>
     <string name="action_unfavorite">고정 안함</string>
     <string name="action_ignore">무시</string>
