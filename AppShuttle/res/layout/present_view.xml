@@ -4,37 +4,39 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:id="@+id/present_noti_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@xml/present_noti_msg_border_bottom"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/present_noti_msg_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/light_light_gray"
+            android:textSize="15sp" />
+
+        <!--
+             <TextView
+            android:id="@+id/present_noti_msg_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/light_light_gray"
+            android:textSize="12sp" />
+        -->
+    </LinearLayout>
+
     <ListView
         android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
-    <LinearLayout
-        android:id="@id/android:empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <!--
-             <ImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/appshuttle_cartoon" />
-        -->
-
-         <TextView
-            android:id="@+id/present_empty_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/info"
-            android:drawablePadding="10dp"
-            android:text="@string/msg_wait"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
 
 </LinearLayout>
