@@ -18,7 +18,6 @@ import lab.davidahn.appshuttle.predict.matcher.MatcherType;
 import lab.davidahn.appshuttle.predict.matcher.headset.HeadsetMatcher;
 import lab.davidahn.appshuttle.predict.matcher.position.LocationMatcher;
 import lab.davidahn.appshuttle.predict.matcher.position.LocationTimeMatcher;
-import lab.davidahn.appshuttle.predict.matcher.position.MoveMatcher;
 import lab.davidahn.appshuttle.predict.matcher.position.PositionMatcherGroup;
 import lab.davidahn.appshuttle.predict.matcher.recent.FrequentlyRecentMatcher;
 import lab.davidahn.appshuttle.predict.matcher.recent.InstantlyRecentMatcher;
@@ -48,7 +47,7 @@ public class Predictor {
 		registerRecentMatcher();
 		registerTimeMatcher();
 		registerPositionMatcher();
-		registerHeadsetMatcher();
+//		registerHeadsetMatcher();
 	}
 	
 	private void registerRecentMatcher() {
@@ -126,17 +125,17 @@ public class Predictor {
 		SharedPreferences preferenceSettings = AppShuttleApplication.getContext().getPreferences();
 		MatcherGroup locMatcherGroup = new PositionMatcherGroup();
 
-		locMatcherGroup.registerMatcher(new MoveMatcher(
-			new MatcherConf.Builder()
-				.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY))
-				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
-				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.move.min_likelihood", 0.3f))
-				.setMinInverseEntropy(Float.MIN_VALUE)
-				.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_related_history", 3))
-				.setPositionToleranceInMeter(0)
-				.build()
-			)
-		);
+//		locMatcherGroup.registerMatcher(new MoveMatcher(
+//			new MatcherConf.Builder()
+//				.setDuration(preferenceSettings.getLong("matcher.position.move.duration", 7 * AlarmManager.INTERVAL_DAY))
+//				.setAcceptanceDelay(preferenceSettings.getLong("matcher.position.move.acceptance_delay", AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3))
+//				.setMinLikelihood(preferenceSettings.getFloat("matcher.position.move.min_likelihood", 0.3f))
+//				.setMinInverseEntropy(Float.MIN_VALUE)
+//				.setMinNumHistory(preferenceSettings.getInt("matcher.position.move.min_num_related_history", 3))
+//				.setPositionToleranceInMeter(0)
+//				.build()
+//			)
+//		);
 		locMatcherGroup.registerMatcher(new LocationMatcher(
 			new MatcherConf.Builder()
 				.setDuration(preferenceSettings.getLong("matcher.position.loc.duration", 3 * AlarmManager.INTERVAL_DAY))

@@ -4,16 +4,20 @@ import java.util.List;
 
 import lab.davidahn.appshuttle.AppShuttleApplication;
 import lab.davidahn.appshuttle.R;
+import lab.davidahn.appshuttle.collect.bhv.AppBhvCollector;
 import lab.davidahn.appshuttle.collect.bhv.BaseUserBhv;
 import lab.davidahn.appshuttle.collect.bhv.UserBhvType;
 import lab.davidahn.appshuttle.report.StatCollector;
 import lab.davidahn.appshuttle.view.PredictedPresentBhv;
 import lab.davidahn.appshuttle.view.PresentBhv;
+import android.app.AlarmManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Message;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,12 +53,37 @@ public class PresentBhvFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 	
-		TextView emptyMsgView = (TextView)getView().findViewById(R.id.present_empty_msg);
-		if(System.currentTimeMillis() - AppShuttleApplication.launchTime > 3000)
-			emptyMsgView.setVisibility(View.GONE);
-
 		presentBhvList = PresentBhv.getPresentBhvListFilteredSorted(Integer.MAX_VALUE);
 
+    	final long now = System.currentTimeMillis();
+		long readyMsgExpirationTime = AppShuttleApplication.launchTime + 3000;
+		long firstInstalledTime = AppBhvCollector.getInstance().getFirstInstalledTime(getActivity().getPackageName());
+		long learningMsgExpirationTime = firstInstalledTime + 3 * AlarmManager.INTERVAL_DAY;
+		final LinearLayout notiMsgView = (LinearLayout)getView().findViewById(R.id.present_noti_msg);
+    	final TextView subject = (TextView)getView().findViewById(R.id.present_noti_msg_subject);
+//		final TextView text = (TextView)getView().findViewById(R.id.present_noti_msg_text);
+		if (presentBhvList.isEmpty() && now < readyMsgExpirationTime) {
+			subject.setText(R.string.msg_wait);
+		} else if (now < learningMsgExpirationTime) {
+			new CountDownTimer(learningMsgExpirationTime - now, 1000) {
+			     public void onTick(long millisUntilFinished) {
+			    	if(getView() == null)
+			    		return;
+			    	CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(now + millisUntilFinished, 
+			    			now, DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
+					subject.setText(String.format(getActivity().getString(R.string.msg_learning_subject), relativeTimeSpan + " (" + DateUtils.formatElapsedTime(millisUntilFinished / 1000) + ")").toString());
+//					text.setText(String.format(getActivity().getString(R.string.msg_learning_text), relativeTimeSpan).toString());
+			     }
+			     public void onFinish() {
+			    	if(getView() == null)
+			    		return;
+					notiMsgView.setVisibility(View.GONE);
+			     }
+			  }.start();
+		} else {
+			notiMsgView.setVisibility(View.GONE);
+		}
+	
 		// add dummy for info msg
 		if(presentBhvList.isEmpty())
 			presentBhvList.add(new PredictedPresentBhv(BaseUserBhv.create(UserBhvType.NONE, "")));
@@ -144,7 +174,6 @@ public class PresentBhvFragment extends ListFragment {
 
 				TextView infoSubject = (TextView) infoView.findViewById(R.id.listview_info_subject);
 				infoSubject.setText(R.string.msg_no_results_subject);
-				
 				TextView infoText = (TextView) infoView.findViewById(R.id.listview_info_text);
 				infoText.setText(R.string.msg_no_results_text);
 
