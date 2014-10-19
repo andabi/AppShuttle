@@ -39,7 +39,7 @@
     <string name="action_msg_share_call">Your friend shares \'%2$s\'s phone number.\n%3$s</string>
     <string name="action_msg_share_predicted_app">Your friend shares \'%2$s\' which %1$s.\n%3$s</string>
     <string name="action_msg_share_predicted_call">Your friend shares \'%2$s\'s phone number.\n%3$s</string>
-    <string name="msg_learning_subject">It completes to learn app usage pattern %1$s.</string>
+    <string name="msg_learning_subject">AppShuttle learns your app usage pattern. It completes %1$s.</string>
 <!--     <string name="msg_learning_text">time left: %1$s</string> -->
     <string name="msg_wait">Wait for a second :)</string>
     <string name="msg_manual_ignore_subject">You can set app ignored.</string>
