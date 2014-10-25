@@ -22,6 +22,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -58,8 +59,25 @@ public class NotiBarNotifier {
 		List<FavoriteBhv> notifiableFavoriteBhvList = FavoriteBhvManager.getInstance().getNotifiableFavoriteBhvList();
 		viewableUserBhvList.addAll(notifiableFavoriteBhvList.subList(0, getNumFavoriteElem()));
 		viewableUserBhvList.addAll(PresentBhv.getPresentBhvListFilteredSorted(getNumPresentElem()));
+		viewableUserBhvList.addAll(PresentBhv.getPresentBhvListFilteredSorted(getNumPresentElem()));
 		
-		updateNotiView(viewableUserBhvList);
+		if(AppShuttleApplication.lastNotibarBhvs != null
+				&& viewableUserBhvList.equals(AppShuttleApplication.lastNotibarBhvs)) {
+			//skip update
+			Log.d("test", "skip update");
+		} else {
+			Notification noti;
+			RemoteViews notiView = createNotiRemoteViews(viewableUserBhvList);
+				noti = new NotificationCompat.Builder(cxt)
+					.setSmallIcon(R.drawable.appshuttle)
+					.setContent(notiView)
+					.setOngoing(true)
+					.setPriority((AppShuttlePreferences.isSystemAreaIconHidden()) ? Notification.PRIORITY_MIN : Notification.PRIORITY_MAX)
+					.build();
+			notificationManager.notify(UPDATE_NOTI_VIEW, noti);
+			AppShuttleApplication.lastNotibarBhvs = viewableUserBhvList;
+			Log.d("test", "update noti view");
+		}
 		
 //		Log.d("notifier", "notibar updated.");
 	}
@@ -83,18 +101,7 @@ public class NotiBarNotifier {
 	
 	public void hideNotibar() {
 		notificationManager.cancel(UPDATE_NOTI_VIEW);
-	}
-	
-	private <T extends UserBhv & Viewable> void updateNotiView(List<T> viewableUserBhv) {
-		Notification noti;
-		RemoteViews notiView = createNotiRemoteViews(viewableUserBhv);
-			noti = new NotificationCompat.Builder(cxt)
-				.setSmallIcon(R.drawable.appshuttle)
-				.setContent(notiView)
-				.setOngoing(true)
-				.setPriority((AppShuttlePreferences.isSystemAreaIconHidden()) ? Notification.PRIORITY_MIN : Notification.PRIORITY_MAX)
-				.build();
-		notificationManager.notify(UPDATE_NOTI_VIEW, noti);
+		AppShuttleApplication.lastNotibarBhvs = null;
 	}
 	
 	private <T extends UserBhv & Viewable> RemoteViews createNotiRemoteViews(List<T> viewableUserBhvList) {
